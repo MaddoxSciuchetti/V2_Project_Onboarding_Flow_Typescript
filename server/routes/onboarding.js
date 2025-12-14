@@ -23,29 +23,27 @@ onboarding_router.post("/postData", async (req, res) => {
             console.log(err)
         } else{
             console.log(result)
+            res.sendStatus(204)
         }
     })
-
-    // pool.query(create_form, [onboarding], async (err, result) => {
-    //     if(err) {
-
-    //         console.log(err)
-    //     } else{
-    //         console.log(result)
-    //     }
-    // })
-
-    // pool.query(create_form, async (err, result) => {
-    //     if(err) {
-    //         res.send(err)
-    //         console.log(err)
-    //     } else{
-    //         console.log(result)
-    //     }
-    // })
 })
 
-
+onboarding_router.get("/fetchData", (req, res) => {
+    try{
+        const fetch_query = 'SELECT * FROM users'
+        pool.query(fetch_query, (err, result) => {
+            if(err){
+                res.send(err)
+            } else{
+                res.send(result.rows)
+                
+            }
+        })
+    }catch(error) {
+        console.log(error)
+        res.send('there is currently no data')
+    }
+})
 
 
 
