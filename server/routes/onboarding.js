@@ -29,9 +29,10 @@ onboarding_router.post("/postData", async (req, res) => {
 })
 
 onboarding_router.get("/fetchData", (req, res) => {
+    const form_type = 'onboarding'
     try{
-        const fetch_query = 'SELECT * FROM users'
-        pool.query(fetch_query, (err, result) => {
+        const fetch_query = 'SELECT users.id, users.name, employee_forms.form_type FROM users INNER JOIN employee_forms ON employee_forms.id = users.id WHERE form_type = $1'
+        pool.query(fetch_query, [form_type] ,(err, result) => {
             if(err){
                 res.send(err)
             } else{
