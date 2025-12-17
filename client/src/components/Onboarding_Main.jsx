@@ -40,26 +40,63 @@ function Onboarding_Form_Main() {
         dataFetch();
     }, [])
 
-    async function handleSubmit() {
+    function handleSubmit() {
+
 
         if(newTask){
 
+            function information () {
+                return fetch(`${API_URL}/onboarding/postData`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ "name": newTask})
+                }).then(function(response) {
+                    return response.json()
+                });
+            }
+
+            information().then(function(response){
+                setTasks([...tasks, {
+                    input: {
+                        "name": newTask,
+                        "id": response.employee_form_id
+                    }
+                }])
+                
+            })
             
-            setTasks([...tasks, {
-                input: {
-                    "name": newTask
-                }
-            }])
-            
-            
-            fetch(`${API_URL}/onboarding/postData` , {
-                method: "POST",
-                headers: {
-                    "Content-Type":"application/json"
-                },
-                body: JSON.stringify({"name": newTask})
-            }).then((response) => response.json())
-              .then((rows) => console.log(rows.result.employee_form_id))
+  
+            // const information = fetch(`${API_URL}/onboarding/postData` , {
+            //     method: "POST",
+            //     headers: {
+            //         "Content-Type":"application/json"
+            //     },
+            //     body: JSON.stringify({"name": newTask})
+            // })
+            // .then((response) => response.json())
+            // .then((response) => {
+            //     return response.employee_form_id;
+            // });
+            // const get_id = async () => {
+            //     const id_value = await information;
+            //     console.log(id_value)
+            //     return id_value;  
+            // };
+
+            // const id_value = get_id()
+            // console.log("this is the id_value", id_value)
+
+
+            // setTasks([...tasks, {
+            //     input: {
+            //         "name": newTask,
+            //         // "id": get_id()
+            //     }
+            // }])
+            // console.log(newTask)
+
         }
     }
     
@@ -78,7 +115,7 @@ function Onboarding_Form_Main() {
         // setError("Something went wrong")
         try {
             await remove_task_1(taskId)
-            const filteredTasks = tasks.filter((task) => task.input.name !== taskId)
+            const filteredTasks = tasks.filter((task) => task.input.id !== taskId)
             setTasks(filteredTasks);
         } catch (e) {
             console.error(e)
@@ -119,7 +156,7 @@ function Onboarding_Form_Main() {
                     </div>
 
                     {/* {state && state.map((value, key) => (<ToDoItem_2 key={key} item={value.name} gotopage={handlepage} onRemove={removeTask}/>))} */}
-                    {tasks?.map((task, key) => (<ToDoItem_2 key={key} item={task.input.name} gotopage={handlepage} onRemove={removeTask} />))} 
+                    {tasks?.map((task) => (<ToDoItem_2 key={task.input.id} item_value={task.input.id} item={task.input.name} gotopage={handlepage} onRemove={removeTask} />))} 
                     {/* {error && <p>{error}</p>} */}
                 </div>   
             </div>     

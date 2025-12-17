@@ -7,7 +7,7 @@ import Modal from "./Modal.jsx";
 
 import "./Todo.css";
 
-function ToDoItem_2({ item, gotopage, onRemove}) {
+function ToDoItem_2({ item_value , item, gotopage, onRemove}) {
 
     const [modal, setModal] = useState(false)
 
@@ -40,7 +40,7 @@ function ToDoItem_2({ item, gotopage, onRemove}) {
                 </div>
             </div>
 
-        {modal && <Modal toggleModal={toggleModal} item={item} completeRemove={onRemove} />}
+        {modal && <Modal toggleModal={toggleModal} value_item={item_value} item={item} completeRemove={onRemove} />}
         </div>
         
     )

@@ -20,11 +20,14 @@ onboarding_router.post("/postData", async (req, res) => {
             res.send(err)
             console.log(err)
         } else{
-            console.log(result)
-            res.json({
-                "name": name,
-                "result": result.rows[0]
-            })
+            console.log(result.rows[0])
+            res.json(
+                
+
+                result.rows[0]
+              
+                
+            )
         }
     })
 })
@@ -107,17 +110,17 @@ onboarding_router.delete("/delete/:id", (req, res) => {
     const id = req.params.id
 
     const insert_query = 'DELETE FROM users WHERE id = $1'
+
     try {
-        pool.query(insert_query, [id], (req, res) => {
+        pool.query(insert_query, [id], (err, result) => {
             if(err){
                 res.send(err)
             }else {
-                res.send(result.rows)
+                res.sendStatus(204)
             }
-        })
+    })
     }catch(error){
-        console.log(error)
-        res.send('there is currently no data')
+        console.log(err)
     }
 })
 
