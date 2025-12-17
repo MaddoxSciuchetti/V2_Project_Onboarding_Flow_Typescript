@@ -40,7 +40,7 @@ function Offboarding_main() {
     function handleSubmit() {
         if(newTask) {
             function information() {
-                
+
                 return fetch(`${API_URL}/offboarding/postoffboardingdata`, {
                     method: "POST",
                     headers: {
@@ -60,6 +60,8 @@ function Offboarding_main() {
                     }
                 }])
             })
+
+            setNewTask("")
         }
     }
 

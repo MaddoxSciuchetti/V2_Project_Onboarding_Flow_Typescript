@@ -67,6 +67,7 @@ function Onboarding_Form_Main() {
                 
             })
             
+            setNewTask("")
   
             // const information = fetch(`${API_URL}/onboarding/postData` , {
             //     method: "POST",
