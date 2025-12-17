@@ -42,22 +42,22 @@ function Offboarding_form () {
     const [data, setData] = useState([])
     const [formattedData, setFormattedData] = useState([])
 
-    const descriptions = [
-        "Rückgabe Computer",
-        "Rückgabe PKW",
-        "Rückgabe Handy",
-        "Rückgabe Schlüssel",
-        "Rückgabe Werkzeug (wenn unvollständig, was fehlt?)",
-        "Rückgabe Arbeitskleidung", 
-        "Abwesenheitsassistent Mail eingerichtet",
-        "Weiterleitung Mail eingerichtet",
-        "Löschung privater Mails durch Mitarbeiter",
-        "Zugänge gesperrt",
-        "Offboarding-Gespräch terminiert",
-        "Offboarding-Gespräch durchgeführt", 
-        "Infomail ans Team versendet", 
-        "Arbeitszeugnis erstellt & verschickt",
-    ]
+    // const descriptions = [
+    //     "Rückgabe Computer",
+    //     "Rückgabe PKW",
+    //     "Rückgabe Handy",
+    //     "Rückgabe Schlüssel",
+    //     "Rückgabe Werkzeug (wenn unvollständig, was fehlt?)",
+    //     "Rückgabe Arbeitskleidung", 
+    //     "Abwesenheitsassistent Mail eingerichtet",
+    //     "Weiterleitung Mail eingerichtet",
+    //     "Löschung privater Mails durch Mitarbeiter",
+    //     "Zugänge gesperrt",
+    //     "Offboarding-Gespräch terminiert",
+    //     "Offboarding-Gespräch durchgeführt", 
+    //     "Infomail ans Team versendet", 
+    //     "Arbeitszeugnis erstellt & verschickt",
+    // ]
 
 
     const url = window.location.pathname.split("/").pop()

@@ -15,7 +15,10 @@ offboarding_router.post("/postoffboardingdata", async (req, res) => {
             console.log(err)
             res.send(err)
         }else {
-            res.send(result.rows)
+            console.log(result.rows[0])
+            res.json(
+                result.rows[0]
+            )
         }
     })
 
@@ -37,24 +40,30 @@ offboarding_router.get("/fetchData", (req, res) => {
 
 offboarding_router.get("/user/:id", (req, res) => {
     const id = req.params.id
-    const get_user_form_speciifc_test = 'SELECT users.name, employee_forms.user_id, employee_forms.form_type, form_inputs.employee_form_id, form_inputs.form_field_id, form_inputs.status, form_inputs.edit, form_fields.description FROM users INNER JOIN employee_forms ON employee_forms.user_id = users.id INNER JOIN form_inputs ON form_inputs.employee_form_id = employee_forms.id INNER JOIN form_fields ON form_inputs.form_field_id = form_fields.form_field_id WHERE user_id = $1 ORDER BY form_field_id'
-    pool.query(get_user_form_speciifc_test, [id], (err, result) => {
-        if(err){
-            console.log(err)
-            res.send(err)
-        }else {
-            console.log(err)
-            res.send(result.rows)
-        }
-    })
+    try{
+        const get_user_form_speciifc_test = 'SELECT users.name, employee_forms.user_id, employee_forms.form_type, form_inputs.employee_form_id, form_inputs.form_field_id, form_inputs.status, form_inputs.edit, form_fields.description FROM users INNER JOIN employee_forms ON employee_forms.user_id = users.id INNER JOIN form_inputs ON form_inputs.employee_form_id = employee_forms.id INNER JOIN form_fields ON form_inputs.form_field_id = form_fields.form_field_id WHERE user_id = $1 ORDER BY form_field_id'
+        pool.query(get_user_form_speciifc_test, [id], (err, result) => {
+            if(err){
+                console.log(err)
+                res.send(err)
+            }else {
+                console.log(err)
+                res.send(result.rows)
+            }
+        })
+    }catch(error){
+        console.log(error)
+        res.send('there is currently no data')
+    }
+
 })
 
 offboarding_router.put("/editdata", (req, res) => {
     const id = req.body["user_id"]
-    const edit = req.body["edit"]
-    const status = req.body["status"]
+    const edit = req.body["editcomment"]
+    const status = req.body["select-option"]
     const form_field_id = req.body["form_field_id"]
-    const employee_form_id = req.body["form_field_id"]
+    const employee_form_id = req.body["username"]
 
     console.log(id)
     console.log(edit)
@@ -87,12 +96,11 @@ offboarding_router.delete("/delete/:id", (req, res) => {
             if(err){
                 res.send(err)
             }else {
-                res.send(result.rows)
+                res.sendStatus(204)
             }
         })
     }catch(error) {
-        console.log(error)
-        res.send('there is currently no data')
+        console.log(err)
     }
 })
 

@@ -18,7 +18,7 @@ function Offboarding_main() {
         const dataFetch = async () => {
             setIsLoading(true);
             const data = await (
-                await fetch(`${API_URL}/offboarding/fetchoffboardingname`)
+                await fetch(`${API_URL}/offboarding/fetchData`)
             ).json()
             console.log("test", data)
             const formattedData = data.map((input , i ) => {
@@ -37,29 +37,54 @@ function Offboarding_main() {
         dataFetch();
     }, [])
 
+    function handleSubmit() {
+        if(newTask) {
+            function information() {
+                return fetch(`${API_URL}/offboarding/postoffboardingdata`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({"name": newTask})
+                }).then(function(response) {
+                    return response.json()
+                });
+            }
 
-    async function handleSubmit() {
-        if(newTask){
-            setTasks([...tasks, {
+            information().then(function(response) {
+                setTasks([...tasks, {
                 input: {
-                    "name": newTask
-                }
-        }])
-        setNewTask("")
-        await fetch(`${API_URL}/offboarding/postonboardingdata`, {
-            method: "POST",
-            headers: {
-                "Content-Type":"application/json"
-            },
-            body: JSON.stringify({"name": newTask})
-        })
-        .then((response) => console.log(response))
-
+                        "name": newTask,
+                        "id": response.employee_form_id
+                    }
+                }])
+            })
         }
     }
 
-    async function remove_task_1(taskToRemove) {
-        await fetch(`${API_URL}/offboarding/onboardingname/delete/` + taskToRemove, {
+
+    // async function handleSubmit() {
+    //     if(newTask){
+    //         setTasks([...tasks, {
+    //             input: {
+    //                 "name": newTask
+    //             }
+    //     }])
+    //     setNewTask("")
+    //     await fetch(`${API_URL}/offboarding/postonboardingdata`, {
+    //         method: "POST",
+    //         headers: {
+    //             "Content-Type":"application/json"
+    //         },
+    //         body: JSON.stringify({"name": newTask})
+    //     })
+    //     .then((response) => console.log(response))
+
+    //     }
+    // }
+
+    async function remove_task_1(taskId) {
+        await fetch(`${API_URL}/offboarding/delete/${taskId}`, {
             method: "DELETE",
             headers: {
                 'Content-Type': "application/json"
@@ -68,13 +93,13 @@ function Offboarding_main() {
         })
     }
 
-    async function removeTask(taskToRemove) {
+    async function removeTask(taskId) {
         // setError("Something")
 
 
         try{
-            await remove_task_1(taskToRemove)
-            const filteredTasks = tasks.filter((task) => task.input["name"] !== taskToRemove)
+            await remove_task_1(taskId)
+            const filteredTasks = tasks.filter((task) => task.input.id !== taskId)
             setTasks(filteredTasks);
         } catch(e) {
             console.error(e)
@@ -91,8 +116,8 @@ function Offboarding_main() {
     //     setModalOpen(true)
     // }
 
-    function handlepage(task) {
-        window.location.href = `/offboarding/user/${task}`
+    function handlepage(taskId) {
+        window.location.href = `/offboarding/user/${taskId}`
     }
 
     return(
@@ -118,7 +143,7 @@ function Offboarding_main() {
                         <button className="table-1 btn" onClick={handleSubmit}>Hinzufügen</button>
                     </div>
 
-                    {tasks?.map((task, key) => (<ToDoItem_2 key={key} item={task.input.name} onRemove={removeTask} gotopage={handlepage} />))}
+                    {tasks?.map((task) => (<ToDoItem_2 key={task.input.id} item_value={task.input.id}item={task.input.name} onRemove={removeTask} gotopage={handlepage} />))}
                     {/* {state && state.map((value, key ) => (<ToDoItem_2 key={key} item={value.name} onRemove={removeTask} editRow={handleEditRow} gotopage={handlepage}/>))} */}
                     {/* {error && <p>{error}</p>} */}
                 </div>
