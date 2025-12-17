@@ -82,7 +82,7 @@ offboarding_router.put("/editdata", (req, res) => {
         })
     }catch(error) {
         console.log(error)
-        res.send('there is currently')
+
     }
 })
 
