@@ -17,7 +17,6 @@ app.use(cors())
 // home page
 app.get('/', (req, res) => {
     res.send("here")
-    res.sendStatus(204)
 })
 
 app.use("/onboarding", onboarding_router)
