@@ -4,11 +4,22 @@ import {useState, useEffect} from "react";
 import Form from "./form";
 import { API_URL } from "../api.js";
 
+interface formData {
+    firstName: string;
+    lastName: string;
+    id: number;
+    last: any;
+}
+
+
+
+
+
 
 
 function Offboarding_form () {
 
-    async function sendFormData(formData) {
+    async function sendFormData(formData: formData) {
         await fetch(`${API_URL}/offboarding/editdata`, {
             method:"PUT",
             headers: {
