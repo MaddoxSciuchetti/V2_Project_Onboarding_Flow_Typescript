@@ -6,12 +6,12 @@ import "./Home.css"
 export const Home = () => {
 
     const curDate = new Date();
-    const date = curDate.getHours()
+    let date: number = curDate.getHours()
 
  
 
-    let greeting = "";
-    if (date>=1 && date <12) {
+    let greeting: string = "";
+    if (date>=1 && date <12){
         greeting="Guten Morgen Timo";
     }else if(date>=12 && date<19){
         greeting="Guten Nachmittag Timo"

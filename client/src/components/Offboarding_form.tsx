@@ -7,7 +7,7 @@ import { API_URL } from "@/api.tsx";
 
 function Offboarding_form () {
 
-    async function sendFormData(formData: formData) {
+    async function sendFormData(formData) {
         await fetch(`${API_URL}/offboarding/editdata`, {
             method:"PUT",
             headers: {
@@ -19,9 +19,9 @@ function Offboarding_form () {
         .then((response) => console.log(response))
     }
 
-    async function handleSubmit(event) {
+    async function handleSubmit(event: React.ChangeEvent<HTMLInputElement>) {
         event.preventDefault();
-        const form = event.target;
+        const form: any = event.target;
         let formData = new FormData(form)
         const data = {};
         for(let keyValue of formData.entries()) {
@@ -31,7 +31,7 @@ function Offboarding_form () {
 
         const str = url.split("/");
         const new_str = str[str.length -1];
-        data.username = new_str
+        // data.username = new_str
 
         console.log("formdata incoming", data);
 
@@ -78,7 +78,7 @@ function Offboarding_form () {
                 }
             }]
 
-            const formattedData = data.map((input, i) => {
+            const formattedData = data.map((input: any, i: number) => {
                 return {
                     index: i,
                     description: input.description,
@@ -107,7 +107,7 @@ function Offboarding_form () {
             <div className="modal-container">
                 <div className="main-form">
                     <div className="form-group">
-                        {formattedData && formattedData.map((values, index) => (
+                        {formattedData && formattedData.map((values: any, index: number) => (
                             <Form 
                             key={index}
                             id_original={values.input.id}

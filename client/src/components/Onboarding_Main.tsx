@@ -5,7 +5,10 @@ import { API_URL } from "../api.js";
 import { MdOutlineFamilyRestroom } from "react-icons/md";
 import {Task} from "components/Task"
 
-
+interface Input {
+    id: number
+    name: string
+}
 
 function Onboarding_Form_Main() {
 
@@ -13,7 +16,7 @@ function Onboarding_Form_Main() {
     const [tasks, setTasks] = useState<Task[]>([])
     const [newTask, setNewTask] = useState<string>("")
     // const [state, setState] = useState([""]);
-    const [error, setError] = useState< [""] | string >([""]);
+    const [error, setError] = useState([""]);
 
 
     useEffect(() => {
@@ -25,10 +28,10 @@ function Onboarding_Form_Main() {
             ).json()
 
             // formatting data is important
-            const formattedData = data.map((input: any, i: number) => {
+            const formattedData = data.map((input: Input, i: number) => {
                 return {        
                     input: {
-                        id: input.id, 
+                        id:  input.id, 
                         name: input["name"]
                     }
                 }
