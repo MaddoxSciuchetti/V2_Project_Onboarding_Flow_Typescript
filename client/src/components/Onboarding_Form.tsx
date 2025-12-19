@@ -1,7 +1,7 @@
 import "./on_form.css"
 import "react";
 import { useState, useEffect } from "react";
-import Form from "./form";
+import Form from "./form.js";
 import { useParams } from "react-router-dom";
 import { API_URL } from "../api.js";
 
@@ -22,7 +22,7 @@ function Onboarding_form() {
         .then((response) => console.log(response))
     }
 
-    async function handleSubmit(event) {
+    async function handleSubmit(event: React.ChangeEvent<HTMLInputElement>) {
         // Erster Versuch der nicht geklappt hat bei vanilla js klappt der
         // event.preventDefault();
 

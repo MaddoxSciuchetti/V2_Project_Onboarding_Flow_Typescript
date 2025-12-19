@@ -3,16 +3,17 @@ import { useState, useEffect } from "react";
 import ToDoItem_2 from "./ToDoItem_2.jsx"
 import { API_URL } from "../api.js";
 import { MdOutlineFamilyRestroom } from "react-icons/md";
+import {Task} from "components/Task"
 
 
 
 function Onboarding_Form_Main() {
 
 
-    const [tasks, setTasks] = useState([])
-    const [newTask, setNewTask] = useState("")
+    const [tasks, setTasks] = useState<Task[]>([])
+    const [newTask, setNewTask] = useState<string>("")
     // const [state, setState] = useState([""]);
-    const [error, setError] = useState([""]);
+    const [error, setError] = useState< [""] | string >([""]);
 
 
     useEffect(() => {
@@ -24,7 +25,7 @@ function Onboarding_Form_Main() {
             ).json()
 
             // formatting data is important
-            const formattedData = data.map((input, i) => {
+            const formattedData = data.map((input: any, i: number) => {
                 return {        
                     input: {
                         id: input.id, 
@@ -101,7 +102,7 @@ function Onboarding_Form_Main() {
         }
     }
     
-     function remove_task_1(taskId) {
+    function remove_task_1(taskId: number) {
         
         return fetch(`${API_URL}/onboarding/delete/${taskId}`, {
         method:"DELETE",
@@ -112,7 +113,7 @@ function Onboarding_Form_Main() {
     })
     }
 
-    async function removeTask(taskId) {
+    async function removeTask(taskId: number) {
         // setError("Something went wrong")
         try {
             await remove_task_1(taskId)
@@ -124,7 +125,7 @@ function Onboarding_Form_Main() {
         }
     }
 
-    function handlepage(taskId){
+    function handlepage(taskId: number){
         window.location.href = `/onboarding/user/${taskId}`  
     }
 

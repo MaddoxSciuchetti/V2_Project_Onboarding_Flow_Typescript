@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 // import ToDoItem from "./ToDoItem"
-import ToDoItem_2 from "./ToDoItem_2"
+import ToDoItem_2 from "./ToDoItem_2.jsx"
 import { API_URL } from "../api.js";
 import "./on_form.css"
 
