@@ -1,9 +1,14 @@
 {
   "compilerOptions": {
+    "lib": ["dom", "dom.iterable", "esnext"],
     "outDir": "./built",
+    "esModuleInterop": true,
     "allowJs": true,
     "target": "es5",
-    "jsx": "react-jsx",
+    "jsx": "preserve",
+    "moduleResolution": "bundler",
+
+    "module": "esnext",
     "paths": {
       "@/*": ["./*"]
     }

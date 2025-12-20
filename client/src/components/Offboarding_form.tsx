@@ -1,7 +1,7 @@
 import "on_form.css"
 import "react";
 import {useState, useEffect} from "react";
-import Form from "./form";
+import {Form} from "./form";
 import { API_URL } from "../api";
 
 
