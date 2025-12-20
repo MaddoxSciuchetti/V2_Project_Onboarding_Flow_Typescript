@@ -1,11 +1,9 @@
-interface User {
-    id: number,
-    name: string,
+function getFirstElement<ElementType>(array: ElementType[]) {
+    return array[0]
 }
 
-let users: User[] = [
-    {id: 1, name: "Alice"},
-    {id: 2, name: "Bob"}
-]
+const numbers = [1,2,3]
+const firstNum = getFirstElement(numbers)
 
-let names = users.map((user) => user.name)
+const strings = ["sdf", "sdf"]
+const firstString = getFirstElement

@@ -1,9 +1,23 @@
 import { useState, useEffect } from "react";
-// import ToDoItem from "./ToDoItem.jsx"
 import { ToDoItem_2 } from "./ToDoItem_2";
 import { API_URL } from "../api";
-import { MdOutlineFamilyRestroom } from "react-icons/md";
 
+
+
+interface Task {
+    input: {
+        name: string
+        id: number
+    }
+}
+
+interface jsonreturn {
+    emplyoee_form_id: number
+}
+
+interface Config {
+    [key: string]: any;
+}
 
 interface Input1 {
     input: {
@@ -11,16 +25,13 @@ interface Input1 {
         name: string
     }
 }
-
-interface Task {
+interface Incoming_API {
+    id: number
+    name: string
+    form_type: string
     
 }
 
-
-interface RowsValue {
-    input: any
-    employee_form_id: number
-}
 
 
 function Onboarding_Form_Main() {
@@ -29,19 +40,19 @@ function Onboarding_Form_Main() {
     const [tasks, setTasks] = useState<Task[]>([])
     const [newTask, setNewTask] = useState<string>("")
     // const [state, setState] = useState([""]);
-    const [error, setError] = useState([""]);
+    const [error, setError] = useState<string[]>([""]);
 
 
     useEffect(() => {
 
         const dataFetch = async () => {
             setIsLoading(true);
-            const data = await (
+            const data: Config = await (
                 await fetch(`${API_URL}/onboarding/fetchData`)
             ).json()
 
-            // formatting data is important
-            const formattedData = data.map((input: any): Input1  => {
+            // formatting data
+            const formattedData = data.map((input: Incoming_API): Input1  => {
                 return {        
                     input: {
                         id:  input.id, 
@@ -62,24 +73,25 @@ function Onboarding_Form_Main() {
 
         if(newTask){
 
-            function information () {
+            function information(){
                 return fetch(`${API_URL}/onboarding/postData`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify({ "name": newTask})
-                }).then(function(response) {
-                    return response.json()
+                        body: JSON.stringify({ "name": newTask})
+                }).then(function(response: Response): any{
+                    return response.json()  
                 });
             }
 
-            information().then(function(response){
+            information().then(function(response: any) {
                 setTasks([...tasks, {
                     input: {
                         "name": newTask,
                         "id": response.employee_form_id,
                     }
+                    
                 }])
                 
             })
@@ -117,8 +129,9 @@ function Onboarding_Form_Main() {
 
         }
     }
+
     
-    function remove_task_1(taskId: number) {
+    function remove_task_1(taskId: number): any{
         
         return fetch(`${API_URL}/onboarding/delete/${taskId}`, {
         method:"DELETE",
@@ -127,13 +140,14 @@ function Onboarding_Form_Main() {
         },
         signal: AbortSignal.timeout(5000)
     })
+
     }
 
     async function removeTask(taskId: number) {
         // setError("Something went wrong")
         try {
             await remove_task_1(taskId)
-            const filteredTasks = tasks.filter((task: any) => task.input.id !== taskId)
+            const filteredTasks = tasks.filter((task: Task) => task.input.id !== taskId)
             setTasks(filteredTasks);
         } catch (e) {
             console.error(e)
@@ -145,7 +159,7 @@ function Onboarding_Form_Main() {
         window.location.href = `/onboarding/user/${taskId}`  
     }
 
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     return (
         <>
@@ -174,7 +188,7 @@ function Onboarding_Form_Main() {
                     </div>
 
                     {/* {state && state.map((value, key) => (<ToDoItem_2 key={key} item={value.name} gotopage={handlepage} onRemove={removeTask}/>))} */}
-                    {tasks?.map((task: any) => (<ToDoItem_2 key={task.input.id} item_value={task.input.id} item={task.input.name} gotopage={handlepage} onRemove={removeTask} />))} 
+                    {tasks?.map((task: Task) => (<ToDoItem_2 key={task.input.id} item_value={task.input.id} item={task.input.name} gotopage={handlepage} onRemove={removeTask} />))} 
                     {/* {error && <p>{error}</p>} */}
                 </div>   
             </div>     

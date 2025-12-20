@@ -6,6 +6,14 @@ import { API_URL } from "../api";
 import { useParams } from "react-router-dom";
 
 
+interface Data {
+    editcomment: string
+    form_field_id: number
+    id: number
+    // select-option
+    username: string 
+}
+
 function Onboarding_form() {
 
     
@@ -40,6 +48,7 @@ function Onboarding_form() {
         for (let keyValue of formData.entries()) {
             data[keyValue[0]] = keyValue[1];
         }
+        console.log(data)
         const url = window.location.href
        
         const str = url.split("/");
