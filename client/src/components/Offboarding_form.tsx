@@ -7,7 +7,7 @@ import { API_URL } from "../api";
 
 function Offboarding_form () {
 
-    async function sendFormData(formData) {
+    async function sendFormData(formData: any) {
         await fetch(`${API_URL}/offboarding/editdata`, {
             method:"PUT",
             headers: {

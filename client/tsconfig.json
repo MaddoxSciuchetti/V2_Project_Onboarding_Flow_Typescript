@@ -4,12 +4,12 @@
     "outDir": "./built",
     "esModuleInterop": true,
     "allowJs": true,
-    "target": "es5",
+    "resolveJsonModule": true,
+    "target": "ES2020",
+
     "jsx": "preserve",
     "moduleResolution": "bundler",
     "types": ["vite/client"],
-
-
     "module": "esnext",
     "paths": {
       "@/*": ["./*"]

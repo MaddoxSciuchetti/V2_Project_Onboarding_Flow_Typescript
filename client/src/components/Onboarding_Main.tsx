@@ -3,11 +3,17 @@ import { useState, useEffect } from "react";
 import { ToDoItem_2 } from "./ToDoItem_2";
 import { API_URL } from "../api";
 import { MdOutlineFamilyRestroom } from "react-icons/md";
- 
-interface Input {
-    input: any
-    name: string
-    employee_form_id: number
+
+
+interface Input1 {
+    input: {
+        id: number,
+        name: string
+    }
+}
+
+interface Task {
+    
 }
 
 
@@ -35,7 +41,7 @@ function Onboarding_Form_Main() {
             ).json()
 
             // formatting data is important
-            const formattedData = data.map((input: Input, i: number) => {
+            const formattedData = data.map((input: any): Input1  => {
                 return {        
                     input: {
                         id:  input.id, 
@@ -68,11 +74,11 @@ function Onboarding_Form_Main() {
                 });
             }
 
-            information().then(function(response: Input){
+            information().then(function(response){
                 setTasks([...tasks, {
                     input: {
                         "name": newTask,
-                        "id": response.employee_form_id
+                        "id": response.employee_form_id,
                     }
                 }])
                 
