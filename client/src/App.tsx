@@ -1,12 +1,12 @@
 import "./App.css"
-import Onboarding_Form_Main from "./components/Onboarding_Main"
 import {Routes, Route} from 'react-router-dom';
+import { Navbar } from './components/Navbar';
+import { Home } from './components/Home';
+import {Modal} from './components/Modal';
+import Onboarding_Form_Main from "./components/Onboarding_Main"
 import Offboarding_main from "./components/Offboarding_main"
 import Offboarding_form from "./components/Offboarding_form"
 import Onboarding_form from './components/Onboarding_Form';
-import { Navbar } from './components/Navbar';
-import { Home } from './components/Home';
-import Modal from './components/Modal';
 
 
 
