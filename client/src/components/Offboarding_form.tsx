@@ -1,8 +1,8 @@
 import "on_form.css"
 import "react";
 import {useState, useEffect} from "react";
-import Form from "./form.tsx";
-import { API_URL } from "@/api.tsx";
+import Form from "./form";
+import { API_URL } from "../api";
 
 
 function Offboarding_form () {

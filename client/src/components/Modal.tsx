@@ -5,7 +5,7 @@ import { TiDelete } from "react-icons/ti";
 
 
 
-export default function Modal({ item, value_item,  toggleModal, completeRemove}) {
+export function Modal({ item, value_item,  toggleModal, completeRemove}) {
     return(
         <>
             <div className="modal">

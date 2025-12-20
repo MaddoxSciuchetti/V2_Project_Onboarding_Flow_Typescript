@@ -1,13 +1,10 @@
 import { GoArrowUpRight } from "react-icons/go";
 import { MdDelete } from "react-icons/md";
 import {useState} from "react";
-import Modal from "./Modal.js";
-
-
-
+import {Modal} from "./Modal";
 import "./Todo.css";
 
-function ToDoItem_2({ item_value , item, gotopage, onRemove}) {
+export function ToDoItem_2({ item_value , item, gotopage, onRemove}) {
 
     const [modal, setModal] = useState(false)
 
@@ -46,5 +43,4 @@ function ToDoItem_2({ item_value , item, gotopage, onRemove}) {
     )
 }
 
-export default ToDoItem_2;
 

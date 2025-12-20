@@ -1,14 +1,21 @@
 import { useState, useEffect } from "react";
 // import ToDoItem from "./ToDoItem.jsx"
-import ToDoItem_2 from "./ToDoItem_2.jsx"
-import { API_URL } from "../api.js";
+import { ToDoItem_2 } from "./ToDoItem_2";
+import { API_URL } from "../api";
 import { MdOutlineFamilyRestroom } from "react-icons/md";
-import {Task} from "components/Task"
-
+ 
 interface Input {
-    id: number
+    input: any
     name: string
+    employee_form_id: number
 }
+
+
+interface RowsValue {
+    input: any
+    employee_form_id: number
+}
+
 
 function Onboarding_Form_Main() {
 
@@ -61,7 +68,7 @@ function Onboarding_Form_Main() {
                 });
             }
 
-            information().then(function(response){
+            information().then(function(response: Input){
                 setTasks([...tasks, {
                     input: {
                         "name": newTask,
@@ -120,7 +127,7 @@ function Onboarding_Form_Main() {
         // setError("Something went wrong")
         try {
             await remove_task_1(taskId)
-            const filteredTasks = tasks.filter((task) => task.input.id !== taskId)
+            const filteredTasks = tasks.filter((task: any) => task.input.id !== taskId)
             setTasks(filteredTasks);
         } catch (e) {
             console.error(e)
@@ -161,7 +168,7 @@ function Onboarding_Form_Main() {
                     </div>
 
                     {/* {state && state.map((value, key) => (<ToDoItem_2 key={key} item={value.name} gotopage={handlepage} onRemove={removeTask}/>))} */}
-                    {tasks?.map((task) => (<ToDoItem_2 key={task.input.id} item_value={task.input.id} item={task.input.name} gotopage={handlepage} onRemove={removeTask} />))} 
+                    {tasks?.map((task: any) => (<ToDoItem_2 key={task.input.id} item_value={task.input.id} item={task.input.name} gotopage={handlepage} onRemove={removeTask} />))} 
                     {/* {error && <p>{error}</p>} */}
                 </div>   
             </div>     

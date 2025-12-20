@@ -1,7 +1,7 @@
 import "./on_form.css"
 import "react";
 
-function Form ({form_field_id, editcomment , select_option , id_original , description,  handleSubmit }) {
+export function Form ({form_field_id, editcomment , select_option , id_original , description,  handleSubmit }) {
 
     return (
         <>
@@ -43,6 +43,5 @@ function Form ({form_field_id, editcomment , select_option , id_original , descr
         </>
     )
 
-}
+};
 
-export default Form;

@@ -1,15 +1,15 @@
 import "./on_form.css"
 import "react";
 import { useState, useEffect } from "react";
-import Form from "./form.js";
+import {Form} from "./form";
 import { useParams } from "react-router-dom";
-import { API_URL } from "../api.js";
+import { API_URL } from "../api";
 
 
 function Onboarding_form() {
 
     
-    async function sendFormData (formData) {
+    async function sendFormData (formData: any) {
 
         await fetch(`${API_URL}/onboarding/editdata`, {
             method: "PUT",
@@ -34,7 +34,7 @@ function Onboarding_form() {
         // await sendFormData(formData)
 
         event.preventDefault();
-        const form = event.target;
+        const form: any = event.target;
         let formData = new FormData(form)
         const data = {};
         for (let keyValue of formData.entries()) {
@@ -44,7 +44,7 @@ function Onboarding_form() {
        
         const str = url.split("/");
         const new_str = str[str.length -1];
-        data.username = new_str
+        // data.username = new_str
 
 
         console.log("formdata incoming", data);
@@ -52,7 +52,7 @@ function Onboarding_form() {
         await sendFormData(data)
 
     }
-    const [data, setData] = useState([])
+    // const [data, setData] = useState([])
     const [formattedData, setFormattedData] = useState([])
     
     const url = window.location.pathname.split("/").pop()
@@ -98,7 +98,7 @@ function Onboarding_form() {
                 }
             }]
             
-            const formattedData = data.map((input, i) => {
+            const formattedData = data.map((input: any, i: number) => {
                 return {
                     index: i, 
                     description: input.description,
@@ -153,7 +153,7 @@ function Onboarding_form() {
             <div className="modal-container">
                 <div className="main-form">
                     <div className="form-group">
-                        {formattedData && formattedData.map((values, index) => (
+                        {formattedData && formattedData.map((values: any, index: number) => (
                             <Form
                             key={index}
                             id_original={values.input.id}

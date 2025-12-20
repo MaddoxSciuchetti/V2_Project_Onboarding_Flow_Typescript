@@ -1,18 +1,18 @@
 import { useState, useEffect } from "react";
 // import ToDoItem from "./ToDoItem"
-import ToDoItem_2 from "./ToDoItem_2.jsx"
-import { API_URL } from "../api.js";
+import { ToDoItem_2 } from "./ToDoItem_2";
+import { API_URL } from "../api";
 import "./on_form.css"
 
 
 
 function Offboarding_main() {
 
-    const [tasks, setTasks] = useState([])
-    const [newTask, setNewTask] = useState("")
+    const [tasks, setTasks] = useState<Task []>([])
+    const [newTask, setNewTask] = useState<string>("")
     // const [state, setState] = useState([""]);
     // const [error , setError] = useState([""]);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
         const dataFetch = async () => {
@@ -21,7 +21,7 @@ function Offboarding_main() {
                 await fetch(`${API_URL}/offboarding/fetchData`)
             ).json()
             console.log("test", data)
-            const formattedData = data.map((input , i ) => {
+            const formattedData = data.map((input: any , i: number ) => {
                 return {
                     input: {
                         id: input.id,
@@ -86,7 +86,7 @@ function Offboarding_main() {
     //     }
     // }
 
-    async function remove_task_1(taskId) {
+    async function remove_task_1(taskId: number) {
         await fetch(`${API_URL}/offboarding/delete/${taskId}`, {
             method: "DELETE",
             headers: {
@@ -96,7 +96,7 @@ function Offboarding_main() {
         })
     }
 
-    async function removeTask(taskId) {
+    async function removeTask(taskId: number) {
         // setError("Something")
 
 
@@ -119,7 +119,7 @@ function Offboarding_main() {
     //     setModalOpen(true)
     // }
 
-    function handlepage(taskId) {
+    function handlepage(taskId: number) {
         window.location.href = `/offboarding/user/${taskId}`
     }
 
