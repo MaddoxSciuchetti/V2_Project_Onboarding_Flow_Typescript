@@ -10,14 +10,24 @@ interface Data {
     editcomment: string
     form_field_id: number
     id: number
-    // select-option
+    select_option: string
     username: string 
+}
+
+interface FormattedData {
+    description: string 
+    id: number
+    form_field_id: number
+    status: string
+    edit: string
+    employee_form_id: number
+
 }
 
 function Onboarding_form() {
 
     
-    async function sendFormData (formData: any) {
+    async function sendFormData (formData: Data) {
 
         await fetch(`${API_URL}/onboarding/editdata`, {
             method: "PUT",
@@ -62,7 +72,7 @@ function Onboarding_form() {
 
     }
     // const [data, setData] = useState([])
-    const [formattedData, setFormattedData] = useState([])
+    const [formattedData, setFormattedData] = useState<Data[]>([])
     
     const url = window.location.pathname.split("/").pop()
     // console.log(url)
@@ -107,7 +117,7 @@ function Onboarding_form() {
                 }
             }]
             
-            const formattedData = data.map((input: any, i: number) => {
+            const formattedData = data.map((input: FormattedData, i: number) => {
                 return {
                     index: i, 
                     description: input.description,
@@ -115,7 +125,7 @@ function Onboarding_form() {
                         id: input.employee_form_id, 
                         form_field_id: input.form_field_id,
                         status: input.status,
-                        edit: input.edit
+                        edit: input.edit    
                     }
                 }
             })

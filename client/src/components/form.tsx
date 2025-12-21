@@ -1,7 +1,17 @@
+import { FormEventHandler } from "react";
 import "./on_form.css"
 import "react";
 
-export function Form ({form_field_id, editcomment , select_option , id_original , description,  handleSubmit }) {
+interface User {
+    form_field_id: number
+    editcomment: number
+    select_option: string 
+    id_original: number
+    description: string
+    handleSubmit: any
+}
+
+export function Form ({form_field_id, editcomment , select_option , id_original , description,  handleSubmit }: User) {
 
     return (
         <>

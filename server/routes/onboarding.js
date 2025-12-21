@@ -116,7 +116,7 @@ onboarding_router.delete("/delete/:id", (req, res) => {
             if(err){
                 res.send(err)
             }else {
-                res.sendStatus(204)
+                res.send(result)
             }
     })
     }catch(error){
