@@ -1,38 +1,7 @@
 import { useState, useEffect } from "react";
 import { ToDoItem_2 } from "./ToDoItem_2";
 import { API_URL } from "../api";
-
-
-
-interface Task {
-    input: {
-        name: string
-        id: number
-    }
-}
-
-interface jsonreturn {
-    emplyoee_form_id: number
-}
-
-interface Config {
-    [key: string]: any;
-}
-
-interface Input1 {
-    input: {
-        id: number,
-        name: string
-    }
-}
-interface Incoming_API {
-    id: number
-    name: string
-    form_type: string
-    
-}
-
-
+import { Task, Config, Input1, Incoming_API } from "./Task"
 
 function Onboarding_Form_Main() {
 

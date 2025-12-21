@@ -3,6 +3,8 @@ import "react";
 import {useState, useEffect} from "react";
 import {Form} from "./form";
 import { API_URL } from "../api";
+import { Data, FormattedData, Mappingform} from "./Task"
+
 
 
 function Offboarding_form () {
@@ -38,8 +40,7 @@ function Offboarding_form () {
         await sendFormData(data)
     }
 
-    const [data, setData] = useState([])
-    const [formattedData, setFormattedData] = useState([])
+    const [formattedData, setFormattedData] = useState<Data[]>([])
 
     // const descriptions = [
     //     "Rückgabe Computer",
@@ -78,7 +79,7 @@ function Offboarding_form () {
                 }
             }]
 
-            const formattedData = data.map((input: any, i: number) => {
+            const formattedData = data.map((input: FormattedData, i: number) => {
                 return {
                     index: i,
                     description: input.description,

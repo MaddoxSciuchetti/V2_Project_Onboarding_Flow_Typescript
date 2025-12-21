@@ -4,30 +4,15 @@ import { useState, useEffect } from "react";
 import {Form} from "./form";
 import { API_URL } from "../api";
 import { useParams } from "react-router-dom";
+import {Data, FormattedData, Mappingform} from "./Task"
 
 
-interface Data {
-    editcomment: string
-    form_field_id: number
-    id: number
-    select_option: string
-    username: string 
-}
 
-interface FormattedData {
-    description: string 
-    id: number
-    form_field_id: number
-    status: string
-    edit: string
-    employee_form_id: number
-
-}
 
 function Onboarding_form() {
 
     
-    async function sendFormData (formData: Data) {
+    async function sendFormData (formData: any) {
 
         await fetch(`${API_URL}/onboarding/editdata`, {
             method: "PUT",
@@ -103,9 +88,6 @@ function Onboarding_form() {
             const data = await (
                 await fetch(`${API_URL}/onboarding/user/`+url)
             ).json()
-
-
-
 
             // 17 values wurde von Glenn erstellt
             // Sehr wichtig Daten Formatt/Formattierung zwischen frontend und backend

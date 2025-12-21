@@ -44,10 +44,6 @@ export function Form ({form_field_id, editcomment , select_option , id_original 
                     <div className="field-text">
                         <textarea placeholder="schreibe deine Notiz"id="edit" name="editcomment" defaultValue={editcomment}></textarea>
                     </div>
-                
-
-
-                    
             </form>
             
         </>

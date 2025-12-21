@@ -3,9 +3,15 @@ import {useState} from "react";
 import { TiDelete } from "react-icons/ti";
 
 
+interface Modal {
+    value_item: number
+    toggleModal: any
+    completeRemove: any
+    item: any
+}
 
 
-export function Modal({ item, value_item,  toggleModal, completeRemove}) {
+export function Modal({ item, value_item,  toggleModal, completeRemove}: Modal) {
     return(
         <>
             <div className="modal">

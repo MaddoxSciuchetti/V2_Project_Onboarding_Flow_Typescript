@@ -8,7 +8,6 @@ export const Home = () => {
     const curDate = new Date();
     let date: number = curDate.getHours()
 
- 
 
     let greeting: string = "";
     if (date>=1 && date <12){

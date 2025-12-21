@@ -4,9 +4,16 @@ import {useState} from "react";
 import {Modal} from "./Modal";
 import "./Todo.css";
 
-export function ToDoItem_2({ item_value , item, gotopage, onRemove}) {
+interface ToDoItem {
+    item_value: number
+    item: string
+    gotopage: any
+    onRemove: any
+}
 
-    const [modal, setModal] = useState(false)
+export function ToDoItem_2({ item_value , item, gotopage, onRemove}: ToDoItem) {
+
+    const [modal, setModal] = useState<boolean>(false)
 
     const toggleModal = () => {
         setModal(!modal)
@@ -16,7 +23,6 @@ export function ToDoItem_2({ item_value , item, gotopage, onRemove}) {
     if(modal){
         document.body.classList.add("active-modal")
     }else{
-
         document.body.classList.remove("active-modal")
     }
 
