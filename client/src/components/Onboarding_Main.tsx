@@ -47,6 +47,7 @@ function Onboarding_Form_Main() {
                     },
                         body: JSON.stringify({ "name": newTask})
                 }).then(function(response: Response): any{
+                     console.log(response)
                     return response.json()  
                 });
             }

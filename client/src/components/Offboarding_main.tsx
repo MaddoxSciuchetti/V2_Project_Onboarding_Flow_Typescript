@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { ToDoItem_2 } from "./ToDoItem_2";
 import { API_URL } from "../api";
 import "./on_form.css"
-import {Task, Config, Input1, Incoming_API}  from "./Task"
+import {Task, Config, Input1, Incoming_API, Response_Test}  from "./Task"
 
 function Offboarding_main() {
 
@@ -50,7 +50,7 @@ function Offboarding_main() {
                 });
             }
 
-            information().then(function(response: any) {
+            information().then(function(response: Response_Test): void {
                 setTasks([...tasks, {
                 input: {
                         "name": newTask,
@@ -84,7 +84,7 @@ function Offboarding_main() {
     //     }
     // }
 
-    async function remove_task_1(taskId: number): any {
+    async function remove_task_1(taskId: number): Promise<any> {
         await fetch(`${API_URL}/offboarding/delete/${taskId}`, {
             method: "DELETE",
             headers: {

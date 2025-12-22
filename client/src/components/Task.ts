@@ -28,13 +28,17 @@ export interface Incoming_API{
 
 
 export interface Data {
-    editcomment: string
-    form_field_id: number
-    id: number
-    select_option: string
-    username: string 
-    id_original: number
-    description : string
+    input: {
+        
+        editcomment: string
+        form_field_id: number
+        id: number
+        select_option: string
+        username: string 
+        id_original: number
+        description : string
+
+    }
 }
 
 

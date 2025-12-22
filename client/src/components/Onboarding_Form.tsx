@@ -36,7 +36,7 @@ function Onboarding_form() {
         event.preventDefault();
         const form: HTMLFormElement = event.target;
         let formData = new FormData(form)
-        const data = {} as Data;
+        const data = {} as Mappingform;
         for (let keyValue of formData.entries()) {
             data[keyValue[0]] = keyValue[1];
         }
@@ -151,7 +151,7 @@ function Onboarding_form() {
             <div className="modal-container">
                 <div className="main-form">
                     <div className="form-group">
-                        {formattedData && formattedData.map((values: any, index: number) => (
+                        {formattedData && formattedData.map((values: Data, index: number) => (
                             <Form
                             key={index}
                             id_original={values.input.id}

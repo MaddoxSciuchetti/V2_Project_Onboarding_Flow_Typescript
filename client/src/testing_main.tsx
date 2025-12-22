@@ -1,12 +1,12 @@
-interface Person {
-    name: string| number | string[]; 
-    surname: string;
+interface User {
+    id: number
+    name: string
 }
 
+let users: User[] = [
+    {id: 1, name: "Alice"},
+    {id: 2, name: "Bob"}
+]
 
-const unpredictableFunction = (): string|number|string[] => {
-    return Math.random() > 0.5? "string": Math.random() > 0.5 ? 9999 : ["1","2", "3"]
-}
-
-const person: Person = {name: "", surname: ""};
-person.name = unpredictableFunction();
+let names = users.map((user) => user.name)
+console.log(names)

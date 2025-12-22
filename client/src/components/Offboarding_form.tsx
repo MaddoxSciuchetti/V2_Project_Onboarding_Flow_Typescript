@@ -1,15 +1,17 @@
 import "on_form.css"
 import "react";
-import {useState, useEffect} from "react";
+import {useState, useEffect, ChangeEvent} from "react";
 import {Form} from "./form";
 import { API_URL } from "../api";
 import { Data, FormattedData, Mappingform} from "./Task"
 
 
 
+
+
 function Offboarding_form () {
 
-    async function sendFormData(formData: any) {
+    async function sendFormData(formData: Mappingform) {
         await fetch(`${API_URL}/offboarding/editdata`, {
             method:"PUT",
             headers: {
@@ -21,11 +23,11 @@ function Offboarding_form () {
         .then((response) => console.log(response))
     }
 
-    async function handleSubmit(event: React.ChangeEvent<HTMLInputElement>) {
+    async function handleSubmit(event: React.ChangeEvent<HTMLFormElement>) {
         event.preventDefault();
-        const form: any = event.target;
+        const form: HTMLFormElement = event.target;
         let formData = new FormData(form)
-        const data = {};
+        const data = {} as Mappingform;
         for(let keyValue of formData.entries()) {
             data[keyValue[0]] = keyValue[1];
         }
@@ -108,7 +110,7 @@ function Offboarding_form () {
             <div className="modal-container">
                 <div className="main-form">
                     <div className="form-group">
-                        {formattedData && formattedData.map((values: any, index: number) => (
+                        {formattedData && formattedData.map((values: Data, index: number) => (
                             <Form 
                             key={index}
                             id_original={values.input.id}
