@@ -7,12 +7,9 @@ import { useParams } from "react-router-dom";
 import {Data, FormattedData, Mappingform} from "./Task"
 
 
-
-
 function Onboarding_form() {
 
-    
-    async function sendFormData (formData: any) {
+    async function sendFormData (formData: Mappingform) {
 
         await fetch(`${API_URL}/onboarding/editdata`, {
             method: "PUT",
@@ -25,7 +22,7 @@ function Onboarding_form() {
         .then((response) => console.log(response))
     }
 
-    async function handleSubmit(event: React.ChangeEvent<HTMLInputElement>) {
+    async function handleSubmit(event: React.ChangeEvent<HTMLFormElement>) {
         // Erster Versuch der nicht geklappt hat bei vanilla js klappt der
         // event.preventDefault();
 
@@ -37,9 +34,9 @@ function Onboarding_form() {
         // await sendFormData(formData)
 
         event.preventDefault();
-        const form: any = event.target;
+        const form: HTMLFormElement = event.target;
         let formData = new FormData(form)
-        const data = {};
+        const data = {} as Data;
         for (let keyValue of formData.entries()) {
             data[keyValue[0]] = keyValue[1];
         }

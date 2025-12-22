@@ -1,9 +1,12 @@
-import { useState } from "react";
+interface Person {
+    name: string| number | string[]; 
+    surname: string;
+}
 
-type RequestState = 
-    | {status: "idle"}
-    | {status: "loading"}
-    | {status: "sucess", data: any}
-    | {status: "error", error: Error};
 
-const [requestState, setRequestState] = useState<RequestState> ({status: "idle"})
+const unpredictableFunction = (): string|number|string[] => {
+    return Math.random() > 0.5? "string": Math.random() > 0.5 ? 9999 : ["1","2", "3"]
+}
+
+const person: Person = {name: "", surname: ""};
+person.name = unpredictableFunction();

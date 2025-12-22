@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { ToDoItem_2 } from "./ToDoItem_2";
 import { API_URL } from "../api";
-import { Task, Config, Input1, Incoming_API } from "./Task"
+import { Task, Config, Input1, Incoming_API, Response_Test } from "./Task"
 
 function Onboarding_Form_Main() {
 
@@ -38,10 +38,7 @@ function Onboarding_Form_Main() {
     }, [])
 
     function handleSubmit() {
-
-
         if(newTask){
-
             function information(){
                 return fetch(`${API_URL}/onboarding/postData`, {
                     method: "POST",
@@ -54,7 +51,7 @@ function Onboarding_Form_Main() {
                 });
             }
 
-            information().then(function(response: any) {
+            information().then(function(response: Response_Test) : void  {
                 setTasks([...tasks, {
                     input: {
                         "name": newTask,

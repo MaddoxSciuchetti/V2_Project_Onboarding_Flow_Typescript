@@ -5,6 +5,10 @@ export interface Task {
     }
 }
 
+export interface Response_Test {
+    employee_form_id: number
+}
+
 export interface Config {
     [key: string]: any;
 }
@@ -29,7 +33,10 @@ export interface Data {
     id: number
     select_option: string
     username: string 
+    id_original: number
+    description : string
 }
+
 
 export interface FormattedData {
     description: string 
@@ -42,7 +49,7 @@ export interface FormattedData {
 
 export interface Mappingform {
     form_field_id: number
-    editcommit: string
+    editcomment: string
     select_option: string
     id_original: number
     description : string
