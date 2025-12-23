@@ -1,5 +1,6 @@
-import express from "express"
-import pool from "../db.js"
+import express from "express";
+import { pool } from "../db.ts";
+
 
 
 const onboarding_router = express.Router()
@@ -24,9 +25,7 @@ onboarding_router.post("/postData", async (req, res) => {
             res.json(
                 
 
-                result.rows[0]
-              
-                
+                result.rows[0] 
             )
         }
     })
@@ -120,14 +119,18 @@ onboarding_router.delete("/delete/:id", (req, res) => {
             }
     })
     }catch(error){
-        console.log(err)
+        console.log(error)
     }
 })
 
+export {onboarding_router};
 
 
 
 
-export default onboarding_router;
+
+
+
+
 
 

@@ -98,7 +98,7 @@ function Onboarding_Form_Main() {
     }
 
     
-    function remove_task_1(taskId: number): any{
+    function remove_task_1(taskId: number): Promise<any>{
         
         return fetch(`${API_URL}/onboarding/delete/${taskId}`, {
         method:"DELETE",

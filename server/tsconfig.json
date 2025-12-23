@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "outDir": "./built",
+    "rootDir": "./",
+    "esModuleInterop": true,
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "noImplicitAny": true,
+    "noEmit": true,
+    "moduleResolution": "bundler",
+    "types": ["node", "express"],
+    "module": "esnext",
+    "forceConsistentCasingInFileNames": true, 
+    "strict": true,
+    "allowImportingTsExtensions": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "paths": {
+      "@/*": 
+      ["./*", "./routes/*"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}

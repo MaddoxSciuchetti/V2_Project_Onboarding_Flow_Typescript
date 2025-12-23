@@ -1,5 +1,8 @@
-import express from "express"
-import pool from "../db.js"
+import express from "express";
+import {pool} from "../db";
+
+
+
 const offboarding_router = express.Router()
 
 
@@ -99,13 +102,17 @@ offboarding_router.delete("/delete/:id", (req, res) => {
             }
         })
     }catch(error) {
-        console.log(err)
+        console.log(error)
         res.send("there is currently no data")
     }
 
 })
 
-export default offboarding_router;
+
+export {offboarding_router};
+
+
+
 
 
 
