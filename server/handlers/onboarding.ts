@@ -26,5 +26,7 @@ export function postData (
             )
         }
     })
+
+    pool.end()
     
 }
