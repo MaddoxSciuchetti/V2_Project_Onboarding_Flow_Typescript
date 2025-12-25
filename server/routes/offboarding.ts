@@ -6,7 +6,6 @@ import { pool } from "../db.ts";
 const offboarding_router = express.Router()
 
 
-
 offboarding_router.post("/postoffboardingdata", async (req, res) => {
     const name = req.body.name
     const offboarding = 'offboarding'
@@ -26,7 +25,6 @@ offboarding_router.post("/postoffboardingdata", async (req, res) => {
     })
 
 })
-
 
 offboarding_router.get("/fetchData", (req, res) => {
     const form_type = 'offboarding'
