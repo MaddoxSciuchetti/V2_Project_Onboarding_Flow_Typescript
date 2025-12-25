@@ -58,9 +58,51 @@ describe("task routes", () => {
             const response = await request(app).delete("/onboarding/delete/1")
             expect(response.status).toBe(201)
         })
-
-        
     })
+
+    describe("offboarding", () => {
+
+        it("should return a status 201", async () => {
+            const data = {
+                name: "maddox"
+            }
+            const response = await request(app).post("/offboarding/postoffboardingdata").send(data)
+            expect(response.status).toBe(201)
+        })
+
+        it("should return a status 201", async () => {
+
+            const response = await request(app).get("/offboarding/fetchData")
+            expect(response.status).toBe(201)
+        })
+
+        it("should return a status 201", async () => {
+            
+            const response = await request(app).get("/offboarding/user/1")
+            expect(response.status).toBe(201)
+        })
+
+
+        it("should return a status 201", async () => {
+
+            const data = {
+                editcomment: "mmm",
+                form_field_id: "1",
+                select_option: "erledigt", 
+                username: "278"
+            }
+            const response = await request(app).put("/offboarding/editdata").send(data)
+            expect(response.status).toBe(201)
+        })
+
+
+        it("should return a status 201", async () => {
+            
+            const response = await request(app).delete("/offboarding/delete/1")
+            expect(response.status).toBe(201)
+        })
+    })
+
 })
 
 
