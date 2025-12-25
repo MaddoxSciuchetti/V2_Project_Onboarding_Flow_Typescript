@@ -1,7 +1,7 @@
 import type { Request, Response } from "express"
 
 
-const mockRequest = {} as Request;
+const mockRequest = {} as Request; 
 
 const mockResponse = {
     send: jest.fn(),

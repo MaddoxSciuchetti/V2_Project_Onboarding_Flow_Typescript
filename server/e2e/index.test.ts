@@ -1,11 +1,13 @@
 import request from "supertest";
 import { type Express  } from "express";
 import { createApp } from "../createApp.ts";
+import { pool } from "@/db.ts";
 
 describe("/api/users", () => {
-    let app: Express = createApp();
+    let app: Express
 
     beforeAll(() => {
+
         app = createApp();
     });
 
@@ -13,5 +15,18 @@ describe("/api/users", () => {
         const response = await request(app).get("/api/users");
         expect(response.body).toStrictEqual([]);
     })
+
+    it("should return a object containing name", async () => {
+        const taskData = {
+            name: "maddox"
+        }
+        const response = await request(app).post("/onboarding/postData").send(taskData)
+        expect(response.status).toBe(201)
+
+
+    })
+
+
+
 
 });
