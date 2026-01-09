@@ -1,32 +1,27 @@
-import "react"
-import "./Home.css"
+import "react";
+import "./Home.css";
 
+const Home: React.FC = () => {
+  const curDate = new Date();
+  const date = curDate.getHours();
+  let greeting = "";
 
-
-export const Home = () => {
-
-    const curDate = new Date();
-    let date: number = curDate.getHours()
-
-
-    let greeting: string = "";
-    if (date>=1 && date <12){
-        greeting="Guten Morgen Timo";
-    }else if(date>=12 && date<19){
-        greeting="Guten Nachmittag Timo"
-    }else {
-        greeting="Guten Abend Timo"
+  const greetTimo = (date: number): string => {
+    if (date > 1 && date < 12) {
+      return "Guten morgen Timo";
+    } else if (date >= 12 && date < 19) {
+      return "Guten Nachmittag Timo";
     }
+    return "Guten Abend Timo";
+  };
 
-
-    return(
-        <div className="home-container">
-
-            <div>
-                <h1>{greeting}</h1>
-        
-            </div>
-
-        </div>
-    )
+  return (
+    <div className="home-container">
+      <div>
+        <h1>{greetTimo(date)}</h1>
+      </div>
+    </div>
+  );
 };
+
+export default Home;
