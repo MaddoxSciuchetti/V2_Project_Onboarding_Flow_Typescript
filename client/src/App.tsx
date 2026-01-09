@@ -7,7 +7,7 @@ import Onboarding_Form_Main from "./components/Onboarding_Main";
 import Offboarding_main from "./components/Offboarding_main";
 import Offboarding_form from "./components/Offboarding_form";
 import Onboarding_form from "./components/Onboarding_Form";
-import { LoginForm } from "./components/LoginForm";
+import LoginForm from "./components/LoginForm";
 
 function App() {
   return (

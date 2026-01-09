@@ -59,10 +59,10 @@ export function offboardingGetuserbyId(request: Request, response: Response) {
 }
 
 export function offboardingEditdata(request: Request, response: Response) {
-  const id = request.body["user_id"];
-  const edit = request.body["editcomment"];
-  const status = request.body["select-option"];
-  const form_field_id = request.body["form_field_id"];
+  const id = request.body.id;
+  const edit = request.body.editcomment;
+  const status = request.body.select_option;
+  const form_field_id = request.body.form_field_id;
   const employee_form_id = request.body["id"];
 
   console.log(id);

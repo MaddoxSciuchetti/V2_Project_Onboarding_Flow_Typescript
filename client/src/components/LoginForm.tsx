@@ -1,30 +1,31 @@
+import ReactDOM from "react-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 
-type Inputs = {
-  example: string;
-  exampleRequired: string;
-};
+enum GenderEnum {
+  female = "female",
+  male = "male",
+  other = "other",
+}
 
-export function LoginForm() {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<Inputs>();
+interface IFormInput {
+  firstName: string;
+  gender: GenderEnum;
+}
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
-
-  console.log(watch("example"));
+export default function LoginForm() {
+  const { register, handleSubmit } = useForm<IFormInput>();
+  const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <input defaultValue="test" {...register("example")} />
-
-      <input {...register("exampleRequired", { required: true })} />
-
-      {errors.exampleRequired && <span>This field is required</span>}
-
+      <label>First Name</label>
+      <input {...register("firstName")} />
+      <label>Gender Selection</label>
+      <select {...register("gender")}>
+        <option value="female">female</option>
+        <option value="male">male</option>
+        <option value="other">other</option>
+      </select>
       <input type="submit" />
     </form>
   );

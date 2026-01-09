@@ -1,10 +1,10 @@
-import "./on_form.css";
-import "react";
-import { useState, useEffect, ChangeEvent } from "react";
-import Form from "./form";
-import { API_URL } from "../api";
-import { Data, FormattedData, Mappingform } from "./Task";
+import { useQuery } from "@tanstack/react-query";
+import React from "react";
 import z from "zod";
+import { API_URL } from "../api";
+import Form from "./form";
+import "./on_form.css";
+import { Date1, FormattedData, Mappingform } from "./Task";
 
 type APIResponse = SuccessResponse | ErrorResponse;
 
@@ -36,7 +36,6 @@ const Offboarding_form: React.FC = () => {
         },
         body: JSON.stringify(formData),
       });
-      console.log(response);
 
       if (!response.ok) {
         return { success: false, error: `HTTP ${response.status}` };
@@ -56,77 +55,66 @@ const Offboarding_form: React.FC = () => {
     try {
       const formData = new FormData(event.currentTarget);
       const formValues = Object.fromEntries(formData);
-      console.log(formValues);
-      console.log("formvalues", formValues);
 
-      const result = formSchema.parse(formValues);
-      console.log("zod result", result);
-      await sendFormData(result);
+      const result = formSchema.safeParse(formValues);
+
+      if (!result.success) {
+        console.log("validation errors", result.error);
+        return;
+      }
+      await sendFormData(result.data);
     } catch (error) {
       console.log(error);
     }
   }
 
-  const [formattedData, setFormattedData] = useState<Data[]>([]);
-
   const url = window.location.pathname.split("/").pop();
-  // console.log(url)
 
-  useEffect(() => {
-    const dataFetch = async () => {
-      const data = await (
-        await fetch(`${API_URL}/offboarding/user/` + url)
-      ).json();
+  async function fetchFormattedData(url: string): Promise<Date1[]> {
+    const data = await (
+      await fetch(`${API_URL}/offboarding/user/${url}`)
+    ).json();
 
-      const schema = [
-        {
-          description: "",
-          input: {
-            status: "",
-            edit: "",
-          },
-        },
-      ];
+    return data.map((input: FormattedData, i: number) => ({
+      index: i,
+      description: input.description,
+      input: {
+        id: input.employee_form_id,
+        form_field_id: input.form_field_id,
+        status: input.status,
+        edit: input.edit,
+      },
+    }));
+  }
+  const queryResult = useQuery<Date1[], Error>({
+    queryKey: ["offboarding", url],
+    queryFn: () => fetchFormattedData(url),
+  });
+  const { data, error, isLoading } = queryResult;
 
-      const formattedData = data.map((input: FormattedData, i: number) => {
-        return {
-          index: i,
-          description: input.description,
-          input: {
-            id: input.employee_form_id,
-            form_field_id: input.form_field_id,
-            status: input.status,
-            edit: input.edit,
-          },
-        };
-      });
-
-      console.log("unformatted data", data);
-      console.log("formatted data", formattedData);
-
-      setFormattedData(formattedData);
-    };
-    dataFetch();
-  }, []);
+  if (error) {
+    return <div>This is a error {error.message}</div>;
+  }
+  if (isLoading) {
+    return <div>Still loading</div>;
+  }
 
   return (
     <>
-      {/* improve the styling */}
       <div className="modal-container">
         <div className="main-form">
           <div className="form-group">
-            {formattedData &&
-              formattedData.map((values: Data, index: number) => (
-                <Form
-                  key={index}
-                  id_original={values.input.id}
-                  editcomment={values.input["edit"]}
-                  select_option={values.input["status"]}
-                  description={values["description"]}
-                  form_field_id={values.input.form_field_id}
-                  handleSubmit={handleSubmit}
-                />
-              ))}
+            {data?.map((values: Date1, index: number) => (
+              <Form
+                key={index}
+                id_original={values.input.id}
+                editcomment={values.input.edit}
+                select_option={values.input.status}
+                description={values.description}
+                form_field_id={values.input.form_field_id}
+                handleSubmit={handleSubmit}
+              />
+            ))}
           </div>
         </div>
       </div>

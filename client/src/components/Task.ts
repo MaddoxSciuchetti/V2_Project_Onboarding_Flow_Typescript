@@ -38,6 +38,17 @@ export interface Data {
   };
 }
 
+export interface Date1 {
+  description: string;
+  id: number;
+  input: {
+    id: number;
+    form_field_id: number;
+    status: string;
+    edit: string;
+  };
+}
+
 export interface FormattedData {
   description: string;
   id: number;
