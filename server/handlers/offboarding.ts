@@ -1,28 +1,38 @@
-import type { CreateUserQueryParams } from "@/types/query-params.ts";
-import type { CreateUserDto } from "../dtos/CreateUser.dto.ts";
+// import type { CreateUserQueryParams } from "@/types/query-params.ts";
+// import type { CreateUserDto } from "../dtos/CreateUser.dto.ts";
 import type { Request, Response } from "express-serve-static-core";
-import type { User } from "@/types/response.ts";
-import { Session } from "express-session";
-import { Passport } from "passport";
+// import type { User } from "@/types/response.ts";
+// import { Session } from "express-session";
+// import { Passport } from "passport";
 import { pool } from "../db.ts";
+// import { prisma } from "@/lib/prisma";
+import z from "zod";
+import { createUser } from "@/services/auth.service.ts";
 
-export function postOffboardingData(request: Request, response: Response) {
-  const name = request.body.name;
-  const offboarding = "offboarding";
-  console.log(name);
+const userschema = z.object({
+  name: z.string().min(1).max(22),
+});
 
-  const creating_user =
-    "WITH ins1 AS (INSERT INTO users(name)VALUES ($1) RETURNING id), ins2 AS(INSERT INTO employee_forms(user_id, form_type)VALUES((SELECT id FROM ins1), $2) RETURNING id) INSERT INTO form_inputs(employee_form_id, form_field_id) VALUES((SELECT id from ins2), (18)), ((SELECT id FROM ins2), (19)), ((SELECT id FROM ins2), (20)), ((SELECT id FROM ins2), (21)), ((SELECT id FROM ins2), (21)), ((SELECT id FROM ins2), (22)), ((SELECT id FROM ins2), (23)), ((SELECT id FROM ins2), (24)), ((SELECT id FROM ins2), (25)), ((SELECT id FROM ins2), (26)), ((SELECT id FROM ins2), (27)), ((SELECT id FROM ins2), (28)), ((SELECT id FROM ins2), (29)), ((SELECT id FROM ins2), (30)), ((SELECT id FROM ins2), (31)) RETURNING employee_form_id;";
-  pool.query(creating_user, [name, offboarding], async (err, result) => {
-    if (err) {
-      console.log(err);
-      response.status(404).send(err);
-    } else {
-      console.log(result.rows[0]);
-      response.status(201).json(result.rows[0]);
-    }
-  });
-}
+export const postOffboardingData = async (req: Request, res: Response) => {
+  // validate the request
+
+  try {
+    const request = userschema.parse({
+      ...req.body,
+    });
+
+    // business logic
+
+    const { user } = await createUser(request);
+
+    return res.status(201).json(user);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "internal error" });
+  }
+
+  // send the response
+};
 
 export function fetchOffboardingData(request: Request, response: Response) {
   const form_type = "offboarding";

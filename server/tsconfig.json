@@ -12,16 +12,21 @@
     "noImplicitAny": true,
     "noEmit": true,
     "types": ["node", "express", "jest"],
-    "forceConsistentCasingInFileNames": true, 
+    "forceConsistentCasingInFileNames": true,
     "strict": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
 
     "paths": {
-      "@/*": 
-      ["./*"]
+      "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "createApp.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "createApp.ts"
+  ],
   "exclude": ["node_modules"]
 }

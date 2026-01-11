@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+generator types {
+  provider = "prisma-client-js"
+}
+
+
+datasource db {
+  provider = "postgresql"
+}
+
+model employee_forms {
+  id          Int           @id @default(autoincrement())
+  user_id     Int
+  form_type   FormType       @default(offboarding)
+  timestamp   DateTime?     @default(now()) @db.Timestamp(6)
+  users       users         @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "employee_forms_users")
+  form_inputs form_inputs[]
+}
+
+model form_fields {
+  form_field_id Int           @id @default(autoincrement())
+  description   String?
+  order_index   Int?
+  timestamp     DateTime?     @default(now()) @db.Timestamp(6)
+  form_inputs   form_inputs[]
+}
+
+model form_inputs {
+  id               Int            @id @default(autoincrement())
+  employee_form_id Int
+  form_field_id    Int
+  status           String?        @db.VarChar(55)
+  edit             String?
+  timestamp        DateTime?      @default(now()) @db.Timestamp(6)
+  employee_forms   employee_forms @relation(fields: [employee_form_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "form_inputs_employee_forms")
+  form_fields      form_fields    @relation(fields: [form_field_id], references: [form_field_id], onDelete: NoAction, onUpdate: NoAction, map: "form_inputs_form_fields")
+}
+
+model users {
+  id             Int              @id @default(autoincrement())
+  name           String          @db.VarChar(55)
+  name_email     String?           @db.VarChar(55)
+  email          String?          @db.VarChar(55)
+  timestamp      DateTime?        @default(now()) @db.Timestamp(6)
+  employee_forms employee_forms[]
+}
+
+enum FormType {
+  offboarding
+  onboarding
+}
