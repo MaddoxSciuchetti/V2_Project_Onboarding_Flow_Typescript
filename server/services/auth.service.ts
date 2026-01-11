@@ -90,10 +90,53 @@ export const deleteUser = async (data: any) => {
 };
 
 export const getUserFormData = async (id: any) => {
-  return await prisma.users.findMany({
-    where: {},
-
-    select: {},
+  return await prisma.users.findUnique({
+    where: {
+      id: id,
+    },
+    select: {
+      id: true,
+      name: true,
+      employee_forms: {
+        select: {
+          id: true,
+          form_type: true,
+          form_inputs: {
+            orderBy: {
+              form_field_id: "asc",
+            },
+            select: {
+              id: true,
+              form_field_id: true,
+              status: true,
+              edit: true,
+              form_fields: {
+                select: {
+                  description: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
   });
 };
-("SELECT users.name, employee_forms.user_id, employee_forms.form_type, form_inputs.employee_form_id, form_inputs.form_field_id, form_inputs.status, form_inputs.edit, form_fields.description FROM users INNER JOIN employee_forms ON employee_forms.user_id = users.id INNER JOIN form_inputs ON form_inputs.employee_form_id = employee_forms.id INNER JOIN form_fields ON form_inputs.form_field_id = form_fields.form_field_id WHERE user_id = $1 ORDER BY form_field_id");
+
+type Data = {
+  id: number;
+  editcomment: string;
+  select_option: string;
+};
+
+export const editdata = async (data: Data) => {
+  return await prisma.form_inputs.update({
+    where: {
+      id: data.id,
+    },
+    data: {
+      status: data.select_option,
+      edit: data.editcomment,
+    },
+  });
+};

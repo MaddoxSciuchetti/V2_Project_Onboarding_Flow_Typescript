@@ -10,9 +10,12 @@ import z from "zod";
 import {
   createUser,
   deleteUser,
+  editdata,
   fetchUser,
   getUserFormData,
 } from "@/services/auth.service.ts";
+import { Form_inputsScalarFieldEnum } from "@/generated/prisma/internal/prismaNamespace.ts";
+import { FormType } from "@/generated/prisma/enums.ts";
 
 const userschema = z.object({
   name: z.string().min(1).max(22),
@@ -53,38 +56,57 @@ export const offboardingDeletebyId = async (req: Request, res: Response) => {
 
 // formfetch
 export const offboardingGetuserbyId = async (req: Request, res: Response) => {
-  const id = req.params.id;
-  const {} = await getUserFormData(id);
+  const id = +req.params.id;
+
+  const user = await getUserFormData(id);
+  if (!user) {
+    throw new Error("error occued");
+  }
+
+  const form = user.employee_forms.find(
+    (f) => f.form_type === FormType.offboarding
+  );
+
+  if (!form) {
+    return res.status(404).json({ message: "Offboarding form is not found" });
+  }
+
+  const response = {
+    user: {
+      id: user.id,
+      name: user.name,
+    },
+    form: {
+      id: form.id,
+      type: form.form_type,
+      fields: form.form_inputs.map((input) => ({
+        id: input.id,
+        form_field_id: input.form_field_id,
+        description: input.form_fields.description,
+        status: input.status,
+        edit: input.edit,
+      })),
+    },
+  };
+
+  console.log(JSON.stringify(response?.form.fields, null, 2));
+
+  return res.status(200).json(response);
 };
 
-export function offboardingEditdata(request: Request, response: Response) {
-  const id = request.body.id;
-  const edit = request.body.editcomment;
-  const status = request.body.select_option;
-  const form_field_id = request.body.form_field_id;
-  const employee_form_id = request.body["id"];
+const requestschema = z.object({
+  id: z.coerce.number().int().positive(),
+  editcomment: z.string(),
+  select_option: z.string(),
+});
 
-  console.log(id);
-  console.log(edit);
-  console.log(status);
-  console.log(form_field_id);
-  console.log(employee_form_id);
+export const offboardingEditdata = async (req: Request, res: Response) => {
+  // validate request
 
-  const insert_query =
-    "UPDATE form_inputs SET edit=$1, status=$2 WHERE form_field_id= $3 AND employee_form_id = $4";
-  try {
-    pool.query(
-      insert_query,
-      [edit, status, form_field_id, employee_form_id],
-      (err, result) => {
-        if (err) {
-          response.status(404).send(err);
-        } else {
-          response.status(201).json({ affectedRows: result.rowCount });
-        }
-      }
-    );
-  } catch (error) {
-    console.log(error);
-  }
-}
+  const request = requestschema.parse(req.body);
+
+  // business log
+
+  const editresponse = await editdata(request);
+};
+("UPDATE form_inputs SET edit=$1, status=$2 WHERE form_field_id= $3 AND employee_form_id = $4");
