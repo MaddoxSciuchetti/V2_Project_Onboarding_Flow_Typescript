@@ -14,10 +14,10 @@ offboarding_router.post("/postoffboardingdata", postOffboardingData);
 
 offboarding_router.get("/fetchData", fetchOffboardingData);
 
+offboarding_router.delete("/delete/:id", offboardingDeletebyId);
+
 offboarding_router.get("/user/:id", offboardingGetuserbyId);
 
 offboarding_router.put("/editdata", offboardingEditdata);
-
-offboarding_router.delete("/delete/:id", offboardingDeletebyId);
 
 export { offboarding_router };

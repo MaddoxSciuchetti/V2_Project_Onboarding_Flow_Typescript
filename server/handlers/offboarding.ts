@@ -7,7 +7,12 @@ import type { Request, Response } from "express-serve-static-core";
 import { pool } from "../db.ts";
 // import { prisma } from "@/lib/prisma";
 import z from "zod";
-import { createUser } from "@/services/auth.service.ts";
+import {
+  createUser,
+  deleteUser,
+  fetchUser,
+  getUserFormData,
+} from "@/services/auth.service.ts";
 
 const userschema = z.object({
   name: z.string().min(1).max(22),
@@ -15,58 +20,42 @@ const userschema = z.object({
 
 export const postOffboardingData = async (req: Request, res: Response) => {
   // validate the request
-
   try {
     const request = userschema.parse({
       ...req.body,
     });
-
     // business logic
-
     const { user } = await createUser(request);
-
     return res.status(201).json(user);
   } catch (error) {
+    // return the response
     console.log(error);
     return res.status(500).json({ error: "internal error" });
   }
-
-  // send the response
 };
 
-export function fetchOffboardingData(request: Request, response: Response) {
-  const form_type = "offboarding";
-  const fetch_query =
-    "SELECT users.id, users.name, employee_forms.form_type FROM users INNER JOIN employee_forms ON employee_forms.id = users.id WHERE form_type=$1;";
-  pool.query(fetch_query, [form_type], (err, result) => {
-    if (err) {
-      response.status(404).send(err);
-      console.log(err);
-    } else {
-      response.status(201).send(result.rows);
-    }
-  });
-}
+export const fetchOffboardingData = async (req: Request, res: Response) => {
+  const request = {
+    ...req.body,
+  };
+  const { user_information } = await fetchUser();
+  return res.status(201).json(user_information);
+};
 
-export function offboardingGetuserbyId(request: Request, response: Response) {
-  const id = request.params.id;
-  try {
-    const get_user_form_speciifc_test =
-      "SELECT users.name, employee_forms.user_id, employee_forms.form_type, form_inputs.employee_form_id, form_inputs.form_field_id, form_inputs.status, form_inputs.edit, form_fields.description FROM users INNER JOIN employee_forms ON employee_forms.user_id = users.id INNER JOIN form_inputs ON form_inputs.employee_form_id = employee_forms.id INNER JOIN form_fields ON form_inputs.form_field_id = form_fields.form_field_id WHERE user_id = $1 ORDER BY form_field_id";
-    pool.query(get_user_form_speciifc_test, [id], (err, result) => {
-      if (err) {
-        console.log(err);
-        response.status(404).send(err);
-      } else {
-        console.log(err);
-        response.status(201).send(result.rows);
-      }
-    });
-  } catch (error) {
-    console.log(error);
-    response.send("there is currently no data");
-  }
-}
+export const offboardingDeletebyId = async (req: Request, res: Response) => {
+  const id = +req.params.id;
+  console.log(id);
+
+  const delete_user = await deleteUser(id);
+
+  return res.status(204).json(delete_user);
+};
+
+// formfetch
+export const offboardingGetuserbyId = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const {} = await getUserFormData(id);
+};
 
 export function offboardingEditdata(request: Request, response: Response) {
   const id = request.body.id;
@@ -97,24 +86,5 @@ export function offboardingEditdata(request: Request, response: Response) {
     );
   } catch (error) {
     console.log(error);
-  }
-}
-
-export function offboardingDeletebyId(request: Request, response: Response) {
-  const id = request.params.id;
-
-  const insert_query = "DELETE FROM users WHERE id = $1";
-  try {
-    pool.query(insert_query, [id], (err, result) => {
-      if (err) {
-        response.status(404).send(err);
-      } else {
-        response.status(201).send("hello");
-        pool.end();
-      }
-    });
-  } catch (error) {
-    console.log(error);
-    response.status(404).send("there is currently no data");
   }
 }

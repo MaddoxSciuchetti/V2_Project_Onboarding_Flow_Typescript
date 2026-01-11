@@ -55,28 +55,45 @@ export const createUser = (data: dataObject): Promise<returnObject> => {
   });
 };
 
-//   const offboarding = "offboarding";
+export const fetchUser = async () => {
+  const user_information = await prisma.users.findMany({
+    where: {
+      employee_forms: {
+        some: {
+          form_type: FormType.offboarding,
+        },
+      },
+    },
+    select: {
+      id: true,
+      name: true,
+      employee_forms: {
+        select: {
+          form_type: true,
+        },
+      },
+    },
+  });
+  return {
+    user_information,
+  };
+};
 
-//   const creating_user = `
-//   WITH ins1 AS (INSERT INTO users(name)VALUES
-//   ($1) RETURNING id), ins2 AS(INSERT INTO employee_forms(id,
-//   form_type)VALUES((SELECT id FROM ins1), $2) RETURNING id)
-//   INSERT INTO form_inputs(employee_form_id, form_field_id)
-//   VALUES((SELECT id from ins2), (18)), ((SELECT id FROM ins2),
-//   (19)), ((SELECT id FROM ins2), (20)), ((SELECT id FROM ins2),
-//   (21)), ((SELECT id FROM ins2), (21)), ((SELECT id FROM ins2),
-//   (22)), ((SELECT id FROM ins2), (23)), ((SELECT id FROM ins2),
-//   (24)), ((SELECT id FROM ins2), (25)), ((SELECT id FROM ins2),
-//   (26)), ((SELECT id FROM ins2), (27)), ((SELECT id FROM ins2),
-//   (28)), ((SELECT id FROM ins2), (29)), ((SELECT id FROM ins2),
-//   (30)), ((SELECT id FROM ins2), (31)) RETURNING employee_form_id;`;
+export const deleteUser = async (data: any) => {
+  const delete_user = await prisma.users.delete({
+    where: {
+      id: data,
+    },
+  });
 
-//   pool.query(creating_user, [name, offboarding], async (err, result) => {
-//     if (err) {
-//       console.log(err);
-//       response.status(404).send(err);
-//     } else {
-//       console.log(result.rows[0]);
-//       response.status(201).json(result.rows[0]);
-//     }
-//   });
+  return delete_user;
+};
+
+export const getUserFormData = async (id: any) => {
+  return await prisma.users.findMany({
+    where: {},
+
+    select: {},
+  });
+};
+("SELECT users.name, employee_forms.user_id, employee_forms.form_type, form_inputs.employee_form_id, form_inputs.form_field_id, form_inputs.status, form_inputs.edit, form_fields.description FROM users INNER JOIN employee_forms ON employee_forms.user_id = users.id INNER JOIN form_inputs ON form_inputs.employee_form_id = employee_forms.id INNER JOIN form_fields ON form_inputs.form_field_id = form_fields.form_field_id WHERE user_id = $1 ORDER BY form_field_id");
