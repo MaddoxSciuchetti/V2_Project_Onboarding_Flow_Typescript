@@ -3,8 +3,7 @@ import React from "react";
 import z from "zod";
 import { API_URL } from "../api";
 import Form from "./form";
-import "./on_form.css";
-import { Date1, FormattedData, Mappingform } from "./Task";
+import { Mappingform } from "./Task";
 
 type APIResponse = SuccessResponse | ErrorResponse;
 
@@ -16,6 +15,26 @@ type SuccessResponse = {
 type ErrorResponse = {
   success: false;
   error: string;
+};
+
+type form_field = {
+  id: number;
+  form_field_id: number;
+  description: string;
+  status: string | null;
+  edit: string | null;
+};
+
+type api_Response = {
+  user: {
+    id: number;
+    name: string;
+  };
+  form: {
+    id: number;
+    type: string;
+    fields: form_field[];
+  };
 };
 
 const formSchema = z.object({
@@ -57,6 +76,7 @@ const Offboarding_form: React.FC = () => {
       const formValues = Object.fromEntries(formData);
 
       const result = formSchema.safeParse(formValues);
+      console.log(result);
 
       if (!result.success) {
         console.log("validation errors", result.error);
@@ -70,32 +90,27 @@ const Offboarding_form: React.FC = () => {
 
   const url = window.location.pathname.split("/").pop();
 
-  async function fetchFormattedData(url: string): Promise<Date1[]> {
-    const data = await (
-      await fetch(`${API_URL}/offboarding/user/${url}`)
-    ).json();
-
-    return data.map((input: FormattedData, i: number) => ({
-      index: i,
-      description: input.description,
-      input: {
-        id: input.employee_form_id,
-        form_field_id: input.form_field_id,
-        status: input.status,
-        edit: input.edit,
-      },
-    }));
+  async function fetchFormattedData(url: string): Promise<any> {
+    const res = await fetch(`${API_URL}/offboarding/user/${url}`);
+    if (!res.ok) {
+      throw new Error("response not ok");
+    }
+    const json = await res.json();
+    console.log(json);
+    return json;
   }
-  const queryResult = useQuery<Date1[], Error>({
+  const { data, error, isLoading } = useQuery<api_Response, Error>({
     queryKey: ["offboarding", url],
     queryFn: () => fetchFormattedData(url),
   });
-  const { data, error, isLoading } = queryResult;
+  console.log(data);
 
   if (error) {
+    // component
     return <div>This is a error {error.message}</div>;
   }
   if (isLoading) {
+    // component
     return <div>Still loading</div>;
   }
 
@@ -104,14 +119,14 @@ const Offboarding_form: React.FC = () => {
       <div className="modal-container">
         <div className="main-form">
           <div className="form-group">
-            {data?.map((values: Date1, index: number) => (
+            {data?.form.fields.map((field: any, index: any) => (
               <Form
                 key={index}
-                id_original={values.input.id}
-                editcomment={values.input.edit}
-                select_option={values.input.status}
-                description={values.description}
-                form_field_id={values.input.form_field_id}
+                id_original={field.id}
+                editcomment={field.edit}
+                select_option={field.status}
+                description={field.description}
+                form_field_id={data.form.id}
                 handleSubmit={handleSubmit}
               />
             ))}

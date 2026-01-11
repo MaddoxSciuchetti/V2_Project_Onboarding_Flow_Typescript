@@ -2,7 +2,6 @@ import { GoArrowUpRight } from "react-icons/go";
 import { MdDelete } from "react-icons/md";
 import { useState } from "react";
 import Modal from "./Modal";
-import "./Todo.css";
 
 interface ToDoItem {
   item_value: number;

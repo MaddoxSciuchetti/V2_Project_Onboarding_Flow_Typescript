@@ -1,5 +1,4 @@
 import "react";
-import "./Home.css";
 
 const Home: React.FC = () => {
   const curDate = new Date();

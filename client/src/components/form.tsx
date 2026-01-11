@@ -1,5 +1,3 @@
-import { FormEventHandler } from "react";
-import "./on_form.css";
 import "react";
 
 interface FormProps {

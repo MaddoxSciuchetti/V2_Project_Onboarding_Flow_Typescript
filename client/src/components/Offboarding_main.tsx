@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { ToDoItem_2 } from "./ToDoItem_2";
 import { API_URL } from "../api";
-import "./on_form.css";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 type OffboardingItem = {
@@ -30,11 +29,11 @@ function Offboarding_main() {
   const queryClient = useQueryClient();
 
   const createTaskMutation = useMutation({
-    mutationFn: async (name: string) => {
+    mutationFn: (name: string) => {
       return fetch(`${API_URL}/offboarding/postoffboardingdata`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "content-type": "application/json",
         },
         body: JSON.stringify({ name }),
       }).then((res) => res.json());
@@ -63,7 +62,7 @@ function Offboarding_main() {
       signal: AbortSignal.timeout(5000),
     });
     if (!response.ok) {
-      throw new Error("faild to delete task");
+      throw new Error("Failed to delete task");
     }
     return taskId;
   };

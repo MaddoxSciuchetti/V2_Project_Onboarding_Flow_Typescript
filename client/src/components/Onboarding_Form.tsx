@@ -1,9 +1,7 @@
-import "./on_form.css";
 import "react";
 import { useState, useEffect } from "react";
 import Form from "./form";
 import { API_URL } from "../api";
-import { useParams } from "react-router-dom";
 import { Data, FormattedData, Mappingform } from "./Task";
 
 function Onboarding_form() {
