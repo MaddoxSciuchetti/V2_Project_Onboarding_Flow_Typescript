@@ -12,9 +12,8 @@
     "types": ["vite/client"],
     "module": "esnext",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./src/*"]
     }
-
   },
-  "include": ["./src/**/*"],
+  "include": ["./src/**/*"]
 }

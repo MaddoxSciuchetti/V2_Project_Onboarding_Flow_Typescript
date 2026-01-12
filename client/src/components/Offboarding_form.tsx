@@ -5,17 +5,8 @@ import { API_URL } from "../api";
 import Form from "./form";
 import { Mappingform } from "./Task";
 
-type APIResponse = SuccessResponse | ErrorResponse;
-
-type SuccessResponse = {
-  success: true;
-  affectedRows: number;
-};
-
-type ErrorResponse = {
-  success: false;
-  error: string;
-};
+import { APIResponse } from "../types/api_response";
+import { useFetcher } from "react-router-dom";
 
 type form_field = {
   id: number;
@@ -90,7 +81,7 @@ const Offboarding_form: React.FC = () => {
 
   const url = window.location.pathname.split("/").pop();
 
-  async function fetchFormattedData(url: string): Promise<any> {
+  async function fetchFormattedData(url: string): Promise<api_Response> {
     const res = await fetch(`${API_URL}/offboarding/user/${url}`);
     if (!res.ok) {
       throw new Error("response not ok");
@@ -100,7 +91,7 @@ const Offboarding_form: React.FC = () => {
     return json;
   }
   const { data, error, isLoading } = useQuery<api_Response, Error>({
-    queryKey: ["offboarding", url],
+    queryKey: ["somethingelse", url],
     queryFn: () => fetchFormattedData(url),
   });
   console.log(data);

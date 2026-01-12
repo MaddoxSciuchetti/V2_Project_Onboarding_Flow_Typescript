@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { ToDoItem_2 } from "./ToDoItem_2";
 import { API_URL } from "../api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Button } from "./ui/button";
 
 type OffboardingItem = {
   id: number;
@@ -80,36 +81,28 @@ function Offboarding_main() {
 
   return (
     <>
-      <div></div>
-      <div className="main-list">
-        <div className="list">
-          <div className="sublist-2">
-            <input
-              className="table-1 input-box"
-              id="1"
-              type="text"
-              value={newTask}
-              onChange={(e) => setNewTask(e.target.value)}
-              placeholder="Name"
-            />
-            <button className="table-1 btn" onClick={handleSubmit}>
-              Hinzufügen
-            </button>
-          </div>
-
-          {data?.map((task: any) => (
-            <ToDoItem_2
-              key={task.id}
-              item_value={task.id}
-              item={task.name}
-              onRemove={removeTask}
-              gotopage={handlepage}
-            />
-          ))}
-          {/* {state && state.map((value, key ) => (<ToDoItem_2 key={key} item={value.name} onRemove={removeTask} editRow={handleEditRow} gotopage={handlepage}/>))} */}
-          {/* {error && <p>{error}</p>} */}
-        </div>
-      </div>
+      <div className="flex min-h-svh flex-col items-center justify-center"></div>
+      <input
+        className="table-1 input-box"
+        id="1"
+        type="text"
+        value={newTask}
+        onChange={(e) => setNewTask(e.target.value)}
+        placeholder="Name"
+      />
+      <button className="table-1 btn" onClick={handleSubmit}>
+        Hinzufügen
+      </button>
+      <Button>This is the test butto</Button>
+      {data?.map((task: any) => (
+        <ToDoItem_2
+          key={task.id}
+          item_value={task.id}
+          item={task.name}
+          onRemove={removeTask}
+          gotopage={handlepage}
+        />
+      ))}
     </>
   );
 }
