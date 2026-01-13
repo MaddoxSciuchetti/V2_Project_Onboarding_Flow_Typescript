@@ -3,11 +3,23 @@ import { ToDoItem_2 } from "./ToDoItem_2";
 import { API_URL } from "../api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemMedia,
+  ItemTitle,
+} from "@/components/ui/item";
 
 type OffboardingItem = {
   id: number;
   name: string;
 };
+
+// something along the lines of, when offboarding button is clicked than fetch and display that data (hide the other)
+// similiar to a toggle, should also have search function
 
 function Offboarding_main() {
   const [newTask, setNewTask] = useState<string>("");
@@ -79,10 +91,17 @@ function Offboarding_main() {
     window.location.href = `/offboarding/user/${taskId}`;
   }
 
+  const [modal, setModal] = useState<boolean>(false);
+
+  const toggleModal = () => {
+    setModal(!modal);
+  };
+
+  if (modal) return <div>this is the modal</div>;
+
   return (
     <>
-      <div className="flex min-h-svh flex-col items-center justify-center"></div>
-      <input
+      <Input
         className="table-1 input-box"
         id="1"
         type="text"
@@ -90,10 +109,21 @@ function Offboarding_main() {
         onChange={(e) => setNewTask(e.target.value)}
         placeholder="Name"
       />
-      <button className="table-1 btn" onClick={handleSubmit}>
-        Hinzufügen
-      </button>
-      <Button>This is the test butto</Button>
+      <Button className="table-1 btn" onClick={handleSubmit}>
+        Neuen Mitarbeiter hinzufügen?
+      </Button>
+
+      <div className="flex w-full max-w-md flex-col gap-6">
+        <Item variant="outline" className="flex w-full flex-row gap-10">
+          // nex
+          <ItemActions>
+            <Button variant="outline" size="sm">
+              Action
+            </Button>
+          </ItemActions>
+        </Item>
+      </div>
+
       {data?.map((task: any) => (
         <ToDoItem_2
           key={task.id}

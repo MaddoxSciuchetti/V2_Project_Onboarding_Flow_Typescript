@@ -1,5 +1,6 @@
 import "./Modal.css";
 import { TiDelete } from "react-icons/ti";
+import { Button } from "./ui/button";
 
 interface ModalProps {
   value_item?: number;
@@ -19,6 +20,8 @@ const Modal: React.FC<ModalProps> = ({
         <div className="modal-content">
           <div>
             <TiDelete className="x-item" onClick={toggleModal} />
+            <p>Place holder for adding the person</p>
+            <Button>Here</Button>
           </div>
           <h2 className="styling">
             Mit diser Aktion wird der Mitarbeiter und sein Fortschritt gelöscht

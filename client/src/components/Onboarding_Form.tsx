@@ -4,32 +4,25 @@ import Form from "./form";
 import { API_URL } from "../api";
 import { Data, FormattedData, Mappingform } from "./Task";
 
+// delete this code
+
 function Onboarding_form() {
   async function sendFormData(formData: Mappingform) {
-    await fetch(`${API_URL}/onboarding/editdata`, {
+    const data = await fetch(`${API_URL}/onboarding/editdata`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(formData),
-    })
-      .then((response) => response.json())
-      .then((response) => console.log(response));
+    });
+    const response = await data.json();
+    return response;
   }
 
   async function handleSubmit(event: React.ChangeEvent<HTMLFormElement>) {
-    // Erster Versuch der nicht geklappt hat bei vanilla js klappt der
-    // event.preventDefault();
-
-    // const form = event.target
-    // const name = form.name.target;
-    // let formData = new FormData()
-    // formData.append("name", name)
-    // document.getElementById("id").value=""
-    // await sendFormData(formData)
-
     event.preventDefault();
     const form: HTMLFormElement = event.target;
+
     let formData = new FormData(form);
     const data = {} as Mappingform;
     for (let keyValue of formData.entries()) {
@@ -46,31 +39,9 @@ function Onboarding_form() {
 
     await sendFormData(data);
   }
-  // const [data, setData] = useState([])
   const [formattedData, setFormattedData] = useState<Data[]>([]);
 
   const url = window.location.pathname.split("/").pop();
-  // console.log(url)
-
-  // const descriptions = [
-  //     "Arbeitsvertrag unterschrieben zurück + Dokumente BSB",
-  //     "Personalfragebogen inkl. notw. Dokumente erhalten",
-  //     "Arbeitsmaterialien bereitgestellt (Bestellung Werkzeug)",
-  //     "Arbeitsplatz eingerichtet",
-  //     "Software-Zugänge (Engine, Office365) Mailadresse",
-  //     "Computer eingerichtet",
-  //     "Handy + Tablet",
-  //     "Schlüssel",
-  //     "Werkzeug QR-Codes registrieren",
-  //     "Auto",
-  //     "Arbeitskleidung",
-  //     "Visitenkarten",
-  //     "Willkommensmail an das Team",
-  //     "Einarbeitungsplan erstellt",
-  //     "BSB Fibel",
-  //     "Mail mit Kununu-Link versendet",
-  //     "Easy Park einrichten",
-  // ]
 
   useEffect(() => {
     const dataFetch = async () => {
@@ -78,8 +49,6 @@ function Onboarding_form() {
         await fetch(`${API_URL}/onboarding/user/` + url)
       ).json();
 
-      // 17 values wurde von Glenn erstellt
-      // Sehr wichtig Daten Formatt/Formattierung zwischen frontend und backend
       const schema = [
         {
           description: "",
@@ -105,29 +74,6 @@ function Onboarding_form() {
 
       console.log("unformatted data", data);
       console.log("formattedData:", formattedData);
-
-      // const schema = [{
-      //     description: "",
-      //     input: {
-      //         status: "",
-      //         note: ""
-      //     }
-      // }]
-
-      // const formattedData = data.map((input, i) => {
-      //     return {
-      //         description: i <= 2 ? descriptions[i] : "placeholder",
-      //         input: {
-      //             status: input.status,
-      //             note: input.edit
-      //         }
-      //     }
-      // })
-
-      // console.log("formattedData:", formattedData)
-
-      // setData(data)
-
       setFormattedData(formattedData);
     };
     dataFetch();
