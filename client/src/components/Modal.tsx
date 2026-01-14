@@ -4,7 +4,7 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useState } from "react";
 import { API_URL } from "@/api";
-import { APIResponse } from "@/types/api_response";
+import { useForm, SubmitHandler } from "react-hook-form";
 
 interface ModalProps {
   toggleModal?: () => void;
@@ -36,8 +36,11 @@ const Modal: React.FC<ModalProps> = ({
   return (
     <>
       <div className="modal">
-        <div onClick={toggleModal} className="overlay"></div>
-        <div className="modal-content">
+        <div
+          onClick={toggleModal}
+          className="h-screen inset-0 fixed z-4ß bg-black/60"
+        ></div>
+        <div className="absolute text-center z-50 bg-gray-200 rounded-xl top-[50%] left-[50%] h-7/12 w-4xl pl-10 -translate-x-1/2 -translate-y-1/2">
           <div>
             <Input
               className="table-1 input-box"
