@@ -7,7 +7,6 @@ import { API_URL } from "@/api";
 import { APIResponse } from "@/types/api_response";
 
 interface ModalProps {
-  value_item?: number;
   toggleModal?: () => void;
   completeRemove?: (value_item: number) => void;
   stateTask: string;
@@ -26,13 +25,14 @@ export const sendWorkerData = async (name: string): Promise<any> => {
 };
 
 const Modal: React.FC<ModalProps> = ({
-  value_item,
   toggleModal,
   completeRemove,
   stateTask,
   newStateTask,
   onSuccess,
 }) => {
+  const [error, setError] = useState<string>("");
+
   return (
     <>
       <div className="modal">
@@ -59,9 +59,9 @@ const Modal: React.FC<ModalProps> = ({
                   }
                   return;
                 } catch (error) {
-                  return error instanceof Error
-                    ? error.message
-                    : "Error occured";
+                  setError(
+                    error instanceof Error ? error.message : "something else"
+                  );
                 }
               }}
             >
@@ -71,14 +71,15 @@ const Modal: React.FC<ModalProps> = ({
           <h2 className="styling">
             Mit diser Aktion wird der Mitarbeiter und sein Fortschritt gelöscht
           </h2>
-          <button
+          {/* <button
             className="close-modal styling"
             onClick={() => {
               toggleModal(), completeRemove(value_item);
             }}
           >
             Löschen
-          </button>
+          </button> */}
+          {error && <div>{error}</div>}
         </div>
       </div>
     </>

@@ -3,15 +3,9 @@ import { ToDoItem_2 } from "./ToDoItem_2";
 import { API_URL } from "../api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button } from "./ui/button";
+import "./theme.css"; // Remove the "components/" part
+import { DropdownMenu } from "@radix-ui/react-dropdown-menu";
 import { Input } from "./ui/input";
-import {
-  Item,
-  ItemActions,
-  ItemContent,
-  ItemDescription,
-  ItemMedia,
-  ItemTitle,
-} from "@/components/ui/item";
 import Modal from "./Modal";
 
 type OffboardingItem = {
@@ -39,35 +33,14 @@ function Offboarding_main() {
   console.log("tanstack query data object", data);
 
   const queryClient = useQueryClient();
-
-  const createTaskMutation = useMutation({
-    mutationFn: (name: string) => {
-      return fetch(`${API_URL}/offboarding/postoffboardingdata`, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({ name }),
-      }).then((res) => res.json());
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["offboarding"] });
-    },
-  });
-
+  const [modal, setModal] = useState<boolean>(false);
   const [newTask, setNewTask] = useState<string>("");
-
-  function handleSubmit() {
-    if (!newTask) return;
-    createTaskMutation.mutate(newTask);
-    setNewTask("");
-  }
 
   async function removeTask(taskId: number) {
     deleteTaskMutation.mutate(taskId);
   }
 
-  const deleteTask = async (taskId: number) => {
+  const deleteTask = async (taskId: number): Promise<void> => {
     const response = await fetch(`${API_URL}/offboarding/delete/${taskId}`, {
       method: "DELETE",
       headers: {
@@ -78,7 +51,7 @@ function Offboarding_main() {
     if (!response.ok) {
       throw new Error("Failed to delete task");
     }
-    return taskId;
+    return;
   };
 
   const deleteTaskMutation = useMutation({
@@ -91,8 +64,6 @@ function Offboarding_main() {
   function handlepage(taskId: number) {
     window.location.href = `/offboarding/user/${taskId}`;
   }
-
-  const [modal, setModal] = useState<boolean>(false);
 
   function handleSuccessfullSubmission() {
     toggleModal();
@@ -113,30 +84,38 @@ function Offboarding_main() {
 
   return (
     <>
-      <Button className="table-1 btn" onClick={() => toggleModal()}>
-        Neuen Mitarbeiter hinzufügen?
-      </Button>
+      <div className="flex justify-start pt-20 flex-col min-h-screen items-center border bg-gray-100">
+        <div className="w-full max-w-3xl border rounded-lg shadow-1g bg-white max-h-[90vh] overflow-auto flex flex-col items-center">
+          <div className="flex gap-3">
+            <Input className="flex" />
+            <Button className="">Filter</Button>
+            <Button className="table-1 btn" onClick={() => toggleModal()}>
+              Neuen Mitarbeiter hinzufügen?
+            </Button>
+          </div>
 
-      {data?.map((task: any) => (
-        <ToDoItem_2
-          key={task.id}
-          item_value={task.id}
-          item={task.name}
-          onRemove={removeTask}
-          gotopage={handlepage}
-        />
-      ))}
+          {data?.map((task: any) => (
+            <ToDoItem_2
+              key={task.id}
+              item_value={task.id}
+              item={task.name}
+              onRemove={removeTask}
+              gotopage={handlepage}
+            />
+          ))}
 
-      {modal && (
-        <div className="fixed inset-0 bg-black0/60">
-          <Modal
-            toggleModal={toggleModal}
-            stateTask={newTask}
-            newStateTask={setNewTask}
-            onSuccess={handleSuccessfullSubmission}
-          />
+          {modal && (
+            <div className="fixed inset-0 bg-black0/60">
+              <Modal
+                toggleModal={toggleModal}
+                stateTask={newTask}
+                newStateTask={setNewTask}
+                onSuccess={handleSuccessfullSubmission}
+              />
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </>
   );
 }
