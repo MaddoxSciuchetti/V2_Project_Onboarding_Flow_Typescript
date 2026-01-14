@@ -12,6 +12,7 @@ import {
   ItemMedia,
   ItemTitle,
 } from "@/components/ui/item";
+import Modal from "./Modal";
 
 type OffboardingItem = {
   id: number;
@@ -22,8 +23,6 @@ type OffboardingItem = {
 // similiar to a toggle, should also have search function
 
 function Offboarding_main() {
-  const [newTask, setNewTask] = useState<string>("");
-
   async function fetchNameData() {
     const response = await (
       await fetch(`${API_URL}/offboarding/fetchData`)
@@ -55,6 +54,8 @@ function Offboarding_main() {
       queryClient.invalidateQueries({ queryKey: ["offboarding"] });
     },
   });
+
+  const [newTask, setNewTask] = useState<string>("");
 
   function handleSubmit() {
     if (!newTask) return;
@@ -93,36 +94,28 @@ function Offboarding_main() {
 
   const [modal, setModal] = useState<boolean>(false);
 
+  function handleSuccessfullSubmission() {
+    toggleModal();
+    queryClient.invalidateQueries({ queryKey: ["offboarding"] });
+  }
+
+  useEffect(() => {
+    if (modal) {
+      document.body.classList.add("active-modal");
+    } else {
+      document.body.classList.remove("active-modal");
+    }
+  }, [modal]);
+
   const toggleModal = () => {
     setModal(!modal);
   };
 
-  if (modal) return <div>this is the modal</div>;
-
   return (
     <>
-      <Input
-        className="table-1 input-box"
-        id="1"
-        type="text"
-        value={newTask}
-        onChange={(e) => setNewTask(e.target.value)}
-        placeholder="Name"
-      />
-      <Button className="table-1 btn" onClick={handleSubmit}>
+      <Button className="table-1 btn" onClick={() => toggleModal()}>
         Neuen Mitarbeiter hinzufügen?
       </Button>
-
-      <div className="flex w-full max-w-md flex-col gap-6">
-        <Item variant="outline" className="flex w-full flex-row gap-10">
-          // nex
-          <ItemActions>
-            <Button variant="outline" size="sm">
-              Action
-            </Button>
-          </ItemActions>
-        </Item>
-      </div>
 
       {data?.map((task: any) => (
         <ToDoItem_2
@@ -133,6 +126,17 @@ function Offboarding_main() {
           gotopage={handlepage}
         />
       ))}
+
+      {modal && (
+        <div className="fixed inset-0 bg-black0/60">
+          <Modal
+            toggleModal={toggleModal}
+            stateTask={newTask}
+            newStateTask={setNewTask}
+            onSuccess={handleSuccessfullSubmission}
+          />
+        </div>
+      )}
     </>
   );
 }

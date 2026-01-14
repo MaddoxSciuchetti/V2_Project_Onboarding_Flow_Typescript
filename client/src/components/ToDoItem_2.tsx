@@ -56,14 +56,7 @@ export function ToDoItem_2({ item_value, item, gotopage, onRemove }: ToDoItem) {
             Live thread
           </Button>
         </ItemActions>
-        <div className="icons">
-          {/* <div className="itum arrow_btn">
-            <GoArrowUpRight onClick={() => gotopage(item_value)} />
-          </div>
-          <div className="itum delete_btn">
-            <MdDelete onClick={() => toggleModal()} />
-          </div> */}
-        </div>
+        <div className="icons"></div>
       </div>
 
       {modal && (
