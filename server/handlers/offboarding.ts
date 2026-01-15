@@ -17,19 +17,20 @@ import {
 import { Form_inputsScalarFieldEnum } from "@/generated/prisma/internal/prismaNamespace.ts";
 import { FormType } from "@/generated/prisma/enums.ts";
 
-const userschema = z.object({
-  name: z.string().min(1).max(22),
-});
+// const userschema = z.object({
+//   name: z.string().min(1).max(22),
+// });
 
 export const postOffboardingData = async (req: Request, res: Response) => {
   // validate the request
   try {
-    const request = userschema.parse({
+    const request = {
       ...req.body,
-    });
+    };
     // business logic
-    const { user } = await createUser(request);
-    return res.status(201).json(user);
+    console.log(request);
+    // const { user } = await createUser(request);
+    // return res.status(201).json(user);
   } catch (error) {
     // return the response
     console.log(error);
