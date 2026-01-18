@@ -1,4 +1,4 @@
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import {
   ItemActions,
   ItemContent,
@@ -22,7 +22,7 @@ interface ToDoItem {
   onRemove: (value_item: number) => void;
 }
 
-export function ToDoItem_2({
+export function Worker_Item({
   form_type,
   item_value,
   item,
@@ -62,7 +62,7 @@ export function ToDoItem_2({
             <DropdownMenuContent>
               <Button
                 onClick={() => onRemove(item_value)}
-                className="flex flex-row bg-white-500 hover:text-white font-bold py-2 px-4 rounded"
+                className="flex flex-row font-bold py-2 px-4 rounded"
               >
                 Löschen
               </Button>

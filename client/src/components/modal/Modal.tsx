@@ -1,12 +1,7 @@
 import "./Modal.css";
 import { TiDelete } from "react-icons/ti";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
 import { useState } from "react";
-import { API_URL } from "@/api";
-import { useForm, SubmitHandler } from "react-hook-form";
-import z from "zod";
-import { WorkerDataForm } from "./workerData";
+import { WorkerDataForm } from "../worker_components/worker_form_creation";
 import { FormInputs } from "@/schemas/zodSchema";
 import { UseMutationResult } from "@tanstack/react-query";
 

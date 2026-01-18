@@ -1,12 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useEffect } from "react";
+import React from "react";
 import z from "zod";
 import { API_URL } from "../api";
-import Form from "./form";
-import { Mappingform } from "./Task";
+import Form from "@/components/worker_components/worker_form_data";
+import { Mappingform } from "../schemas/Task";
 
 import { APIResponse } from "../types/api_response";
-import { useParams, useSearchParams } from "react-router-dom";
 
 type form_field = {
   id: number;
@@ -35,17 +34,15 @@ const formSchema = z.object({
   select_option: z.string(),
 });
 
-const Offboarding_form: React.FC = () => {
-  const { id } = useParams();
-  const [searchParams] = useSearchParams();
+type OffboardingFormProps = {
+  id: string;
+  search: { param1: string }; // match validateSearch
+};
 
-  useEffect(() => {
-    const formType = searchParams.get("param1");
-    if (id && formType) {
-      console.log("Now we have values", id, formType);
-    }
-  }, [id, searchParams]);
-
+const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
+  id,
+  search,
+}) => {
   async function sendFormData(formData: Mappingform): Promise<APIResponse> {
     const url = `${API_URL}/offboarding/editdata`;
     try {
@@ -91,7 +88,7 @@ const Offboarding_form: React.FC = () => {
 
   async function fetchFormattedData(): Promise<api_Response> {
     const res = await fetch(
-      `${API_URL}/offboarding/user/${id}?param1=${searchParams.get("param1")}`
+      `${API_URL}/offboarding/user/${id}?param1=${search.param1}`
     );
     if (!res.ok) {
       throw new Error("response not ok");
@@ -138,4 +135,4 @@ const Offboarding_form: React.FC = () => {
   );
 };
 
-export default Offboarding_form;
+export default OnOf_Worker_Procedure;

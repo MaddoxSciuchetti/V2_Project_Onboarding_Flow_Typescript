@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react";
-import { ToDoItem_2 } from "./ToDoItem_2";
+import { Worker_Item } from "@/components/worker_components/worker_item";
 import { API_URL } from "../api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Button } from "./ui/button";
-import "./theme.css";
-import { DropdownMenu } from "@radix-ui/react-dropdown-menu";
-import { Input } from "./ui/input";
-import Modal from "./Modal";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import Modal from "@/components/modal/Modal";
+import { useNavigate } from "@tanstack/react-router";
 import { FormInputs } from "@/schemas/zodSchema";
 
 type FormType = "Onboarding" | "Offboarding";
@@ -23,7 +21,7 @@ type OffboardingItem = {
   vorname: string;
 };
 
-function Offboarding_main() {
+function OnOf_Home() {
   async function fetchNameData(): Promise<OffboardingItem[]> {
     const response = await (
       await fetch(`${API_URL}/offboarding/fetchData`)
@@ -57,8 +55,6 @@ function Offboarding_main() {
     }
     return;
   };
-
-  const navigate = useNavigate();
 
   const deleteTaskMutation = useMutation({
     mutationFn: deleteTask,
@@ -101,11 +97,14 @@ function Offboarding_main() {
     },
   });
 
+  const navigate = useNavigate({ from: "/" });
+
   const handleNavigate = (taskId: number, form_type: any) => {
-    const searchParams = new URLSearchParams({
-      param1: form_type,
+    navigate({
+      to: "/user/$Id",
+      params: { Id: String(taskId) },
+      search: { param1: form_type },
     });
-    navigate(`/offboarding/user/${taskId}?${searchParams.toString()}`);
   };
 
   useEffect(() => {
@@ -128,23 +127,23 @@ function Offboarding_main() {
     <>
       <div
         className="flex justify-start pt-20 flex-col 
-      min-h-screen items-center border bg-gray-100"
+      min-h-screen items-center border"
       >
         <div
-          className="w-full max-w-5xl border rounded-lg shadow-1g
-         bg-white max-h-[90vh] overflow-auto flex flex-col items-center"
+          className="w-full max-w-5xl border rounded-lg
+         max-h-[90vh] overflow-auto flex flex-col items-center"
         >
           <div className="flex gap-3">
             <Input className="flex" />
-            <Button className="">Filter</Button>
-            <Button className="table-1 btn" onClick={() => toggleModal()}>
+            <Button variant={"outline"}>Filter</Button>
+            <Button variant={"outline"} onClick={() => toggleModal()}>
               Neuen Mitarbeiter hinzufügen?
             </Button>
           </div>
 
           {/* fix any here */}
           {data?.map((task: OffboardingItem) => (
-            <ToDoItem_2
+            <Worker_Item
               key={task.id}
               item_value={task.id}
               form_type={getFirstFormType(task)}
@@ -155,7 +154,7 @@ function Offboarding_main() {
           ))}
 
           {modal && (
-            <div className="fixed inset-0 bg-black0/60">
+            <div className="fixed inset-0 ">
               <Modal toggleModal={toggleModal} onSuccess={onSubmit} />
             </div>
           )}
@@ -165,4 +164,4 @@ function Offboarding_main() {
   );
 }
 
-export default Offboarding_main;
+export default OnOf_Home;

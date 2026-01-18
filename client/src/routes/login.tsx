@@ -1,4 +1,10 @@
+// src/routes/login.tsx
+import { createFileRoute } from "@tanstack/react-router";
 import { useForm, SubmitHandler } from "react-hook-form";
+
+export const Route = createFileRoute("/login")({
+  component: LoginForm,
+});
 
 enum GenderEnum {
   female = "female",
