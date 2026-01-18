@@ -1,20 +1,30 @@
 import { prisma } from "@/lib/prisma";
-import { Prisma } from "@/generated/prisma/client";
-import { id } from "zod/v4/locales";
-import { FormType } from "@/generated/prisma/client";
+import { datevalidation } from "@/utils/datevalidation";
 
 type dataObject = {
-  name: string;
+  type: string;
+  vorname: string;
+  nachname: string;
+  email: string;
+  geburtsdatum: string;
+  adresse: string;
+  eintrittsdatum: string;
+  position: string;
 };
 
-const FORM_INPUTS = [
+const FORM_INPUTS_ONBOARDING = [
+  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
+] as const;
+
+const FORM_INPUTS_OFFBOARDING = [
   18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
 ] as const;
 
 type returnObject = {
   user: {
     id: number;
-    name: string;
+    vorname: string;
+    nachname: string;
   };
   employee_form: number;
 };
@@ -23,29 +33,43 @@ export const createUser = (data: dataObject): Promise<returnObject> => {
   return prisma.$transaction(async (tx) => {
     const user = await tx.users.create({
       data: {
-        name: data.name,
+        vorname: data.vorname,
+        nachname: data.nachname,
+        email: data.email,
+        geburtsdatum: datevalidation(data.geburtsdatum),
+        adresse: data.adresse,
+        eintrittsdatum: datevalidation(data.eintrittsdatum),
+        position: data.position,
       },
       select: {
         id: true,
-        name: true,
+        vorname: true,
+        nachname: true,
       },
     });
 
     const employee_forms_table = await tx.employee_forms.create({
       data: {
         user_id: user.id,
-        form_type: FormType.offboarding,
+        form_type: data.type,
       },
       select: {
         id: true,
+        form_type: true,
       },
     });
 
     await tx.form_inputs.createMany({
-      data: FORM_INPUTS.map((field_id) => ({
-        employee_form_id: employee_forms_table.id,
-        form_field_id: field_id,
-      })),
+      data:
+        employee_forms_table.form_type === "Offboarding"
+          ? FORM_INPUTS_OFFBOARDING.map((field_id) => ({
+              employee_form_id: employee_forms_table.id,
+              form_field_id: field_id,
+            }))
+          : FORM_INPUTS_ONBOARDING.map((field_id) => ({
+              employee_form_id: employee_forms_table.id,
+              form_field_id: field_id,
+            })),
     });
 
     return {
@@ -60,13 +84,14 @@ export const fetchUser = async () => {
     where: {
       employee_forms: {
         some: {
-          form_type: FormType.offboarding,
+          form_type: { in: ["Onboarding", "Offboarding"] },
         },
       },
     },
     select: {
       id: true,
-      name: true,
+      vorname: true,
+      nachname: true,
       employee_forms: {
         select: {
           form_type: true,
@@ -96,7 +121,8 @@ export const getUserFormData = async (id: any) => {
     },
     select: {
       id: true,
-      name: true,
+      vorname: true,
+      nachname: true,
       employee_forms: {
         select: {
           id: true,

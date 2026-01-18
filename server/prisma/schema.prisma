@@ -3,11 +3,6 @@ generator client {
   output   = "../generated/prisma"
 }
 
-generator types {
-  provider = "prisma-client-js"
-}
-
-
 datasource db {
   provider = "postgresql"
 }
@@ -15,8 +10,8 @@ datasource db {
 model employee_forms {
   id          Int           @id @default(autoincrement())
   user_id     Int
-  form_type   FormType       @default(offboarding)
   timestamp   DateTime?     @default(now()) @db.Timestamp(6)
+  form_type   String 
   users       users         @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "employee_forms_users")
   form_inputs form_inputs[]
 }
@@ -42,14 +37,15 @@ model form_inputs {
 
 model users {
   id             Int              @id @default(autoincrement())
-  name           String          @db.VarChar(55)
-  name_email     String?           @db.VarChar(55)
-  email          String?          @db.VarChar(55)
-  timestamp      DateTime?        @default(now()) @db.Timestamp(6)
+  vorname        String
+  nachname       String
+  email          String?          @unique @db.Citext
+  adresse        String
+  austrittsdatum DateTime?        @db.Date
+  createdAt      DateTime         @default(now()) @db.Timestamp(6)
+  eintrittsdatum DateTime         @db.Date
+  geburtsdatum   DateTime         @db.Date
+  position       String
+  updatedAt      DateTime         @updatedAt @db.Timestamp(6)
   employee_forms employee_forms[]
-}
-
-enum FormType {
-  offboarding
-  onboarding
 }

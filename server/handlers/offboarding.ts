@@ -14,8 +14,6 @@ import {
   fetchUser,
   getUserFormData,
 } from "@/services/auth.service.ts";
-import { Form_inputsScalarFieldEnum } from "@/generated/prisma/internal/prismaNamespace.ts";
-import { FormType } from "@/generated/prisma/enums.ts";
 
 // const userschema = z.object({
 //   name: z.string().min(1).max(22),
@@ -25,12 +23,13 @@ export const postOffboardingData = async (req: Request, res: Response) => {
   // validate the request
   try {
     const request = {
-      ...req.body,
+      ...req.body.data,
     };
+
     // business logic
     console.log(request);
-    // const { user } = await createUser(request);
-    // return res.status(201).json(user);
+    const { user } = await createUser(request);
+    return res.status(201).json({ success: user });
   } catch (error) {
     // return the response
     console.log(error);
@@ -58,15 +57,15 @@ export const offboardingDeletebyId = async (req: Request, res: Response) => {
 // formfetch
 export const offboardingGetuserbyId = async (req: Request, res: Response) => {
   const id = +req.params.id;
+  const param1 = req.query.param1;
+  console.log(param1);
 
   const user = await getUserFormData(id);
   if (!user) {
     throw new Error("error occued");
   }
 
-  const form = user.employee_forms.find(
-    (f) => f.form_type === FormType.offboarding
-  );
+  const form = user.employee_forms.find((f) => f.form_type === param1);
 
   if (!form) {
     return res.status(404).json({ message: "Offboarding form is not found" });
@@ -75,7 +74,8 @@ export const offboardingGetuserbyId = async (req: Request, res: Response) => {
   const response = {
     user: {
       id: user.id,
-      name: user.name,
+      vorname: user.vorname,
+      nachname: user.nachname,
     },
     form: {
       id: form.id,
