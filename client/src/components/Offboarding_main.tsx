@@ -3,24 +3,25 @@ import { ToDoItem_2 } from "./ToDoItem_2";
 import { API_URL } from "../api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button } from "./ui/button";
-import "./theme.css"; // Remove the "components/" part
+import "./theme.css";
 import { DropdownMenu } from "@radix-ui/react-dropdown-menu";
 import { Input } from "./ui/input";
 import Modal from "./Modal";
-import { useNavigate } from "react-router-dom"; // React Router, not TanStack
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { FormInputs } from "@/schemas/zodSchema";
 
+type FormType = "Onboarding" | "Offboarding";
+
+type EmployeeForm = {
+  form_type: FormType;
+};
+
 type OffboardingItem = {
-  employee_forms: {
-    form_type: string;
-  };
+  employee_forms: EmployeeForm[];
   id: number;
   nachname: string;
   vorname: string;
 };
-
-// something along the lines of, when offboarding button is clicked than fetch and display that data (hide the other)
-// similiar to a toggle, should also have search function
 
 function Offboarding_main() {
   async function fetchNameData(): Promise<OffboardingItem[]> {
@@ -38,7 +39,6 @@ function Offboarding_main() {
 
   const queryClient = useQueryClient();
   const [modal, setModal] = useState<boolean>(false);
-  const [newTask, setNewTask] = useState<string>("");
 
   async function removeTask(taskId: number) {
     deleteTaskMutation.mutate(taskId);
@@ -94,7 +94,6 @@ function Offboarding_main() {
           refetchType: "all",
         });
         toggleModal();
-        setNewTask("");
       }
     },
     onError: (error) => {
@@ -106,7 +105,7 @@ function Offboarding_main() {
     const searchParams = new URLSearchParams({
       param1: form_type,
     });
-    navigate(`/offboarding/user/${taskId}${searchParams.toString()}`);
+    navigate(`/offboarding/user/${taskId}?${searchParams.toString()}`);
   };
 
   useEffect(() => {
@@ -121,10 +120,20 @@ function Offboarding_main() {
     setModal(!modal);
   };
 
+  const getFirstFormType = (item: OffboardingItem) => {
+    return item.employee_forms[0]?.form_type;
+  };
+
   return (
     <>
-      <div className="flex justify-start pt-20 flex-col min-h-screen items-center border bg-gray-100">
-        <div className="w-full max-w-3xl border rounded-lg shadow-1g bg-white max-h-[90vh] overflow-auto flex flex-col items-center">
+      <div
+        className="flex justify-start pt-20 flex-col 
+      min-h-screen items-center border bg-gray-100"
+      >
+        <div
+          className="w-full max-w-5xl border rounded-lg shadow-1g
+         bg-white max-h-[90vh] overflow-auto flex flex-col items-center"
+        >
           <div className="flex gap-3">
             <Input className="flex" />
             <Button className="">Filter</Button>
@@ -138,7 +147,7 @@ function Offboarding_main() {
             <ToDoItem_2
               key={task.id}
               item_value={task.id}
-              form_type={task.employee_forms[0]?.form_type}
+              form_type={getFirstFormType(task)}
               item={task.vorname}
               onRemove={removeTask}
               gotopage={handleNavigate}
@@ -147,11 +156,7 @@ function Offboarding_main() {
 
           {modal && (
             <div className="fixed inset-0 bg-black0/60">
-              <Modal
-                toggleModal={toggleModal}
-                newStateTask={setNewTask}
-                onSuccess={onSubmit}
-              />
+              <Modal toggleModal={toggleModal} onSuccess={onSubmit} />
             </div>
           )}
         </div>

@@ -15,7 +15,6 @@ function App() {
       <div className="main-header">
         <Navbar />
         <Routes>
-          <Route path="/webdev" element={<Modal />} />
           <Route path="/" element={<Home />} />
           <Route path="/onboarding" element={<Onboarding_Form_Main />} />
           <Route path="/offboarding" element={<Offboarding_main />} />
@@ -24,10 +23,7 @@ function App() {
             path="/onboarding/user/:userId"
             element={<Onboarding_form />}
           />
-          <Route
-            path="/offboarding/user/:userId"
-            element={<Offboarding_form />}
-          />
+          <Route path="/offboarding/user/:id" element={<Offboarding_form />} />
           <Route path="/component" element={<Onboarding_form />} />
         </Routes>
       </div>

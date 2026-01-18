@@ -2,8 +2,8 @@ import { Button } from "./ui/button";
 import {
   ItemActions,
   ItemContent,
-  ItemDescription,
   ItemTitle,
+  MaddoxDescription,
 } from "@/components/ui/item";
 
 import {
@@ -11,6 +11,8 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
+import { Progress } from "@/components/ui/progress";
 
 interface ToDoItem {
   item_value: number;
@@ -28,15 +30,25 @@ export function ToDoItem_2({
   onRemove,
 }: ToDoItem) {
   return (
-    <div className="flex flex-row max-w-md mt-3 border ">
-      <div className="flex flex-row">
+    <div className="flex flex-row max-4xl mt-3 border p-4 rounded-2xl my-10 ">
+      <div className="flex flex-row min-w-xl">
         <div className="text-todo itum">{/* <span>{item}</span> */}</div>
         <ItemContent className="flex">
           <ItemTitle className="text-xl">{item}</ItemTitle>
-          <ItemDescription>Progress Coming Soon</ItemDescription>
         </ItemContent>
         <div className="flex flex-row content-center gap-5">
           <ItemActions>
+            <Progress className="w-30" value={33} />
+            <MaddoxDescription
+              className={`${
+                form_type === "Onboarding"
+                  ? "bg-blue-200 font-bold text-blue-400! rounded-2xl"
+                  : "bg-fuchsia-200 font-bold text-pink-400! rounded-2xl"
+              }`}
+              lang="en"
+            >
+              {form_type}
+            </MaddoxDescription>
             <Button
               onClick={() => gotopage(item_value, form_type)}
               variant="outline"

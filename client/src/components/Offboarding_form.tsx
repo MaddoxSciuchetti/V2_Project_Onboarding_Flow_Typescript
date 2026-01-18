@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useEffect } from "react";
 import z from "zod";
 import { API_URL } from "../api";
 import Form from "./form";
 import { Mappingform } from "./Task";
 
 import { APIResponse } from "../types/api_response";
-import { useFetcher } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 
 type form_field = {
   id: number;
@@ -36,6 +36,16 @@ const formSchema = z.object({
 });
 
 const Offboarding_form: React.FC = () => {
+  const { id } = useParams();
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const formType = searchParams.get("param1");
+    if (id && formType) {
+      console.log("Now we have values", id, formType);
+    }
+  }, [id, searchParams]);
+
   async function sendFormData(formData: Mappingform): Promise<APIResponse> {
     const url = `${API_URL}/offboarding/editdata`;
     try {
@@ -79,10 +89,10 @@ const Offboarding_form: React.FC = () => {
     }
   }
 
-  const url = window.location.pathname.split("/").pop();
-
-  async function fetchFormattedData(url: string): Promise<api_Response> {
-    const res = await fetch(`${API_URL}/offboarding/user/${url}`);
+  async function fetchFormattedData(): Promise<api_Response> {
+    const res = await fetch(
+      `${API_URL}/offboarding/user/${id}?param1=${searchParams.get("param1")}`
+    );
     if (!res.ok) {
       throw new Error("response not ok");
     }
@@ -91,8 +101,8 @@ const Offboarding_form: React.FC = () => {
     return json;
   }
   const { data, error, isLoading } = useQuery<api_Response, Error>({
-    queryKey: ["somethingelse", url],
-    queryFn: () => fetchFormattedData(url),
+    queryKey: ["somethingelse", id],
+    queryFn: () => fetchFormattedData(),
   });
   console.log(data);
 

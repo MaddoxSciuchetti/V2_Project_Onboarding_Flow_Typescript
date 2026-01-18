@@ -16,11 +16,7 @@ interface ModalProps {
   onSuccess: UseMutationResult<any, Error, FormInputs, unknown>;
 }
 
-const Modal: React.FC<ModalProps> = ({
-  toggleModal,
-  newStateTask,
-  onSuccess,
-}) => {
+const Modal: React.FC<ModalProps> = ({ toggleModal, onSuccess }) => {
   const [selectedOption, setSelectedOption] = useState<
     "Onboarding" | "Offboarding"
   >("Onboarding");
