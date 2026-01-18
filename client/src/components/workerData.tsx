@@ -1,94 +1,41 @@
 import { useForm } from "react-hook-form";
 import { Button } from "./ui/button";
 import { API_URL } from "@/api";
-import z, { ZodSchema } from "zod";
+import z from "zod";
 import { useState } from "react";
 import { DateSchema } from "@/schemas/schema";
 import { useEffect } from "react";
 import { ErrorMessage } from "@hookform/error-message";
-
-type Inputs = {
-  Vorname: string;
-  Nachname: string;
-  Geburtsdatum: string;
-  Eintrittsdatum: string;
-  Adresse: string;
-  Position: string;
-  Austrittsdatum: string;
-};
-
-const formValidation = z.object({
-  Vorname: z.string(),
-  Nachname: z.string(),
-  Geburtsdatum: DateSchema,
-  Adresse: z.string(),
-  Eintrittsdatum: DateSchema,
-  Position: z.string(),
-});
-
-function schemaValidation(type: string): ZodSchema {
-  if (type === "Onboarding") {
-    return formValidation;
-  }
-  if (type == "Offboarding") {
-    return formValidation.extend({ Austrittsdatum: z.string() });
-  }
-  throw new Error(`${type} not working`);
-}
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FormInputs, formSchema } from "@/schemas/zodSchema";
 
 interface WorkerDataFormProps {
   type: "Onboarding" | "Offboarding";
-  success?: () => void;
-  newStateTask?: (value: string) => void;
+  success: (data: FormInputs) => void;
 }
 
-export const WorkerDataForm = ({
-  type,
-  success,
-  newStateTask,
-}: WorkerDataFormProps) => {
+export const WorkerDataForm = ({ type, success }: WorkerDataFormProps) => {
   const {
     register,
     handleSubmit,
-    setError,
     formState: { errors },
-  } = useForm<Inputs>({
+  } = useForm<FormInputs>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      type: type,
+    },
     criteriaMode: "all",
   });
 
-  const [error, setErr] = useState<string | null>(null);
-  const onSubmit = async (data: Inputs) => {
-    try {
-      const check = schemaValidation(type);
-      const validationResult = check.safeParse(data);
-
-      if (!validationResult.success) {
-        setErr("something went wrong");
-        return;
-      }
-      const response = await fetch(
-        `${API_URL}/offboarding/postoffboardingdata`,
-        {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify({ data }),
-        }
-      );
-      const result = await response.json();
-      if (result.success) {
-        success?.();
-        newStateTask?.("");
-      }
-    } catch (error) {
-      setErr(error instanceof Error ? error.message : "Error occurred");
-    }
+  const onFormSubmit = (data: FormInputs) => {
+    console.log("formdata test", data);
+    success(data);
   };
+
   return (
     <>
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(onFormSubmit)}
         className="flex flex-col max-w-2xl justify-center gap-6 mx-auto"
       >
         <div className="flex flex-row gap-6 mx-auto">
@@ -99,7 +46,7 @@ export const WorkerDataForm = ({
               className="w-64 p-2 border-gray-300 border-2 rounded-xl"
               type="text"
               placeholder="Vorname"
-              {...register("Vorname", { required: "erforderlich" })}
+              {...register("vorname", { required: "erforderlich" })}
             />
             <ErrorMessage errors={errors} name="Vorname" />
             {/* {errors.Vorname && errors.Vorname.types && (
@@ -110,24 +57,34 @@ export const WorkerDataForm = ({
               className="w-64 p-2 border-gray-300 border-2 rounded-xl"
               type="text"
               placeholder="Nachname"
-              {...register("Nachname", { required: "erforderlich" })}
+              {...register("nachname")}
             />
             <ErrorMessage errors={errors} name="Nachname" />
+
+            <label>Email</label>
+            <input
+              className="w-64 p-2 border-gray-300 border-2 rounded-xl"
+              type="text"
+              placeholder="email"
+              {...register("email")}
+            />
+            <ErrorMessage errors={errors} name="Nachname" />
+
             <label>Geburtsdatum</label>
             <input
               className="w-64 p-2 border-gray-300 border-2 rounded-xl"
               type="text"
               placeholder="DD.MM.YYYY"
-              {...register("Geburtsdatum")}
+              {...register("geburtsdatum")}
             />
             <label>Adresse</label>
             <input
               className="w-64 p-2 border-gray-300 border-2 rounded-xl"
               type="text"
               placeholder="Adresse"
-              {...register("Adresse")}
+              {...register("adresse")}
             />
-            {errors.Eintrittsdatum && <span>This field is required</span>}
+            <ErrorMessage errors={errors} name="Adresse" />
           </div>
 
           <div className="flex flex-col max-w-md gap-4">
@@ -137,7 +94,7 @@ export const WorkerDataForm = ({
               className="w-64 p-2 border-gray-300 border-2 rounded-xl"
               type="text"
               placeholder="DD.MM.YYYY"
-              {...register("Eintrittsdatum", { required: "erforderlich" })}
+              {...register("eintrittsdatum")}
             />
             <ErrorMessage errors={errors} name="Eintrittsdatum" />
 
@@ -145,13 +102,14 @@ export const WorkerDataForm = ({
 
             {type === "Offboarding" ? (
               <>
-                <label>Austrittsdatunm</label>
+                <label>Austrittsdatum</label>
                 <input
                   className="w-64 p-2 border-gray-300 border-2 rounded-xl"
                   type="text"
                   placeholder="DD.MM.YYYY"
-                  {...register("Austrittsdatum", { required: "erforderlich" })}
+                  {...register("austrittsdatum")}
                 />
+                <ErrorMessage errors={errors} name="Austrittsdatum" />
               </>
             ) : (
               ""
@@ -163,11 +121,12 @@ export const WorkerDataForm = ({
               className="w-64 p-2 border-gray-300 border-2 rounded-xl"
               type="text"
               placeholder="Position"
-              {...register("Position")}
+              {...register("position")}
             />
+            <ErrorMessage errors={errors} name="Position" />
+            <input type="hidden" {...register("type")} value={type} />
           </div>
         </div>
-        {error && error}
         <Button type="submit" className="self-center">
           Hinzufügen
         </Button>

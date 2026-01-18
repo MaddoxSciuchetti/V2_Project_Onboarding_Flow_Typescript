@@ -15,11 +15,18 @@ import {
 interface ToDoItem {
   item_value: number;
   item: string;
-  gotopage: (taskId: number) => void;
+  form_type: string;
+  gotopage: (taskId: number, form_type: any) => void;
   onRemove: (value_item: number) => void;
 }
 
-export function ToDoItem_2({ item_value, item, gotopage, onRemove }: ToDoItem) {
+export function ToDoItem_2({
+  form_type,
+  item_value,
+  item,
+  gotopage,
+  onRemove,
+}: ToDoItem) {
   return (
     <div className="flex flex-row max-w-md mt-3 border ">
       <div className="flex flex-row">
@@ -31,7 +38,7 @@ export function ToDoItem_2({ item_value, item, gotopage, onRemove }: ToDoItem) {
         <div className="flex flex-row content-center gap-5">
           <ItemActions>
             <Button
-              onClick={() => gotopage(item_value)}
+              onClick={() => gotopage(item_value, form_type)}
               variant="outline"
               size="sm"
             >

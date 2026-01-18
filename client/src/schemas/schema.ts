@@ -12,4 +12,4 @@ export const DateSchema = z
       dateObj.getMonth() === month - 1 &&
       dateObj.getFullYear() === year
     );
-  }, "Invalid Date");
+  }, "Incorrectes Format");

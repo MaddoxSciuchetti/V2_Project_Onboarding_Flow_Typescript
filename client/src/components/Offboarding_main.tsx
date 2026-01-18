@@ -7,17 +7,23 @@ import "./theme.css"; // Remove the "components/" part
 import { DropdownMenu } from "@radix-ui/react-dropdown-menu";
 import { Input } from "./ui/input";
 import Modal from "./Modal";
+import { useNavigate } from "react-router-dom"; // React Router, not TanStack
+import { FormInputs } from "@/schemas/zodSchema";
 
 type OffboardingItem = {
+  employee_forms: {
+    form_type: string;
+  };
   id: number;
-  name: string;
+  nachname: string;
+  vorname: string;
 };
 
 // something along the lines of, when offboarding button is clicked than fetch and display that data (hide the other)
 // similiar to a toggle, should also have search function
 
 function Offboarding_main() {
-  async function fetchNameData() {
+  async function fetchNameData(): Promise<OffboardingItem[]> {
     const response = await (
       await fetch(`${API_URL}/offboarding/fetchData`)
     ).json();
@@ -29,8 +35,6 @@ function Offboarding_main() {
     queryKey: ["offboarding"],
     queryFn: fetchNameData,
   });
-
-  console.log("tanstack query data object", data);
 
   const queryClient = useQueryClient();
   const [modal, setModal] = useState<boolean>(false);
@@ -54,6 +58,8 @@ function Offboarding_main() {
     return;
   };
 
+  const navigate = useNavigate();
+
   const deleteTaskMutation = useMutation({
     mutationFn: deleteTask,
     onSuccess: () => {
@@ -61,14 +67,47 @@ function Offboarding_main() {
     },
   });
 
-  function handlepage(taskId: number) {
-    window.location.href = `/offboarding/user/${taskId}`;
-  }
+  const onSubmit = useMutation({
+    mutationFn: async (data: FormInputs) => {
+      const response = await fetch(
+        `${API_URL}/offboarding/postoffboardingdata`,
+        {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({ data }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to submit");
+      }
+      const result = await response.json();
+      console.log(result);
+      return result;
+    },
 
-  function handleSuccessfullSubmission() {
-    toggleModal();
-    queryClient.invalidateQueries({ queryKey: ["offboarding"] });
-  }
+    onSuccess: async (result) => {
+      if (result.success) {
+        await queryClient.invalidateQueries({
+          queryKey: ["offboarding"],
+          refetchType: "all",
+        });
+        toggleModal();
+        setNewTask("");
+      }
+    },
+    onError: (error) => {
+      console.log("Submission failed", error);
+    },
+  });
+
+  const handleNavigate = (taskId: number, form_type: any) => {
+    const searchParams = new URLSearchParams({
+      param1: form_type,
+    });
+    navigate(`/offboarding/user/${taskId}${searchParams.toString()}`);
+  };
 
   useEffect(() => {
     if (modal) {
@@ -94,13 +133,15 @@ function Offboarding_main() {
             </Button>
           </div>
 
-          {data?.map((task: any) => (
+          {/* fix any here */}
+          {data?.map((task: OffboardingItem) => (
             <ToDoItem_2
               key={task.id}
               item_value={task.id}
-              item={task.name}
+              form_type={task.employee_forms[0]?.form_type}
+              item={task.vorname}
               onRemove={removeTask}
-              gotopage={handlepage}
+              gotopage={handleNavigate}
             />
           ))}
 
@@ -108,9 +149,8 @@ function Offboarding_main() {
             <div className="fixed inset-0 bg-black0/60">
               <Modal
                 toggleModal={toggleModal}
-                stateTask={newTask}
                 newStateTask={setNewTask}
-                onSuccess={handleSuccessfullSubmission}
+                onSuccess={onSubmit}
               />
             </div>
           )}
