@@ -29,6 +29,7 @@ export const postOffboardingData = async (req: Request, res: Response) => {
     // business logic
     console.log(request);
     const { user } = await createUser(request);
+    console.log({ sucess: user });
     return res.status(201).json({ success: user });
   } catch (error) {
     // return the response
@@ -57,6 +58,8 @@ export const offboardingDeletebyId = async (req: Request, res: Response) => {
 // formfetch
 export const offboardingGetuserbyId = async (req: Request, res: Response) => {
   const id = +req.params.id;
+  console.log(req.query);
+  console.log("this is the id", id);
   const param1 = req.query.param1;
   console.log(param1);
 
