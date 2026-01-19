@@ -1,6 +1,7 @@
 // src/routes/login.tsx
 import { createFileRoute } from "@tanstack/react-router";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { LoginComponent } from "@/features/login-form";
 
 export const Route = createFileRoute("/login")({
   component: LoginForm,
@@ -22,16 +23,10 @@ export default function LoginForm() {
   const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <label>First Name</label>
-      <input {...register("firstName")} />
-      <label>Gender Selection</label>
-      <select {...register("gender")}>
-        <option value="female">female</option>
-        <option value="male">male</option>
-        <option value="other">other</option>
-      </select>
-      <input type="submit" />
-    </form>
+    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+      <div className="w-full max-w-sm">
+        <LoginComponent />
+      </div>
+    </div>
   );
 }
