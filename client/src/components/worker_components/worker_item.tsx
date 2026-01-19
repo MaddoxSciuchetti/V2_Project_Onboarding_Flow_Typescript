@@ -58,15 +58,18 @@ export function Worker_Item({
             </Button>
           </ItemActions>
           <DropdownMenu>
-            <DropdownMenuTrigger className="w-20">. . . </DropdownMenuTrigger>
-            <DropdownMenuContent>
+            <DropdownMenuTrigger className="w-20  focus:outline-none">
+              . . .{" "}
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="bg-gray-200">
               <Button
+                variant={"outline"}
                 onClick={() => onRemove(item_value)}
                 className="flex flex-row font-bold py-2 px-4 rounded"
               >
                 Löschen
               </Button>
-              <Button>Teilen</Button>
+              <Button variant={"outline"}>Teilen</Button>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

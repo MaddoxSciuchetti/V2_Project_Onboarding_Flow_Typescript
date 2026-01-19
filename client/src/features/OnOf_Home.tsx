@@ -130,11 +130,11 @@ function OnOf_Home() {
       min-h-screen items-center border"
       >
         <div
-          className="w-full max-w-5xl border rounded-lg
+          className="w-full max-w-4xl border rounded-lg
          max-h-[90vh] overflow-auto flex flex-col items-center"
         >
-          <div className="flex gap-3">
-            <Input className="flex" />
+          <div className="flex w-full p-4 ">
+            <Input className="flex gap-2" />
             <Button variant={"outline"}>Filter</Button>
             <Button variant={"outline"} onClick={() => toggleModal()}>
               Neuen Mitarbeiter hinzufügen?
@@ -142,16 +142,18 @@ function OnOf_Home() {
           </div>
 
           {/* fix any here */}
-          {data?.map((task: OffboardingItem) => (
-            <Worker_Item
-              key={task.id}
-              item_value={task.id}
-              form_type={getFirstFormType(task)}
-              item={task.vorname}
-              onRemove={removeTask}
-              gotopage={handleNavigate}
-            />
-          ))}
+          <div className="w-full px-4">
+            {data?.map((task: OffboardingItem) => (
+              <Worker_Item
+                key={task.id}
+                item_value={task.id}
+                form_type={getFirstFormType(task)}
+                item={task.vorname}
+                onRemove={removeTask}
+                gotopage={handleNavigate}
+              />
+            ))}
+          </div>
 
           {modal && (
             <div className="fixed inset-0 ">
