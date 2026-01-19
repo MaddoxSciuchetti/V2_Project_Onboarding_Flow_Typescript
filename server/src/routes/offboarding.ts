@@ -1,12 +1,11 @@
 import express from "express";
-import { pool } from "../db.ts";
 import {
   postOffboardingData,
   fetchOffboardingData,
   offboardingGetuserbyId,
   offboardingEditdata,
   offboardingDeletebyId,
-} from "../handlers/offboarding.ts";
+} from "../controllers/offboarding.ts";
 
 const offboarding_router = express.Router();
 

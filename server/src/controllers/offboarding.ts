@@ -1,11 +1,4 @@
-// import type { CreateUserQueryParams } from "@/types/query-params.ts";
-// import type { CreateUserDto } from "../dtos/CreateUser.dto.ts";
 import type { Request, Response } from "express-serve-static-core";
-// import type { User } from "@/types/response.ts";
-// import { Session } from "express-session";
-// import { Passport } from "passport";
-import { pool } from "../db.ts";
-// import { prisma } from "@/lib/prisma";
 import z from "zod";
 import {
   createUser,
@@ -13,12 +6,7 @@ import {
   editdata,
   fetchUser,
   getUserFormData,
-} from "@/services/auth.service.ts";
-
-// const userschema = z.object({
-//   name: z.string().min(1).max(22),
-// });
-
+} from "@/src/services/auth.service.ts";
 export const postOffboardingData = async (req: Request, res: Response) => {
   // validate the request
   try {
@@ -68,7 +56,7 @@ export const offboardingGetuserbyId = async (req: Request, res: Response) => {
     throw new Error("error occued");
   }
 
-  const form = user.employee_forms.find((f) => f.form_type === param1);
+  const form = user.employee_forms.find((f: any) => f.form_type === param1);
 
   if (!form) {
     return res.status(404).json({ message: "Offboarding form is not found" });
@@ -83,7 +71,7 @@ export const offboardingGetuserbyId = async (req: Request, res: Response) => {
     form: {
       id: form.id,
       type: form.form_type,
-      fields: form.form_inputs.map((input) => ({
+      fields: form.form_inputs.map((input: any) => ({
         id: input.id,
         form_field_id: input.form_field_id,
         description: input.form_fields.description,

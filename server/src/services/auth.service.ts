@@ -1,5 +1,5 @@
-import { prisma } from "@/lib/prisma";
-import { datevalidation } from "@/utils/datevalidation";
+import { prisma } from "@/src/lib/prisma";
+import { datevalidation } from "@/src/utils/datevalidation";
 
 type dataObject = {
   type: string;
@@ -30,7 +30,7 @@ type returnObject = {
 };
 
 export const createUser = (data: dataObject): Promise<returnObject> => {
-  return prisma.$transaction(async (tx) => {
+  return prisma.$transaction(async (tx: any) => {
     const user = await tx.users.create({
       data: {
         vorname: data.vorname,

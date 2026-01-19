@@ -1,9 +1,9 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import { router } from "./routes/users.ts";
-import { onboarding_router } from "./routes/onboarding.ts";
-import { offboarding_router } from "./routes/offboarding.ts";
+import { router } from "./src/routes/users.ts";
+
+import { offboarding_router } from "./src/routes/offboarding.ts";
 
 export function createApp() {
   dotenv.config();
@@ -19,8 +19,8 @@ export function createApp() {
     res.send("here");
   });
 
+  // worker
   app.use("/api/users", router);
-  app.use("/onboarding", onboarding_router);
   app.use("/offboarding", offboarding_router);
 
   return app;
