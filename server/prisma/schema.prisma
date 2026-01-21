@@ -49,3 +49,43 @@ model users {
   updatedAt      DateTime         @updatedAt @db.Timestamp(6)
   employee_forms employee_forms[]
 }
+
+
+model Session {
+  id String @id @default(cuid())
+  userId String
+  userAgent String?
+  createdAt DateTime @default(now())
+  expiresAt DateTime @default(dbgenerated("NOW() + INTERVAL '30 days'"))
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+
+}
+
+model User {
+  id String @id @default(cuid())
+  email String @unique @db.Citext
+  password String
+  verified Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sessions Session[]
+  verificationCodes VerificationCode[]
+}
+
+model VerificationCode {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+
+  // Relation to User model
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+
+}

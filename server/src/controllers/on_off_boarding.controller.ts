@@ -6,7 +6,7 @@ import {
   editdata,
   fetchUser,
   getUserFormData,
-} from "@/src/services/auth.service.ts";
+} from "@/src/services/on_off_boarding.auth";
 export const postOffboardingData = async (req: Request, res: Response) => {
   // validate the request
   try {

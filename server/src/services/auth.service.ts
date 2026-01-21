@@ -1,168 +1,378 @@
-import { prisma } from "@/src/lib/prisma";
-import { datevalidation } from "@/src/utils/datevalidation";
+import { APP_ORIGIN, JWT_REFRESH_SECRET, JWT_SECRET } from "../constants/env";
+import {
+  CONFLICT,
+  INTERNAL_SERVER_ERROR,
+  NOT_FOUND,
+  TOO_MANY_REQUESTS,
+  UNAUTHORIZED,
+} from "../constants/http";
+import VerificationCodeType from "../constants/verificationCodeTypes";
+import appAssert from "../utils/appAssert";
+import {
+  fiveMinutesAgo,
+  ONE_DAY_MS,
+  oneHourFromNow,
+  oneYearFromNow,
+  thirtyDaysFromNow,
+} from "../utils/date";
+import jwt from "jsonwebtoken";
+import {
+  RefreshTokenPayload,
+  refreshTokenSignOptions,
+  signToken,
+  verifyToken,
+} from "../utils/jwt";
+import {
+  getPasswordResetTemplate,
+  getVerifyEmailTemplate,
+} from "../utils/emailTemplates";
+import { sendMail } from "../utils/sendMail";
+import { hashValue } from "../utils/bcrypt";
+import { prisma } from "@/lib/prisma";
+import { userInfo } from "node:os";
+import bcrypt from "bcrypt";
+import AppErrorCode from "../constants/appErrorCode";
 
-type dataObject = {
-  type: string;
-  vorname: string;
-  nachname: string;
+export type createAccountParams = {
   email: string;
-  geburtsdatum: string;
-  adresse: string;
-  eintrittsdatum: string;
-  position: string;
+  password: string;
+  userAgent?: string;
 };
 
-const FORM_INPUTS_ONBOARDING = [
-  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
-] as const;
+export const createAccount = async (data: createAccountParams) => {
+  //verify existing user does not exists
 
-const FORM_INPUTS_OFFBOARDING = [
-  18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
-] as const;
-
-type returnObject = {
-  user: {
-    id: number;
-    vorname: string;
-    nachname: string;
-  };
-  employee_form: number;
-};
-
-export const createUser = (data: dataObject): Promise<returnObject> => {
-  return prisma.$transaction(async (tx: any) => {
-    const user = await tx.users.create({
-      data: {
-        vorname: data.vorname,
-        nachname: data.nachname,
-        email: data.email,
-        geburtsdatum: datevalidation(data.geburtsdatum),
-        adresse: data.adresse,
-        eintrittsdatum: datevalidation(data.eintrittsdatum),
-        position: data.position,
-      },
-      select: {
-        id: true,
-        vorname: true,
-        nachname: true,
-      },
-    });
-
-    const employee_forms_table = await tx.employee_forms.create({
-      data: {
-        user_id: user.id,
-        form_type: data.type,
-      },
-      select: {
-        id: true,
-        form_type: true,
-      },
-    });
-
-    await tx.form_inputs.createMany({
-      data:
-        employee_forms_table.form_type === "Offboarding"
-          ? FORM_INPUTS_OFFBOARDING.map((field_id) => ({
-              employee_form_id: employee_forms_table.id,
-              form_field_id: field_id,
-            }))
-          : FORM_INPUTS_ONBOARDING.map((field_id) => ({
-              employee_form_id: employee_forms_table.id,
-              form_field_id: field_id,
-            })),
-    });
-
-    return {
-      user,
-      employee_form: employee_forms_table.id,
-    };
-  });
-};
-
-export const fetchUser = async () => {
-  const user_information = await prisma.users.findMany({
+  const existingUser = await prisma.user.findUnique({
     where: {
-      employee_forms: {
-        some: {
-          form_type: { in: ["Onboarding", "Offboarding"] },
-        },
-      },
+      email: data.email,
     },
-    select: {
-      id: true,
-      vorname: true,
-      nachname: true,
-      employee_forms: {
-        select: {
-          form_type: true,
-        },
+  });
+
+  appAssert(!existingUser, CONFLICT, "Email already in use");
+
+  // create user
+
+  const hashedpassword = await hashValue(data.password);
+
+  const user = await prisma.user.create({
+    data: {
+      email: data.email,
+      password: hashedpassword,
+    },
+    omit: {
+      password: true,
+    },
+  });
+
+  const userId = user.id;
+
+  // create verification code
+
+  const verificationCode = await prisma.verificationCode.create({
+    data: {
+      userId,
+      type: VerificationCodeType.EmailVerification,
+      expiresAt: oneYearFromNow(),
+    },
+  });
+
+  // send the verification email
+
+  const url = `${APP_ORIGIN}/email/verify/${verificationCode.id}`;
+
+  const { error } = await sendMail({
+    to: user.email,
+    ...getVerifyEmailTemplate(url),
+  });
+
+  if (error) {
+    console.log(error);
+  }
+
+  // create the session
+
+  const session = await prisma.session.create({
+    data: {
+      userId,
+      userAgent: data.userAgent,
+    },
+  });
+
+  // sign the acess token and refresh token
+
+  const refreshToken = signToken(
+    {
+      sessionId: session.id,
+    },
+    refreshTokenSignOptions,
+  );
+
+  const accessToken = signToken({
+    userId,
+    sessionId: session.id,
+  });
+
+  // return user & tokens
+
+  return {
+    user: user,
+    accessToken,
+    refreshToken,
+  };
+};
+
+export type LoginParams = {
+  email: string;
+  password: string;
+  userAgent?: string;
+};
+
+export const loginUser = async ({
+  email,
+  password,
+  userAgent,
+}: LoginParams) => {
+  // get the user by email
+  const user = await prisma.user.findUnique({
+    where: {
+      email: email,
+    },
+  });
+
+  console.log(user);
+
+  console.log(user?.password);
+  appAssert(user, UNAUTHORIZED, "Invalid email or password");
+  const isinValid = await bcrypt.compare(password, user.password);
+  appAssert(isinValid, UNAUTHORIZED, "Invalid password");
+
+  const userId = user.id;
+
+  // validate password from the request
+
+  // const isValid = await prisma.user.findUnique({
+  //   where: {
+  //   email: email
+  // }
+  // });
+
+  // create a session
+
+  const session = await prisma.session.create({
+    data: {
+      userId: userId,
+      userAgent: userAgent,
+    },
+  });
+
+  const sessionInfo = {
+    sessionId: session.id,
+  };
+  // sign access token & refresh token
+
+  const refreshToken = signToken(sessionInfo, refreshTokenSignOptions);
+
+  const accessToken = signToken({
+    ...sessionInfo,
+    userId,
+  });
+  // return user & tokens
+  return {
+    user: user,
+    accessToken,
+    refreshToken,
+  };
+};
+
+export const refreshUserAccessToken = async (refreshToken: string) => {
+  const { payload } = verifyToken<RefreshTokenPayload>(refreshToken, {
+    secret: refreshTokenSignOptions.secret,
+  });
+  console.log(payload);
+
+  appAssert(payload, UNAUTHORIZED, "Invalid refresh token");
+
+  const session = await prisma.session.findUnique({
+    where: {
+      id: payload.sessionId,
+    },
+  });
+  const now = Date.now();
+  appAssert(
+    session && session.expiresAt.getTime() > now,
+    UNAUTHORIZED,
+    "Session expired",
+  );
+
+  // refresh the session if it expires in the next 24 hours
+
+  const sessionNeedsRefresh = session.expiresAt.getTime() - now <= ONE_DAY_MS;
+  if (sessionNeedsRefresh) {
+    await prisma.session.update({
+      where: { id: session.id },
+      data: {
+        expiresAt: thirtyDaysFromNow(),
       },
+    });
+  }
+
+  const newRefreshToken = sessionNeedsRefresh
+    ? signToken(
+        {
+          sessionId: session.id,
+        },
+        refreshTokenSignOptions,
+      )
+    : undefined;
+
+  const accessToken = signToken({
+    userId: session.userId,
+    sessionId: session.id,
+  });
+
+  return {
+    accessToken,
+    newRefreshToken,
+  };
+};
+
+export const verifyEmail = async (code: string) => {
+  const validCode = await prisma.verificationCode.findFirst({
+    where: {
+      id: code,
+      type: VerificationCodeType.EmailVerification,
+      expiresAt: { gt: new Date() },
+    },
+  });
+  appAssert(validCode, NOT_FOUND, "Invalid or expired verification code");
+
+  const updatedUser = await prisma.user.update({
+    where: {
+      id: validCode.userId,
+    },
+    data: {
+      verified: true,
+    },
+    omit: {
+      password: true,
+    },
+  });
+
+  appAssert(updatedUser, INTERNAL_SERVER_ERROR, "Failed to verify email");
+
+  await prisma.verificationCode.delete({
+    where: {
+      id: validCode.id,
     },
   });
   return {
-    user_information,
+    user: updatedUser,
   };
 };
 
-export const deleteUser = async (data: any) => {
-  const delete_user = await prisma.users.delete({
+export const sendPasswordResetEmail = async (email: string) => {
+  const user = await prisma.user.findFirst({
     where: {
-      id: data,
+      email: email,
+    },
+  });
+  appAssert(user, NOT_FOUND, "User not found");
+
+  // check for max password reset requests (2 emails in 5 min)
+
+  const fiveMinAgo = fiveMinutesAgo();
+  const count = await prisma.verificationCode.count({
+    where: {
+      userId: user.id,
+      type: VerificationCodeType.PasswordReset,
+      createdAt: { gt: fiveMinAgo },
     },
   });
 
-  return delete_user;
-};
+  appAssert(
+    count <= 1,
+    TOO_MANY_REQUESTS,
+    "To many request, please try again later",
+  );
 
-export const getUserFormData = async (id: any) => {
-  return await prisma.users.findUnique({
-    where: {
-      id: id,
-    },
-    select: {
-      id: true,
-      vorname: true,
-      nachname: true,
-      employee_forms: {
-        select: {
-          id: true,
-          form_type: true,
-          form_inputs: {
-            orderBy: {
-              form_field_id: "asc",
-            },
-            select: {
-              id: true,
-              form_field_id: true,
-              status: true,
-              edit: true,
-              form_fields: {
-                select: {
-                  description: true,
-                },
-              },
-            },
-          },
-        },
-      },
+  // create verification code
+
+  const expiresAt = oneHourFromNow();
+  const verificationCode = await prisma.verificationCode.create({
+    data: {
+      userId: user.id,
+      type: VerificationCodeType.PasswordReset,
+      expiresAt: expiresAt,
     },
   });
+
+  // send verifcation email
+
+  const url = `${APP_ORIGIN}/password/reset?code=${verificationCode.id}&exp=${expiresAt.getTime()}`;
+
+  const { data, error } = await sendMail({
+    to: email,
+    ...getPasswordResetTemplate(url),
+  });
+  appAssert(
+    data?.id,
+    INTERNAL_SERVER_ERROR,
+    `${error?.name} - ${error?.message}`,
+  );
+  // return success
+
+  return {
+    url,
+    emailId: data.id,
+  };
 };
 
-type Data = {
-  id: number;
-  editcomment: string;
-  select_option: string;
+type ResetPasswordParams = {
+  password: string;
+  verificationCode: string;
 };
 
-export const editdata = async (data: Data) => {
-  return await prisma.form_inputs.update({
+export const resetPassword = async ({
+  password,
+  verificationCode,
+}: ResetPasswordParams) => {
+  const validCode = await prisma.verificationCode.findUnique({
     where: {
-      id: data.id,
+      id: verificationCode,
+      type: VerificationCodeType.PasswordReset,
+      expiresAt: { gt: new Date() },
+    },
+  });
+  appAssert(validCode, NOT_FOUND, "Invalid or expired verification code");
+  // get the verication
+
+  const updatedUser = await prisma.user.update({
+    where: {
+      id: validCode.userId,
     },
     data: {
-      status: data.select_option,
-      edit: data.editcomment,
+      password: await hashValue(password),
+    },
+    omit: {
+      password: true,
     },
   });
+
+  appAssert(updatedUser, INTERNAL_SERVER_ERROR, "Failed to reset password");
+
+  // delete code
+
+  await prisma.verificationCode.delete({
+    where: {
+      id: validCode.id,
+    },
+  });
+
+  await prisma.session.deleteMany({
+    where: {
+      userId: updatedUser.id,
+    },
+  });
+
+  return { user: updatedUser };
 };

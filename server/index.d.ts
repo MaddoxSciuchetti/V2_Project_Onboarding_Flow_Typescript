@@ -1,9 +1,12 @@
-import * as express from "express-serve-static-core";
+import { Session, User } from "./generated/prisma/client";
 
 declare global {
-    namespace Express {
-        interface Request {
-            customField?: string; 
-        }
+  namespace Express {
+    interface Request {
+      userId: User["id"];
+      sessionId: Session["id"];
     }
+  }
 }
+
+export {};

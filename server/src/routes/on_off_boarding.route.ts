@@ -5,7 +5,7 @@ import {
   offboardingGetuserbyId,
   offboardingEditdata,
   offboardingDeletebyId,
-} from "../controllers/offboarding.ts";
+} from "../controllers/on_off_boarding.controller.ts";
 
 const offboarding_router = express.Router();
 
