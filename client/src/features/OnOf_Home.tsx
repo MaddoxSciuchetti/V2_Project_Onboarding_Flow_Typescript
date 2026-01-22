@@ -73,7 +73,7 @@ function OnOf_Home() {
             "content-type": "application/json",
           },
           body: JSON.stringify({ data }),
-        }
+        },
       );
       if (!response.ok) {
         throw new Error("Failed to submit");
