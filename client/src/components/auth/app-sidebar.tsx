@@ -31,7 +31,7 @@ const items = [
 
 export function AppSidebar() {
   return (
-    <Sidebar className="bg-amber-100 rounded-2xl">
+    <Sidebar className="bg-blue-100 rounded-2xl">
       <SidebarHeader className="mt-5 flex flex-row align-middle">
         <UserMenu />
         <p>User</p>
