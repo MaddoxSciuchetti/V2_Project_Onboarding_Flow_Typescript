@@ -9,7 +9,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { Provider } from "@/components/ui/provider";
 
 createRoot(document.getElementById("root")!).render(
-  <Provider>
+  <Provider defaultTheme="light">
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
     </QueryClientProvider>

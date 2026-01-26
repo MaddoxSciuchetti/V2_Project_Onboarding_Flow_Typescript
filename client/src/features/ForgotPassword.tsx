@@ -24,7 +24,7 @@ import {
 } from "@chakra-ui/alert";
 
 const ForgotPassword = () => {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState<string>("");
   const navigate = useNavigate();
 
   const {

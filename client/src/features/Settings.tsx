@@ -19,7 +19,6 @@ const Settings = () => {
       {isError && <Text color="red.400">Failed to get sessions.</Text>}
       {isSuccess && (
         <VStack align="flex-start">
-          {console.log("this is the session", sessions)}
           {sessions.map((session: Sessions_Type) => (
             <SessionCard key={session.id} session={session} />
           ))}

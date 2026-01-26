@@ -1,4 +1,5 @@
 import API from "@/config/apiClient";
+import { Session } from "react-router-dom";
 import { User } from "shared_prisma_types";
 
 export type RegisterRequest = {
@@ -42,7 +43,15 @@ export const verifyEmail = async (
 export const sendPasswordResetEmail = async (email: any) =>
   API.post("/auth/password/forgot", { email });
 
-export const resetPassword = async ({ verificationCode, password }: any) =>
+export type resetPassword = {
+  verificationCode: string;
+  password: string;
+};
+
+export const resetPassword = async ({
+  verificationCode,
+  password,
+}: resetPassword): Promise<resetPassword> =>
   API.post("/auth/password/reset", { verificationCode, password });
 
 type user = {
@@ -52,9 +61,17 @@ type user = {
 };
 
 export const getUser = async (): Promise<user> => {
-  return API.get<any, user>("/user");
+  return API.get<user, user>("/user");
 };
 
-export const getSessions = async () => API.get("/sessions");
+export type Session_API = {
+  id: string;
+  userAgent: string;
+  createdAt: string;
+  isCurrent: boolean;
+};
+
+export const getSessions = async (): Promise<Session_API> =>
+  API.get("/sessions");
 export const deleteSession = async (id: string): Promise<void> =>
   API.delete(`/sessions/${id}`);

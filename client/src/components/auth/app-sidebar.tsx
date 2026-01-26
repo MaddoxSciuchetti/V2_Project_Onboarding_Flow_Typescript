@@ -34,15 +34,17 @@ export function AppSidebar() {
     <Sidebar className="bg-blue-100 rounded-2xl">
       <SidebarHeader className="mt-5 flex flex-row align-middle">
         <UserMenu />
-        <p>User</p>
+        <p className="text-black">User</p>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-black">
+            Application
+          </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className="text-black">
               {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
+                <SidebarMenuItem className="text-black" key={item.title}>
                   <SidebarMenuButton asChild>
                     <a href={item.to}>
                       <item.icon />
