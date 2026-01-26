@@ -5,10 +5,6 @@ import UserMenu from "./UserMenu";
 import React from "react";
 import { useNavigate } from "@tanstack/react-router";
 
-interface Props {
-  children: React.ReactNode;
-}
-
 const AppContainer = () => {
   const { user, isLoading } = useAuth();
   const navigate = useNavigate();
