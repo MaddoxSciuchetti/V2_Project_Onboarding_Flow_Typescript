@@ -1,7 +1,7 @@
 // src/routes/login.tsx
 import { createFileRoute } from "@tanstack/react-router";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { LoginComponent } from "@/features/login-form";
+import { LoginComponent } from "@/features/Login";
 
 export const Route = createFileRoute("/login")({
   component: LoginForm,

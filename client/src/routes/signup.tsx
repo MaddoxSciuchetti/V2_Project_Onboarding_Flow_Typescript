@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { SignupForm } from "@/features/signup-form";
+import { SignupForm } from "@/features/Register";
 
 export const Route = createFileRoute("/signup")({
   component: Signup,

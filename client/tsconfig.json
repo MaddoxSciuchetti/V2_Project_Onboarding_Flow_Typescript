@@ -10,6 +10,7 @@
     "jsx": "preserve",
     "moduleResolution": "bundler",
     "types": ["vite/client"],
+    "skipLibCheck": true,
     "module": "esnext",
     "strict": true,
     "paths": {

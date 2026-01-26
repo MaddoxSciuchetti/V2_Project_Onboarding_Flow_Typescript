@@ -31,8 +31,29 @@ export const signup = async (
   return API.post<RegisterRequest, RegisterResponse>("/auth/register", data);
 };
 
+export const logout = async () => API.get("/auth/logout");
+
 export const verifyEmail = async (
   verificationCode: Verify,
 ): Promise<string> => {
   return API.get<Verify, string>(`/auth/email/verify/${verificationCode.code}`);
 };
+
+export const sendPasswordResetEmail = async (email: any) =>
+  API.post("/auth/password/forgot", { email });
+
+export const resetPassword = async ({ verificationCode, password }: any) =>
+  API.post("/auth/password/reset", { verificationCode, password });
+
+type user = {
+  email: string;
+  verified: boolean;
+  createdAt: string;
+};
+
+export const getUser = async (): Promise<user> => {
+  return API.get<any, user>("/user");
+};
+
+export const getSessions = async () => API.get("/sessions");
+export const deleteSession = async (id: any) => API.delete(`/sessions/${id}`);

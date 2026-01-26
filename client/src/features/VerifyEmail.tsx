@@ -2,13 +2,20 @@ import { Button } from "@/components/ui/button";
 import { Item } from "@/components/ui/item";
 import { Label } from "@/components/ui/label";
 import { Maddox_Link } from "@/components/ui/maddox_customs/maddox_link";
-import { Text } from "@/components/ui/maddox_customs/maddox_text";
 import { verifyEmail } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { ArrowUpRightIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-
+import {
+  Container,
+  Flex,
+  Link as ChakraLink,
+  Spinner,
+  Text,
+  Alert,
+  VStack,
+} from "@chakra-ui/react";
 function VerifyEmail() {
   const code = useParams({ from: "/email/verify/$code" });
   console.log(code);
@@ -22,43 +29,34 @@ function VerifyEmail() {
   });
 
   return (
-    <div className="flex justify-center mt-12">
-      <div className="mx-auto max-w-md py-12 px-6 text-center">
+    <Flex minH="100vh" justify="center" mt={12}>
+      <Container mx="auto" maxW="md" py={12} px={6} textAlign="center">
         {isPending ? (
-          <div>some spinner here</div>
+          <Spinner />
         ) : (
-          <div>
-            <Item
-              className="w-fit rounded-sm"
-              status={isSuccess ? "success" : "error"}
+          <VStack align="center">
+            <Text
+              // status={isSuccess ? "success" : "error"}
+              w="fit-content"
+              borderRadius={12}
             >
-              <p>Some icon</p>
-              {isSuccess ? "Email verified" : "invalid Link"}
-            </Item>
+              {isSuccess ? "Email Verified!" : "Invalid Link"}
+            </Text>
             {isError && (
-              <div className="flex flex-col">
-                <Text>The link is either Invalid or expired.{""}</Text>
-                <div className="flex flex-row">
-                  <Button
-                    variant={"outline"}
-                    onClick={() => navigate({ to: "/" })}
-                  >
-                    Get a new Link
-                  </Button>
-                  <Button
-                    variant={"outline"}
-                    size={"icon"}
-                    aria-label={"Submit"}
-                  >
-                    <ArrowUpRightIcon />
-                  </Button>
-                </div>
-              </div>
+              <Text color="gray.400">
+                The link is either invalid or expired.{" "}
+                <ChakraLink onClick={() => navigate({ to: "/" })}>
+                  Get a new link
+                </ChakraLink>
+              </Text>
             )}
-          </div>
+            <ChakraLink onClick={() => navigate({ to: "/" })}>
+              Back to home
+            </ChakraLink>
+          </VStack>
         )}
-      </div>
-    </div>
+      </Container>
+    </Flex>
   );
 }
 

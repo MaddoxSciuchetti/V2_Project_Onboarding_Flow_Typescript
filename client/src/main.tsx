@@ -5,9 +5,13 @@ import "./index.css";
 import "./styles/theme.css";
 import { RouterProvider } from "@tanstack/react-router";
 import queryClient from "./config/query.client";
+import { ChakraProvider } from "@chakra-ui/react";
+import { Provider } from "@/components/ui/provider";
 
 createRoot(document.getElementById("root")!).render(
-  <QueryClientProvider client={queryClient}>
-    <RouterProvider router={router} />
-  </QueryClientProvider>,
+  <Provider>
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  </Provider>,
 );
