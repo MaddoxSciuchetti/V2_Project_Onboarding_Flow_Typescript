@@ -99,18 +99,20 @@ export const createAccount = async (data: createAccountParams) => {
   });
 
   // sign the acess token and refresh token
-
   const refreshToken = signToken(
     {
       sessionId: session.id,
     },
     refreshTokenSignOptions,
   );
+  console.log(refreshToken);
 
   const accessToken = signToken({
     userId,
     sessionId: session.id,
   });
+
+  console.log(accessToken);
 
   // return user & tokens
 
@@ -147,16 +149,6 @@ export const loginUser = async ({
   appAssert(isinValid, UNAUTHORIZED, "Invalid password");
 
   const userId = user.id;
-
-  // validate password from the request
-
-  // const isValid = await prisma.user.findUnique({
-  //   where: {
-  //   email: email
-  // }
-  // });
-
-  // create a session
 
   const session = await prisma.session.create({
     data: {

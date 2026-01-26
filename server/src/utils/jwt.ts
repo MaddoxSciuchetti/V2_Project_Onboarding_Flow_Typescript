@@ -20,7 +20,7 @@ const defaults: SignOptions = {
 };
 
 const accessTokenSignOptions: SignOptionsAndSecret = {
-  expiresIn: "15m",
+  expiresIn: "30s",
   secret: JWT_SECRET,
 };
 
@@ -33,10 +33,11 @@ export const signToken = (
   payload: AccessTokenPayload | RefreshTokenPayload,
   options?: SignOptionsAndSecret,
 ) => {
-  const { secret, ...signOpts } = options || accessTokenSignOptions;
+  const { secret, ...signopts } = options || accessTokenSignOptions;
+
   return jwt.sign(payload, secret, {
     ...defaults,
-    ...signOpts,
+    ...signopts,
   });
 };
 

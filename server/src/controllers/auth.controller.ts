@@ -40,7 +40,6 @@ export const registerHandler = catchErrors(async (req, res) => {
   const { user, accessToken, refreshToken } = await createAccount(request);
 
   // return response
-
   return setAuthCookies({ res, accessToken, refreshToken })
     .status(CREATED)
     .json(user);

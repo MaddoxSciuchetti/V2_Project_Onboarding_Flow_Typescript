@@ -12,6 +12,7 @@ export const getUserHandler = catchErrors(async (req, res) => {
       password: true,
     },
   });
+  console.log(user);
 
   appAssert(user, NOT_FOUND, "User not found");
   return res.status(OK).json(user);
