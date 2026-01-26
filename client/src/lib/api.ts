@@ -56,4 +56,5 @@ export const getUser = async (): Promise<user> => {
 };
 
 export const getSessions = async () => API.get("/sessions");
-export const deleteSession = async (id: any) => API.delete(`/sessions/${id}`);
+export const deleteSession = async (id: string) =>
+  API.delete(`/sessions/${id}`);
