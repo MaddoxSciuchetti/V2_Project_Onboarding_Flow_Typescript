@@ -22,14 +22,15 @@ export const getSessionHandler = catchErrors(async (req, res) => {
     },
   });
 
-  return res.status(OK).json(
-    sessions.map((session) => ({
-      ...session,
-      ...(session.id === req.sessionId && {
-        isCurrent: true,
-      }),
-    })),
-  );
+  const session = sessions.map((session) => ({
+    ...session,
+    ...(session.id === req.sessionId && {
+      isCurrent: true,
+    }),
+  }));
+
+  console.log("this is the session", session);
+  return res.status(OK).json(session);
 });
 
 export const deleteSessionHandler = catchErrors(async (req, res) => {

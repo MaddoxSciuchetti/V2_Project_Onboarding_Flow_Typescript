@@ -9,6 +9,8 @@ import authenticate from "./src/middleware/authenticate.ts";
 import { APP_ORIGIN } from "./src/constants/env.ts";
 import cookieParser from "cookie-parser";
 import userRoutes from "./src/routes/user.route.ts";
+import AppError from "./src/utils/AppError.ts";
+import errorHandler from "./src/middleware/errorHandler.ts";
 
 export function createApp() {
   dotenv.config();
@@ -24,7 +26,6 @@ export function createApp() {
       credentials: true,
     }),
   );
-
   // home page
   app.get("/", (req, res) => {
     res.send("here");
@@ -41,6 +42,8 @@ export function createApp() {
 
   // worker
   app.use("/offboarding", offboarding_router);
+
+  app.use(errorHandler);
 
   return app;
 }
