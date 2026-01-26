@@ -12,13 +12,10 @@ type Cache = {
 type SessionCache = Cache[];
 
 const useDeleteSession = (sessionId: string) => {
-  console.log(sessionId);
   const queryClient = useQueryClient();
   const { mutate, ...rest } = useMutation({
     mutationFn: () => deleteSession(sessionId),
     onSuccess: () => {
-      const currentcache = queryClient.getQueryData([SESSIONS]);
-      console.log("this is the cache", currentcache);
       queryClient.setQueryData<SessionCache>([SESSIONS], (cache) => {
         const updatedCache =
           cache?.filter((session) => session.id !== sessionId) ?? [];
@@ -27,7 +24,6 @@ const useDeleteSession = (sessionId: string) => {
     },
   });
   const updatedCache = queryClient.getQueryData([SESSIONS]);
-  console.log("updated cache", updatedCache);
 
   return { deleteSession: mutate, ...rest };
 };
