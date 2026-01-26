@@ -11,13 +11,14 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as HandwerkerRouteImport } from './routes/handwerker'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UserIdRouteImport } from './routes/user/$Id'
 import { Route as ProfileProfileRouteImport } from './routes/profile/profile'
 import { Route as PasswordResetRouteImport } from './routes/password/reset'
 import { Route as PasswordForgotRouteImport } from './routes/password/forgot'
-import { Route as Home_indexPageRouteImport } from './routes/home_index/page'
 import { Route as EmailVerifyCodeRouteImport } from './routes/email/verify/$code'
 
 const SignupRoute = SignupRouteImport.update({
@@ -30,9 +31,19 @@ const SettingsRoute = SettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HandwerkerRoute = HandwerkerRouteImport.update({
+  id: '/handwerker',
+  path: '/handwerker',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -46,9 +57,9 @@ const UserIdRoute = UserIdRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfileProfileRoute = ProfileProfileRouteImport.update({
-  id: '/profile/profile',
-  path: '/profile/profile',
-  getParentRoute: () => rootRouteImport,
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => ProfileRoute,
 } as any)
 const PasswordResetRoute = PasswordResetRouteImport.update({
   id: '/password/reset',
@@ -60,11 +71,6 @@ const PasswordForgotRoute = PasswordForgotRouteImport.update({
   path: '/password/forgot',
   getParentRoute: () => rootRouteImport,
 } as any)
-const Home_indexPageRoute = Home_indexPageRouteImport.update({
-  id: '/home_index/page',
-  path: '/home_index/page',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const EmailVerifyCodeRoute = EmailVerifyCodeRouteImport.update({
   id: '/email/verify/$code',
   path: '/email/verify/$code',
@@ -73,10 +79,11 @@ const EmailVerifyCodeRoute = EmailVerifyCodeRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/handwerker': typeof HandwerkerRoute
   '/login': typeof LoginRoute
+  '/profile': typeof ProfileRouteWithChildren
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
-  '/home_index/page': typeof Home_indexPageRoute
   '/password/forgot': typeof PasswordForgotRoute
   '/password/reset': typeof PasswordResetRoute
   '/profile/profile': typeof ProfileProfileRoute
@@ -85,10 +92,11 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/handwerker': typeof HandwerkerRoute
   '/login': typeof LoginRoute
+  '/profile': typeof ProfileRouteWithChildren
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
-  '/home_index/page': typeof Home_indexPageRoute
   '/password/forgot': typeof PasswordForgotRoute
   '/password/reset': typeof PasswordResetRoute
   '/profile/profile': typeof ProfileProfileRoute
@@ -98,10 +106,11 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/handwerker': typeof HandwerkerRoute
   '/login': typeof LoginRoute
+  '/profile': typeof ProfileRouteWithChildren
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
-  '/home_index/page': typeof Home_indexPageRoute
   '/password/forgot': typeof PasswordForgotRoute
   '/password/reset': typeof PasswordResetRoute
   '/profile/profile': typeof ProfileProfileRoute
@@ -112,10 +121,11 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/handwerker'
     | '/login'
+    | '/profile'
     | '/settings'
     | '/signup'
-    | '/home_index/page'
     | '/password/forgot'
     | '/password/reset'
     | '/profile/profile'
@@ -124,10 +134,11 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/handwerker'
     | '/login'
+    | '/profile'
     | '/settings'
     | '/signup'
-    | '/home_index/page'
     | '/password/forgot'
     | '/password/reset'
     | '/profile/profile'
@@ -136,10 +147,11 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/handwerker'
     | '/login'
+    | '/profile'
     | '/settings'
     | '/signup'
-    | '/home_index/page'
     | '/password/forgot'
     | '/password/reset'
     | '/profile/profile'
@@ -149,13 +161,13 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  HandwerkerRoute: typeof HandwerkerRoute
   LoginRoute: typeof LoginRoute
+  ProfileRoute: typeof ProfileRouteWithChildren
   SettingsRoute: typeof SettingsRoute
   SignupRoute: typeof SignupRoute
-  Home_indexPageRoute: typeof Home_indexPageRoute
   PasswordForgotRoute: typeof PasswordForgotRoute
   PasswordResetRoute: typeof PasswordResetRoute
-  ProfileProfileRoute: typeof ProfileProfileRoute
   UserIdRoute: typeof UserIdRoute
   EmailVerifyCodeRoute: typeof EmailVerifyCodeRoute
 }
@@ -176,11 +188,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/handwerker': {
+      id: '/handwerker'
+      path: '/handwerker'
+      fullPath: '/handwerker'
+      preLoaderRoute: typeof HandwerkerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -199,10 +225,10 @@ declare module '@tanstack/react-router' {
     }
     '/profile/profile': {
       id: '/profile/profile'
-      path: '/profile/profile'
+      path: '/profile'
       fullPath: '/profile/profile'
       preLoaderRoute: typeof ProfileProfileRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof ProfileRoute
     }
     '/password/reset': {
       id: '/password/reset'
@@ -218,13 +244,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PasswordForgotRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/home_index/page': {
-      id: '/home_index/page'
-      path: '/home_index/page'
-      fullPath: '/home_index/page'
-      preLoaderRoute: typeof Home_indexPageRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/email/verify/$code': {
       id: '/email/verify/$code'
       path: '/email/verify/$code'
@@ -235,15 +254,26 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface ProfileRouteChildren {
+  ProfileProfileRoute: typeof ProfileProfileRoute
+}
+
+const ProfileRouteChildren: ProfileRouteChildren = {
+  ProfileProfileRoute: ProfileProfileRoute,
+}
+
+const ProfileRouteWithChildren =
+  ProfileRoute._addFileChildren(ProfileRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  HandwerkerRoute: HandwerkerRoute,
   LoginRoute: LoginRoute,
+  ProfileRoute: ProfileRouteWithChildren,
   SettingsRoute: SettingsRoute,
   SignupRoute: SignupRoute,
-  Home_indexPageRoute: Home_indexPageRoute,
   PasswordForgotRoute: PasswordForgotRoute,
   PasswordResetRoute: PasswordResetRoute,
-  ProfileProfileRoute: ProfileProfileRoute,
   UserIdRoute: UserIdRoute,
   EmailVerifyCodeRoute: EmailVerifyCodeRoute,
 }

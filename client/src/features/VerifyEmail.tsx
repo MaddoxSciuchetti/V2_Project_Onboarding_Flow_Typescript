@@ -1,12 +1,7 @@
-import { Button } from "@/components/ui/button";
-import { Item } from "@/components/ui/item";
-import { Label } from "@/components/ui/label";
-import { Maddox_Link } from "@/components/ui/maddox_customs/maddox_link";
 import { verifyEmail } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "@tanstack/react-router";
-import { ArrowUpRightIcon } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
+
 import {
   Container,
   Flex,

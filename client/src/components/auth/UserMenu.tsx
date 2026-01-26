@@ -17,19 +17,17 @@ const UserMenu = () => {
   return (
     <Menu.Root lazyMount>
       <Menu.Trigger asChild>
-        <Avatar.Root
-          position="absolute"
-          left="1.5rem"
-          bottom="1.5rem"
-          cursor="pointer"
-        >
+        <Avatar.Root className="mt-20" cursor="pointer">
           <Avatar.Image src="#" />
           <Avatar.Fallback>U</Avatar.Fallback>
         </Avatar.Root>
       </Menu.Trigger>
       <Menu.Positioner>
         <Menu.Content>
-          <Menu.Item value="profile" onClick={() => navigate({ to: "/" })}>
+          <Menu.Item
+            value="profile"
+            onClick={() => navigate({ to: "/profile" })}
+          >
             Profile
           </Menu.Item>
           <Menu.Item

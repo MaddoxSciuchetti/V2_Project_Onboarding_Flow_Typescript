@@ -1,9 +1,7 @@
 // src/routes/__root.tsx
 import { createRootRoute, Outlet, useLocation } from "@tanstack/react-router";
-import {
-  Sidebar,
-  SidebarSection,
-} from "@/components/ui/maddox_customs/maddox_sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/auth/app-sidebar";
 
 export const Route = createRootRoute({
   component: RootLayout,
@@ -16,19 +14,25 @@ function RootLayout() {
   const isSignUp = location.pathname === "/signup";
   const isVerfiy = location.pathname === "/verify-email";
 
-  return (
-    <>
-      <div className="min-h-screen flex">
-        {!isLoginPage && !isSignUp && !isVerfiy && (
-          <Sidebar className="bg-gray-300">
-            <SidebarSection />
-          </Sidebar>
-        )}
+  if (isLoginPage || isSignUp || isVerfiy) {
+    return (
+      <main className="min-h-screen">
+        <Outlet />
+      </main>
+    );
+  }
 
-        <main className="flex-1 flex flex-col">
-          <Outlet />
+  return (
+    <SidebarProvider>
+      <div className="min-h-screen flex">
+        <AppSidebar />
+        <main className="flex-1">
+          <div className="p-4">
+            <SidebarTrigger />
+            <Outlet />
+          </div>
         </main>
       </div>
-    </>
+    </SidebarProvider>
   );
 }

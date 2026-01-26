@@ -9,7 +9,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-const AppContainer = ({ children }: Props) => {
+const AppContainer = () => {
   const { user, isLoading } = useAuth();
   const navigate = useNavigate();
 
@@ -20,10 +20,10 @@ const AppContainer = ({ children }: Props) => {
   ) : user ? (
     <Box p={4} minH="100vh">
       <UserMenu />
-      {children}
       <Outlet />
     </Box>
   ) : (
+    // insert component for back navigation
     <Button onClick={() => navigate({ to: "/login" })}>Here</Button>
   );
 };
