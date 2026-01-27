@@ -119,13 +119,6 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
     return <div>Still loading</div>;
   }
 
-  const filteredTasks = data?.form.fields.map(
-    (field: form_field, index: number) => {
-      return index;
-    },
-  );
-  console.log("filterd tasks", filteredTasks);
-
   function OnEditGetDescription(key: number, val: string) {
     setIsOpen(true);
     setId(key);
@@ -151,10 +144,7 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
           select_option={field.status}
           description={field.description}
           form_field_id={data.form.id}
-          onEditClick_Open={() => setIsOpen(true)}
-          onEditClick_Close={() => setIsOpen(false)}
           getDescription={OnEditGetDescription}
-          isOpen={isOpen}
           handleSubmit={handleSubmit}
         />
       ))}

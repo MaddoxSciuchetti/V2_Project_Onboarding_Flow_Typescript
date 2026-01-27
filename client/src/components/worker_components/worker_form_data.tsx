@@ -7,9 +7,6 @@ interface FormProps {
   id_original: number;
   description: string;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  onEditClick_Open: () => void;
-  onEditClick_Close: () => void;
-  isOpen: unknown;
   getDescription: (key: number, val: string) => unknown;
 }
 
@@ -20,10 +17,7 @@ const Form: React.FC<FormProps> = ({
   id_original,
   description,
   handleSubmit,
-  onEditClick_Open,
-  onEditClick_Close,
   getDescription,
-  isOpen,
 }) => {
   return (
     <>
