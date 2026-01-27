@@ -10,6 +10,7 @@ interface FormProps {
   onEditClick_Open: () => void;
   onEditClick_Close: () => void;
   isOpen: unknown;
+  getDescription: (key: number, val: string) => unknown;
 }
 
 const Form: React.FC<FormProps> = ({
@@ -21,6 +22,7 @@ const Form: React.FC<FormProps> = ({
   handleSubmit,
   onEditClick_Open,
   onEditClick_Close,
+  getDescription,
   isOpen,
 }) => {
   return (
@@ -72,7 +74,9 @@ const Form: React.FC<FormProps> = ({
               defaultValue={editcomment}
               readOnly
             ></textarea>
-            <button onClick={onEditClick_Open}>Edit</button>
+            <button onClick={() => getDescription(id_original, description)}>
+              Edit
+            </button>
           </div>
         </form>
       </div>

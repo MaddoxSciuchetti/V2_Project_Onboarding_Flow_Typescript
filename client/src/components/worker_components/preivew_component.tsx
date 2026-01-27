@@ -13,11 +13,12 @@ import {
 import { useEffect } from "react";
 
 type PreviewCompoent = {
-  onEditClick: () => void;
   onClose: () => void;
+  id: number;
+  description: string;
 };
 
-function PreviewComponent({ onEditClick, onClose }: PreviewCompoent) {
+function PreviewComponent({ onClose, id, description }: PreviewCompoent) {
   const { lockScroll, unlockScroll } = useBodyScrollLock();
   useEffect(() => {
     lockScroll();
@@ -26,6 +27,7 @@ function PreviewComponent({ onEditClick, onClose }: PreviewCompoent) {
       unlockScroll();
     };
   }, [lockScroll, unlockScroll]);
+
   return (
     <>
       <div
@@ -33,7 +35,7 @@ function PreviewComponent({ onEditClick, onClose }: PreviewCompoent) {
         className="h-screen inset-0 fixed z-40 bg-black/60"
       ></div>
       <div className="absolute text-center items-center z-50 bg-gray-200 rounded-xl top-[20%] left-[50%] h-1/5 w-2xl -translate-x-1/2 -translate-y-1/2">
-        <p>Arbeitsvertrag unterschrieben zurück + BSB Dokumente</p>
+        <p>Place for description: {description}</p>
         <Text>Habe ich erldigt</Text>
         <Select>
           <SelectTrigger className="w-full max-w-48">
@@ -48,7 +50,7 @@ function PreviewComponent({ onEditClick, onClose }: PreviewCompoent) {
           </SelectContent>
         </Select>
 
-        <Button onClick={onEditClick}>Edit here</Button>
+        <Button>Edit here</Button>
       </div>
     </>
   );

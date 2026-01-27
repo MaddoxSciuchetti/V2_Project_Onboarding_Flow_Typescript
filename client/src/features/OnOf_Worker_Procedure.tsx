@@ -45,6 +45,9 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
   search,
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [modalId, setId] = useState<number>();
+  const [modalDescription, setModalDescription] = useState<string>("");
+
   async function sendFormData(formData: Mappingform): Promise<APIResponse> {
     const url = `${API_URL}/offboarding/editdata`;
     try {
@@ -116,14 +119,27 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
     return <div>Still loading</div>;
   }
 
+  const filteredTasks = data?.form.fields.map(
+    (field: form_field, index: number) => {
+      return index;
+    },
+  );
+  console.log("filterd tasks", filteredTasks);
+
+  function OnEditGetDescription(key: number, val: string) {
+    setIsOpen(true);
+    setId(key);
+    setModalDescription(val);
+  }
+
   return (
     <>
-      {/* insert new components */}
-
-      {isOpen && (
+      {/* needs the description from the Form */}
+      {isOpen && modalId && modalDescription && (
         <PreviewComponent
           onClose={() => setIsOpen(false)}
-          onEditClick={() => setIsOpen(true)}
+          id={modalId}
+          description={modalDescription}
         />
       )}
 
@@ -137,6 +153,7 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
           form_field_id={data.form.id}
           onEditClick_Open={() => setIsOpen(true)}
           onEditClick_Close={() => setIsOpen(false)}
+          getDescription={OnEditGetDescription}
           isOpen={isOpen}
           handleSubmit={handleSubmit}
         />
