@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 import z, { success } from "zod";
 import { API_URL } from "../api";
@@ -58,8 +58,17 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
     selectedItem: null,
   });
 
+  const queryClient = useQueryClient();
+
+  console.log("first id", id);
+  const { data, error, isLoading, refetch } = useQuery<api_Response, Error>({
+    queryKey: ["somethingelse", id],
+    queryFn: () => fetchFormattedData(),
+  });
+
   async function sendFormData(formData: Mappingform): Promise<APIResponse> {
     const url = `${API_URL}/offboarding/editdata`;
+
     try {
       const response = await fetch(url, {
         method: "PUT",
@@ -68,11 +77,12 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
         },
         body: JSON.stringify(formData),
       });
-
       if (!response.ok) {
         return { success: false, error: `HTTP ${response.status}` };
       }
+
       const result = await response.json();
+
       return { success: true, affectedRows: result.affectedRows };
     } catch (error) {
       return {
@@ -89,9 +99,8 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
       const formValues = Object.fromEntries(formData);
 
       const result = formSchema.safeParse(formValues);
+      console.log("this is the result", result);
       console.log(result);
-
-      // implement function get userid from cookies than the name -> show next to form
 
       if (!result.success) {
         console.log("validation errors", result.error);
@@ -100,14 +109,24 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
 
       const response = await sendFormData(result.data);
       if (response.success) {
+        console.log(
+          "All queries",
+          queryClient
+            .getQueryCache()
+            .getAll()
+            .map((q) => q.queryKey),
+        );
+        console.log("this worked out fine");
+        await queryClient.invalidateQueries({
+          queryKey: ["somethingelse", id],
+        });
         setModalState({ isOpen: false, selectedItem: null });
-        refetch();
-        console.log("sucess for the sendformdata");
       }
     } catch (error) {
       console.log(error);
     }
   }
+  console.log("thrid id", id);
 
   async function fetchFormattedData(): Promise<api_Response> {
     const res = await fetch(
@@ -119,10 +138,6 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
     const json = await res.json();
     return json;
   }
-  const { data, error, isLoading, refetch } = useQuery<api_Response, Error>({
-    queryKey: ["somethingelse", id],
-    queryFn: () => fetchFormattedData(),
-  });
 
   if (error) {
     // component

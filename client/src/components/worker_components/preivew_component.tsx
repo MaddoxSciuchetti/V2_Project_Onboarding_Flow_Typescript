@@ -1,12 +1,10 @@
 import { useBodyScrollLock } from "@/hooks/use-no-scroll";
 import { Button } from "../ui/button";
-import { Text } from "../ui/maddox_customs/maddox_text";
 import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -88,12 +86,13 @@ function PreviewComponent({
                 <SelectItem id="select2" value="in_bearbeitung">
                   In Bearbeitung
                 </SelectItem>
-                <SelectItem id="select3" value="erledgit">
+                <SelectItem id="select3" value="erledigt">
                   Erledigt
                 </SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
+
           <Button type="submit">Speichern</Button>
         </div>
       </form>

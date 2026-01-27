@@ -1,7 +1,5 @@
 import "react";
-import { useBodyScrollLock } from "@/hooks/use-no-scroll";
-import { Button } from "../ui/button";
-import { Text } from "../ui/maddox_customs/maddox_text";
+
 import {
   Select,
   SelectContent,
@@ -11,14 +9,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { useEffect, useState } from "react";
+
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useEffect, useState } from "react";
 
 interface FormProps {
   id_original: number;
@@ -46,6 +44,9 @@ const Form: React.FC<FormProps> = ({
   onEdit,
 }) => {
   const [selectedValue, setSelectedValue] = useState(select_option || "");
+  useEffect(() => {
+    setSelectedValue(select_option || "");
+  }, [select_option]);
   return (
     <>
       <div className="flex justify-center items-center w-max bg-amber-50 outline">
@@ -86,7 +87,7 @@ const Form: React.FC<FormProps> = ({
                   <SelectItem id="select2" value="in_bearbeitung">
                     In Bearbeitung
                   </SelectItem>
-                  <SelectItem id="select3" value="erledgit">
+                  <SelectItem id="select3" value="erledigt">
                     Erledigt
                   </SelectItem>
                 </SelectGroup>
