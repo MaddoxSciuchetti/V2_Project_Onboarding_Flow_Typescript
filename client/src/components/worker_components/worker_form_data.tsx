@@ -7,7 +7,9 @@ interface FormProps {
   id_original: number;
   description: string;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  isOpen: boolean;
+  onEditClick_Open: () => void;
+  onEditClick_Close: () => void;
+  isOpen: unknown;
 }
 
 const Form: React.FC<FormProps> = ({
@@ -17,6 +19,8 @@ const Form: React.FC<FormProps> = ({
   id_original,
   description,
   handleSubmit,
+  onEditClick_Open,
+  onEditClick_Close,
   isOpen,
 }) => {
   return (
@@ -43,6 +47,7 @@ const Form: React.FC<FormProps> = ({
                 id="status"
                 name="select_option"
                 defaultValue={select_option}
+                disabled
               >
                 <option id="select1" value="offen">
                   Offen
@@ -55,21 +60,19 @@ const Form: React.FC<FormProps> = ({
                 </option>
               </select>
             </div>
-            <div className="field_sub">
-              <button className="submit-form" type="submit">
-                Speichern
-              </button>
-              {/* insert css to style */}
-            </div>
+            <div className="field_sub">{/* insert css to style */}</div>
           </div>
 
           <div className="field-text">
             <textarea
+              className="outline "
               placeholder="schreibe deine Notiz"
               id="edit"
               name="editcomment"
               defaultValue={editcomment}
+              readOnly
             ></textarea>
+            <button onClick={onEditClick_Open}>Edit</button>
           </div>
         </form>
       </div>

@@ -120,21 +120,27 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
     <>
       {/* insert new components */}
 
-      <PreviewComponent onEditClick={() => setIsOpen(true)} />
+      {isOpen && (
+        <PreviewComponent
+          onClose={() => setIsOpen(false)}
+          onEditClick={() => setIsOpen(true)}
+        />
+      )}
 
-      {isOpen &&
-        data?.form.fields.map((field: any, index: number) => (
-          <Form
-            key={index}
-            id_original={field.id}
-            editcomment={field.edit}
-            select_option={field.status}
-            description={field.description}
-            form_field_id={data.form.id}
-            isOpen={isOpen}
-            handleSubmit={handleSubmit}
-          />
-        ))}
+      {data?.form.fields.map((field: any, index: number) => (
+        <Form
+          key={index}
+          id_original={field.id}
+          editcomment={field.edit}
+          select_option={field.status}
+          description={field.description}
+          form_field_id={data.form.id}
+          onEditClick_Open={() => setIsOpen(true)}
+          onEditClick_Close={() => setIsOpen(false)}
+          isOpen={isOpen}
+          handleSubmit={handleSubmit}
+        />
+      ))}
     </>
   );
 };

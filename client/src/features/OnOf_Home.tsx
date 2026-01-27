@@ -156,7 +156,7 @@ function OnOf_Home() {
           </div>
 
           {modal && (
-            <div className="fixed inset-0 ">
+            <div className="fixed inset-0 outline ">
               <Modal toggleModal={toggleModal} onSuccess={onSubmit} />
             </div>
           )}
