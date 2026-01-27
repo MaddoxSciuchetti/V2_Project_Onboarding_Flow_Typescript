@@ -13,6 +13,12 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useEffect, useState } from "react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 interface FormProps {
   id_original: number;
@@ -89,7 +95,7 @@ const Form: React.FC<FormProps> = ({
             <div className="field_sub">{/* insert css to style */}</div>
           </div>
 
-          <div className="field-text">
+          <div className="flex flex-row">
             <textarea
               className="outline "
               placeholder="schreibe deine Notiz"
@@ -99,7 +105,7 @@ const Form: React.FC<FormProps> = ({
               readOnly
             ></textarea>
             <img
-              className="w-5"
+              className="w-10 h-1"
               src="/assets/Edit Outline Icon.png"
               alt="text"
               onClick={() =>
@@ -113,6 +119,14 @@ const Form: React.FC<FormProps> = ({
               }
             />
           </div>
+          <Accordion type="single" collapsible className="max-w-lg">
+            <AccordionItem value="shipping">
+              <AccordionTrigger>Verlauf</AccordionTrigger>
+              <AccordionContent>
+                Placeholder für den aktuellen Verlauf
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </form>
       </div>
     </>
