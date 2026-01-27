@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
-import z from "zod";
+import z, { success } from "zod";
 import { API_URL } from "../api";
 import Form from "@/components/worker_components/worker_form_data";
 import { Mappingform } from "../schemas/Task";
@@ -46,7 +46,13 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
 }) => {
   const [modalState, setModalState] = useState<{
     isOpen: boolean;
-    selectedItem: { id: number; description: string } | null;
+    selectedItem: {
+      id: number;
+      description: string;
+      editcomment: string;
+      select_option: string;
+      form_field_id: number;
+    } | null;
   }>({
     isOpen: false,
     selectedItem: null,
@@ -91,7 +97,13 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
         console.log("validation errors", result.error);
         return;
       }
-      await sendFormData(result.data);
+
+      const response = await sendFormData(result.data);
+      if (response.success) {
+        setModalState({ isOpen: false, selectedItem: null });
+        refetch();
+        console.log("sucess for the sendformdata");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -105,14 +117,12 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
       throw new Error("response not ok");
     }
     const json = await res.json();
-    console.log(json);
     return json;
   }
-  const { data, error, isLoading } = useQuery<api_Response, Error>({
+  const { data, error, isLoading, refetch } = useQuery<api_Response, Error>({
     queryKey: ["somethingelse", id],
     queryFn: () => fetchFormattedData(),
   });
-  console.log(data);
 
   if (error) {
     // component
@@ -123,10 +133,22 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
     return <div>Still loading</div>;
   }
 
-  function openEditModal(id: number, description: string) {
+  function openEditModal(
+    id: number,
+    description: string,
+    editcomment: string,
+    select_option: string,
+    form_field_id: number,
+  ) {
     setModalState({
       isOpen: true,
-      selectedItem: { id, description },
+      selectedItem: {
+        id,
+        description,
+        editcomment,
+        select_option,
+        form_field_id,
+      },
     });
   }
 
@@ -140,11 +162,16 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
   return (
     <>
       {/* needs the description from the Form */}
+
       {modalState.isOpen && modalState.selectedItem && (
         <PreviewComponent
           onClose={closeModal}
           id={modalState.selectedItem.id}
           description={modalState.selectedItem.description}
+          editcomment={modalState.selectedItem.editcomment}
+          select_option={modalState.selectedItem.select_option}
+          form_field_id={modalState.selectedItem.form_field_id}
+          handleSubmit={handleSubmit}
         />
       )}
 
@@ -156,7 +183,15 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
           select_option={field.status}
           description={field.description}
           form_field_id={data.form.id}
-          onEdit={(id, description) => openEditModal(id, description)}
+          onEdit={(id, description, editcomment, select_option, form_field) =>
+            openEditModal(
+              id,
+              description,
+              editcomment,
+              select_option,
+              form_field,
+            )
+          }
           handleSubmit={handleSubmit}
         />
       ))}

@@ -1,24 +1,45 @@
 import "react";
+import { useBodyScrollLock } from "@/hooks/use-no-scroll";
+import { Button } from "../ui/button";
+import { Text } from "../ui/maddox_customs/maddox_text";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { useEffect, useState } from "react";
 
 interface FormProps {
-  form_field_id: number;
-  editcomment: string;
-  select_option: string;
   id_original: number;
   description: string;
+  editcomment: string;
+  select_option: string;
+  form_field_id: number;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  onEdit: (id: number, description: string) => void;
+  onEdit: (
+    id: number,
+    description: string,
+    editcomment: string,
+    select_option: string,
+    form_field_id: number,
+  ) => void;
 }
 
 const Form: React.FC<FormProps> = ({
-  form_field_id,
-  editcomment,
-  select_option,
   id_original,
   description,
+  editcomment,
+  select_option,
+  form_field_id,
   handleSubmit,
   onEdit,
 }) => {
+  const [selectedValue, setSelectedValue] = useState(select_option || "");
   return (
     <>
       <div className="flex justify-center items-center w-max bg-amber-50 outline">
@@ -37,25 +58,34 @@ const Form: React.FC<FormProps> = ({
           <div className="field">
             <p>{description}</p>
 
-            <div className="field_sub">
-              <select
-                className="field-text"
+            <input type="hidden" name="select_option" value={selectedValue} />
+            <Select
+              value={selectedValue}
+              onValueChange={setSelectedValue}
+              disabled
+            >
+              <SelectTrigger
                 id="status"
                 name="select_option"
-                defaultValue={select_option}
-                disabled
+                value={select_option}
+                className="w-full max-w-48"
               >
-                <option id="select1" value="offen">
-                  Offen
-                </option>
-                <option id="select2" value="in-bearbeitung">
-                  In Bearbeitung
-                </option>
-                <option id="select3" value="erledigt">
-                  Erledigt
-                </option>
-              </select>
-            </div>
+                <SelectValue placeholder="Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup className="bg-amber-50">
+                  <SelectItem id="select1" value="offen">
+                    Offen
+                  </SelectItem>
+                  <SelectItem id="select2" value="in_bearbeitung">
+                    In Bearbeitung
+                  </SelectItem>
+                  <SelectItem id="select3" value="erledgit">
+                    Erledigt
+                  </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
             <div className="field_sub">{/* insert css to style */}</div>
           </div>
 
@@ -68,9 +98,20 @@ const Form: React.FC<FormProps> = ({
               defaultValue={editcomment}
               readOnly
             ></textarea>
-            <button onClick={() => onEdit(id_original, description)}>
-              Edit
-            </button>
+            <img
+              className="w-5"
+              src="/assets/Edit Outline Icon.png"
+              alt="text"
+              onClick={() =>
+                onEdit(
+                  id_original,
+                  description,
+                  editcomment,
+                  select_option,
+                  form_field_id,
+                )
+              }
+            />
           </div>
         </form>
       </div>
