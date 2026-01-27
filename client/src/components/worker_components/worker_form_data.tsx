@@ -7,7 +7,7 @@ interface FormProps {
   id_original: number;
   description: string;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  getDescription: (key: number, val: string) => unknown;
+  onEdit: (id: number, description: string) => void;
 }
 
 const Form: React.FC<FormProps> = ({
@@ -17,7 +17,7 @@ const Form: React.FC<FormProps> = ({
   id_original,
   description,
   handleSubmit,
-  getDescription,
+  onEdit,
 }) => {
   return (
     <>
@@ -68,7 +68,7 @@ const Form: React.FC<FormProps> = ({
               defaultValue={editcomment}
               readOnly
             ></textarea>
-            <button onClick={() => getDescription(id_original, description)}>
+            <button onClick={() => onEdit(id_original, description)}>
               Edit
             </button>
           </div>

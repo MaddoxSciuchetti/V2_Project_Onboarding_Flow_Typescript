@@ -44,9 +44,13 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
   id,
   search,
 }) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [modalId, setId] = useState<number>();
-  const [modalDescription, setModalDescription] = useState<string>("");
+  const [modalState, setModalState] = useState<{
+    isOpen: boolean;
+    selectedItem: { id: number; description: string } | null;
+  }>({
+    isOpen: false,
+    selectedItem: null,
+  });
 
   async function sendFormData(formData: Mappingform): Promise<APIResponse> {
     const url = `${API_URL}/offboarding/editdata`;
@@ -119,20 +123,28 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
     return <div>Still loading</div>;
   }
 
-  function OnEditGetDescription(key: number, val: string) {
-    setIsOpen(true);
-    setId(key);
-    setModalDescription(val);
+  function openEditModal(id: number, description: string) {
+    setModalState({
+      isOpen: true,
+      selectedItem: { id, description },
+    });
+  }
+
+  function closeModal() {
+    setModalState({
+      isOpen: false,
+      selectedItem: null,
+    });
   }
 
   return (
     <>
       {/* needs the description from the Form */}
-      {isOpen && modalId && modalDescription && (
+      {modalState.isOpen && modalState.selectedItem && (
         <PreviewComponent
-          onClose={() => setIsOpen(false)}
-          id={modalId}
-          description={modalDescription}
+          onClose={closeModal}
+          id={modalState.selectedItem.id}
+          description={modalState.selectedItem.description}
         />
       )}
 
@@ -144,7 +156,7 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
           select_option={field.status}
           description={field.description}
           form_field_id={data.form.id}
-          getDescription={OnEditGetDescription}
+          onEdit={(id, description) => openEditModal(id, description)}
           handleSubmit={handleSubmit}
         />
       ))}
