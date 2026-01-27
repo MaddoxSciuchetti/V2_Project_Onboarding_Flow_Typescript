@@ -1,11 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useState } from "react";
 import z from "zod";
 import { API_URL } from "../api";
 import Form from "@/components/worker_components/worker_form_data";
 import { Mappingform } from "../schemas/Task";
 
 import { APIResponse } from "../types/api_response";
+import PreviewComponent from "@/components/worker_components/preivew_component";
 
 type form_field = {
   id: number;
@@ -43,6 +44,7 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
   id,
   search,
 }) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   async function sendFormData(formData: Mappingform): Promise<APIResponse> {
     const url = `${API_URL}/offboarding/editdata`;
     try {
@@ -76,6 +78,8 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
       const result = formSchema.safeParse(formValues);
       console.log(result);
 
+      // implement function get userid from cookies than the name -> show next to form
+
       if (!result.success) {
         console.log("validation errors", result.error);
         return;
@@ -88,7 +92,7 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
 
   async function fetchFormattedData(): Promise<api_Response> {
     const res = await fetch(
-      `${API_URL}/offboarding/user/${id}?param1=${search.param1}`
+      `${API_URL}/offboarding/user/${id}?param1=${search.param1}`,
     );
     if (!res.ok) {
       throw new Error("response not ok");
@@ -114,23 +118,23 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
 
   return (
     <>
-      <div className="modal-container">
-        <div className="main-form">
-          <div className="form-group">
-            {data?.form.fields.map((field: any, index: any) => (
-              <Form
-                key={index}
-                id_original={field.id}
-                editcomment={field.edit}
-                select_option={field.status}
-                description={field.description}
-                form_field_id={data.form.id}
-                handleSubmit={handleSubmit}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
+      {/* insert new components */}
+
+      <PreviewComponent onEditClick={() => setIsOpen(true)} />
+
+      {isOpen &&
+        data?.form.fields.map((field: any, index: number) => (
+          <Form
+            key={index}
+            id_original={field.id}
+            editcomment={field.edit}
+            select_option={field.status}
+            description={field.description}
+            form_field_id={data.form.id}
+            isOpen={isOpen}
+            handleSubmit={handleSubmit}
+          />
+        ))}
     </>
   );
 };
