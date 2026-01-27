@@ -83,6 +83,7 @@ export const offboardingGetuserbyId = async (req: Request, res: Response) => {
 
   console.log(JSON.stringify(response?.form.fields, null, 2));
 
+  console.log(response);
   return res.status(200).json(response);
 };
 
@@ -100,5 +101,7 @@ export const offboardingEditdata = async (req: Request, res: Response) => {
   // business log
 
   const editresponse = await editdata(request);
+
+  return res.status(200).json(editresponse);
 };
 ("UPDATE form_inputs SET edit=$1, status=$2 WHERE form_field_id= $3 AND employee_form_id = $4");
