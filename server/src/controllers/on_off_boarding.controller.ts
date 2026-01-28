@@ -103,25 +103,34 @@ export const historySchemaget = z.object({
   id: z.coerce.number(),
 });
 
-export const historySchema = historySchemaget.extend({
-  editcomment: z.string(),
-  select_option: z.string(),
+export const historySchema = z.object({
+  result: z.object({
+    id: z.coerce.number(),
+    editcomment: z.string(),
+    select_option: z.string(),
+  }),
+  user: z.object({
+    id: z.string(),
+    email: z.string(),
+    verified: z.boolean(),
+  }),
 });
 
-export const historyData = async (req: Request, res: Response) => {
+export type HistorySchemaType = z.infer<typeof historySchema>;
+
+export const gethistoryData = async (req: Request, res: Response) => {
   const id = req.params.id;
-  console.log("should be unique form id ", id);
 
   const parsedId = z.coerce.number().parse(id);
 
   const HistoryData = await getHistoryData(parsedId);
-  console.log("this is the histroydata result", HistoryData);
+  console.log(HistoryData);
 
   return res.status(200).json(HistoryData);
 };
 
-export const editHistoryData = async (req: Request, res: Response) => {
-  const result = historySchema.parse(req.body.result);
+export const postHistoryData = async (req: Request, res: Response) => {
+  const result = historySchema.parse(req.body);
 
   const HistoryData = await insertHistoryData(result);
 

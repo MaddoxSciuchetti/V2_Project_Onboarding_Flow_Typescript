@@ -75,6 +75,7 @@ model User {
 
   sessions Session[]
   verificationCodes VerificationCode[]
+  historyChanges HistoryFormData[]
 
 }
 
@@ -98,6 +99,9 @@ model HistoryFormData {
   status           String?        @db.VarChar(55)
   edit             String?
   timestamp        DateTime?      @default(now()) @db.Timestamp(6)
+  changed_by String
   form_inputs form_inputs @relation(fields: [form_input_id], references: [id], onDelete: Cascade)
+  auth_user User @relation(fields: [changed_by], references: [id])
+
 
 }

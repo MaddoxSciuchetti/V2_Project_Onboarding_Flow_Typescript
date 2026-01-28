@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { datevalidation } from "@/src/utils/datevalidation";
+import { HistorySchemaType } from "../controllers/on_off_boarding.controller";
 
 type dataObject = {
   type: string;
@@ -176,14 +177,13 @@ type historySchema = {
   select_option: string;
 };
 
-export const insertHistoryData = async (
-  data: historySchemaget & historySchema,
-) => {
+export const insertHistoryData = async (data: HistorySchemaType) => {
   return await prisma.historyFormData.createMany({
     data: {
-      status: data.select_option,
-      edit: data.editcomment,
-      form_input_id: data.id,
+      status: data.result.select_option,
+      edit: data.result.editcomment,
+      form_input_id: data.result.id,
+      changed_by: data.user.id,
     },
   });
 };
@@ -193,10 +193,17 @@ export const getHistoryData = async (data: number) => {
     where: {
       form_input_id: data,
     },
-    select: {
-      status: true,
-      edit: true,
-      timestamp: true,
+    include: {
+      auth_user: {
+        select: {
+          id: true,
+          email: true,
+          verified: true,
+        },
+      },
+    },
+    orderBy: {
+      timestamp: "desc",
     },
   });
 };
