@@ -18,7 +18,6 @@ import {
 } from "@/components/ui/accordion";
 import { useEffect, useState } from "react";
 import { useGetHistory } from "@/hooks/use-getHistoryData";
-import { ItemMedia } from "../ui/item";
 
 interface FormProps {
   id_original: number;
@@ -34,11 +33,6 @@ interface FormProps {
     select_option: string,
     form_field_id: number,
   ) => void;
-  // historyResult: {
-  //   edit: string;
-  //   status: string;
-  //   timestamp: string;
-  // };
 }
 
 const Form: React.FC<FormProps> = ({
@@ -61,7 +55,6 @@ const Form: React.FC<FormProps> = ({
   const { historyData, isLoading, error, refetchHistory } =
     useGetHistory(id_original);
 
-  console.log("useGetHistoryData", historyData);
   useEffect(() => {
     setSelectedValue(select_option || "");
     setEditComment(editcomment || "");

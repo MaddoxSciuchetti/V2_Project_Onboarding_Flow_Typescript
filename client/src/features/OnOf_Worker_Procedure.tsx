@@ -58,15 +58,6 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
     selectedItem: null,
   });
 
-  type HistoryItem = {
-    id: string;
-    status: string;
-    edit: string;
-  };
-
-  const [historyResult, setHistoryResult] = useState<
-    Record<number, HistoryItem[]>
-  >({});
   const queryClient = useQueryClient();
 
   const { user, isError } = useAuth();
@@ -114,8 +105,15 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
         console.log("validation errors", result.error);
         return;
       }
+      console.log("=== HandleSubmit ====");
+      console.log("Begin form result", result);
+      console.log(result.data.id);
 
       await insertHistoryData(result.data, user);
+      queryClient.invalidateQueries({
+        queryKey: ["formHistory", parseInt(result.data.id)],
+      });
+
       // await getHistoryData(result.data.id);
 
       const response = await sendFormData(result.data);
@@ -123,6 +121,7 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
         await queryClient.invalidateQueries({
           queryKey: ["somethingelse", id],
         });
+
         setModalState({ isOpen: false, selectedItem: null });
       }
     } catch (error) {
@@ -137,8 +136,9 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
     if (!res.ok) {
       throw new Error("response not ok");
     }
-    const json = await res.json();
-    return json;
+    const response = await res.json();
+
+    return response;
   }
 
   if (error) {
@@ -175,27 +175,6 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
       selectedItem: null,
     });
   }
-
-  // async function getHistoryData(id: string) {
-  //   try {
-  //     const response = await fetch(
-  //       `${API_URL}/offboarding/getHistoryData/${id}`,
-  //       {
-  //         method: "GET",
-  //       },
-  //     );
-  //     if (!response.ok) {
-  //       return { success: false, error: `HTTP ${response.status}` };
-  //     }
-
-  //     const result = await response.json();
-  //     setHistoryResult(result);
-  //     console.log("response from getHistoryData", result);
-  //     return { success: true, affectedRows: result };
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
 
   type insertHistoryDataType = z.infer<typeof formSchema>;
 
