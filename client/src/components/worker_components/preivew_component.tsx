@@ -31,7 +31,7 @@ function PreviewComponent({
   handleSubmit,
 }: PreviewCompoent) {
   const { lockScroll, unlockScroll } = useBodyScrollLock();
-  const [selectedValue, setSelectedValue] = useState(select_option);
+  const [selectedValue, setSelectedValue] = useState(select_option || "");
   useEffect(() => {
     lockScroll();
 

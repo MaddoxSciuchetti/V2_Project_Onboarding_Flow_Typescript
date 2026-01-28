@@ -29,12 +29,11 @@ type api_Response = {
 };
 
 const formSchema = z.object({
-  editcomment: z.string(),
-  form_field_id: z.string(),
   id: z.string(),
+  editcomment: z.string(),
   select_option: z.string(),
+  form_field_id: z.string(),
 });
-
 type OffboardingFormProps = {
   id: string;
   search: { param1: string }; // match validateSearch
@@ -58,10 +57,18 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
     selectedItem: null,
   });
 
+  type HistoryItem = {
+    id: string;
+    status: string;
+    edit: string;
+  };
+
+  const [historyResult, setHistoryResult] = useState<
+    Record<number, HistoryItem[]>
+  >({});
   const queryClient = useQueryClient();
 
-  console.log("first id", id);
-  const { data, error, isLoading, refetch } = useQuery<api_Response, Error>({
+  const { data, error, isLoading } = useQuery<api_Response, Error>({
     queryKey: ["somethingelse", id],
     queryFn: () => fetchFormattedData(),
   });
@@ -99,24 +106,17 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
       const formValues = Object.fromEntries(formData);
 
       const result = formSchema.safeParse(formValues);
-      console.log("this is the result", result);
-      console.log(result);
 
       if (!result.success) {
         console.log("validation errors", result.error);
         return;
       }
 
+      await insertHistoryData(result.data);
+      // await getHistoryData(result.data.id);
+
       const response = await sendFormData(result.data);
       if (response.success) {
-        console.log(
-          "All queries",
-          queryClient
-            .getQueryCache()
-            .getAll()
-            .map((q) => q.queryKey),
-        );
-        console.log("this worked out fine");
         await queryClient.invalidateQueries({
           queryKey: ["somethingelse", id],
         });
@@ -126,7 +126,6 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
       console.log(error);
     }
   }
-  console.log("thrid id", id);
 
   async function fetchFormattedData(): Promise<api_Response> {
     const res = await fetch(
@@ -148,7 +147,7 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
     return <div>Still loading</div>;
   }
 
-  function openEditModal(
+  async function openEditModal(
     id: number,
     description: string,
     editcomment: string,
@@ -172,6 +171,50 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
       isOpen: false,
       selectedItem: null,
     });
+  }
+
+  // async function getHistoryData(id: string) {
+  //   try {
+  //     const response = await fetch(
+  //       `${API_URL}/offboarding/getHistoryData/${id}`,
+  //       {
+  //         method: "GET",
+  //       },
+  //     );
+  //     if (!response.ok) {
+  //       return { success: false, error: `HTTP ${response.status}` };
+  //     }
+
+  //     const result = await response.json();
+  //     setHistoryResult(result);
+  //     console.log("response from getHistoryData", result);
+  //     return { success: true, affectedRows: result };
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+
+  type insertHistoryDataType = z.infer<typeof formSchema>;
+
+  async function insertHistoryData(result: insertHistoryDataType) {
+    try {
+      const response = await fetch(`${API_URL}/offboarding/editHisoryData`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          result,
+        }),
+      });
+      if (!response.ok) {
+        return { success: false, error: `HTTP ${response.status}` };
+      }
+      const result_API = await response.json();
+      return { success: true, affectedRows: result_API };
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -208,6 +251,7 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
             )
           }
           handleSubmit={handleSubmit}
+          // historyResult={historyResult}
         />
       ))}
     </>

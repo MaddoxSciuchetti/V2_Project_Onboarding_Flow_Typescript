@@ -10,9 +10,7 @@ export const Route = createFileRoute("/user/$Id")({
 
 function UserPage() {
   const { Id } = Route.useParams();
-  console.log("this is the id", Id);
   const search = Route.useSearch();
-  console.log("this is the search", search);
 
   return <OnOf_Worker_Procedure id={Id} search={search} />;
 }

@@ -17,6 +17,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { useEffect, useState } from "react";
+import { useGetHistory } from "@/hooks/use-getHistoryData";
+import { ItemMedia } from "../ui/item";
 
 interface FormProps {
   id_original: number;
@@ -32,6 +34,11 @@ interface FormProps {
     select_option: string,
     form_field_id: number,
   ) => void;
+  // historyResult: {
+  //   edit: string;
+  //   status: string;
+  //   timestamp: string;
+  // };
 }
 
 const Form: React.FC<FormProps> = ({
@@ -42,11 +49,19 @@ const Form: React.FC<FormProps> = ({
   form_field_id,
   handleSubmit,
   onEdit,
+  // historyResult,
 }) => {
   const [selectedValue, setSelectedValue] = useState(select_option || "");
+  const [editcommentValue, setEditComment] = useState(editcomment || "");
+
+  const { historyData, isLoading, error, refetchHistory } =
+    useGetHistory(id_original);
+
+  console.log("useGetHistoryData", historyData);
   useEffect(() => {
     setSelectedValue(select_option || "");
-  }, [select_option]);
+    setEditComment(editcomment || "");
+  }, [select_option, editcomment]);
   return (
     <>
       <div className="flex justify-center items-center w-max bg-amber-50 outline">
@@ -102,7 +117,7 @@ const Form: React.FC<FormProps> = ({
               placeholder="schreibe deine Notiz"
               id="edit"
               name="editcomment"
-              defaultValue={editcomment}
+              value={editcommentValue}
               readOnly
             ></textarea>
             <img
@@ -124,7 +139,17 @@ const Form: React.FC<FormProps> = ({
             <AccordionItem value="shipping">
               <AccordionTrigger>Verlauf</AccordionTrigger>
               <AccordionContent>
-                Placeholder für den aktuellen Verlauf
+                {isLoading ? (
+                  <p>Loading History</p>
+                ) : (
+                  (historyData || []).map((item: any, index: any) => (
+                    <div key={index}>
+                      <p>Status: {item.status}</p>
+                      <p>Comment: {item.edit}</p>
+                      <p>Time: {item.timestamp}</p>
+                    </div>
+                  ))
+                )}
               </AccordionContent>
             </AccordionItem>
           </Accordion>
