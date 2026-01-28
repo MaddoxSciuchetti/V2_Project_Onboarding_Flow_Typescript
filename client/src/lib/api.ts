@@ -76,7 +76,7 @@ export const getSessions = async (): Promise<Session_API> =>
 export const deleteSession = async (id: string): Promise<void> =>
   API.delete(`/sessions/${id}`);
 
-export const getHistoryData = async (id: string): Promise<any> => {
+export const getHistoryData = async (id: number): Promise<any> => {
   const response = await API.get(`/offboarding/getHistoryData/${id}`);
   return response;
 };

@@ -7,6 +7,7 @@ import { Mappingform } from "../schemas/Task";
 
 import { APIResponse } from "../types/api_response";
 import PreviewComponent from "@/components/worker_components/preivew_component";
+import useAuth from "@/hooks/useAuth";
 
 type form_field = {
   id: number;
@@ -68,6 +69,8 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
   >({});
   const queryClient = useQueryClient();
 
+  const { user, isError } = useAuth();
+
   const { data, error, isLoading } = useQuery<api_Response, Error>({
     queryKey: ["somethingelse", id],
     queryFn: () => fetchFormattedData(),
@@ -112,7 +115,7 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
         return;
       }
 
-      await insertHistoryData(result.data);
+      await insertHistoryData(result.data, user);
       // await getHistoryData(result.data.id);
 
       const response = await sendFormData(result.data);
@@ -196,7 +199,7 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
 
   type insertHistoryDataType = z.infer<typeof formSchema>;
 
-  async function insertHistoryData(result: insertHistoryDataType) {
+  async function insertHistoryData(result: insertHistoryDataType, user: any) {
     try {
       const response = await fetch(`${API_URL}/offboarding/editHisoryData`, {
         method: "POST",
@@ -205,6 +208,7 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
         },
         body: JSON.stringify({
           result,
+          user,
         }),
       });
       if (!response.ok) {

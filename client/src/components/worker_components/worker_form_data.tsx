@@ -51,8 +51,12 @@ const Form: React.FC<FormProps> = ({
   onEdit,
   // historyResult,
 }) => {
-  const [selectedValue, setSelectedValue] = useState(select_option || "");
-  const [editcommentValue, setEditComment] = useState(editcomment || "");
+  const [selectedValue, setSelectedValue] = useState<string>(
+    select_option || "",
+  );
+  const [editcommentValue, setEditComment] = useState<string>(
+    editcomment || "",
+  );
 
   const { historyData, isLoading, error, refetchHistory } =
     useGetHistory(id_original);
@@ -147,6 +151,7 @@ const Form: React.FC<FormProps> = ({
                       <p>Status: {item.status}</p>
                       <p>Comment: {item.edit}</p>
                       <p>Time: {item.timestamp}</p>
+                      <p>Nutzer: {item.auth_user.email}</p>
                     </div>
                   ))
                 )}
