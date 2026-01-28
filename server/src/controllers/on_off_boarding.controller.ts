@@ -5,7 +5,9 @@ import {
   deleteUser,
   editdata,
   fetchUser,
+  getHistoryData,
   getUserFormData,
+  insertHistoryData,
 } from "@/src/services/on_off_boarding.auth";
 export const postOffboardingData = async (req: Request, res: Response) => {
   // validate the request
@@ -15,9 +17,8 @@ export const postOffboardingData = async (req: Request, res: Response) => {
     };
 
     // business logic
-    console.log(request);
+
     const { user } = await createUser(request);
-    console.log({ sucess: user });
     return res.status(201).json({ success: user });
   } catch (error) {
     // return the response
@@ -36,7 +37,6 @@ export const fetchOffboardingData = async (req: Request, res: Response) => {
 
 export const offboardingDeletebyId = async (req: Request, res: Response) => {
   const id = +req.params.id;
-  console.log(id);
 
   const delete_user = await deleteUser(id);
 
@@ -46,10 +46,7 @@ export const offboardingDeletebyId = async (req: Request, res: Response) => {
 // formfetch
 export const offboardingGetuserbyId = async (req: Request, res: Response) => {
   const id = +req.params.id;
-  console.log(req.query);
-  console.log("this is the id", id);
   const param1 = req.query.param1;
-  console.log(param1);
 
   const user = await getUserFormData(id);
   if (!user) {
@@ -81,9 +78,6 @@ export const offboardingGetuserbyId = async (req: Request, res: Response) => {
     },
   };
 
-  console.log(JSON.stringify(response?.form.fields, null, 2));
-
-  console.log(response);
   return res.status(200).json(response);
 };
 
@@ -104,4 +98,32 @@ export const offboardingEditdata = async (req: Request, res: Response) => {
 
   return res.status(200).json(editresponse);
 };
-("UPDATE form_inputs SET edit=$1, status=$2 WHERE form_field_id= $3 AND employee_form_id = $4");
+
+export const historySchemaget = z.object({
+  id: z.coerce.number(),
+});
+
+export const historySchema = historySchemaget.extend({
+  editcomment: z.string(),
+  select_option: z.string(),
+});
+
+export const historyData = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  console.log("should be unique form id ", id);
+
+  const parsedId = z.coerce.number().parse(id);
+
+  const HistoryData = await getHistoryData(parsedId);
+  console.log("this is the histroydata result", HistoryData);
+
+  return res.status(200).json(HistoryData);
+};
+
+export const editHistoryData = async (req: Request, res: Response) => {
+  const result = historySchema.parse(req.body.result);
+
+  const HistoryData = await insertHistoryData(result);
+
+  return res.status(200).json(HistoryData || []);
+};

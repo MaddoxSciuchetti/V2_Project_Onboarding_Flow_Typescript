@@ -166,3 +166,37 @@ export const editdata = async (data: Data) => {
     },
   });
 };
+
+type historySchemaget = {
+  id: number;
+};
+
+type historySchema = {
+  editcomment: string;
+  select_option: string;
+};
+
+export const insertHistoryData = async (
+  data: historySchemaget & historySchema,
+) => {
+  return await prisma.historyFormData.createMany({
+    data: {
+      status: data.select_option,
+      edit: data.editcomment,
+      form_input_id: data.id,
+    },
+  });
+};
+
+export const getHistoryData = async (data: number) => {
+  return await prisma.historyFormData.findMany({
+    where: {
+      form_input_id: data,
+    },
+    select: {
+      status: true,
+      edit: true,
+      timestamp: true,
+    },
+  });
+};
