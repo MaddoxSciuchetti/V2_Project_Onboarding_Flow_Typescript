@@ -13,8 +13,8 @@ type form_field = {
   id: number;
   form_field_id: number;
   description: string;
-  status: string | null;
-  edit: string | null;
+  status: string;
+  edit: string;
 };
 
 type api_Response = {
@@ -35,6 +35,7 @@ const formSchema = z.object({
   select_option: z.string(),
   form_field_id: z.string(),
 });
+
 type OffboardingFormProps = {
   id: string;
   search: { param1: string }; // match validateSearch
@@ -109,6 +110,11 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
       console.log("Begin form result", result);
       console.log(result.data.id);
 
+      if (!user) {
+        console.log("user not authenticated");
+        return;
+      }
+
       await insertHistoryData(result.data, user);
       queryClient.invalidateQueries({
         queryKey: ["formHistory", parseInt(result.data.id)],
@@ -178,7 +184,18 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
 
   type insertHistoryDataType = z.infer<typeof formSchema>;
 
-  async function insertHistoryData(result: insertHistoryDataType, user: any) {
+  type user_verified = {
+    createdAt: string;
+    email: string;
+    id: string;
+    updatedAt: string;
+    verified: boolean;
+  };
+
+  async function insertHistoryData(
+    result: insertHistoryDataType,
+    user: user_verified,
+  ) {
     try {
       const response = await fetch(`${API_URL}/offboarding/editHisoryData`, {
         method: "POST",
@@ -216,7 +233,7 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
         />
       )}
 
-      {data?.form.fields.map((field: any, index: number) => (
+      {data?.form.fields.map((field: form_field, index: number) => (
         <Form
           key={index}
           id_original={field.id}

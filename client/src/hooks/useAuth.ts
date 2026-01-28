@@ -4,9 +4,11 @@ import { getUser } from "../lib/api";
 export const AUTH = "auth";
 
 type User = {
-  email: string;
-  verified: boolean;
   createdAt: string;
+  email: string;
+  id: string;
+  updatedAt: string;
+  verified: boolean;
 };
 
 type Auth = {
