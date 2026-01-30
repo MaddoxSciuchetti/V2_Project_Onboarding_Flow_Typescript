@@ -40,7 +40,7 @@ export const verifyEmail = async (
   return API.get<Verify, string>(`/auth/email/verify/${verificationCode.code}`);
 };
 
-export const sendPasswordResetEmail = async (email: any) =>
+export const sendPasswordResetEmail = async (email: string) =>
   API.post("/auth/password/forgot", { email });
 
 export type resetPassword = {
@@ -80,5 +80,28 @@ export const deleteSession = async (id: string): Promise<void> =>
 
 export const getHistoryData = async (id: number): Promise<any> => {
   const response = await API.get(`/offboarding/getHistoryData/${id}`);
+  return response;
+};
+
+type FileResponse = {
+  employee_form_id: number;
+  original_filename: string;
+  file_size: number;
+  content_type: string;
+  cloud_url: string;
+  cloud_key: string;
+};
+
+export const postFile = async (
+  files: File[],
+  id: string,
+): Promise<FileResponse> => {
+  const formData = new FormData();
+  files.forEach((file) => formData.append("files", file));
+  const response = await API.post<any, FileResponse>(
+    `offboarding/editdata/file/${id}`,
+
+    formData,
+  );
   return response;
 };

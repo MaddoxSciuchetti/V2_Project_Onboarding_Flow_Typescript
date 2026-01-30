@@ -8,6 +8,8 @@ import { Mappingform } from "../schemas/Task";
 import { APIResponse } from "../types/api_response";
 import PreviewComponent from "@/components/worker_components/preivew_component";
 import useAuth from "@/hooks/useAuth";
+import { Button } from "@/components/ui/button";
+import FileUpload01 from "@/components/ui/file_upload/form-main";
 
 type form_field = {
   id: number;
@@ -60,6 +62,8 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
   });
 
   const queryClient = useQueryClient();
+
+  const [activetab, setActiveTab] = useState<string>("form");
 
   const { user, isError } = useAuth();
 
@@ -220,40 +224,65 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
   return (
     <>
       {/* needs the description from the Form */}
+      <Button
+        className={activetab === "form" ? "active" : ""}
+        onClick={() => setActiveTab("form")}
+      >
+        Prozess
+      </Button>
+      <Button
+        className={activetab === "files" ? "active" : ""}
+        onClick={() => setActiveTab("files")}
+      >
+        Datein
+      </Button>
 
-      {modalState.isOpen && modalState.selectedItem && (
-        <PreviewComponent
-          onClose={closeModal}
-          id={modalState.selectedItem.id}
-          description={modalState.selectedItem.description}
-          editcomment={modalState.selectedItem.editcomment}
-          select_option={modalState.selectedItem.select_option}
-          form_field_id={modalState.selectedItem.form_field_id}
-          handleSubmit={handleSubmit}
-        />
-      )}
+      <div className="tab-content">
+        {activetab === "files" && <FileUpload01 id={id} />}
+        {activetab === "form" && (
+          <div>
+            {modalState.isOpen && modalState.selectedItem && (
+              <PreviewComponent
+                onClose={closeModal}
+                id={modalState.selectedItem.id}
+                description={modalState.selectedItem.description}
+                editcomment={modalState.selectedItem.editcomment}
+                select_option={modalState.selectedItem.select_option}
+                form_field_id={modalState.selectedItem.form_field_id}
+                handleSubmit={handleSubmit}
+              />
+            )}
 
-      {data?.form.fields.map((field: form_field, index: number) => (
-        <Form
-          key={index}
-          id_original={field.id}
-          editcomment={field.edit}
-          select_option={field.status}
-          description={field.description}
-          form_field_id={data.form.id}
-          onEdit={(id, description, editcomment, select_option, form_field) =>
-            openEditModal(
-              id,
-              description,
-              editcomment,
-              select_option,
-              form_field,
-            )
-          }
-          handleSubmit={handleSubmit}
-          // historyResult={historyResult}
-        />
-      ))}
+            {data?.form.fields.map((field: form_field, index: number) => (
+              <Form
+                key={index}
+                id_original={field.id}
+                editcomment={field.edit}
+                select_option={field.status}
+                description={field.description}
+                form_field_id={data.form.id}
+                onEdit={(
+                  id,
+                  description,
+                  editcomment,
+                  select_option,
+                  form_field,
+                ) =>
+                  openEditModal(
+                    id,
+                    description,
+                    editcomment,
+                    select_option,
+                    form_field,
+                  )
+                }
+                handleSubmit={handleSubmit}
+                // historyResult={historyResult}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </>
   );
 };
