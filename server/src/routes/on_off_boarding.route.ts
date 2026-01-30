@@ -7,7 +7,9 @@ import {
   offboardingDeletebyId,
   postHistoryData,
   gethistoryData,
+  postFileData,
 } from "../controllers/on_off_boarding.controller.ts";
+import { upload } from "../middleware/fileparser.ts";
 
 const offboarding_router = express.Router();
 
@@ -24,5 +26,11 @@ offboarding_router.put("/editdata", offboardingEditdata);
 offboarding_router.get("/getHistoryData/:id", gethistoryData);
 
 offboarding_router.post("/editHisoryData", postHistoryData);
+
+offboarding_router.post(
+  "/editdata/file/:id",
+  upload.array("files"),
+  postFileData,
+);
 
 export { offboarding_router };

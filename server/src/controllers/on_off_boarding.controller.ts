@@ -7,8 +7,10 @@ import {
   fetchUser,
   getHistoryData,
   getUserFormData,
+  insertFileData,
   insertHistoryData,
 } from "@/src/services/on_off_boarding.auth";
+import { uploadFileToS3 } from "../config/aws";
 export const postOffboardingData = async (req: Request, res: Response) => {
   // validate the request
   try {
@@ -124,7 +126,6 @@ export const gethistoryData = async (req: Request, res: Response) => {
   const parsedId = z.coerce.number().parse(id);
 
   const HistoryData = await getHistoryData(parsedId);
-  console.log(HistoryData);
 
   return res.status(200).json(HistoryData);
 };
@@ -135,4 +136,48 @@ export const postHistoryData = async (req: Request, res: Response) => {
   const HistoryData = await insertHistoryData(result);
 
   return res.status(200).json(HistoryData || []);
+};
+
+export const postFileData = async (req: Request, res: Response) => {
+  console.log("=== Express ===");
+  console.log(req.body);
+  const id = req.params.id;
+  const formId = Array.isArray(id) ? id[0] : id;
+
+  const files = req.files as Express.Multer.File[];
+  console.log("Received file", files?.length);
+
+  if (!files || files.length === 0) {
+    return res.status(400).json({ error: "No files uploded" });
+  }
+  const uploadFiles = [];
+  for (const file of files) {
+    const uploadResult = await uploadFileToS3(file, formId);
+
+    if (uploadResult.success && uploadResult.key && uploadResult.url) {
+      const fileData = {
+        employee_form_id: parseInt(formId),
+        original_filename: file.originalname,
+        file_size: file.size,
+        content_type: file.mimetype,
+        cloud_url: uploadResult.url,
+        cloud_key: uploadResult.key,
+      };
+      const savedfile = await insertFileData(fileData);
+
+      const sanitizedFile = {
+        ...savedfile,
+
+        id: savedfile.id.toString(),
+        employee_form_id: Number(savedfile.employee_form_id),
+        file_size: Number(savedfile.file_size),
+      };
+      uploadFiles.push(sanitizedFile);
+    }
+  }
+  res.json({
+    success: true,
+    files: uploadFiles,
+    count: uploadFiles.length,
+  });
 };

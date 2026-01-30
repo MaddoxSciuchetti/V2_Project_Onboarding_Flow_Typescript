@@ -207,3 +207,22 @@ export const getHistoryData = async (data: number) => {
     },
   });
 };
+
+export const insertFileData = async (fileData: {
+  employee_form_id: number;
+  original_filename: string;
+  file_size: number;
+  content_type: string;
+  cloud_url: string;
+  cloud_key: string;
+}) => {
+  try {
+    const savedfile = await prisma.workerFiles.create({
+      data: fileData,
+    });
+    return savedfile;
+  } catch (error) {
+    console.log("error with filedata insert", error);
+    throw new Error();
+  }
+};
