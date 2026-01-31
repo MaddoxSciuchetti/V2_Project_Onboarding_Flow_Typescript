@@ -11,19 +11,22 @@ import { useRef, useState } from "react";
 import { FileDropzone } from "./dropzone";
 import { FileList } from "./file-list";
 import { Form } from "./form";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { postFile } from "@/lib/api";
 
 interface FileUploadProps01 {
   id: string;
+  setModal: (val: boolean) => void;
 }
 
-export default function FileUpload01({ id }: FileUploadProps01) {
+export default function FileUpload01({ id, setModal }: FileUploadProps01) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [fileProgresses, setFileProgresses] = useState<Record<string, number>>(
     {},
   );
+
+  const queryClient = useQueryClient();
 
   const {
     mutate: uploadfiles,
@@ -37,6 +40,9 @@ export default function FileUpload01({ id }: FileUploadProps01) {
   const handleFileSubmit = () => {
     if (uploadedFiles.length > 0) {
       uploadfiles(uploadedFiles);
+      queryClient.invalidateQueries({
+        queryKey: ["historydata", id],
+      });
     }
   };
 
@@ -85,21 +91,15 @@ export default function FileUpload01({ id }: FileUploadProps01) {
   };
 
   return (
-    <div className="flex items-center justify-center p-10">
-      <Card className="w-full mx-auto max-w-lg bg-background rounded-lg p-0 shadow-md">
+    <div className="">
+      <div
+        onClick={() => setModal(false)}
+        className="h-screen inset-0 fixed z-40 bg-black/60"
+      ></div>
+
+      <Card className="absolute text-center items-center z-50 bg-gray-200 rounded-xl top-[20%] left-[50%] h-1/5 w-2xl -translate-x-1/2 -translate-y-1/2">
         <CardContent className="p-0">
-          <div className="p-6 pb-4">
-            <div className="flex justify-between items-start">
-              <div>
-                <h2 className="text-lg font-medium text-foreground">
-                  Create a new project
-                </h2>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Drag and drop files to create a new project.
-                </p>
-              </div>
-            </div>
-          </div>
+          <div className="p-6 pb-4"></div>
           <Form />
           <FileDropzone
             fileInputRef={fileInputRef}
@@ -123,12 +123,11 @@ export default function FileUpload01({ id }: FileUploadProps01) {
                     className="flex items-center text-muted-foreground hover:text-foreground"
                   >
                     <HelpCircle className="h-4 w-4 mr-1" />
-                    Need help?
+                    Hilfe?
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent className="py-3 bg-background text-foreground border">
                   <div className="space-y-1">
-                    <p className="text-[13px] font-medium">Need assistance?</p>
                     <p className="text-muted-foreground dark:text-muted-background text-xs max-w-[200px]">
                       Upload project images by dragging and dropping files or
                       using the file browser. Supported formats: JPG, PNG, SVG.
@@ -144,13 +143,13 @@ export default function FileUpload01({ id }: FileUploadProps01) {
                 variant="outline"
                 className="h-9 px-4 text-sm font-medium"
               >
-                Cancel
+                Abbrechen
               </Button>
               <Button
                 onClick={handleFileSubmit}
                 className="h-9 px-4 text-sm font-medium"
               >
-                Continue
+                Erstellen
               </Button>
             </div>
           </div>

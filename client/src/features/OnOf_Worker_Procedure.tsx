@@ -10,6 +10,7 @@ import PreviewComponent from "@/components/worker_components/preivew_component";
 import useAuth from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import FileUpload01 from "@/components/ui/file_upload/form-main";
+import Worker_Backround from "@/components/backround_worker";
 
 type form_field = {
   id: number;
@@ -223,65 +224,68 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
 
   return (
     <>
-      {/* needs the description from the Form */}
-      <Button
-        className={activetab === "form" ? "active" : ""}
-        onClick={() => setActiveTab("form")}
-      >
-        Prozess
-      </Button>
-      <Button
-        className={activetab === "files" ? "active" : ""}
-        onClick={() => setActiveTab("files")}
-      >
-        Datein
-      </Button>
+      <div className="flex flex-col h-full max-w-4xl mx-auto">
+        <div className=" bg-white border-b border-gray-200 p-4 outline w-xl">
+          <Button
+            className={activetab === "form" ? "active" : ""}
+            onClick={() => setActiveTab("form")}
+          >
+            Prozess
+          </Button>
+          <Button
+            variant={"outline"}
+            className={activetab === "files" ? "active" : ""}
+            onClick={() => setActiveTab("files")}
+          >
+            Datein
+          </Button>
+        </div>
+        <div>
+          {activetab === "files" && <Worker_Backround id={id} />}
+          {activetab === "form" && (
+            <div className=" ">
+              {modalState.isOpen && modalState.selectedItem && (
+                <PreviewComponent
+                  onClose={closeModal}
+                  id={modalState.selectedItem.id}
+                  description={modalState.selectedItem.description}
+                  editcomment={modalState.selectedItem.editcomment}
+                  select_option={modalState.selectedItem.select_option}
+                  form_field_id={modalState.selectedItem.form_field_id}
+                  handleSubmit={handleSubmit}
+                />
+              )}
 
-      <div className="tab-content">
-        {activetab === "files" && <FileUpload01 id={id} />}
-        {activetab === "form" && (
-          <div>
-            {modalState.isOpen && modalState.selectedItem && (
-              <PreviewComponent
-                onClose={closeModal}
-                id={modalState.selectedItem.id}
-                description={modalState.selectedItem.description}
-                editcomment={modalState.selectedItem.editcomment}
-                select_option={modalState.selectedItem.select_option}
-                form_field_id={modalState.selectedItem.form_field_id}
-                handleSubmit={handleSubmit}
-              />
-            )}
-
-            {data?.form.fields.map((field: form_field, index: number) => (
-              <Form
-                key={index}
-                id_original={field.id}
-                editcomment={field.edit}
-                select_option={field.status}
-                description={field.description}
-                form_field_id={data.form.id}
-                onEdit={(
-                  id,
-                  description,
-                  editcomment,
-                  select_option,
-                  form_field,
-                ) =>
-                  openEditModal(
+              {data?.form.fields.map((field: form_field, index: number) => (
+                <Form
+                  key={index}
+                  id_original={field.id}
+                  editcomment={field.edit}
+                  select_option={field.status}
+                  description={field.description}
+                  form_field_id={data.form.id}
+                  onEdit={(
                     id,
                     description,
                     editcomment,
                     select_option,
                     form_field,
-                  )
-                }
-                handleSubmit={handleSubmit}
-                // historyResult={historyResult}
-              />
-            ))}
-          </div>
-        )}
+                  ) =>
+                    openEditModal(
+                      id,
+                      description,
+                      editcomment,
+                      select_option,
+                      form_field,
+                    )
+                  }
+                  handleSubmit={handleSubmit}
+                  // historyResult={historyResult}
+                />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </>
   );

@@ -1,3 +1,4 @@
+import { File_Request } from "@/components/backround_worker";
 import API from "@/config/apiClient";
 import { Session } from "react-router-dom";
 import { User } from "shared_prisma_types";
@@ -99,9 +100,13 @@ export const postFile = async (
   const formData = new FormData();
   files.forEach((file) => formData.append("files", file));
   const response = await API.post<any, FileResponse>(
-    `offboarding/editdata/file/${id}`,
+    `/offboarding/editdata/file/${id}`,
 
     formData,
   );
   return response;
+};
+
+export const fetchFileData = async (id: string): Promise<File_Request[]> => {
+  return API.get(`/offboarding/getFileData/file/${id}`);
 };
