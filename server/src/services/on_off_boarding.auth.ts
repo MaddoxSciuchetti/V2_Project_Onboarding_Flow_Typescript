@@ -226,3 +226,12 @@ export const insertFileData = async (fileData: {
     throw new Error();
   }
 };
+
+export const fetchFileData = async (id: number) => {
+  const files = await prisma.workerFiles.findMany({
+    where: {
+      employee_form_id: id,
+    },
+  });
+  return { files };
+};

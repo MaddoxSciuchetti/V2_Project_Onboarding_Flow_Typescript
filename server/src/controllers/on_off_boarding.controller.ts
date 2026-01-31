@@ -4,13 +4,14 @@ import {
   createUser,
   deleteUser,
   editdata,
+  fetchFileData,
   fetchUser,
   getHistoryData,
   getUserFormData,
   insertFileData,
   insertHistoryData,
 } from "@/src/services/on_off_boarding.auth";
-import { uploadFileToS3 } from "../config/aws";
+import { generatePresignedUrl, uploadFileToS3 } from "../config/aws";
 export const postOffboardingData = async (req: Request, res: Response) => {
   // validate the request
   try {
@@ -140,7 +141,7 @@ export const postHistoryData = async (req: Request, res: Response) => {
 
 export const postFileData = async (req: Request, res: Response) => {
   console.log("=== Express ===");
-  console.log(req.body);
+  console.log("this is the body of EXpress", req.body);
   const id = req.params.id;
   const formId = Array.isArray(id) ? id[0] : id;
 
@@ -180,4 +181,27 @@ export const postFileData = async (req: Request, res: Response) => {
     files: uploadFiles,
     count: uploadFiles.length,
   });
+};
+
+export const getFileData = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const parsedId = z.coerce.number().parse(id);
+    const { files } = await fetchFileData(parsedId);
+
+    const presignedUrl = await Promise.all(
+      files.map(async (file) => ({
+        ...file,
+        id: file.toString(),
+        employee_form_id: file.employee_form_id.toString(),
+        cloud_url: await generatePresignedUrl(file.cloud_key),
+      })),
+    );
+
+    console.log(files);
+    return res.status(200).json(presignedUrl);
+  } catch (error) {
+    console.log(error);
+  }
 };

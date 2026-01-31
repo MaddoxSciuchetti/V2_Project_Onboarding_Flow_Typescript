@@ -8,6 +8,7 @@ import {
   postHistoryData,
   gethistoryData,
   postFileData,
+  getFileData,
 } from "../controllers/on_off_boarding.controller.ts";
 import { upload } from "../middleware/fileparser.ts";
 
@@ -32,5 +33,7 @@ offboarding_router.post(
   upload.array("files"),
   postFileData,
 );
+
+offboarding_router.get("/getFileData/file/:id", getFileData);
 
 export { offboarding_router };

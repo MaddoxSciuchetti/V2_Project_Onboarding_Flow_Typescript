@@ -111,7 +111,7 @@ model WorkerFiles {
   id Int @id @default(autoincrement())
   employee_form_id Int
   original_filename String @db.VarChar(255)
-  file_size BigInt 
+  file_size Int 
   content_type String @db.VarChar(100)
   cloud_url String @db.VarChar(500)
   cloud_key String @db.VarChar(500)
