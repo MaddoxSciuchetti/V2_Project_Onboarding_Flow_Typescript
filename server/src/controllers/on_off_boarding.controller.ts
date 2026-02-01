@@ -157,13 +157,15 @@ export const postFileData = async (req: Request, res: Response) => {
 
     if (uploadResult.success && uploadResult.key && uploadResult.url) {
       const fileData = {
-        employee_form_id: parseInt(formId),
+        userId: parseInt(formId),
         original_filename: file.originalname,
         file_size: file.size,
         content_type: file.mimetype,
         cloud_url: uploadResult.url,
         cloud_key: uploadResult.key,
       };
+      console.log("=== FileData ===");
+      console.log(fileData);
       const savedfile = await insertFileData(fileData);
 
       const sanitizedFile = {

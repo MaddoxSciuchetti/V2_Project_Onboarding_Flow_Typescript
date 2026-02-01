@@ -96,10 +96,16 @@ export const fetchUser = async () => {
       employee_forms: {
         select: {
           form_type: true,
+          id: true,
         },
       },
     },
   });
+
+  user_information.forEach((user) => {
+    console.log(user.employee_forms);
+  });
+
   return {
     user_information,
   };
@@ -209,7 +215,7 @@ export const getHistoryData = async (data: number) => {
 };
 
 export const insertFileData = async (fileData: {
-  employee_form_id: number;
+  userId: number;
   original_filename: string;
   file_size: number;
   content_type: string;
@@ -217,20 +223,46 @@ export const insertFileData = async (fileData: {
   cloud_key: string;
 }) => {
   try {
+    const employeeForm = await prisma.employee_forms.findFirst({
+      where: {
+        user_id: fileData.userId,
+      },
+    });
+
+    if (!employeeForm) {
+      throw new Error(`No employee form found for user ${fileData.userId}`);
+    }
+
     const savedfile = await prisma.workerFiles.create({
-      data: fileData,
+      data: {
+        employee_form_id: employeeForm.id,
+        original_filename: fileData.original_filename,
+        file_size: fileData.file_size,
+        content_type: fileData.content_type,
+        cloud_url: fileData.cloud_url,
+        cloud_key: fileData.cloud_key,
+      },
     });
     return savedfile;
   } catch (error) {
     console.log("error with filedata insert", error);
-    throw new Error();
+    throw error;
   }
 };
 
-export const fetchFileData = async (id: number) => {
+export const fetchFileData = async (userId: number) => {
   const files = await prisma.workerFiles.findMany({
     where: {
-      employee_form_id: id,
+      employee_forms: {
+        user_id: userId,
+      },
+    },
+    include: {
+      employee_forms: {
+        include: {
+          users: true,
+        },
+      },
     },
   });
   return { files };
