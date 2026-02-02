@@ -108,7 +108,16 @@ export const postFile = async (
 };
 
 export const fetchFileData = async (id: number): Promise<File_Request[]> => {
-  return API.get(`/offboarding/getFileData/file/${id}`);
+  const response = API.get<any, File_Request[]>(
+    `/offboarding/getFileData/file/${id}`,
+  );
+  return response;
+};
+
+export const deleteFileData = async (
+  id: number,
+): Promise<{ message: string }> => {
+  return API.delete(`offboarding/deleteFileData/${id}`);
 };
 
 export const fetchProcessData = async (
