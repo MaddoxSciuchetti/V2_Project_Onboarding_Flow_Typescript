@@ -2,6 +2,7 @@ import type { Request, Response } from "express-serve-static-core";
 import z from "zod";
 import {
   createUser,
+  deleteFiles,
   deleteUser,
   editdata,
   fetchFileData,
@@ -191,12 +192,12 @@ export const getFileData = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     const parsedId = z.coerce.number().parse(id);
-    const { files } = await fetchFileData(parsedId);
+    const files = await fetchFileData(parsedId);
 
     const presignedUrl = await Promise.all(
       files.map(async (file) => ({
         ...file,
-        id: file.toString(),
+        id: file.id.toString(),
         employee_form_id: file.employee_form_id.toString(),
         cloud_url: await generatePresignedUrl(file.cloud_key),
       })),
@@ -218,4 +219,16 @@ export const getProcessData = async (req: Request, res: Response) => {
     console.log(formData);
     return res.status(200).send({ formData });
   } catch (error) {}
+};
+
+export const deleteFileData = async (req: Request, res: Response) => {
+  try {
+    const id = +req.params.id;
+    console.log(id);
+    const response = deleteFiles(id);
+
+    return res.status(200).json({ sucess: true });
+  } catch (error) {
+    console.log(error);
+  }
 };

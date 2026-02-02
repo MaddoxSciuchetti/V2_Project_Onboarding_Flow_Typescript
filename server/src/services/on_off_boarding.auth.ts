@@ -265,5 +265,17 @@ export const fetchFileData = async (userId: number) => {
       },
     },
   });
-  return { files };
+  return files;
+};
+
+export const deleteFiles = async (id: number) => {
+  const existingFile = await prisma.workerFiles.findUnique({
+    where: { id },
+  });
+  if (!existingFile) {
+    throw new Error(`File with id ${id} not found`);
+  }
+  return await prisma.workerFiles.delete({
+    where: { id },
+  });
 };
