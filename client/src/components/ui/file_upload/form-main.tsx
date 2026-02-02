@@ -35,14 +35,24 @@ export default function FileUpload01({ id, setModal }: FileUploadProps01) {
     error,
   } = useMutation({
     mutationFn: (files: File[]) => postFile(files, id),
+    onSuccess: () => {
+      console.log("Upload successful, invalidting");
+      queryClient.invalidateQueries({
+        queryKey: ["historyData", id],
+      });
+
+      setModal(false);
+      setUploadedFiles([]);
+      setFileProgresses({});
+    },
+    onError: (error) => {
+      console.log(error);
+    },
   });
 
-  const handleFileSubmit = () => {
+  const handleFileSubmit = async () => {
     if (uploadedFiles.length > 0) {
       uploadfiles(uploadedFiles);
-      queryClient.invalidateQueries({
-        queryKey: ["historydata", id],
-      });
     }
   };
 
@@ -97,8 +107,10 @@ export default function FileUpload01({ id, setModal }: FileUploadProps01) {
         className="h-screen inset-0 fixed z-40 bg-black/60"
       ></div>
 
-      <Card className="absolute text-center items-center z-50 bg-gray-200 rounded-xl top-[20%] left-[50%] h-1/5 w-2xl -translate-x-1/2 -translate-y-1/2">
-        <CardContent className="p-0">
+      <Card className="absolute text-center items-center z-50 bg-gray-200 rounded-xl top-[40%] left-[50%] h-2/5 w-2xl -translate-x-1/2 -translate-y-1/2">
+        {isLoading ? <div>...</div> : ""}
+        {error ? <div>Try again</div> : ""}
+        <CardContent className="">
           <div className="p-6 pb-4"></div>
           <Form />
           <FileDropzone
@@ -142,6 +154,7 @@ export default function FileUpload01({ id, setModal }: FileUploadProps01) {
               <Button
                 variant="outline"
                 className="h-9 px-4 text-sm font-medium"
+                onClick={() => setModal(false)}
               >
                 Abbrechen
               </Button>

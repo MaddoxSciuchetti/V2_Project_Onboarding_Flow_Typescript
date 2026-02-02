@@ -1,8 +1,14 @@
 import { useState } from "react";
 import { Button } from "./ui/button";
 import FileUpload01 from "./ui/file_upload/form-main";
-import { useQuery } from "@tanstack/react-query";
+import {
+  QueryClient,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { fetchFileData } from "@/lib/api";
+import { deleteFileData } from "@/lib/api";
 
 interface Worker_Backround {
   id: number;
@@ -16,6 +22,12 @@ export type File_Request = {
   cloud_url: string;
   cloud_key: string;
   uploaded_at: Date;
+  employee_forms: {
+    form_type: "Onboarding" | "Offboarding";
+    id: number;
+    timestamp: string;
+    user_id: number;
+  };
 };
 
 export const fileIcon = (content_type: string) => {
@@ -37,9 +49,32 @@ function Worker_Backround({ id }: Worker_Backround) {
     data: fetchFiles,
     error,
     isLoading,
+    isFetching,
   } = useQuery<File_Request[]>({
     queryKey: ["historyData", id],
     queryFn: () => fetchFileData(id),
+  });
+  console.log("Is fetching", isFetching);
+  console.log(id);
+
+  console.log("fetchfiles", fetchFiles);
+
+  const queryClient = useQueryClient();
+
+  const { mutate: deleteFiles } = useMutation({
+    mutationFn: (fileId: number) => deleteFileData(fileId),
+    onMutate: async (fileId) => {
+      await queryClient.cancelQueries({ queryKey: ["historyData", id] });
+
+      queryClient.setQueryData<File_Request[]>(
+        ["historyData", id],
+        (old) => old?.filter((file) => file.id !== fileId) || [],
+      );
+    },
+    onError: () => {
+      queryClient.invalidateQueries({ queryKey: ["historyData", id] });
+      console.log("this is the invalidation number");
+    },
   });
 
   return (
@@ -56,13 +91,23 @@ function Worker_Backround({ id }: Worker_Backround) {
               <div
                 key={index}
                 className="border rounded-lg p-3 hover:bg-gray-50 cursor-pointer transition-colors"
-                onClick={() => window.open(file.cloud_url, "_blank")}
               >
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deleteFiles(file.id);
+                  }}
+                >
+                  X
+                </Button>
                 <div className="text-center">
                   <div className="text-2xl mb-2">
                     {fileIcon(file.content_type)}
                   </div>
-                  <p className="text-sm font-medium truncate">
+                  <p
+                    className="text-sm font-medium truncate"
+                    onClick={() => window.open(file.cloud_url, "_blank")}
+                  >
                     {getFileName(file.cloud_url, file.original_filename)}
                   </p>
                   <p className="text-xs text-gray-500 mt-1">
