@@ -35,7 +35,8 @@ function Ceo_Dashboard() {
     () => chefdata?.filter((item) => item.owner === selectedUser) || [],
     [selectedUser, chefdata],
   );
-  console.log("selected user data", selectUserData);
+  console.log("SELECTED USER DATA");
+  console.log(selectUserData);
 
   if (isLoading) return <div>Loading</div>;
   if (error) console.log(error);

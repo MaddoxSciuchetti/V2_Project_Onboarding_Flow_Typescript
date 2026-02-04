@@ -15,6 +15,7 @@ export type form_field = {
   id: number;
   form_field_id: number;
   description: string;
+  owner: string;
   status: string;
   edit: string;
 };
@@ -265,6 +266,7 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
                   editcomment={field.edit}
                   select_option={field.status}
                   description={field.description}
+                  owner={field.owner}
                   form_field_id={data.form.id}
                   onEdit={(
                     id,

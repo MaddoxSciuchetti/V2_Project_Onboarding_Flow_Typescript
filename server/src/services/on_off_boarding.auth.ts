@@ -150,6 +150,7 @@ export const getUserFormData = async (id: any) => {
               form_fields: {
                 select: {
                   description: true,
+                  owner: true,
                 },
               },
             },

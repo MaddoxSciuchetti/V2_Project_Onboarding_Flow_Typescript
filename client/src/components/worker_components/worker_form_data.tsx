@@ -22,6 +22,7 @@ import { useGetHistory } from "@/hooks/use-getHistoryData";
 interface FormProps {
   id_original: number;
   description: string;
+  owner: string;
   editcomment: string;
   select_option: string;
   form_field_id: number;
@@ -38,6 +39,7 @@ interface FormProps {
 const Form: React.FC<FormProps> = ({
   id_original,
   description,
+  owner,
   editcomment,
   select_option,
   form_field_id,
@@ -76,6 +78,9 @@ const Form: React.FC<FormProps> = ({
           />
           <div className="field">
             <p>{description}</p>
+            <div>
+              <p>Verantwortlich: {owner}</p>
+            </div>
 
             <input type="hidden" name="select_option" value={selectedValue} />
             <Select
