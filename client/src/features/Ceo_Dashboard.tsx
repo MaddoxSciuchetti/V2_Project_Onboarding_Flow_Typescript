@@ -1,41 +1,26 @@
-import { AccordionDemo } from "@/components/admin_data/accordion";
+import { AccordionDemo } from "@/components/admin_data/CAccordion";
 import AdminModal from "@/components/admin_data/AdminModal";
 import { Button } from "@/components/ui/button";
 import { EmployFormSchema, fetchChefData } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import z from "zod";
+import useCeoDashboard from "@/hooks/useCeoDashboard";
 
 export type TEmployForm = z.infer<typeof EmployFormSchema>;
 
 function Ceo_Dashboard() {
-  const [selectedUser, setSelectedUser] = useState<string | null>(null);
-
   const {
-    data: chefdata,
+    chefdata,
+    uniqueUsersByOwner,
+    setSelectedUser,
+    setModalOpen,
+    modal,
+    selectedUser,
+    selectUserData,
     isLoading,
     error,
-  } = useQuery<TEmployForm>({
-    queryKey: ["user"],
-    queryFn: fetchChefData,
-  });
-
-  const uniqueUsersByOwner = useMemo(() => {
-    if (!chefdata) return [];
-    const ownerToUserMap = new Map<string, TEmployForm[0]>();
-    chefdata.forEach((item) => {
-      if (!ownerToUserMap.has(item.owner)) {
-        ownerToUserMap.set(item.owner, item);
-      }
-    });
-    return Array.from(ownerToUserMap.values());
-  }, [chefdata]);
-
-  const selectUserData = useMemo(
-    () => chefdata?.filter((item) => item.owner === selectedUser) || [],
-    [selectedUser, chefdata],
-  );
-  console.log("selected user data", selectUserData);
+  } = useCeoDashboard();
 
   if (isLoading) return <div>Loading</div>;
   if (error) console.log(error);
@@ -63,7 +48,10 @@ function Ceo_Dashboard() {
                   className="outline outline-red-500"
                   // onClick={() => setModalOpen(true)}
                 >
-                  <AccordionDemo data={selectUserData} />
+                  <AccordionDemo
+                    data={selectUserData}
+                    onTaskClick={() => setModalOpen(true)}
+                  />
                 </div>
               </div>
             ) : (
@@ -72,6 +60,7 @@ function Ceo_Dashboard() {
           </div>
         </div>
       </div>
+      {modal && <AdminModal onClose={() => setModalOpen(false)} />}
     </>
   );
 }

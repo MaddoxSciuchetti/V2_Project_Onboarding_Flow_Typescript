@@ -52,6 +52,7 @@ export const offboardingDeletebyId = async (req: Request, res: Response) => {
 };
 
 // formfetch
+
 export const offboardingGetuserbyId = async (req: Request, res: Response) => {
   const id = +req.params.id;
   const param1 = req.query.param1;
@@ -76,10 +77,11 @@ export const offboardingGetuserbyId = async (req: Request, res: Response) => {
     form: {
       id: form.id,
       type: form.form_type,
-      fields: form.form_inputs.map((input: any) => ({
+      fields: form.form_inputs.map((input) => ({
         id: input.id,
         form_field_id: input.form_field_id,
         description: input.form_fields.description,
+        owner: input.form_fields.owner,
         status: input.status,
         edit: input.edit,
       })),
