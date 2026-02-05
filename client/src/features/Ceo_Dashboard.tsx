@@ -5,36 +5,21 @@ import { EmployFormSchema, fetchChefData } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import z from "zod";
+import useCeoDashboard from "@/hooks/useCeoDashboard";
 
 export type TEmployForm = z.infer<typeof EmployFormSchema>;
 
 function Ceo_Dashboard() {
-  const [selectedUser, setSelectedUser] = useState<string | null>(null);
-
   const {
-    data: chefdata,
+    chefdata,
+    uniqueUsersByOwner,
+    setSelectedUser,
+    selectedUser,
+    selectUserData,
     isLoading,
     error,
-  } = useQuery<TEmployForm>({
-    queryKey: ["user"],
-    queryFn: fetchChefData,
-  });
+  } = useCeoDashboard();
 
-  const uniqueUsersByOwner = useMemo(() => {
-    if (!chefdata) return [];
-    const ownerToUserMap = new Map<string, TEmployForm[0]>();
-    chefdata.forEach((item) => {
-      if (!ownerToUserMap.has(item.owner)) {
-        ownerToUserMap.set(item.owner, item);
-      }
-    });
-    return Array.from(ownerToUserMap.values());
-  }, [chefdata]);
-
-  const selectUserData = useMemo(
-    () => chefdata?.filter((item) => item.owner === selectedUser) || [],
-    [selectedUser, chefdata],
-  );
   console.log("SELECTED USER DATA");
   console.log(selectUserData);
 

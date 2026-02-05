@@ -193,33 +193,6 @@ function OnOf_Home() {
               ))}
             </TableBody>
           </Table>
-
-          {/* <div className="outline outline-blue-600">
-            <table className="">
-              <thead>
-                <tr>
-                  <th>Handwerker</th>
-                  <th>Status</th>
-                  <th>Bearbeiten</th>
-                  <th>Offene Aufgaben</th>
-                  <th>Aktionen</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data?.map((task: OffboardingItem) => (
-                  <Worker_Item
-                    key={task.id}
-                    item_value={task.id}
-                    // somewhere here the wrong id is being passed.
-                    form_type={getFirstFormType(task)}
-                    item={task.vorname}
-                    onRemove={removeTask}
-                    gotopage={handleNavigate}
-                  />
-                ))}
-              </tbody>
-            </table>
-          </div> */}
         </div>
 
         {modal && (
