@@ -5,7 +5,7 @@ import { API_URL } from "../api";
 import Form from "@/components/worker_components/worker_form_data";
 import { Mappingform } from "../schemas/Task";
 
-import { APIResponse } from "../types/api_response";
+import { APIResponse, ErrorResponse } from "../types/api_response";
 import PreviewComponent from "@/components/worker_components/preivew_component";
 import useAuth from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
@@ -22,6 +22,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
+import { tryCatch } from "@/lib/utils";
+import { editData, formattedData } from "@/lib/api";
+// import { ErrorResponse } from "react-router-dom";
 
 export type form_field = {
   id: number;
@@ -35,7 +38,8 @@ export type form_field = {
 export type api_Response = {
   user: {
     id: number;
-    name: string;
+    vorname: string;
+    nachname: string;
   };
   form: {
     id: number;
@@ -78,37 +82,25 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
 
   const [activetab, setActiveTab] = useState<string>("form");
 
-  const { user, isError } = useAuth();
+  const { user } = useAuth();
 
-  const { data, error, isLoading } = useQuery<api_Response, Error>({
+  const { data, error, isLoading, isError } = useQuery<api_Response>({
     queryKey: ["somethingelse", id],
     queryFn: () => fetchFormattedData(),
   });
 
+  if (!data) {
+    return <div>Hello</div>;
+  }
+
   async function sendFormData(formData: Mappingform): Promise<APIResponse> {
     const url = `${API_URL}/offboarding/editdata`;
 
-    try {
-      const response = await fetch(url, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-      if (!response.ok) {
-        return { success: false, error: `HTTP ${response.status}` };
-      }
-
-      const result = await response.json();
-
-      return { success: true, affectedRows: result.affectedRows };
-    } catch (error) {
-      return {
-        success: false,
-        error: error instanceof Error ? error.message : "unkown error",
-      };
+    const [result, resultError] = await tryCatch(editData(formData));
+    if (resultError) {
+      return { success: false, error: resultError.message };
     }
+    return { success: true, affectedRows: result.affectedRows };
   }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -123,10 +115,6 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
         console.log("validation errors", result.error);
         return;
       }
-      console.log("=== HandleSubmit ====");
-      console.log("Begin form result", result);
-      console.log(result.data.id);
-
       if (!user) {
         console.log("user not authenticated");
         return;
@@ -137,10 +125,8 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
         queryKey: ["formHistory", parseInt(result.data.id)],
       });
 
-      // await getHistoryData(result.data.id);
-
       const response = await sendFormData(result.data);
-      if (response.success) {
+      if (response.success === true) {
         await queryClient.invalidateQueries({
           queryKey: ["somethingelse", id],
         });
@@ -153,27 +139,22 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
   }
 
   async function fetchFormattedData(): Promise<api_Response> {
-    const res = await fetch(
-      `${API_URL}/offboarding/user/${id}?param1=${search.param1}`,
-    );
+    const [response, error] = await tryCatch(formattedData(id, search.param1));
+    // const res = await fetch(
+    //   `${API_URL}/offboarding/user/${id}?param1=${search.param1}`,
+    // );
 
-    if (!res.ok) {
-      throw new Error("response not ok");
+    // if (!res.ok) {
+    //   throw new Error("response not ok");
+    // }
+    // console.log("=== Fetch formData === ");
+    // const response = await res.json();
+    // console.log(response);
+    if (error) {
+      throw new Error("");
     }
-    console.log("=== Fetch formData === ");
-    const response = await res.json();
-    console.log(response);
 
     return response;
-  }
-
-  if (error) {
-    // component
-    return <div>This is a error {error.message}</div>;
-  }
-  if (isLoading) {
-    // component
-    return <div>Still loading</div>;
   }
 
   async function openEditModal(
@@ -273,7 +254,7 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
                 />
               )}
 
-              {data?.form.fields.map((field: form_field, index: number) => (
+              {data.form.fields.map((field: form_field, index: number) => (
                 <Form
                   key={index}
                   id_original={field.id}

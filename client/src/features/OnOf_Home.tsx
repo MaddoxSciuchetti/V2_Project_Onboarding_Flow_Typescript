@@ -46,13 +46,6 @@ export type OffboardingItem = {
 };
 
 function OnOf_Home() {
-  // async function fetchNameData(): Promise<OffboardingItem[]> {
-  //   const response = await (
-  //     await fetch(`${API_URL}/offboarding/fetchData`)
-  //   ).json();
-  //   console.log("this is data send from server", response);
-  //   return response;
-  // }
   const { toggleSidebar } = useSidebar();
 
   const { data, error, isSuccess } = useQuery<OffboardingItem[]>({
