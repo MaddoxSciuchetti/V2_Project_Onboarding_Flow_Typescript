@@ -66,9 +66,8 @@ function OnOf_Home() {
     const response = await fetch(`${API_URL}/offboarding/delete/${taskId}`, {
       method: "DELETE",
       headers: {
-        "content-type": "application/json",
+        "Content-Type": "application/json",
       },
-      signal: AbortSignal.timeout(5000),
     });
     if (!response.ok) {
       throw new Error("Failed to delete task");

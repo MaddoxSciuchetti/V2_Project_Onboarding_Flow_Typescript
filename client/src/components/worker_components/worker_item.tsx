@@ -107,7 +107,10 @@ export function Worker_Item({
               <DropdownMenuGroup>
                 <DropdownMenuItem
                   className="hover:bg-gray-200 cursor-pointer"
-                  onClick={() => onRemove(item_value)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onRemove(item_value);
+                  }}
                 >
                   Löschen
                 </DropdownMenuItem>

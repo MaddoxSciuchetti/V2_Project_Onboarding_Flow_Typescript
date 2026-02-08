@@ -24,7 +24,22 @@ import {
 import { Input } from "@/components/ui/input";
 import { tryCatch } from "@/lib/utils";
 import { editData, formattedData } from "@/lib/api";
+import { useToggleModal } from "@/hooks/use-toggleModal";
+import AdminModal from "@/components/admin_data/AdminModal";
+
 // import { ErrorResponse } from "react-router-dom";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "@/components/ui/sidebar";
+import EditSidebar from "@/components/ui/maddox_customs/EditSidebar";
 
 export type form_field = {
   id: number;
@@ -65,7 +80,6 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
   search,
 }) => {
   const [modalState, setModalState] = useState<{
-    isOpen: boolean;
     selectedItem: {
       id: number;
       description: string;
@@ -74,11 +88,11 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
       form_field_id: number;
     } | null;
   }>({
-    isOpen: false,
     selectedItem: null,
   });
 
   const queryClient = useQueryClient();
+  const { modal, setModal, toggleModal } = useToggleModal();
 
   const [activetab, setActiveTab] = useState<string>("form");
 
@@ -90,7 +104,7 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
   });
 
   if (!data) {
-    return <div>Hello</div>;
+    return <div>Daten Laden</div>;
   }
 
   async function sendFormData(formData: Mappingform): Promise<APIResponse> {
@@ -131,7 +145,8 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
           queryKey: ["somethingelse", id],
         });
 
-        setModalState({ isOpen: false, selectedItem: null });
+        setModalState({ selectedItem: null });
+        toggleModal();
       }
     } catch (error) {
       console.log(error);
@@ -140,16 +155,6 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
 
   async function fetchFormattedData(): Promise<api_Response> {
     const [response, error] = await tryCatch(formattedData(id, search.param1));
-    // const res = await fetch(
-    //   `${API_URL}/offboarding/user/${id}?param1=${search.param1}`,
-    // );
-
-    // if (!res.ok) {
-    //   throw new Error("response not ok");
-    // }
-    // console.log("=== Fetch formData === ");
-    // const response = await res.json();
-    // console.log(response);
     if (error) {
       throw new Error("");
     }
@@ -164,8 +169,8 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
     select_option: string,
     form_field_id: number,
   ) {
+    toggleModal();
     setModalState({
-      isOpen: true,
       selectedItem: {
         id,
         description,
@@ -178,9 +183,9 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
 
   function closeModal() {
     setModalState({
-      isOpen: false,
       selectedItem: null,
     });
+    toggleModal();
   }
 
   type insertHistoryDataType = z.infer<typeof formSchema>;
@@ -225,33 +230,40 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
           <Input className="" placeholder="Search" />
           <Button
             variant={"outline"}
-            className={activetab === "form" ? "active" : ""}
+            className={activetab === "form" ? "active bg-gray-200" : ""}
             onClick={() => setActiveTab("form")}
           >
             Prozess
           </Button>
           <Button
             variant={"outline"}
-            className={activetab === "files" ? "active" : ""}
+            className={activetab === "files" ? "active bg-gray-200" : ""}
             onClick={() => setActiveTab("files")}
           >
-            Datein
+            Dateien
           </Button>
         </div>
         <div>
           {activetab === "files" && <Worker_Backround id={id} />}
           {activetab === "form" && (
             <div className="">
-              {modalState.isOpen && modalState.selectedItem && (
-                <PreviewComponent
-                  onClose={closeModal}
-                  id={modalState.selectedItem.id}
-                  description={modalState.selectedItem.description}
-                  editcomment={modalState.selectedItem.editcomment}
-                  select_option={modalState.selectedItem.select_option}
-                  form_field_id={modalState.selectedItem.form_field_id}
-                  handleSubmit={handleSubmit}
-                />
+              {modalState.selectedItem && (
+                <div className="fixed inset-0 z-50 flex">
+                  <div
+                    onClick={closeModal}
+                    className="fixed inset-0 bg-black/50 cursor-pointer"
+                    aria-label="Close modal"
+                  />
+                  <PreviewComponent
+                    toggleModal={toggleModal}
+                    id={modalState.selectedItem.id}
+                    description={modalState.selectedItem.description}
+                    editcomment={modalState.selectedItem.editcomment}
+                    select_option={modalState.selectedItem.select_option}
+                    form_field_id={modalState.selectedItem.form_field_id}
+                    handleSubmit={handleSubmit}
+                  />
+                </div>
               )}
 
               {data.form.fields.map((field: form_field, index: number) => (

@@ -206,3 +206,7 @@ export const formattedData = async (
   );
   return response;
 };
+
+export const specificEmployeeData = async () => {
+  return API.get(`/user/specificEmployeeData`);
+};
