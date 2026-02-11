@@ -7,4 +7,4 @@ const pool = new Pool({
         ? { rejectUnauthorized: false }
         : false,
 });
-export default pool;
+export { pool };
