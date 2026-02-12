@@ -20,18 +20,22 @@ function RouteComponent() {
         queryFn: () => verifyChef(),
     });
 
-    if (user.isLoading) {
-        return <div>Authenticating</div>;
+    if (isLoading) {
+        return (
+            <div className="flex justify-center mt-16">
+                <h1 className="text-3xl font-bold">Loading user data</h1>
+            </div>
+        );
     }
 
-    if (user.isError) {
-        return <div>Authentification failed</div>;
+    if (isError || !user) {
+        return (
+            <div className="flex flex-col items-center mt-16 space-y-2">
+                <h1 className="text-3xl font-bold">Error loading user</h1>
+                <p className="text-red-500">Please try again later</p>
+            </div>
+        );
     }
-
-    console.log("this is the user", user);
-
-    if (isLoading) return <div>Loading</div>;
-    if (isError) return <div>Unexpected Error occured</div>;
     if (chefverification?.user_permission === "CHEF") {
         console.log("VERIED VERFIED ");
         return <Ceo_Dashboard />;
