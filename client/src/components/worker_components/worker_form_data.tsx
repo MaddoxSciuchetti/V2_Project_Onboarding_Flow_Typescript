@@ -96,7 +96,7 @@ const Form: React.FC<FormProps> = ({
                             <p className="w-full underline">{description}</p>
                             <img
                                 className=""
-                                src="/assets/Edit React Icon.svg"
+                                src="/assets/editReact.svg"
                                 alt="text"
                                 onClick={() =>
                                     onEdit(

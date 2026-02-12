@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
+
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -86,7 +87,7 @@ export function Worker_Item({
                         <DropdownMenuTrigger asChild>
                             <img
                                 className="hover:scale-110"
-                                src="/public/assets/Edit React Icon.svg"
+                                src="/assets/editReact.svg"
                             />
                         </DropdownMenuTrigger>
                         <DropdownMenuContent
