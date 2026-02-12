@@ -110,7 +110,8 @@ function Worker_Backround({ id }: Worker_Backround) {
                             <img
                                 className=" flex flex-end cursor-pointer"
                                 onClick={openModal}
-                                src="/public/assets/copy.svg"
+                                src="/assets/copy.svg"
+                                alt="Upload File"
                             />
                         </div>
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">

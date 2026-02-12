@@ -8,7 +8,6 @@ import { useSidebar } from "@/components/ui/sidebar";
 import SearchHeader from "@/components/SearchHeader";
 import HandwerkerTable from "@/components/HandwerkerTable";
 import { delete_user } from "@/types/api_response";
-import { Form } from "radix-ui";
 import useAuth from "@/hooks/useAuth";
 
 type FormType = "Onboarding" | "Offboarding";
