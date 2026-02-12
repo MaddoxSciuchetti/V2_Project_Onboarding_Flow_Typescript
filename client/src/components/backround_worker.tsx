@@ -103,7 +103,7 @@ function Worker_Backround({ id }: Worker_Backround) {
                         <img
                             className=" flex flex-end cursor-pointer"
                             onClick={openModal}
-                            src="/public/assets/Copy Plus Filled Icon (1).svg"
+                            src="/public/assets/copy.svg"
                         />
                     </div>
                 )}
