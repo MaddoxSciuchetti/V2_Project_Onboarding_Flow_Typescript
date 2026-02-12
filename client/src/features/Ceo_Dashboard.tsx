@@ -26,6 +26,13 @@ function Ceo_Dashboard() {
 
     if (isLoading) return <div>Loading</div>;
     if (error) console.log(error);
+    if (isLoading) {
+        return (
+            <div className="flex justify-center mt-16">
+                <h1 className="text-3xl font-bold">Loading user data</h1>
+            </div>
+        );
+    }
 
     return (
         <>
