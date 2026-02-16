@@ -38,6 +38,10 @@ userRoutes.delete("/deleteDescriptionData", deleteDescriptionHandler);
 
 userRoutes.get("/fetchTaskData", fetchDescriptionHandler);
 
+// get part description data
+
+userRoutes.get("/rawdescription", fetchDescriptionHandler);
+
 // edit the root description data
 
 userRoutes.put("/editTaskData", editDescriptionHandler);

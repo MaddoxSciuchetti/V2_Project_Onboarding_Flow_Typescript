@@ -92,7 +92,13 @@ export const getemployee_form = async () => {
 };
 
 export const getDescriptionData = async () => {
-    const descriptiondata = await prisma.form_inputs.findMany();
+    const descriptiondata = await prisma.form_fields.findMany({
+        select: {
+            form_field_id: true,
+            description: true,
+            owner: true,
+        },
+    });
 
     return descriptiondata;
 };

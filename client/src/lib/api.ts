@@ -255,3 +255,18 @@ export const postOffboardingData = async (
     );
     return response;
 };
+export const ZDescriptionData = z.array(
+    z.object({
+        form_field_id: z.coerce.number(),
+        description: z.string(),
+        owner: z.string(),
+    }),
+);
+
+export type DescriptionData = z.infer<typeof ZDescriptionData>;
+
+export const fetchRawDescription = async (): Promise<DescriptionData> => {
+    const response = await API.get("/user/rawdescription");
+    console.log(response);
+    return ZDescriptionData.parse(response);
+};
