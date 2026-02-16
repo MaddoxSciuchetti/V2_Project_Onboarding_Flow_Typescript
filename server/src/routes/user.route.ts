@@ -15,7 +15,16 @@ const userRoutes = Router();
 
 userRoutes.get("/", getUserHandler);
 userRoutes.get("/chefpermission", getChefHandler);
+
+// employee data
+
+// fetch employee tasks specifically
 userRoutes.get("/employeeData", getEmployeedata);
+
+// add a new employee
+// delete a employee
+// edit employee
+// // change employee permissoins
 
 // deletes the description data
 
@@ -32,5 +41,7 @@ userRoutes.put("/editTaskData", editDescriptionHandler);
 // create a new description data
 
 userRoutes.post("/createTaskData", createDescriptionHandler);
+
+// file paths for employee
 
 export default userRoutes;
