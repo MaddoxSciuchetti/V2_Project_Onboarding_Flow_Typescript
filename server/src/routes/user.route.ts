@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+    createDescriptionHandler,
     deleteDescriptionHandler,
     editDescriptionHandler,
     fetchDescriptionHandler,
@@ -27,5 +28,9 @@ userRoutes.get("/fetchTaskData", fetchDescriptionHandler);
 // edit the root description data
 
 userRoutes.put("/editTaskData", editDescriptionHandler);
+
+// create a new description data
+
+userRoutes.post("/createTaskData", createDescriptionHandler);
 
 export default userRoutes;

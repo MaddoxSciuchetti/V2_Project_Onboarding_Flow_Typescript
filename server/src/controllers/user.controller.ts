@@ -3,6 +3,7 @@ import { NOT_FOUND, OK } from "../constants/http";
 import appAssert from "../utils/appAssert";
 import catchErrors from "../utils/catchErrors";
 import {
+    createDescription,
     deleteDescriptionData,
     getChef,
     getDescriptionData,
@@ -83,4 +84,13 @@ export const editDescriptionHandler = catchErrors(async (req, res) => {
     );
 
     return res.status(OK).json(updatedDescription);
+});
+
+export const createDescriptionHandler = catchErrors(async (req, res) => {
+    const id = req.userId;
+
+    const { description, owner, type } = req.body;
+
+    const newDescription = await createDescription(description, owner, type);
+    return res.status(OK).json(newDescription);
 });

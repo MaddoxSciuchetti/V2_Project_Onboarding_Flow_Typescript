@@ -119,4 +119,22 @@ export const deleteDescriptionData = async (id: number) => {
             form_field_id: id,
         },
     });
+
+    return deleteData;
+};
+
+export const createDescription = async (
+    description: string,
+    owner: string,
+    type: "ONBOARDING" | "OFFBOARDING",
+) => {
+    const newDescription = await prisma.form_fields.create({
+        data: {
+            description: description,
+            owner: owner,
+            template_type: type,
+        },
+    });
+
+    return newDescription;
 };
