@@ -270,3 +270,10 @@ export const fetchRawDescription = async (): Promise<DescriptionData> => {
     console.log(response);
     return ZDescriptionData.parse(response);
 };
+
+export const deleteEmployeeHandler = async (id: string): Promise<user> => {
+    const response = await API.delete<typeof id, user>(
+        `/user/deleteEmplyoee/${id}`,
+    );
+    return response;
+};

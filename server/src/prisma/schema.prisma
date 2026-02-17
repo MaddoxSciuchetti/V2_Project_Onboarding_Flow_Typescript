@@ -60,8 +60,7 @@ model Session {
   userAgent String?
   createdAt DateTime @default(now())
   expiresAt DateTime @default(dbgenerated("(now() + '30 days'::interval)"))
-  user      User     @relation(fields: [userId], references: [id])
-
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   @@index([userId])
 }
 
@@ -86,7 +85,7 @@ model VerificationCode {
   type      String
   createdAt DateTime @default(now())
   expiresAt DateTime
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
@@ -97,8 +96,8 @@ model HistoryFormData {
   status        String?     @db.VarChar(55)
   edit          String?
   timestamp     DateTime?   @default(now()) @db.Timestamp(6)
-  changed_by    String
-  auth_user     User        @relation(fields: [changed_by], references: [id])
+  changed_by    String? 
+  auth_user     User?        @relation(fields: [changed_by], references: [id])
   form_inputs   form_inputs @relation(fields: [form_input_id], references: [id], onDelete: Cascade)
 }
 

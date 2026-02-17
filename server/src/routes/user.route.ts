@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
     createDescriptionHandler,
     deleteDescriptionHandler,
+    deleteEmployeeHandler,
     editDescriptionHandler,
     fetchDescriptionHandler,
     getChefHandler,
@@ -27,6 +28,9 @@ userRoutes.get("/specificEmployeeData", getEmployeedata);
 
 // add a new employee
 // delete a employee
+
+userRoutes.delete("/deleteEmplyoee/:id", deleteEmployeeHandler);
+
 // edit employee
 // // change employee permissoins
 

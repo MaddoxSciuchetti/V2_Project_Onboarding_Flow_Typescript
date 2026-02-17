@@ -5,6 +5,7 @@ import catchErrors from "../utils/catchErrors";
 import {
     createDescription,
     deleteDescriptionData,
+    deleteEmployee,
     getChef,
     getDescriptionData,
     getemployee_form,
@@ -100,4 +101,13 @@ export const getEmployeedata = catchErrors(async (req, res) => {
     const EmployeeData = await queryEmployeeData();
     console.log(EmployeeData);
     return res.status(OK).json(EmployeeData);
+});
+
+export const deleteEmployeeHandler = catchErrors(async (req, res) => {
+    const id = req.params.id as string;
+    console.log(id);
+
+    const deleteEmployeeResult = await deleteEmployee(id);
+
+    return res.status(OK).json(deleteEmployeeResult);
 });

@@ -159,3 +159,11 @@ export const queryEmployeeData = async () => {
         },
     });
 };
+
+export const deleteEmployee = async (id: string) => {
+    return await prisma.user.delete({
+        where: {
+            id: id,
+        },
+    });
+};

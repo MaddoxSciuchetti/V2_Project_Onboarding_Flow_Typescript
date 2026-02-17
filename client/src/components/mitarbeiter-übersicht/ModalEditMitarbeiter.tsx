@@ -16,10 +16,24 @@ import {
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useQuery } from "@tanstack/react-query";
-import { DescriptionData, fetchRawDescription } from "@/lib/api";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+    deleteEmployeeHandler,
+    DescriptionData,
+    fetchRawDescription,
+} from "@/lib/api";
 
-function ModalEditMitarbeiter() {
+type ModalEditMitarbeiterProps = {
+    fullname: string;
+    toggleEmployeeModal: () => void;
+    id: string | undefined;
+};
+
+function ModalEditMitarbeiter({
+    fullname,
+    toggleEmployeeModal,
+    id,
+}: ModalEditMitarbeiterProps) {
     const {
         data: descriptionData,
         isLoading,
@@ -28,22 +42,47 @@ function ModalEditMitarbeiter() {
         queryKey: ["descriptionData"],
         queryFn: fetchRawDescription,
     });
+
     const [absence, setAbsence] = useState<string>("");
     const [absencetype, setAbsenceType] = useState<string>();
     const [absencebegin, setAbsenceBegin] = useState<string>();
     const [absenceEnd, setAbsenceEnd] = useState<string>();
-    const [substitue, setSubstitute] = useState<string>();
+    const [substitute, setSubstitute] = useState<string>();
+
+    const {
+        mutate: DeleteEmployee,
+        error,
+        isError: isErrorMutation,
+    } = useMutation({
+        mutationFn: deleteEmployeeHandler,
+        onSuccess: () => {
+            toggleEmployeeModal;
+        },
+        onError: () => {
+            console.log(error);
+        },
+    });
 
     console.log("descriptiond data");
     console.log(descriptionData);
     if (isLoading) return <div>Is Loading</div>;
     if (isError) return <div>No error</div>;
+    if (!id) return <div>There is no id</div>;
+
     return (
         <>
             <div className="flex flex-col max-h-100 min-h-120 mt-40 mx-auto text-center items-center z-50 bg-gray-200 rounded-xl  w-2xl">
                 <div className="max-w-xl h-full w-xl my-10">
+                    <Button
+                        variant={"outline"}
+                        onClick={() => DeleteEmployee(id)}
+                    >
+                        Delete Mitarbeiter
+                    </Button>
                     <div className="flex flex-col gap-5">
-                        <Label htmlFor="firstname">Abwesenheit eintragen</Label>
+                        <Label htmlFor="firstname">
+                            Abwesenheit eintragen für {fullname}
+                        </Label>
 
                         <select
                             value={absence}
@@ -82,6 +121,10 @@ function ModalEditMitarbeiter() {
                             onChange={(e) => setAbsenceEnd(e.target.value)}
                         />
                     </div>
+
+                    {descriptionData?.map((vlaue, index) => (
+                        <div key={index}></div>
+                    ))}
 
                     {/* When this is clicked than open the descriptions so that the owner can be temporarly switched for them */}
                 </div>
