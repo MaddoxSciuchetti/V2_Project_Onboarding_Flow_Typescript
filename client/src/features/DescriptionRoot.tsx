@@ -1,13 +1,55 @@
+import RootModal from "@/components/root_description_layout/RootModal";
 import { Button } from "@/components/ui/button";
+import { useToggleModal } from "@/hooks/use-toggleModal";
 import {
     deleteDescriptionData,
+    editTaskData,
     fetchTaskData,
     TDescriptionData,
 } from "@/lib/api";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import z from "zod";
 
 function DescriptionRoot() {
+    const [modal, setModal] = useState(false);
+
+    const [modalState, setModalState] = useState<{
+        selectedItem: {
+            form_field_id: number;
+            description: string | null;
+            owner: string;
+        } | null;
+    }>({
+        selectedItem: null,
+    });
+
+    const toggleModal = () => {
+        setModal((prev) => !prev);
+    };
+
+    async function openEditModal(
+        description: string | null,
+        owner: string,
+        form_field_id: number,
+    ) {
+        toggleModal();
+        setModalState({
+            selectedItem: {
+                form_field_id,
+                description,
+                owner,
+            },
+        });
+    }
+
+    function closeModal() {
+        setModalState({
+            selectedItem: null,
+        });
+        toggleModal();
+    }
+
     const { data, error } = useQuery<TDescriptionData[]>({
         queryKey: ["description_root"],
         queryFn: fetchTaskData,
@@ -17,7 +59,40 @@ function DescriptionRoot() {
         mutationFn: deleteDescriptionData,
     });
 
-    console.log(data);
+    const { mutate: editDescription, error: editError } = useMutation({
+        mutationFn: editTaskData,
+    });
+
+    const formSchema = z.object({
+        form_field_id: z.coerce.number(),
+        description: z.string(),
+        owner: z.string(),
+    });
+
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+        try {
+            const formData = new FormData(event.currentTarget);
+            const formValues = Object.fromEntries(formData);
+            console.log("raw form values", formValues);
+            const result = formSchema.safeParse(formValues);
+
+            if (!result.success) {
+                console.log("validation errors", result.error);
+                return;
+            }
+
+            console.log("validated data", result.data);
+
+            editDescription(result.data);
+            if (!editError) {
+                setModalState({ selectedItem: null });
+                toggleModal();
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     const [tab, setTab] = useState<"ONBOARDING" | "OFFBOARDING">("ONBOARDING");
     const OnboardingData = data?.filter(
@@ -56,17 +131,30 @@ function DescriptionRoot() {
                     {tab === "ONBOARDING"
                         ? OnboardingData?.map((item, index) => (
                               <div key={index}>
+                                  <div className="outline">
+                                      <div>{item.description}</div>
+                                      <div>{item.owner}</div>
+                                  </div>
                                   <Button
+                                      variant={"outline"}
                                       onClick={() =>
                                           deleteDescription(item.form_field_id)
                                       }
                                   >
                                       Delete Description
                                   </Button>
-                                  <div className="outline">
-                                      <div>{item.description}</div>
-                                      <div>{item.owner}</div>
-                                  </div>
+                                  <Button
+                                      variant={"outline"}
+                                      onClick={() =>
+                                          openEditModal(
+                                              item.description,
+                                              item.owner,
+                                              item.form_field_id,
+                                          )
+                                      }
+                                  >
+                                      Edit owner
+                                  </Button>
                               </div>
                           ))
                         : OffboardingData?.map((item, index) => (
@@ -83,6 +171,25 @@ function DescriptionRoot() {
                               </div>
                           ))}
                 </div>
+
+                {modalState.selectedItem && modal && (
+                    <div className="fixed inset-0 z-50 flex">
+                        <div
+                            onClick={toggleModal}
+                            className="fixed inset-0 bg-black/50 cursor-pointer"
+                            aria-label="Close modal"
+                        />
+                        <RootModal
+                            data={data}
+                            form_field_id={
+                                modalState.selectedItem.form_field_id
+                            }
+                            description={modalState.selectedItem.description}
+                            owner={modalState.selectedItem.owner}
+                            handleSubmit={handleSubmit}
+                        />
+                    </div>
+                )}
             </div>
         </>
     );

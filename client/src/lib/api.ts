@@ -311,3 +311,13 @@ export const deleteDescriptionData = async (id: number) => {
     const response = await API.delete(`/user/deleteDescriptionData/${id}`);
     return response;
 };
+
+type EditDescriptionData = Omit<TDescriptionData, "template_type">;
+
+export const editTaskData = async (data: EditDescriptionData) => {
+    const response = await API.put<EditDescriptionData, EditDescriptionData>(
+        `/user/editTaskData/${data.form_field_id}`,
+        data,
+    );
+    return response;
+};
