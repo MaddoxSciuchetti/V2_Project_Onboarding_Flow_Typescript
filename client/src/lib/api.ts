@@ -237,6 +237,21 @@ export const specificEmployeeData = async (): Promise<TEmployeeResponse> => {
     return ZEmployeeData.parse(response);
 };
 
+type AbsenceData = {
+    id: string;
+    absence: string;
+    absencetype?: string;
+    absencebegin?: string;
+    absenceEnd?: string;
+    substitute?: string;
+};
+
+export const editEmployeeAbsence = async (
+    data: AbsenceData,
+): Promise<AbsenceData> => {
+    return API.put<AbsenceData, AbsenceData>("/user/editAbsenceData", data);
+};
+
 export const deleteTaskApi = async (taskId: number): Promise<delete_user> => {
     const response = await API.delete<delete_user, delete_user>(
         `/offboarding/delete/${taskId}`,

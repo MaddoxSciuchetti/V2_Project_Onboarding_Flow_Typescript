@@ -20,8 +20,11 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import {
     deleteEmployeeHandler,
     DescriptionData,
+    editEmployeeAbsence,
     fetchRawDescription,
 } from "@/lib/api";
+import { subISOWeekYears } from "date-fns";
+import { set } from "zod";
 
 type ModalEditMitarbeiterProps = {
     fullname: string;
@@ -63,6 +66,20 @@ function ModalEditMitarbeiter({
         },
     });
 
+    const {
+        mutate: EmployeeAbsence,
+        error: ErrorAbsence,
+        isError: isErrorAbsence,
+    } = useMutation({
+        mutationFn: editEmployeeAbsence,
+        onSuccess: () => {
+            console.log("this was a success");
+        },
+        onError: () => {
+            console.log(ErrorAbsence);
+        },
+    });
+
     console.log("descriptiond data");
     console.log(descriptionData);
     if (isLoading) return <div>Is Loading</div>;
@@ -71,7 +88,7 @@ function ModalEditMitarbeiter({
 
     return (
         <>
-            <div className="flex flex-col max-h-100 min-h-120 mt-40 mx-auto text-center items-center z-50 bg-gray-200 rounded-xl  w-2xl">
+            <div className="flex flex-col max-h-100 min-h-140 mt-40 mx-auto text-center items-center z-50 bg-gray-200 rounded-xl  w-2xl">
                 <div className="max-w-xl h-full w-xl my-10">
                     <Button
                         variant={"outline"}
@@ -89,6 +106,7 @@ function ModalEditMitarbeiter({
                             onChange={(e) => setAbsence(e.target.value)}
                         >
                             <option>ja</option>
+                            <option>nein</option>
                         </select>
 
                         <Label>Art der Abwesenheit</Label>
@@ -106,7 +124,7 @@ function ModalEditMitarbeiter({
                         <Input
                             type="text"
                             id="firstname"
-                            placeholder="First Name"
+                            placeholder="Datum"
                             value={absencebegin}
                             onChange={(e) => setAbsenceBegin(e.target.value)}
                         />
@@ -116,17 +134,42 @@ function ModalEditMitarbeiter({
                         <Input
                             type="text"
                             id="firstname"
-                            placeholder="First Name"
+                            placeholder="Enddatum"
                             value={absenceEnd}
                             onChange={(e) => setAbsenceEnd(e.target.value)}
                         />
+
+                        <Label>Vetretung</Label>
+
+                        <select
+                            value={substitute}
+                            onChange={(e) => setSubstitute(e.target.value)}
+                        >
+                            <option>Max Mustermann</option>
+                            <option>Maria Musterfrau</option>
+                            <option>Keine Vertretung</option>
+                        </select>
+
+                        <Button
+                            onClick={() =>
+                                EmployeeAbsence({
+                                    id,
+                                    absence,
+                                    absencetype,
+                                    absencebegin,
+                                    absenceEnd,
+                                    substitute,
+                                })
+                            }
+                            variant={"outline"}
+                        >
+                            Speichern
+                        </Button>
                     </div>
 
-                    {descriptionData?.map((vlaue, index) => (
+                    {descriptionData?.map((value, index) => (
                         <div key={index}></div>
                     ))}
-
-                    {/* When this is clicked than open the descriptions so that the owner can be temporarly switched for them */}
                 </div>
             </div>
         </>
