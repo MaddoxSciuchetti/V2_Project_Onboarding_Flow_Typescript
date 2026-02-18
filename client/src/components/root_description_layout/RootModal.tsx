@@ -129,7 +129,7 @@ function RootModal({
                             <SelectTrigger
                                 id="owner"
                                 name="owner"
-                                value={owner}
+                                value={selectedValue}
 
                                 // className="w-[17.75rem]"
                             >
