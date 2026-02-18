@@ -36,7 +36,6 @@ function MitarbeiterÜbersicht() {
         queryFn: specificEmployeeData,
     });
 
-    console.log(EmployeeData);
     if (isLoading) return <div>Is Loading</div>;
     if (isError) return <div>{error?.message}</div>;
 

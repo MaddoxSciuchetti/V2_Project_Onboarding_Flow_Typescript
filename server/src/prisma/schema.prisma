@@ -78,8 +78,9 @@ model User {
   historyChanges    HistoryFormData[]
   sessions          Session[]
   verificationCodes VerificationCode[]
-  employeeStatus    EmployeeStatus[]
   owned_fields      form_fields[]
+  employeeStatus    EmployeeStatus[]   @relation("absent_user")
+  substituteFor     EmployeeStatus[]   @relation("substitute_user")
 }
 
 model EmployeeStatus {
@@ -90,7 +91,8 @@ model EmployeeStatus {
   absencebegin DateTime?
   absenceEnd DateTime?
   substitute String?
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User     @relation("absent_user", fields: [userId], references: [id], onDelete: Cascade)
+   sub_user     User?     @relation("substitute_user", fields: [substitute], references: [id])
   @@index([userId])
 }
 

@@ -250,6 +250,7 @@ type AbsenceData = {
 export const editEmployeeAbsence = async (
     data: AbsenceData,
 ): Promise<AbsenceData> => {
+    console.log("data in api", data);
     return API.put<AbsenceData, AbsenceData>("/user/editAbsenceData", data);
 };
 

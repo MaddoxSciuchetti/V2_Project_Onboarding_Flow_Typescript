@@ -185,6 +185,19 @@ export const getUserFormData = async (id: any) => {
                                             id: true,
                                             vorname: true,
                                             nachname: true,
+                                            employeeStatus: {
+                                                select: {
+                                                    absence: true,
+                                                    absenceEnd: true,
+                                                    sub_user: {
+                                                        select: {
+                                                            id: true,
+                                                            vorname: true,
+                                                            nachname: true,
+                                                        },
+                                                    },
+                                                },
+                                            },
                                         },
                                     },
                                 },
