@@ -1,5 +1,6 @@
 import RootModal from "@/components/root_description_layout/RootModal";
 import { Button } from "@/components/ui/button";
+import useEmployeeData from "@/hooks/use-employeeData";
 import { useToggleModal } from "@/hooks/use-toggleModal";
 import {
     addDescriptionData,
@@ -127,6 +128,9 @@ function DescriptionRoot() {
         }
     }
 
+    const { EmployeeData, isLoading, ErrorEmployee, isError } =
+        useEmployeeData();
+
     const [tab, setTab] = useState<"ONBOARDING" | "OFFBOARDING">("ONBOARDING");
     const OnboardingData = data?.filter(
         (value) => value.template_type === "ONBOARDING",
@@ -234,6 +238,7 @@ function DescriptionRoot() {
                             handleSubmit={handleSubmit}
                             handleAddSubmit={handleAddSubmit}
                             template_type={tab}
+                            EmployeeData={EmployeeData}
                         />
                     </div>
                 )}

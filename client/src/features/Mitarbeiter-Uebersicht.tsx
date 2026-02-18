@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { specificEmployeeData } from "@/lib/api";
 import { EditIcon } from "lucide-react";
 import ModalEditMitarbeiter from "@/components/mitarbeiter-übersicht/ModalEditMitarbeiter";
+import useEmployeeData from "@/hooks/use-employeeData";
 
 function MitarbeiterÜbersicht() {
     const [modal, setModal] = useState<boolean>(false);
@@ -26,19 +27,12 @@ function MitarbeiterÜbersicht() {
         toggleSidebar();
     };
 
-    const {
-        data: EmployeeData,
-        isLoading,
-        error,
-        isError,
-    } = useQuery({
-        queryKey: ["EmployeeDataSpecifics"],
-        queryFn: specificEmployeeData,
-    });
+    const { EmployeeData, isLoading, ErrorEmployee, isError } =
+        useEmployeeData();
 
     console.log(EmployeeData);
     if (isLoading) return <div>Is Loading</div>;
-    if (isError) return <div>{error.message}</div>;
+    if (isError) return <div>{ErrorEmployee?.message}</div>;
 
     return (
         <>
