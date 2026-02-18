@@ -17,14 +17,6 @@ type dataObject = {
     position: string;
 };
 
-const FORM_INPUTS_ONBOARDING = [
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
-] as const;
-
-const FORM_INPUTS_OFFBOARDING = [
-    18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
-] as const;
-
 type returnObject = {
     user: {
         id: number;
@@ -64,23 +56,60 @@ export const createUser = (data: dataObject): Promise<returnObject> => {
             },
         });
 
+        const templateType =
+            employee_forms_table.form_type === "Offboarding"
+                ? "OFFBOARDING"
+                : "ONBOARDING";
+
+        const formFields = await tx.form_fields.findMany({
+            where: { template_type: templateType },
+            select: { form_field_id: true },
+        });
+
         await tx.form_inputs.createMany({
-            data:
-                employee_forms_table.form_type === "Offboarding"
-                    ? FORM_INPUTS_OFFBOARDING.map((field_id) => ({
-                          employee_form_id: employee_forms_table.id,
-                          form_field_id: field_id,
-                      }))
-                    : FORM_INPUTS_ONBOARDING.map((field_id) => ({
-                          employee_form_id: employee_forms_table.id,
-                          form_field_id: field_id,
-                      })),
+            data: formFields.map((field: { form_field_id: number }) => ({
+                employee_form_id: employee_forms_table.id,
+                form_field_id: field.form_field_id,
+            })),
         });
 
         return {
             user,
             employee_form: employee_forms_table.id,
         };
+    });
+};
+
+export const addExtraFormFieldDB = async (data: {
+    description: string;
+    template_type: "ONBOARDING" | "OFFBOARDING";
+    owner: string;
+}) => {
+    return prisma.$transaction(async (tx) => {
+        const newField = await tx.form_fields.create({
+            data: {
+                description: data.description,
+                template_type: data.template_type,
+                owner: data.owner,
+            },
+        });
+        const formType =
+            data.template_type === "OFFBOARDING" ? "Offboarding" : "Onboarding";
+
+        const existingForms = await tx.employee_forms.findMany({
+            where: { form_type: formType },
+            select: { id: true },
+        });
+        if (existingForms.length > 0) {
+            await tx.form_inputs.createMany({
+                data: existingForms.map((form) => ({
+                    employee_form_id: form.id,
+                    form_field_id: newField.form_field_id,
+                })),
+            });
+        }
+
+        return newField;
     });
 };
 

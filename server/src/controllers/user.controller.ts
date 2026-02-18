@@ -90,9 +90,14 @@ export const editDescriptionHandler = catchErrors(async (req, res) => {
 });
 
 export const createDescriptionHandler = catchErrors(async (req, res) => {
-    const { description, owner, type } = req.body;
+    const { description, owner, template_type } = req.body;
+    console.log(template_type);
 
-    const newDescription = await createDescription(description, owner, type);
+    const newDescription = await createDescription(
+        description,
+        owner,
+        template_type,
+    );
     return res.status(OK).json(newDescription);
 });
 

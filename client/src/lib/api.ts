@@ -271,6 +271,16 @@ export const postOffboardingData = async (
     );
     return response;
 };
+
+export const addExtraField = async (data: {
+    description: string;
+    template_type: "ONBOARDING" | "OFFBOARDING";
+    owner: string;
+}): Promise<any> => {
+    const response = await API.post(`/offboarding/addFormField`, data);
+    return response;
+};
+
 export const ZDescriptionData = z.array(
     z.object({
         form_field_id: z.coerce.number(),
@@ -326,6 +336,7 @@ export const editTaskData = async (data: EditDescriptionData) => {
 export const addDescriptionData = async (
     data: Omit<TDescriptionData, "form_field_id">,
 ) => {
+    console.log("data in api", data);
     const response = await API.post(`/user/createTaskData`, data);
     return response;
 };
