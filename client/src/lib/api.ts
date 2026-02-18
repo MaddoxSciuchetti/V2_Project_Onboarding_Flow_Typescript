@@ -311,8 +311,16 @@ export type TDescriptionData = {
     template_type: "ONBOARDING" | "OFFBOARDING";
 };
 
-export const fetchTaskData = async (): Promise<TDescriptionData[]> => {
-    const response = await API.get<TDescriptionData[], TDescriptionData[]>(
+export type TDescriptionResponse = TDescriptionData & {
+    auth_user: {
+        id: number;
+        vorname: string;
+        nachname: string;
+    };
+};
+
+export const fetchTaskData = async (): Promise<TDescriptionResponse[]> => {
+    const response = await API.get<TDescriptionData[], TDescriptionResponse[]>(
         "/user/fetchTaskData",
     );
     return response;

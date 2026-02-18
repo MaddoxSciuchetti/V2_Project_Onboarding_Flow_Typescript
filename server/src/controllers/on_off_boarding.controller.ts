@@ -99,7 +99,10 @@ export const offboardingGetuserbyId = async (req: Request, res: Response) => {
                 id: input.id,
                 form_field_id: input.form_field_id,
                 description: input.form_fields.description,
-                owner: input.form_fields.owner,
+                owner:
+                    input.form_fields.auth_user.vorname +
+                    " " +
+                    input.form_fields.auth_user.nachname,
                 status: input.status,
                 edit: input.edit,
             })),

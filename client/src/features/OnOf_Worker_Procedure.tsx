@@ -87,6 +87,8 @@ const OnOf_Worker_Procedure: React.FC<OffboardingFormProps> = ({
             .toLowerCase()
             .includes(descriptionSearch.toLowerCase()),
     );
+    console.log("SEARCH DATA");
+    console.log(searchData);
 
     const sortedData = [...searchData].sort((a, b) => {
         if (a.status === "erledigt" && b.status !== "erledigt") {

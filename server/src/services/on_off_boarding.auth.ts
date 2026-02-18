@@ -180,6 +180,13 @@ export const getUserFormData = async (id: any) => {
                                 select: {
                                     description: true,
                                     owner: true,
+                                    auth_user: {
+                                        select: {
+                                            id: true,
+                                            vorname: true,
+                                            nachname: true,
+                                        },
+                                    },
                                 },
                             },
                         },
