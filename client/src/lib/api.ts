@@ -326,6 +326,7 @@ export const editTaskData = async (data: EditDescriptionData) => {
 export const addDescriptionData = async (
     data: Omit<TDescriptionData, "form_field_id">,
 ) => {
+    console.log("data in api", data);
     const response = await API.post(`/user/createTaskData`, data);
     return response;
 };
