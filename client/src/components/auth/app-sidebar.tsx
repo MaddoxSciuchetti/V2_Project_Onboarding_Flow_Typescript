@@ -45,7 +45,7 @@ const items = [
         requiredPermission: "CHEF",
     },
     {
-        title: "Monitor",
+        title: "Mitarbeiter Monitor",
         to: "/dashboard/ceo",
         icon: HandMetal,
         requiredPermission: "CHEF",
