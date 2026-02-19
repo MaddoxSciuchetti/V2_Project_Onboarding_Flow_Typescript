@@ -202,7 +202,23 @@ export const queryEmployeeData = async () => {
             createdAt: true,
             updatedAt: true,
             user_permission: true,
-            employeeStatus: true,
+            employeeStatus: {
+                select: {
+                    id: true,
+                    absence: true,
+                    absencetype: true,
+                    absencebegin: true,
+                    absenceEnd: true,
+                    substitute: true,
+                    sub_user: {
+                        select: {
+                            id: true,
+                            vorname: true,
+                            nachname: true,
+                        },
+                    },
+                },
+            },
         },
     });
 };

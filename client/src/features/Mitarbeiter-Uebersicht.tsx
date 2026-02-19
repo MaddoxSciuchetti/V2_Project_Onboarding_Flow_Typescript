@@ -83,6 +83,7 @@ function MitarbeiterÜbersicht() {
                                 <TableHead className="text-left">
                                     Status
                                 </TableHead>
+                                <TableHead>Vertetung</TableHead>
                                 <TableHead className=" pl-0">
                                     Aktionen
                                 </TableHead>
@@ -150,6 +151,38 @@ function MitarbeiterÜbersicht() {
                                             </div>
                                         </td>
                                     )}
+
+                                    <td>
+                                        {(value.employeeStatus?.length ?? 0) >
+                                        0 ? (
+                                            value.employeeStatus?.map(
+                                                (value) => (
+                                                    <>
+                                                        <div className="flex gap-1 ">
+                                                            <span>
+                                                                {
+                                                                    value
+                                                                        .sub_user
+                                                                        ?.vorname
+                                                                }
+                                                            </span>
+                                                            <span>
+                                                                {
+                                                                    value
+                                                                        .sub_user
+                                                                        ?.nachname
+                                                                }
+                                                            </span>
+                                                        </div>
+                                                    </>
+                                                ),
+                                            )
+                                        ) : (
+                                            <>
+                                                <span>n/a</span>
+                                            </>
+                                        )}
+                                    </td>
 
                                     <td>
                                         <EditIcon

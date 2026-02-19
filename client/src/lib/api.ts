@@ -215,6 +215,12 @@ export const formattedData = async (
     return response;
 };
 
+export const SubUser = z.object({
+    id: z.coerce.string(),
+    vorname: z.string(),
+    nachname: z.string(),
+});
+
 export const EmployeeStatus = z.array(
     z.object({
         id: z.coerce.string(),
@@ -224,6 +230,7 @@ export const EmployeeStatus = z.array(
         absencebegin: z.coerce.date().nullable(),
         absenceEnd: z.coerce.date().nullable(),
         substitute: z.coerce.string().nullable(),
+        sub_user: SubUser.nullable(),
     }),
 );
 
