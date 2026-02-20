@@ -108,7 +108,7 @@ export function Worker_Item({
                                 >
                                     Löschen
                                 </DropdownMenuItem>
-                                <DropdownMenuItem
+                                {/* <DropdownMenuItem
                                     className="hover:bg-gray-200 cursor-pointer"
                                     onClick={(e) => {
                                         e.stopPropagation();
@@ -116,7 +116,7 @@ export function Worker_Item({
                                     }}
                                 >
                                     Export
-                                </DropdownMenuItem>
+                                </DropdownMenuItem> */}
                             </DropdownMenuGroup>
                         </DropdownMenuContent>
                     </DropdownMenu>
