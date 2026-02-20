@@ -7,9 +7,10 @@ import {
     useQuery,
     useQueryClient,
 } from "@tanstack/react-query";
-import { fetchFileData } from "@/lib/api";
+import { fetchCloudUrl, fetchFileData } from "@/lib/api";
 import { deleteFileData } from "@/lib/api";
 import { useToggleModal } from "@/hooks/use-toggleModal";
+import JSZip from "jszip";
 
 interface Worker_Backround {
     id: number;
@@ -90,8 +91,22 @@ function Worker_Backround({ id }: Worker_Backround) {
         setModalState((prev) => !prev);
     };
 
-    const handleZipExport = () => {
-        // Implementiere hier die Logik für den Zip-Export
+    const handleZipExport = async () => {
+        const zip = new JSZip();
+
+        const fetchPromises = fetchFiles?.map(async (value) => {
+            const blob = await fetchCloudUrl(value.cloud_key);
+            const fileName = value.original_filename.split("/").pop() ?? "file";
+            zip.file(fileName, blob);
+        });
+
+        await Promise.all(fetchPromises ?? []);
+
+        const zipBlob = await zip.generateAsync({ type: "blob" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(zipBlob);
+        link.download = "archive.zip";
+        link.click();
     };
 
     return (
@@ -114,7 +129,7 @@ function Worker_Backround({ id }: Worker_Backround) {
                                 />
 
                                 <p
-                                    onClick={() => handleZipExport()}
+                                    onClick={() => handleZipExport}
                                     className="ml-4 cursor-pointer  p-1"
                                 >
                                     Zip export
