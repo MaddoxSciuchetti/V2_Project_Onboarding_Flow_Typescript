@@ -215,6 +215,25 @@ export const formattedData = async (
     return response;
 };
 
+export const SubUser = z.object({
+    id: z.coerce.string(),
+    vorname: z.string(),
+    nachname: z.string(),
+});
+
+export const EmployeeStatus = z.array(
+    z.object({
+        id: z.coerce.string(),
+        userId: z.coerce.string(),
+        absence: z.coerce.string(),
+        absencetype: z.coerce.string().nullable(),
+        absencebegin: z.coerce.date().nullable(),
+        absenceEnd: z.coerce.date().nullable(),
+        substitute: z.coerce.string().nullable(),
+        sub_user: SubUser.nullable(),
+    }),
+);
+
 export const ZEmployeeData = z.array(
     z.object({
         id: z.coerce.string(),
@@ -225,6 +244,7 @@ export const ZEmployeeData = z.array(
         createdAt: z.string(),
         updatedAt: z.string(),
         user_permission: z.enum(["CHEF", "MITARBEITER"]),
+        employeeStatus: EmployeeStatus.nullable(),
     }),
 );
 
@@ -297,6 +317,7 @@ export const fetchRawDescription = async (): Promise<DescriptionData> => {
 };
 
 export const deleteEmployeeHandler = async (id: string): Promise<user> => {
+    console.log("id in api", id);
     const response = await API.delete<typeof id, user>(
         `/user/deleteEmplyoee/${id}`,
     );

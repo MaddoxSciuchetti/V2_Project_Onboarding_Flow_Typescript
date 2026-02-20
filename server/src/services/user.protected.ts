@@ -202,16 +202,45 @@ export const queryEmployeeData = async () => {
             createdAt: true,
             updatedAt: true,
             user_permission: true,
+            employeeStatus: {
+                select: {
+                    id: true,
+                    absence: true,
+                    absencetype: true,
+                    absencebegin: true,
+                    absenceEnd: true,
+                    substitute: true,
+                    sub_user: {
+                        select: {
+                            id: true,
+                            vorname: true,
+                            nachname: true,
+                        },
+                    },
+                },
+            },
         },
     });
 };
 
-export const deleteEmployee = async (id: string) => {
-    return await prisma.user.delete({
-        where: {
-            id: id,
-        },
-    });
+export const deleteEmployee = async (id: string, chefId: string) => {
+    return await prisma.$transaction([
+        prisma.form_fields.updateMany({
+            where: {
+                owner: id,
+            },
+            data: {
+                owner: chefId,
+            },
+        }),
+        prisma.historyFormData.updateMany({
+            where: { changed_by: id },
+            data: { changed_by: chefId },
+        }),
+        prisma.user.delete({
+            where: { id },
+        }),
+    ]);
 };
 
 type AbsenceData = {
