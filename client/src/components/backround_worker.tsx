@@ -87,7 +87,7 @@ function Worker_Backround({ id }: Worker_Backround) {
 
     const closeModal = () => {
         toggleModal();
-        setModalState(false);
+        setModalState((prev) => !prev);
     };
 
     const handleZipExport = () => {
@@ -103,11 +103,71 @@ function Worker_Backround({ id }: Worker_Backround) {
                         Loading state{" "}
                     </div>
                 ) : !fetchFiles || fetchFiles.length === 0 ? (
-                    <div>
+                    <>
+                        <div>
+                            <div className="flex flex-row justify-end pt-5 pr-5">
+                                <img
+                                    className=" flex flex-end cursor-pointer"
+                                    onClick={openModal}
+                                    src="/assets/copy.svg"
+                                    alt="Upload File"
+                                />
+
+                                <p
+                                    onClick={() => handleZipExport()}
+                                    className="ml-4 cursor-pointer  p-1"
+                                >
+                                    Zip export
+                                </p>
+                            </div>
+                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
+                                {fetchFiles?.map((file, index) => (
+                                    <div
+                                        key={index}
+                                        className=" rounded-lg p-3 hover:bg-gray-50 cursor-pointer transition-colors outline"
+                                    >
+                                        <Button
+                                            size={"icon-sm"}
+                                            variant={"outline"}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                deleteFiles(file.id);
+                                            }}
+                                        >
+                                            X
+                                        </Button>
+                                        <div className="text-center">
+                                            <div className="text-2xl mb-2">
+                                                {fileIcon(file.content_type)}
+                                            </div>
+                                            <p
+                                                className="text-sm font-medium truncate"
+                                                onClick={() =>
+                                                    window.open(
+                                                        file.cloud_url,
+                                                        "_blank",
+                                                    )
+                                                }
+                                            >
+                                                {getFileName(
+                                                    file.cloud_url,
+                                                    file.original_filename,
+                                                )}
+                                            </p>
+                                            <p className="text-xs text-gray-500 mt-1">
+                                                {new Date(
+                                                    file.uploaded_at,
+                                                ).toLocaleDateString()}
+                                            </p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                         <div className="flex items-center justify-center min-h-100">
                             Keine Hochgeladenen Dateien
                         </div>
-                    </div>
+                    </>
                 ) : (
                     <div>
                         <div className="flex flex-row justify-end pt-5 pr-5">
