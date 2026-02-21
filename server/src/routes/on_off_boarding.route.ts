@@ -14,6 +14,7 @@ import {
     sendReminder,
     addExtraField,
     getCloudUrl,
+    postFeature,
 } from "../controllers/on_off_boarding.controller";
 
 import { upload } from "../middleware/fileparser";
@@ -52,5 +53,7 @@ offboarding_router.delete("/deleteFileData/:id", deleteFileData);
 offboarding_router.post("/sendReminder", sendReminder);
 
 offboarding_router.get("/getCloudUrl", getCloudUrl);
+
+offboarding_router.post("/FeatureRequest", upload.array("files"), postFeature);
 
 export { offboarding_router };

@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+dotenv.config();
 
 import express from "express";
 import cors from "cors";
@@ -13,7 +14,6 @@ import userRoutes from "./routes/user.route";
 import errorHandler from "./middleware/errorHandler";
 import { checkChef } from "./utils/checkChef";
 
-dotenv.config();
 const PORT = process.env.PORT || 3000;
 
 const app = express();

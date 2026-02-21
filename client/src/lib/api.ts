@@ -1,5 +1,6 @@
 import { sendEmailSchema } from "@/components/admin_data/AdminModal";
 import { File_Request } from "@/components/backround_worker";
+import { TFeatureForm } from "@/components/modal/FeatureModal";
 import API from "@/config/apiClient";
 import { TEmployForm } from "@/features/Ceo_Dashboard";
 import { OffboardingItem } from "@/features/OnOf_Home";
@@ -375,5 +376,19 @@ export const addDescriptionData = async (
 ) => {
     console.log("data in api", data);
     const response = await API.post(`/user/createTaskData`, data);
+    return response;
+};
+
+export const featureRequest = async (data: TFeatureForm) => {
+    const form = new FormData();
+    form.append("importance", data.importance);
+    form.append("text", data.textarea);
+    if (data.file[0]) {
+        data.file.forEach((file) => form.append("files", file));
+    }
+    const response = await API.post<TFeatureForm, TFeatureForm>(
+        `/offboarding/FeatureRequest`,
+        form,
+    );
     return response;
 };

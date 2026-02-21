@@ -1,8 +1,187 @@
+import { useForm, SubmitHandler } from "react-hook-form";
+import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
+import { Label } from "../ui/label";
+import { Button } from "../ui/button";
+import { useRef, useState } from "react";
+import { CardContent } from "../ui/card";
+import { FileDropzone } from "../ui/file_upload/dropzone";
+import { FileList } from "../ui/file_upload/file-list";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "../ui/tooltip";
+import { HelpCircle } from "lucide-react";
+import { featureRequest } from "@/lib/api";
+
+export type TFeatureForm = {
+    importance: string;
+    textarea: string;
+    file: File[];
+};
+
 function FeatureModal() {
+    const {
+        register,
+        handleSubmit,
+        setValue,
+        watch,
+        formState: { errors },
+    } = useForm<TFeatureForm>();
+    const onSubmit: SubmitHandler<TFeatureForm> = (data) =>
+        featureRequest(data);
+
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+    const [fileProgresses, setFileProgresses] = useState<
+        Record<string, number>
+    >({});
+
+    // const handleFileSubmit = async () => {
+    //     if (uploadedFiles.length > 0) {
+    //         onSubmit(uploadedFiles);
+    //     }
+    // };
+
+    const handleFileSelect = (files: FileList | null) => {
+        if (!files) return;
+
+        const newFiles = Array.from(files);
+        setUploadedFiles((prev) => [...prev, ...newFiles]);
+        setValue("file", [...uploadedFiles, ...newFiles]);
+
+        newFiles.forEach((file) => {
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 10;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                }
+                setFileProgresses((prev) => ({
+                    ...prev,
+                    [file.name]: Math.min(progress, 100),
+                }));
+            }, 300);
+        });
+    };
+
+    const handleBoxClick = () => {
+        fileInputRef.current?.click();
+    };
+
+    const handleDragOver = (e: React.DragEvent) => {
+        e.preventDefault();
+    };
+
+    const handleDrop = (e: React.DragEvent) => {
+        e.preventDefault();
+        handleFileSelect(e.dataTransfer.files);
+    };
+
+    const removeFile = (filename: string) => {
+        setUploadedFiles((prev) =>
+            prev.filter((file) => file.name !== filename),
+        );
+        setFileProgresses((prev) => {
+            const newProgresses = { ...prev };
+            delete newProgresses[filename];
+            return newProgresses;
+        });
+    };
+
     return (
-        <div className="fixed inset-0 flex max-h-100 min-h-120 mt-40 mx-auto text-center items-center z-50 bg-gray-200 rounded-xl  w-2xl">
-            <div className="max-w-xl h-full w-xl my-10">
-                <p>Feature request</p>
+        <div className="fixed inset-0 flex max-h-100 min-h-180 mt-40 mx-auto text-center items-center z-50 bg-gray-200 rounded-xl  w-2xl">
+            <div className="h-full w-full my-10 p-10">
+                <h1 className="outline text-lg mb-5">Feature request</h1>
+                <div className="flex flex-col w-full outline">
+                    <form
+                        onSubmit={handleSubmit(onSubmit)}
+                        className="flex flex-col gap-5"
+                    >
+                        <Label className="outline text-md">
+                            Wie wichtig ist es?
+                        </Label>
+                        <select
+                            className="outline w-full"
+                            {...register("importance", { required: true })}
+                        >
+                            <option>Nice to have</option>
+                            <option>Low</option>
+                            <option>Medium</option>
+                            <option>High</option>
+                            <option>Kritisch</option>
+                        </select>
+
+                        <Textarea
+                            className=""
+                            {...register("textarea")}
+                            placeholder="Beschreibe das Problem oder das gewünschte Feature"
+                        ></Textarea>
+                        {errors.importance && (
+                            <span>This field is required</span>
+                        )}
+
+                        <CardContent className="">
+                            <div className="p-6 pb-4"></div>
+                            {/* <Form /> */}
+                            <FileDropzone
+                                {...register("file")}
+                                fileInputRef={fileInputRef}
+                                handleBoxClick={handleBoxClick}
+                                handleDragOver={handleDragOver}
+                                handleDrop={handleDrop}
+                                handleFileSelect={handleFileSelect}
+                            />
+                            <FileList
+                                uploadedFiles={uploadedFiles}
+                                fileProgresses={fileProgresses}
+                                removeFile={removeFile}
+                            />
+                            <div className="px-6 py-3 border-t border-border bg-muted rounded-b-lg flex justify-between items-center">
+                                <TooltipProvider delayDuration={0}>
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                className="flex items-center text-muted-foreground hover:text-foreground"
+                                            >
+                                                <HelpCircle className="h-4 w-4 mr-1" />
+                                                Hilfe?
+                                            </Button>
+                                        </TooltipTrigger>
+                                        <TooltipContent className="py-3 bg-gray-200 text-foreground border">
+                                            <div className="space-y-1">
+                                                <p className="text-muted-foreground dark:text-muted-background text-xs max-w-[200px]">
+                                                    Ziehe deine Dateien in das
+                                                    Feld rein oder lade sie
+                                                    direkt hoch.
+                                                </p>
+                                            </div>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
+
+                                <div className="flex gap-2">
+                                    {/* <Button
+                                    variant={"outline"}
+                                    onClick={handleFileSubmit}
+                                    className="h-9 px-4 text-sm font-medium hover:text-black"
+                                >
+                                    Erstellen
+                                </Button> */}
+                                </div>
+                            </div>
+                        </CardContent>
+
+                        {/* placeholder für uploaeds */}
+
+                        <Button type="submit">Senden</Button>
+                    </form>
+                </div>
             </div>
         </div>
     );
