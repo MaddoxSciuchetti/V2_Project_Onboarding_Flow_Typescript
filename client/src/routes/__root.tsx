@@ -20,9 +20,18 @@ function RootLayout() {
     const isLoginPage = location.pathname === "/login";
     const isSignUp = location.pathname === "/signup";
     const isVerfiy = location.pathname === "/verify-email";
+    const isForgotPassword = location.pathname === "/password/forgot";
+    const isResetPassword = location.pathname === "/password/reset";
     const isHomePage = location.pathname === "/";
 
-    if (isLoginPage || isSignUp || isVerfiy || isHomePage) {
+    if (
+        isLoginPage ||
+        isSignUp ||
+        isVerfiy ||
+        isHomePage ||
+        isResetPassword ||
+        isForgotPassword
+    ) {
         return (
             <main className="min-h-screen">
                 <Outlet />

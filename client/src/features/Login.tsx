@@ -90,14 +90,14 @@ export function LoginComponent({
                                     />
                                 </div>
 
-                                <button
+                                <Button
                                     onClick={() =>
                                         navigate({ to: "/password/forgot" })
                                     }
                                     className="text-white hover:text-gray-300 underline text-sm"
                                 >
                                     Forgot Password?
-                                </button>
+                                </Button>
 
                                 <Button
                                     variant={"outline"}
