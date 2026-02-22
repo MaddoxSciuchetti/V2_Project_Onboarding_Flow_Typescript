@@ -120,12 +120,16 @@ const Profile = () => {
             <p>Upload your profile picture:</p>
             <form>
                 <div
-                    className="cursor-pointer w-20 h-20 rounded-full outline overflow-hidden"
+                    className="cursor-pointer w-20 h-20 rounded-full  overflow-hidden"
                     onClick={handleBoxClick}
                     onDragOver={handleDragOver}
                     onDrop={handleDrop}
                 >
-                    <img src={user.presignedUrl} alt="something" />
+                    <img
+                        src={user.presignedUrl}
+                        className="w-full h-full"
+                        alt="image"
+                    />
                 </div>
 
                 <input

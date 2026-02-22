@@ -32,7 +32,7 @@ export async function uploadFileToS3(
     formId: string,
     prefix: string = "/upload/forms",
 ) {
-    const key = `${prefix}/${formId}/${Date.now()}-${file.originalname}`;
+    const key = `${prefix}/${formId}/${Date.now()}-${crypto.randomUUID()}`;
 
     const command = new PutObjectCommand({
         Bucket: process.env.AWS_S3_BUCKET!,

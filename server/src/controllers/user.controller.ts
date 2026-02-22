@@ -26,6 +26,7 @@ export const getUserHandler = catchErrors(async (req, res) => {
     const user = await getUser(id);
     console.log("USER USR");
     console.log(user);
+
     const key = new URL(user?.cloud_url!).pathname.slice(1);
     const presignedUrl = await generatePresignedUrl(key);
 
@@ -56,7 +57,6 @@ export const getUnifiedData = catchErrors(async (req, res) => {
         return res.status(OK).json({ error: "User not found" });
     }
 
-    console.log("is something happening");
     const { unifiedData } = await getemployee_form();
     console.log(unifiedData);
 
