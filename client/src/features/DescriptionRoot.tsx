@@ -13,12 +13,13 @@ import {
     TDescriptionResponse,
 } from "@/lib/api";
 import { tryCatch } from "@/lib/utils";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import z from "zod";
 
 function DescriptionRoot() {
     const [modal, setModal] = useState(false);
+    const queryClient = useQueryClient();
 
     const [dataAvailableOnboarding, setDataAvailableOnboarding] = useState<
         boolean | undefined
@@ -70,10 +71,14 @@ function DescriptionRoot() {
 
     const { mutate: deleteDescription } = useMutation({
         mutationFn: deleteDescriptionData,
+        onSuccess: () =>
+            queryClient.invalidateQueries({ queryKey: ["description_root"] }),
     });
 
     const { mutate: editDescription, error: editError } = useMutation({
         mutationFn: editTaskData,
+        onSuccess: () =>
+            queryClient.invalidateQueries({ queryKey: ["description_root"] }),
     });
 
     const { mutate: addDescripton, error: addError } = useMutation({
@@ -134,6 +139,8 @@ function DescriptionRoot() {
 
             // await addDescriptionData(result.data);
             await addExtraField(result.data);
+            queryClient.invalidateQueries({ queryKey: ["description_root"] });
+            toggleModal();
         } catch (error) {
             console.log(error);
         }
