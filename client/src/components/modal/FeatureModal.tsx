@@ -95,17 +95,15 @@ function FeatureModal() {
     return (
         <div className="fixed inset-0 flex max-h-100 min-h-180 mt-40 mx-auto text-center items-center z-50 bg-gray-200 rounded-xl  w-2xl">
             <div className="h-full w-full my-10 p-10">
-                <h1 className="outline text-lg mb-5">Feature request</h1>
-                <div className="flex flex-col w-full outline">
+                <h1 className=" text-lg mb-5">Feature request</h1>
+                <div className="flex flex-col w-full ">
                     <form
                         onSubmit={handleSubmit(onSubmit)}
                         className="flex flex-col gap-5"
                     >
-                        <Label className="outline text-md">
-                            Wie wichtig ist es?
-                        </Label>
+                        <Label className=" text-md">Wie wichtig ist es?</Label>
                         <select
-                            className="outline w-full"
+                            className=" w-full"
                             {...register("importance", { required: true })}
                         >
                             <option>Nice to have</option>
@@ -124,62 +122,41 @@ function FeatureModal() {
                             <span>This field is required</span>
                         )}
 
-                        <CardContent className="">
-                            <div className="p-6 pb-4"></div>
+                        <CardContent className="w-full rounded-2xl">
                             {/* <Form /> */}
-                            <FileDropzone
-                                {...register("file")}
-                                fileInputRef={fileInputRef}
-                                handleBoxClick={handleBoxClick}
-                                handleDragOver={handleDragOver}
-                                handleDrop={handleDrop}
-                                handleFileSelect={handleFileSelect}
-                            />
-                            <FileList
-                                uploadedFiles={uploadedFiles}
-                                fileProgresses={fileProgresses}
-                                removeFile={removeFile}
-                            />
-                            <div className="px-6 py-3 border-t border-border bg-muted rounded-b-lg flex justify-between items-center">
-                                <TooltipProvider delayDuration={0}>
-                                    <Tooltip>
-                                        <TooltipTrigger asChild>
-                                            <Button
-                                                variant="ghost"
-                                                size="sm"
-                                                className="flex items-center text-muted-foreground hover:text-foreground"
-                                            >
-                                                <HelpCircle className="h-4 w-4 mr-1" />
-                                                Hilfe?
-                                            </Button>
-                                        </TooltipTrigger>
-                                        <TooltipContent className="py-3 bg-gray-200 text-foreground border">
-                                            <div className="space-y-1">
-                                                <p className="text-muted-foreground dark:text-muted-background text-xs max-w-[200px]">
-                                                    Ziehe deine Dateien in das
-                                                    Feld rein oder lade sie
-                                                    direkt hoch.
-                                                </p>
-                                            </div>
-                                        </TooltipContent>
-                                    </Tooltip>
-                                </TooltipProvider>
+                            <div className="w-full mx-auto ">
+                                <FileDropzone
+                                    {...register("file")}
+                                    fileInputRef={fileInputRef}
+                                    handleBoxClick={handleBoxClick}
+                                    handleDragOver={handleDragOver}
+                                    handleDrop={handleDrop}
+                                    handleFileSelect={handleFileSelect}
+                                />
+                                <FileList
+                                    uploadedFiles={uploadedFiles}
+                                    fileProgresses={fileProgresses}
+                                    removeFile={removeFile}
+                                />
+                            </div>
 
-                                <div className="flex gap-2">
-                                    {/* <Button
+                            {/* <Button
                                     variant={"outline"}
                                     onClick={handleFileSubmit}
                                     className="h-9 px-4 text-sm font-medium hover:text-black"
                                 >
                                     Erstellen
                                 </Button> */}
-                                </div>
-                            </div>
                         </CardContent>
 
                         {/* placeholder für uploaeds */}
 
-                        <Button type="submit">Senden</Button>
+                        <Button
+                            className="hover:text-black cursor-pointer"
+                            type="submit"
+                        >
+                            Senden
+                        </Button>
                     </form>
                 </div>
             </div>

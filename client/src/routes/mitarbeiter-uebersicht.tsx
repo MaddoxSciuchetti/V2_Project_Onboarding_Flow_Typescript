@@ -8,9 +8,7 @@ export const Route = createFileRoute("/mitarbeiter-uebersicht")({
 function RouteComponent() {
     return (
         <>
-            <div className="flex">
-                <MitarbeiterÜbersicht />
-            </div>
+            <MitarbeiterÜbersicht />
         </>
     );
 }

@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useMemo, useState } from "react";
 import ModalMitarbeiter from "@/components/mitarbeiter-übersicht/ModalMitarbeiter";
 import { useSidebar } from "@/components/ui/sidebar";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
     deleteEmployeeHandler,
     specificEmployeeData,
@@ -49,6 +49,8 @@ function MitarbeiterÜbersicht() {
         toggleSidebar();
     };
 
+    const queryClient = useQueryClient();
+
     const {
         data: EmployeeData,
         isLoading,
@@ -67,6 +69,9 @@ function MitarbeiterÜbersicht() {
     } = useMutation({
         mutationFn: deleteEmployeeHandler,
         onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ["EmployeeDataSpecifics"],
+            });
             toggleEmployeeModal;
         },
         onError: () => {
@@ -97,13 +102,17 @@ function MitarbeiterÜbersicht() {
     return (
         <>
             {" "}
-            <div className="w-full min-w-340 rounded-2xl mx-auto p-6 shadow-gray-200 shadow-lg overflow-auto md:h-300">
-                <div className="h-full flex flex-col">
+            <div className="rounded-2xl overflow-x-auto w-full h-full p-6 shadow-gray-200 shadow-lg overflow-auto">
+                <div className="h-full w-full flex flex-col">
                     {isLoading && <Spinner className="size-8" />}
                     <div className="flex gap-5">
-                        <Input />
+                        <Input placeholder="Suche bei Namen" />
                         <div className="flex gap-2">
-                            <Button onClick={toggleModal} variant={"outline"}>
+                            <Button
+                                className="cursor-pointer"
+                                onClick={toggleModal}
+                                variant={"outline"}
+                            >
                                 Mitarbeiter Hinzufügen
                             </Button>
                         </div>
@@ -331,7 +340,7 @@ function MitarbeiterÜbersicht() {
                                 className="fixed inset-0 bg-black/50 cursor-pointer"
                                 aria-label="Close modal"
                             />
-                            <ModalMitarbeiter />
+                            <ModalMitarbeiter toggleModal={toggleModal} />
                         </div>
                     )}
                 </div>

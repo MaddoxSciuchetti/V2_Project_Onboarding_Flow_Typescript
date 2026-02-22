@@ -57,7 +57,7 @@ function Ceo_Dashboard() {
                 <Spinner className="size-8" />
             ) : (
                 <>
-                    <div className="w-full h-150 rounded-2xl mx-auto p-6 shadow-gray-200 shadow-lg overflow-auto md:max-w-8xl md:h-300">
+                    <div className="rounded-2xl overflow-x-auto w-full h-full p-6 shadow-gray-200 shadow-lg overflow-auto">
                         <h1 className="mb-5 text-2xl font-light ml-6 ">
                             Deine Mitarbeiter und ihre offenen Aufgaben
                         </h1>

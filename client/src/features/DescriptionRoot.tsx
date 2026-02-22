@@ -13,12 +13,13 @@ import {
     TDescriptionResponse,
 } from "@/lib/api";
 import { tryCatch } from "@/lib/utils";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import z from "zod";
 
 function DescriptionRoot() {
     const [modal, setModal] = useState(false);
+    const queryClient = useQueryClient();
 
     const [dataAvailableOnboarding, setDataAvailableOnboarding] = useState<
         boolean | undefined
@@ -70,10 +71,14 @@ function DescriptionRoot() {
 
     const { mutate: deleteDescription } = useMutation({
         mutationFn: deleteDescriptionData,
+        onSuccess: () =>
+            queryClient.invalidateQueries({ queryKey: ["description_root"] }),
     });
 
     const { mutate: editDescription, error: editError } = useMutation({
         mutationFn: editTaskData,
+        onSuccess: () =>
+            queryClient.invalidateQueries({ queryKey: ["description_root"] }),
     });
 
     const { mutate: addDescripton, error: addError } = useMutation({
@@ -134,6 +139,8 @@ function DescriptionRoot() {
 
             // await addDescriptionData(result.data);
             await addExtraField(result.data);
+            queryClient.invalidateQueries({ queryKey: ["description_root"] });
+            toggleModal();
         } catch (error) {
             console.log(error);
         }
@@ -156,14 +163,14 @@ function DescriptionRoot() {
 
     return (
         <>
-            <div className="w-full min-w-300 rounded-2xl mx-auto p-6 shadow-gray-200 shadow-lg overflow-auto md:h-300">
-                <div className="h-full flex flex-col">
-                    <div className="flex gap-2 justify-center w-full min-w-xl ">
+            <div className="rounded-2xl overflow-x-auto w-full h-full p-6 shadow-gray-200 shadow-lg overflow-auto">
+                <div className="h-full w-full flex flex-col">
+                    <div className="flex gap-2  justify-center  ">
                         <Button
                             variant={
                                 tab === "ONBOARDING" ? "default" : "outline"
                             }
-                            className={`w-2xl ${
+                            className={` ${
                                 tab === "ONBOARDING"
                                     ? "bg-gray-500 text-white cursor-pointer"
                                     : "bg-gray-200 cursor-pointer"
@@ -176,7 +183,7 @@ function DescriptionRoot() {
                             variant={
                                 tab === "OFFBOARDING" ? "default" : "outline"
                             }
-                            className={`w-2xl ${
+                            className={`${
                                 tab === "OFFBOARDING"
                                     ? "bg-gray-500 text-white cursor-pointer"
                                     : "bg-gray-200 cursor-pointer"

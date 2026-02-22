@@ -62,6 +62,8 @@ export const createAccount = async (data: createAccountParams) => {
             password: hashedpassword,
             vorname: data.firstName,
             nachname: data.lastName,
+            cloud_url:
+                "https://bsb-file-storage.s3.eu-north-1.amazonaws.com/upload/profilepic/cmknti1f800028tmmhf5u5627/1771746653414-",
         },
         omit: {
             password: true,
@@ -85,6 +87,7 @@ export const createAccount = async (data: createAccountParams) => {
 
     const url = `${APP_ORIGIN}/email/verify/${verificationCode.id}`;
 
+    // integrate resend
     const { error } = await sendMail({
         to: user.email,
         ...getVerifyEmailTemplate(url),
@@ -307,6 +310,7 @@ export const sendPasswordResetEmail = async (email: string) => {
 
     const url = `${APP_ORIGIN}/password/reset?code=${verificationCode.id}&exp=${expiresAt.getTime()}`;
 
+    // integrate email here too
     const { data, error } = await sendMail({
         to: email,
         ...getPasswordResetTemplate(url),

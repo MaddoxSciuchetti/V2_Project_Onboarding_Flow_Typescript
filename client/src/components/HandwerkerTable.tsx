@@ -27,32 +27,42 @@ function HandwerkerTable({
 }: HandwerkerTableProps) {
     return (
         <>
-            <Table className=" text-left">
-                <TableHeader className="outline">
-                    <TableRow className="text-lg">
-                        <TableHead className="text-left  pl-0">
-                            Handwerker
-                        </TableHead>
-                        <TableHead className="text-left  pl-0">Phase</TableHead>
+            <div className="rounded-2xl overflow-x-auto w-full h-full  overflow-auto">
+                <div className=" w-full flex flex-col">
+                    <Table className=" text-left mt-5">
+                        <TableHeader className="">
+                            <TableRow className="text-lg">
+                                <TableHead className="text-left  pl-0">
+                                    Handwerker
+                                </TableHead>
+                                <TableHead className="text-left  pl-0">
+                                    Phase
+                                </TableHead>
 
-                        <TableHead className=" pl-0">Fortschritt</TableHead>
-                        <TableHead className=" pl-0">Aktionen</TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {filtered?.map((task: OffboardingItem) => (
-                        <Worker_Item
-                            key={task.id}
-                            item_value={task.id}
-                            form_type={form_type(task)}
-                            item={task.vorname}
-                            item1={task.nachname}
-                            onRemove={onRemove}
-                            gotopage={gotopage}
-                        />
-                    ))}
-                </TableBody>
-            </Table>
+                                <TableHead className=" pl-0">
+                                    Fortschritt
+                                </TableHead>
+                                <TableHead className=" pl-0">
+                                    Aktionen
+                                </TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {filtered?.map((task: OffboardingItem) => (
+                                <Worker_Item
+                                    key={task.id}
+                                    item_value={task.id}
+                                    form_type={form_type(task)}
+                                    item={task.vorname}
+                                    item1={task.nachname}
+                                    onRemove={onRemove}
+                                    gotopage={gotopage}
+                                />
+                            ))}
+                        </TableBody>
+                    </Table>
+                </div>
+            </div>
         </>
     );
 }

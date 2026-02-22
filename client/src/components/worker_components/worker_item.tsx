@@ -60,7 +60,7 @@ export function Worker_Item({
         <>
             <tr
                 onClick={() => gotopage(item_value, form_type)}
-                className="hover:bg-gray-50 rounded-2xl cursor-pointer border-seperate border-spacing-y-2 py-5"
+                className="hover:bg-gray-50 rounded-2xl cursor-pointer   py-5"
             >
                 <td className="text-sm font-semibold">
                     {item} {item1}

@@ -1,4 +1,4 @@
-import { logout } from "@/lib/api";
+import { getProfileFoto, logout } from "@/lib/api";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -8,12 +8,20 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
+import useAuth from "@/hooks/useAuth";
 
 const UserMenu = () => {
-    const navigate = useNavigate();
+    const { user, isLoading, isError } = useAuth();
     const queryClient = useQueryClient();
+
+    const { data, isPending } = useQuery<string>({
+        queryKey: ["profilepic"],
+        queryFn: getProfileFoto,
+    });
+
+    const navigate = useNavigate();
     const { mutate: signOut } = useMutation({
         mutationFn: logout,
         onSettled: () => {
@@ -26,22 +34,31 @@ const UserMenu = () => {
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Avatar className="cursor-pointer w-10 h-10">
-                    <AvatarImage
+                    <img
                         className="h-full w-full"
-                        src="/assets/timo.png"
+                        src={data}
+                        alt="profile image"
                     />
-                    <AvatarFallback>Profile</AvatarFallback>
                 </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="bg-gray-200">
-                <DropdownMenuItem onClick={() => navigate({ to: "/profile" })}>
+                <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={() => navigate({ to: "/profile" })}
+                >
                     Profile
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => navigate({ to: "/settings" })}>
+                <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={() => navigate({ to: "/settings" })}
+                >
                     Settings
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => signOut()}>
+                <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={() => signOut()}
+                >
                     Logout
                 </DropdownMenuItem>
             </DropdownMenuContent>
