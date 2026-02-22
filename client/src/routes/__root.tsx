@@ -64,7 +64,7 @@ function SidebarLayout() {
                     <SidebarTrigger className="-ml-1" />
                 </header>
                 <main className="flex flex-col lg:items-center grow lg:min-w-96 gap-4 p-4">
-                    <div className="grow w-full min-w-0">
+                    <div className="grow w-full min-w-0  h-full overflow-hidden">
                         <Outlet />
                     </div>
                 </main>

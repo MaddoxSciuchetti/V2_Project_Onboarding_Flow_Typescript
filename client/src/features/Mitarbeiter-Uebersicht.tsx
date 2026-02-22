@@ -106,9 +106,13 @@ function MitarbeiterÜbersicht() {
                 <div className="h-full w-full flex flex-col">
                     {isLoading && <Spinner className="size-8" />}
                     <div className="flex gap-5">
-                        <Input />
+                        <Input placeholder="Suche bei Namen" />
                         <div className="flex gap-2">
-                            <Button onClick={toggleModal} variant={"outline"}>
+                            <Button
+                                className="cursor-pointer"
+                                onClick={toggleModal}
+                                variant={"outline"}
+                            >
                                 Mitarbeiter Hinzufügen
                             </Button>
                         </div>

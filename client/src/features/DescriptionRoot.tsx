@@ -163,14 +163,14 @@ function DescriptionRoot() {
 
     return (
         <>
-            <div className="w-full min-w-300 rounded-2xl mx-auto p-6 shadow-gray-200 shadow-lg overflow-auto md:h-300">
-                <div className="h-full flex flex-col">
-                    <div className="flex gap-2 justify-center w-full min-w-xl ">
+            <div className="rounded-2xl overflow-x-auto w-full h-full p-6 shadow-gray-200 shadow-lg overflow-auto">
+                <div className="h-full w-full flex flex-col">
+                    <div className="flex gap-2  justify-center  ">
                         <Button
                             variant={
                                 tab === "ONBOARDING" ? "default" : "outline"
                             }
-                            className={`w-2xl ${
+                            className={` ${
                                 tab === "ONBOARDING"
                                     ? "bg-gray-500 text-white cursor-pointer"
                                     : "bg-gray-200 cursor-pointer"
@@ -183,7 +183,7 @@ function DescriptionRoot() {
                             variant={
                                 tab === "OFFBOARDING" ? "default" : "outline"
                             }
-                            className={`w-2xl ${
+                            className={`${
                                 tab === "OFFBOARDING"
                                     ? "bg-gray-500 text-white cursor-pointer"
                                     : "bg-gray-200 cursor-pointer"
