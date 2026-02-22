@@ -22,6 +22,8 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 const allowedOrigins = APP_ORIGIN.split(",").map((o) => o.trim());
+console.log("TESTING TESTING");
+console.log("Parsed origins:", allowedOrigins);
 
 app.use(
     cors({
@@ -40,6 +42,19 @@ app.use(
         credentials: true,
     }),
 );
+
+app.use((req, res, next) => {
+    res.on("finish", () => {
+        const headers = res.getHeaders();
+        if (headers["access-control-allow-origin"]) {
+            console.log(
+                "✅ Final Access-Control-Allow-Origin:",
+                headers["access-control-allow-origin"],
+            );
+        }
+    });
+    next();
+});
 // home page
 app.get("/", (req, res) => {
     res.send("here");
