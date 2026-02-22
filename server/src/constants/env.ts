@@ -1,14 +1,15 @@
 const getEnv = (key: string, defaultValue?: string): string => {
-  const value = process.env[key] || defaultValue;
+    const value = process.env[key] || defaultValue;
 
-  if (value == undefined) {
-    throw new Error("Missing environment variable");
-  }
+    if (value == undefined) {
+        throw new Error("Missing environment variable");
+    }
 
-  return value;
+    return value;
 };
 
 export const PORT = getEnv("PORT", "3000");
+export const FRONTENDURL = getEnv("FRONTEND_URL");
 export const NODE_ENV = getEnv("NODE_ENV", "development");
 export const APP_ORIGIN = getEnv("APP_ORIGIN");
 export const JWT_SECRET = getEnv("JWT_SECRET");

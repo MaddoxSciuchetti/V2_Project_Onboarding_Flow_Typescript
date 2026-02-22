@@ -1,4 +1,9 @@
-import { APP_ORIGIN, JWT_REFRESH_SECRET, JWT_SECRET } from "../constants/env";
+import {
+    APP_ORIGIN,
+    FRONTENDURL,
+    JWT_REFRESH_SECRET,
+    JWT_SECRET,
+} from "../constants/env";
 import {
     CONFLICT,
     INTERNAL_SERVER_ERROR,
@@ -85,7 +90,7 @@ export const createAccount = async (data: createAccountParams) => {
 
     // send the verification email
 
-    const url = `${APP_ORIGIN}/email/verify/${verificationCode.id}`;
+    const url = `${FRONTENDURL}/email/verify/${verificationCode.id}`;
 
     // integrate resend
     const { error } = await sendMail({
