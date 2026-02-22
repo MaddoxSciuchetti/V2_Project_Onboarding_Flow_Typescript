@@ -20,12 +20,41 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
+
+const allowedOrigins = APP_ORIGIN.split(",").map((o) => o.trim());
+console.log("TESTING TESTING");
+console.log("Parsed origins:", allowedOrigins);
+
 app.use(
     cors({
-        origin: APP_ORIGIN,
+        origin: function (origin, callback) {
+            // Allow undefined origins (like local tools or server-to-server requests)
+            if (!origin) return callback(null, true);
+
+            if (allowedOrigins.includes(origin)) {
+                return callback(null, true);
+            } else {
+                return callback(
+                    new Error(`CORS blocked for origin: ${origin}`),
+                );
+            }
+        },
         credentials: true,
     }),
 );
+
+app.use((req, res, next) => {
+    res.on("finish", () => {
+        const headers = res.getHeaders();
+        if (headers["access-control-allow-origin"]) {
+            console.log(
+                "✅ Final Access-Control-Allow-Origin:",
+                headers["access-control-allow-origin"],
+            );
+        }
+    });
+    next();
+});
 // home page
 app.get("/", (req, res) => {
     res.send("here");
