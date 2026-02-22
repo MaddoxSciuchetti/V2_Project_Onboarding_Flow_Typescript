@@ -59,12 +59,12 @@ function SidebarLayout() {
     return (
         <>
             <AppSidebar openModal={handleOpenModal} />
-            <SidebarInset className="flex flex-col">
+            <SidebarInset className="flex flex-col h-svh md:w-max-svw">
                 <header className="flex h-16 shrink-0 items-center gap-2 px-4">
                     <SidebarTrigger className="-ml-1" />
                 </header>
-                <main className="flex flex-1 flex-col gap-4 p-4">
-                    <div className="flex items-center justify-center flex-1">
+                <main className="flex flex-col lg:items-center grow lg:min-w-96 gap-4 p-4">
+                    <div className="grow w-full min-w-0">
                         <Outlet />
                     </div>
                 </main>

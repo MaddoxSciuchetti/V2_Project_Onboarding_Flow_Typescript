@@ -117,7 +117,7 @@ const Profile = () => {
 
     return (
         <div className="flex flex-col items-center mt-16 space-y-4 ">
-            <h1 className="text-3xl font-bold mb-4">My Account</h1>
+            <h1 className="text-3xl font-bold mb-4">Mein Konto</h1>
             {!verified && (
                 <Alert
                     variant="default"
@@ -125,7 +125,7 @@ const Profile = () => {
                 >
                     <AlertTriangle className="h-4 w-4 text-yellow-600" />
                     <AlertDescription className="text-yellow-800">
-                        Please verify your email
+                        Verifiziere deine email
                     </AlertDescription>
                 </Alert>
             )}
@@ -133,7 +133,7 @@ const Profile = () => {
                 Email: <span className="text-black">{email}</span>
             </p>
 
-            <p>Upload your profile picture:</p>
+            <p>Klicke auf das foto um ein neues hochzuladen</p>
             <form>
                 <div
                     className="cursor-pointer w-20 h-20 rounded-full  overflow-hidden"
@@ -165,7 +165,7 @@ const Profile = () => {
                 />
             </form>
             <p className="text-black">
-                Created on{" "}
+                Erstellt am{" "}
                 <span className="text-black">
                     {new Date(createdAt).toLocaleDateString("en-US")}
                 </span>
