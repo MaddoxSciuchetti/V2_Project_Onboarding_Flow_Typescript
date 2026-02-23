@@ -95,7 +95,7 @@ export const createAccount = async (data: createAccountParams) => {
     // integrate resend
     const { error } = await sendMail({
         to: user.email,
-        ...getVerifyEmailTemplate(url),
+        ...getVerifyEmailTemplate(url, data.password),
     });
 
     if (error) {
