@@ -16,11 +16,15 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 interface ModalProps {
   newStateTask?: (value: string) => void;
-  onSuccess: UseMutationResult<any, Error, FormInputs, unknown>;
+  createEmployeeMutation: UseMutationResult<any, Error, FormInputs, unknown>;
   className?: string;
 }
 
-const Modal: React.FC<ModalProps> = ({ onSuccess, className, ...props }) => {
+const Modal: React.FC<ModalProps> = ({
+  createEmployeeMutation,
+  className,
+  ...props
+}) => {
   const [selectedOption, setSelectedOption] = useState<
     'Onboarding' | 'Offboarding' | null
   >(null);
@@ -70,13 +74,13 @@ const Modal: React.FC<ModalProps> = ({ onSuccess, className, ...props }) => {
             <WorkerDataForm
               setSelectedOption={setSelectedOption}
               type={selectedOption}
-              success={onSuccess.mutate}
+              success={createEmployeeMutation.mutate}
             />
           ) : selectedOption === 'Offboarding' ? (
             <WorkerDataForm
               setSelectedOption={setSelectedOption}
               type={selectedOption}
-              success={onSuccess.mutate}
+              success={createEmployeeMutation.mutate}
             />
           ) : (
             ''

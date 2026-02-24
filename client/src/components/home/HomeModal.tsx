@@ -5,10 +5,14 @@ import Modal from '@/components/modal/Modal';
 type HomeModalProps = {
   modal: boolean;
   toggleModal: () => void;
-  onSubmit: UseMutationResult<any, Error, FormInputs, unknown>;
+  createEmployeeMutation: UseMutationResult<any, Error, FormInputs, unknown>;
 };
 
-const HomeModal = ({ toggleModal, onSubmit, modal }: HomeModalProps) => {
+const HomeModal = ({
+  toggleModal,
+  createEmployeeMutation,
+  modal,
+}: HomeModalProps) => {
   return (
     <>
       {modal && (
@@ -18,7 +22,10 @@ const HomeModal = ({ toggleModal, onSubmit, modal }: HomeModalProps) => {
             className="fixed inset-0 bg-black/50 cursor-pointer"
             aria-label="Close modal"
           />
-          <Modal className="p-4 rounded-lg" onSuccess={onSubmit} />
+          <Modal
+            className="p-4 rounded-lg"
+            createEmployeeMutation={createEmployeeMutation}
+          />
         </div>
       )}
     </>

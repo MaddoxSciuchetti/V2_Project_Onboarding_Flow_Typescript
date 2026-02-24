@@ -1,0 +1,12 @@
+export type FormType = 'Onboarding' | 'Offboarding';
+
+export type EmployeeForm = {
+  form_type: FormType;
+};
+
+export type OffboardingItem = {
+  employee_forms: EmployeeForm[];
+  id: number;
+  nachname: string;
+  vorname: string;
+};
