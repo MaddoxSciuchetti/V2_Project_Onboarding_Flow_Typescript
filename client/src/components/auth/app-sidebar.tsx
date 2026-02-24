@@ -91,10 +91,15 @@ export function AppSidebar({ openModal }: { openModal: () => void }) {
                                         className="text-black"
                                         key={index}
                                     >
-                                        <SidebarMenuButton asChild>
+                                        <SidebarMenuButton
+                                            asChild
+                                            className="mt-2"
+                                        >
                                             <Link to={item.to}>
                                                 <item.icon />
-                                                <span>{item.title}</span>
+                                                <span className="">
+                                                    {item.title}
+                                                </span>
                                             </Link>
                                         </SidebarMenuButton>
                                     </SidebarMenuItem>

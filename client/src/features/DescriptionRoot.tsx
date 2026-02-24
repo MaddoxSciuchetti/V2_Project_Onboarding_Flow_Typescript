@@ -243,6 +243,7 @@ function DescriptionRoot() {
                                                         </div>
 
                                                         <img
+                                                            className="cursor-pointer"
                                                             src="/assets/editReact.svg"
                                                             onClick={() =>
                                                                 openEditModal(
