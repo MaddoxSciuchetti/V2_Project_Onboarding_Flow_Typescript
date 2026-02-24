@@ -20,6 +20,8 @@ import {
 import { useEffect, useState } from "react";
 import { Response, useGetHistory } from "@/hooks/use-getHistoryData";
 import { Spinner } from "../ui/spinner";
+import { useQuery } from "@tanstack/react-query";
+import { getProfileFoto } from "@/lib/api";
 
 interface FormProps {
     id_original: number;
@@ -62,6 +64,11 @@ const Form: React.FC<FormProps> = ({
         editcomment || "",
     );
 
+    const { data, isPending } = useQuery<string>({
+        queryKey: ["profilepic"],
+        queryFn: getProfileFoto,
+    });
+
     const { historyData, isLoading, error, refetchHistory } =
         useGetHistory(id_original);
 
@@ -102,7 +109,7 @@ const Form: React.FC<FormProps> = ({
                         <div className="flex flex-row mt-2">
                             <p className="w-full underline">{description}</p>
                             <img
-                                className=""
+                                className="cursor-pointer"
                                 src="/assets/editReact.svg"
                                 alt="text"
                                 onClick={() =>
@@ -194,11 +201,14 @@ const Form: React.FC<FormProps> = ({
                         >
                             <AccordionItem value="shipping" className="mb-10 ">
                                 <AccordionTrigger className=" -blue-600 border-2 p-2 border-gray-300">
-                                    Verlauf
+                                    Bearbeitungsverlauf
                                 </AccordionTrigger>
                                 <AccordionContent className="">
-                                    {isLoading ? (
-                                        <Spinner className="size-8" />
+                                    {historyData?.length === 0 ? (
+                                        <p className="mt-5">
+                                            Es wurden noch keine Änderungen
+                                            vorgenommen
+                                        </p>
                                     ) : (
                                         (historyData || []).map(
                                             (item: Response, index: number) => (
@@ -220,6 +230,10 @@ const Form: React.FC<FormProps> = ({
                                                                     .email
                                                             }
                                                         </p>
+                                                        <img
+                                                            className="ml-1 w-5 h-5 "
+                                                            src={data}
+                                                        />
                                                     </div>
                                                     <p>
                                                         Status:{" "}
