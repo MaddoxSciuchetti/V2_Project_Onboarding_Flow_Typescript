@@ -2,13 +2,13 @@ import { Response, CookieOptions } from "express";
 import { fifteenMinutesFromNow, thirtyDaysFromNow } from "./date";
 
 export const REFRESH_PATH = "/auth/refresh";
-const secure = process.env.NODE_ENV !== "development";
-const isProd = process.env.NODE_ENV === "production";
+const isLocal = process.env.NODE_ENV === "development";
+const isProdLike = !isLocal;
 
 const defaults: CookieOptions = {
-    sameSite: isProd ? "none" : "lax",
+    sameSite: isProdLike ? "none" : "lax",
     httpOnly: true,
-    secure: isProd,
+    secure: isProdLike,
 };
 
 export const getAccessTokenCookieOptions = (): CookieOptions => ({
