@@ -7,6 +7,18 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { UseMutateFunction } from '@tanstack/react-query';
 import { EditDescriptionData } from '@/lib/api';
 import { newField } from '@/types/api';
+import z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { ErrorMessage } from '@hookform/error-message';
+
+const templateConfigurationSchema = z.object({
+  form_field_id: z.number().optional(),
+  description: z
+    .string()
+    .min(6, { message: 'Bitte füge eine Längere Beschreibung hinzu' }),
+  template_type: z.enum(['ONBOARDING', 'OFFBOARDING']),
+  owner: z.string({ message: 'Bitte wählen ein Mitarbeiter aus' }),
+});
 
 type RootFormProps = {
   editDescriptionMutation: UseMutateFunction<
@@ -35,8 +47,8 @@ type RootFormProps = {
   setMode: Dispatch<SetStateAction<'EDIT' | 'ADD' | undefined>>;
 };
 
-type HandleAddSubmit = {
-  form_field_id: number;
+export type HandleAddSubmit = {
+  form_field_id?: number;
   description: string;
   template_type: 'ONBOARDING' | 'OFFBOARDING';
   owner: string;
@@ -56,21 +68,16 @@ const RootForm = ({
   const {
     register,
     handleSubmit,
-    watch,
+    control,
     setValue,
     formState: { errors },
-  } = useForm<HandleAddSubmit>();
+  } = useForm<HandleAddSubmit>({
+    resolver: zodResolver(templateConfigurationSchema),
+    criteriaMode: 'all',
+  });
 
   const onSubmit: SubmitHandler<HandleAddSubmit> = (data) =>
-    mode === 'EDIT'
-      ? console.log(data)
-      : // ? editDescriptionMutation(data)
-        console.log(data);
-  // : handleAddSubmitMutation(data);
-
-  useEffect(() => {
-    setValue('owner', selectedValue);
-  }, [form_field_id, setValue, selectedValue]);
+    mode === 'EDIT' ? console.log(data) : console.log(data);
 
   return (
     <form
@@ -81,12 +88,7 @@ const RootForm = ({
       {mode === 'EDIT'
         ? `${template_type === 'ONBOARDING' ? 'Onboarding' : 'Offboarding'} Aufgabe bearbeiten`
         : `Füge Aufgabe fürs ${template_type === 'ONBOARDING' ? 'Onboarding' : 'Offboarding'} hinzu`}
-      <input
-        {...register('owner')}
-        type="hidden"
-        name="owner"
-        value={selectedValue || ''}
-      />
+
       <input
         {...register('template_type')}
         type="hidden"
@@ -95,7 +97,7 @@ const RootForm = ({
       />
       {mode === 'EDIT' && (
         <input
-          {...register('form_field_id')}
+          {...register('form_field_id', { valueAsNumber: true })}
           type="hidden"
           id="form_field_id"
           name="form_field_id"
@@ -109,8 +111,18 @@ const RootForm = ({
         name="description"
         className="w-xl mb-5"
       />
+
+      <ErrorMessage
+        errors={errors}
+        name={'description'}
+        render={({ message }) => (
+          <p className="text-red-400 text-sm mb-5">{message}</p>
+        )}
+      />
       <div className="flex flex-row gap-2">
         <EmployeeSelect
+          control={control}
+          errors={errors}
           selectedValue={selectedValue}
           setSelectedValue={setSelectedValue}
           EmployeeData={EmployeeData}
