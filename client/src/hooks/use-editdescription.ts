@@ -1,4 +1,4 @@
-import { editTaskData } from '@/lib/api';
+import { editTaskData, EditDescriptionData } from '@/lib/api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { toast } from 'sonner';
@@ -38,7 +38,11 @@ function useEditDescription() {
     });
   }
 
-  const { mutate: editDescription } = useMutation({
+  const { mutate: editDescriptionMutation } = useMutation<
+    EditDescriptionData,
+    Error,
+    EditDescriptionData
+  >({
     mutationFn: editTaskData,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['description_root'] });
@@ -54,7 +58,7 @@ function useEditDescription() {
     modal,
     setModal,
     openDescriptionModal,
-    editDescription,
+    editDescriptionMutation,
     modalState,
     toggleModal,
   };

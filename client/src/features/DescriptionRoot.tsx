@@ -9,12 +9,12 @@ import { cn } from '@/types/utils';
 
 function DescriptionRoot() {
   const {
+    editDescriptionMutation,
+    handleAddSubmitMutation,
     modal,
     modalState,
     openDescriptionModal,
     deleteDescription,
-    handleSubmit,
-    handleAddSubmit,
     tab,
     setTab,
     mode,
@@ -67,11 +67,11 @@ function DescriptionRoot() {
       {modalState.selectedItem && modal && (
         <ModalOverlay handleToggle={handleOpenModal}>
           <RootModal
+            editDescriptionMutation={editDescriptionMutation}
+            handleAddSubmitMutation={handleAddSubmitMutation}
             form_field_id={modalState.selectedItem.form_field_id}
             description={modalState.selectedItem.description}
             owner={modalState.selectedItem.owner}
-            handleSubmit={handleSubmit}
-            handleAddSubmit={handleAddSubmit}
             template_type={tab}
             EmployeeData={EmployeeData}
             OnboardingData={OnboardingData}

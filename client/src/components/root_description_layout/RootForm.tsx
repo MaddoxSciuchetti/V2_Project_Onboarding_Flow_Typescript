@@ -1,13 +1,30 @@
 import { Textarea } from '../ui/textarea';
 import { Button } from '../ui/button';
-import { Dispatch, SetStateAction, SubmitEvent } from 'react';
+import { Dispatch, SetStateAction, useEffect } from 'react';
 import { TEmployeeResponse } from '@/zod-schemas/schema';
 import EmployeeSelect from './EmployeeSelect';
-import { SubmitHandler } from '@/types/rootDescription';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { UseMutateFunction } from '@tanstack/react-query';
+import { EditDescriptionData } from '@/lib/api';
+import { newField } from '@/types/api';
 
 type RootFormProps = {
-  handleAddSubmit: SubmitHandler;
-  handleSubmit: SubmitHandler;
+  editDescriptionMutation: UseMutateFunction<
+    EditDescriptionData,
+    Error,
+    EditDescriptionData,
+    unknown
+  >;
+  handleAddSubmitMutation: UseMutateFunction<
+    newField,
+    Error,
+    {
+      description: string;
+      template_type: 'ONBOARDING' | 'OFFBOARDING';
+      owner: string;
+    },
+    unknown
+  >;
   selectedValue: string;
   description: string | null | undefined;
   setSelectedValue: Dispatch<SetStateAction<string>>;
@@ -18,9 +35,16 @@ type RootFormProps = {
   setMode: Dispatch<SetStateAction<'EDIT' | 'ADD' | undefined>>;
 };
 
+type HandleAddSubmit = {
+  form_field_id: number;
+  description: string;
+  template_type: 'ONBOARDING' | 'OFFBOARDING';
+  owner: string;
+};
+
 const RootForm = ({
-  handleAddSubmit,
-  handleSubmit,
+  editDescriptionMutation,
+  handleAddSubmitMutation,
   selectedValue,
   description,
   setSelectedValue,
@@ -29,19 +53,49 @@ const RootForm = ({
   form_field_id,
   mode,
 }: RootFormProps) => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<HandleAddSubmit>();
+
+  const onSubmit: SubmitHandler<HandleAddSubmit> = (data) =>
+    mode === 'EDIT'
+      ? console.log(data)
+      : // ? editDescriptionMutation(data)
+        console.log(data);
+  // : handleAddSubmitMutation(data);
+
+  useEffect(() => {
+    setValue('owner', selectedValue);
+  }, [form_field_id, setValue, selectedValue]);
+
   return (
     <form
-      onSubmit={mode === 'EDIT' ? handleSubmit : handleAddSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       name="valuesform"
       className="flex flex-col items-start"
     >
       {mode === 'EDIT'
         ? `${template_type === 'ONBOARDING' ? 'Onboarding' : 'Offboarding'} Aufgabe bearbeiten`
         : `Füge Aufgabe fürs ${template_type === 'ONBOARDING' ? 'Onboarding' : 'Offboarding'} hinzu`}
-      <input type="hidden" name="owner" value={selectedValue || ''} />
-      <input type="hidden" name="template_type" value={template_type} />
+      <input
+        {...register('owner')}
+        type="hidden"
+        name="owner"
+        value={selectedValue || ''}
+      />
+      <input
+        {...register('template_type')}
+        type="hidden"
+        name="template_type"
+        value={template_type}
+      />
       {mode === 'EDIT' && (
         <input
+          {...register('form_field_id')}
           type="hidden"
           id="form_field_id"
           name="form_field_id"
@@ -49,6 +103,7 @@ const RootForm = ({
         />
       )}
       <Textarea
+        {...register('description')}
         defaultValue={description || ''}
         id="description"
         name="description"

@@ -1,3 +1,3 @@
 import { SubmitEvent } from 'react';
 
-export type SubmitHandler = (e: SubmitEvent<HTMLFormElement>) => void;
+export type SubmitHandlerProps = (e: SubmitEvent<HTMLFormElement>) => void;

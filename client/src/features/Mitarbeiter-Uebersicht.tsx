@@ -1,18 +1,14 @@
 import { Button } from '@/components/ui/button';
-import { useEffect, useMemo, useState } from 'react';
+import { useState } from 'react';
 import ModalMitarbeiter from '@/components/mitarbeiter-übersicht/ModalMitarbeiter';
 import { useSidebar } from '@/components/ui/sidebar';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { deleteEmployeeHandler, specificEmployeeData } from '@/lib/api';
-import { EditIcon } from 'lucide-react';
 import ModalEditMitarbeiter from '@/components/mitarbeiter-übersicht/ModalEditMitarbeiter';
 import { Input } from '@/components/ui/input';
 import {
   Table,
   TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
