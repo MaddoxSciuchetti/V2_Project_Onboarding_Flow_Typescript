@@ -4,7 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { TEmployForm } from '@/features/CeoDashboard';
+import { TEmployForm } from '@/features/CeoDashboard/components/CeoDashboard';
 import { useMemo } from 'react';
 
 type TAccordion = {

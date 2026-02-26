@@ -1,5 +1,5 @@
+import AdminModal from '@/components/admin_data/AdminModal';
 import { SetStateAction } from 'react';
-import AdminModal from '../admin_data/AdminModal';
 
 type ModalProps = {
   modal: boolean;
@@ -7,7 +7,7 @@ type ModalProps = {
   selectedUser: string | null;
 };
 
-function Modal({ modal, setModalOpen, selectedUser }: ModalProps) {
+function ReminderModal({ modal, setModalOpen, selectedUser }: ModalProps) {
   return (
     <>
       {modal && (
@@ -27,4 +27,4 @@ function Modal({ modal, setModalOpen, selectedUser }: ModalProps) {
   );
 }
 
-export default Modal;
+export default ReminderModal;

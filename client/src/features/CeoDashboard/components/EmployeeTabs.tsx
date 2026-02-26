@@ -1,12 +1,12 @@
 import { TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { TEmployForm } from '@/features/CeoDashboard';
+import { TEmployForm } from '../types/employeeform.type';
 
 type CeoTabProps = {
   uniqueHandwerkerProBSBEmployee: TEmployForm;
   selectedUser: string | null;
 };
 
-function CeoTabs({
+function EmployeeTabs({
   uniqueHandwerkerProBSBEmployee,
   selectedUser,
 }: CeoTabProps) {
@@ -33,4 +33,4 @@ function CeoTabs({
   );
 }
 
-export default CeoTabs;
+export default EmployeeTabs;

@@ -1,10 +1,10 @@
-import { TEmployForm } from '@/features/CeoDashboard';
-import { fetchChefData } from '@/lib/api';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 import { threeDaysAgo } from '@/types/utils';
+import { TEmployForm } from '../types/employeeform.type';
+import { EmployeeData } from '../api';
 
-function useCeoDashboard() {
+function useEmployeeData() {
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const [modal, setModalOpen] = useState<boolean>(false);
   const {
@@ -13,7 +13,7 @@ function useCeoDashboard() {
     error,
   } = useQuery<TEmployForm>({
     queryKey: ['ceo-dashboard'],
-    queryFn: fetchChefData,
+    queryFn: EmployeeData,
   });
 
   const cleanData = useMemo(() => {
@@ -35,7 +35,7 @@ function useCeoDashboard() {
       groups.set(key, originalInputs);
     });
     return Array.from(groups.entries());
-  }, [allEmployeeData, threeDaysAgo]);
+  }, [allEmployeeData]);
 
   return {
     allEmployeeData,
@@ -49,4 +49,4 @@ function useCeoDashboard() {
   };
 }
 
-export default useCeoDashboard;
+export default useEmployeeData;

@@ -2,7 +2,7 @@ import { sendEmailSchema } from '@/components/admin_data/AdminModal';
 import { File_Request } from '@/components/backround_worker';
 import { TFeatureForm } from '@/components/modal/FeatureModal';
 import API from '@/config/apiClient';
-import { TEmployForm } from '@/features/CeoDashboard';
+
 import { OffboardingItem } from '@/types/onof_home';
 import { api_Response } from '@/features/OnOf_Worker_Procedure';
 import { TFile } from '@/features/Profile';
@@ -14,7 +14,6 @@ import {
   FileResponse,
   LoginRequest,
   LoginResponse,
-  newField,
   RegisterRequest,
   RegisterResponse,
   Session_API,
@@ -26,7 +25,6 @@ import {
 import { User } from 'shared_prisma_types';
 import z from 'zod';
 import {
-  EmployFormSchema,
   TEmployeeResponse,
   ZDescriptionData,
   ZEmployeeData,
@@ -135,11 +133,6 @@ export const fetchProcessData = async (
 
 export const verifyChef = async (): Promise<user> => {
   return API.get(`/user/chefpermission`);
-};
-
-export const fetchChefData = async (): Promise<TEmployForm> => {
-  const response = await API.get('/user/employeeData');
-  return EmployFormSchema.parse(response);
 };
 
 export const fetchNameData = async (): Promise<OffboardingItem[]> => {

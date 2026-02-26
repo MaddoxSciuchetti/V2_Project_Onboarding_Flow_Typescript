@@ -1,7 +1,7 @@
+import { AccordionDemo } from '@/components/admin_data/CAccordion';
 import { TabsContent } from '@/components/ui/tabs';
-import { AccordionDemo } from '../admin_data/CAccordion';
-import { TEmployForm } from '@/features/CeoDashboard';
 import { SetStateAction } from 'react';
+import { TEmployForm } from '../types/employeeform.type';
 
 type CeoTabsContentProps = {
   selectedUser: string;

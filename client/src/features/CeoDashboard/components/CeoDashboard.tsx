@@ -1,16 +1,11 @@
-import z from 'zod';
-import useCeoDashboard from '@/hooks/use-CeoDashboard';
 import { Tabs } from '@/components/ui/tabs';
-import useHandwerkerProBSBEmployee from '@/hooks/use-unique-user';
+import useHandwerkerProBSBEmployee from '@/features/CeoDashboard/hooks/use-unique-user';
 import { Spinner } from '@/components/ui/spinner';
-import useCurrentBSBEmployee from '@/hooks/use-currentBSBEmployee';
-import EmployeeTabsContent from '@/components/ceo-dashboard/EmployeeTabsContent';
-import CeoTabs from '@/components/ceo-dashboard/CTabsList';
-import Modal from '@/components/ceo-dashboard/CModal';
-import { EmployFormSchema } from '@/zod-schemas/schema';
-
-export type TEmployForm = z.infer<typeof EmployFormSchema>;
-export type TEmployeFormId = z.infer<typeof EmployFormSchema>[number];
+import useCurrentBSBEmployee from '@/features/CeoDashboard/hooks/use-current-bsb-employee';
+import EmployeeTabsContent from './EmployeeTabsContent';
+import ReminderModal from './ReminderModal';
+import EmployeeTabs from './EmployeeTabs';
+import useEmployeeData from '../hooks/use-employee-data';
 
 function CeoDashboard() {
   const {
@@ -22,7 +17,7 @@ function CeoDashboard() {
     isLoading,
     error,
     cleanData,
-  } = useCeoDashboard();
+  } = useEmployeeData();
 
   const uniqueHandwerkerProBSBEmployee =
     useHandwerkerProBSBEmployee(allEmployeeData);
@@ -50,7 +45,7 @@ function CeoDashboard() {
               value={selectedUser || undefined}
               onValueChange={(val) => setSelectedUser(val)}
             >
-              <CeoTabs
+              <EmployeeTabs
                 uniqueHandwerkerProBSBEmployee={uniqueHandwerkerProBSBEmployee}
                 selectedUser={selectedUser}
               />
@@ -67,7 +62,7 @@ function CeoDashboard() {
             </Tabs>
           </div>
 
-          <Modal
+          <ReminderModal
             modal={modal}
             setModalOpen={setModalOpen}
             selectedUser={selectedUser}
