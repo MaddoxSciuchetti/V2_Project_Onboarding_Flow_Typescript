@@ -1,15 +1,17 @@
+import { User } from '../types/auth.type';
+
 type ProfileBioProps = {
-  createdAt: Date;
+  user: User;
 };
 
-const ProfileBio = ({ createdAt }: ProfileBioProps) => {
+const ProfileBio = ({ user }: ProfileBioProps) => {
   return (
     <>
       <p>Klicke auf das foto um ein neues hochzuladen</p>
       <p className="text-black">
         Erstellt am{' '}
         <span className="text-black">
-          {new Date(createdAt).toLocaleDateString('en-US')}
+          {new Date(user.createdAt).toLocaleDateString('en-US')}
         </span>
       </p>
     </>

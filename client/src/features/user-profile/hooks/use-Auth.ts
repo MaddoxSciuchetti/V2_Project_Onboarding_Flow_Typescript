@@ -1,25 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { getUser } from '../../../lib/api';
+import { Auth, User } from '../types/auth.type';
 
 export const AUTH = 'auth';
-
-export type User = {
-  id: string;
-  email: string;
-  verified: boolean;
-  user_permission: 'CHEF' | 'MITARBEITER';
-  createdAt: Date;
-  updatedAt: Date;
-  vorname: string;
-  nachname: string;
-  presignedUrl?: string;
-};
-
-type Auth = {
-  user: User | undefined;
-  isLoading: boolean;
-  isError: boolean;
-};
 
 const useAuth = (opts: Record<string, any> = {}): Auth => {
   const {

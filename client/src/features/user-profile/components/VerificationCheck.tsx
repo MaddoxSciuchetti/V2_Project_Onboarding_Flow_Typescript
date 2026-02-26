@@ -1,14 +1,14 @@
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { AlertTriangle } from 'lucide-react';
+import { User } from '../types/auth.type';
 type VerificationCheckProps = {
-  verified: boolean;
-  email: string;
+  user: User;
 };
 
-const VerificationCheck = ({ verified, email }: VerificationCheckProps) => {
+const VerificationCheck = ({ user }: VerificationCheckProps) => {
   return (
     <>
-      {!verified && (
+      {!user.verified && (
         <Alert
           variant="default"
           className="w-fit rounded-xl mb-3 border-yellow-200 bg-yellow-50"
@@ -20,7 +20,7 @@ const VerificationCheck = ({ verified, email }: VerificationCheckProps) => {
         </Alert>
       )}
       <p className="text-black mb-2">
-        Email: <span className="text-black">{email}</span>
+        Email: <span className="text-black">{user.email}</span>
       </p>
     </>
   );

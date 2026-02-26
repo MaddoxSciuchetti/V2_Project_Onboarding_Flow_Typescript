@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { SubmitHandler, useForm, UseFormSetValue } from 'react-hook-form';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { uploadProfileFoto } from '../api';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { getProfileFoto, uploadProfileFoto } from '../api';
 import { TFile } from '../types';
 
 function useUploadProfieImage() {
@@ -22,6 +22,11 @@ function useUploadProfieImage() {
       await queryClient.invalidateQueries({ queryKey: ['profilepic'] });
       console.log('invalidated and refetched');
     },
+  });
+
+  const { data, isPending } = useQuery<string>({
+    queryKey: ['profilepic'],
+    queryFn: getProfileFoto,
   });
 
   const onSubmit: SubmitHandler<TFile> = (data) => {
@@ -58,6 +63,8 @@ function useUploadProfieImage() {
     fileInputRef,
     uploadedFiles,
     fileProgresses,
+    data,
+    isPending,
   };
 }
 
