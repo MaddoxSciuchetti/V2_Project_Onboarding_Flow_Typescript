@@ -7,7 +7,7 @@ import LoadingAlert from '@/components/alerts/LoadingAlert';
 import ErrorAlert from '@/components/alerts/ErrorAlert';
 import SuccessAlert from '@/components/alerts/SuccessAlert';
 
-function OnOf_Home() {
+function WorkerLifeCycle() {
   const { user, isLoading, isError } = useAuth();
   const {
     isEmpty,
@@ -54,4 +54,4 @@ function OnOf_Home() {
   );
 }
 
-export default OnOf_Home;
+export default WorkerLifeCycle;

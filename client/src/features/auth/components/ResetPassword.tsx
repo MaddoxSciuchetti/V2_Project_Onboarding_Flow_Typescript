@@ -1,16 +1,16 @@
-import { useNavigate, useParams, useSearch } from "@tanstack/react-router";
-import ResetPasswordForm from "@/components/auth/ResetPasswordForm";
-import { AlertCircle } from "lucide-react";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useNavigate, useSearch } from '@tanstack/react-router';
+import ResetPasswordForm from '@/components/auth/ResetPasswordForm';
+import { AlertCircle } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const ResetPassword = () => {
   const navigate = useNavigate();
-  const search: any = useSearch({ from: "/password/reset" });
+  const search: any = useSearch({ from: '/password/reset' });
 
   const code = search.code as string | undefined;
   const exp = search.exp ? Number(search.exp) : undefined;
-  console.log("this is the code", code);
-  console.log("this is the exp", exp);
+  console.log('this is the code', code);
+  console.log('this is the exp', exp);
 
   console.log(code);
 
@@ -31,7 +31,7 @@ const ResetPassword = () => {
               The link is either invalid or expired.
             </p>
             <button
-              onClick={() => navigate({ to: "/password/forgot" })}
+              onClick={() => navigate({ to: '/password/forgot' })}
               className="text-blue-600 hover:text-blue-800 underline"
             >
               Request a new password reset link

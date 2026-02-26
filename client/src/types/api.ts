@@ -75,21 +75,6 @@ export type Session_API = {
   isCurrent: boolean;
 };
 
-export type RegisterRequest = {
-  firstName?: string;
-  lastName?: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  userAgent?: string;
-};
-
-export type RegisterResponse = {
-  user: User;
-  accessToken: string;
-  refreshToken: string;
-};
-
 export type newField = {
   timestamp: Date | null;
   form_field_id: number;
@@ -98,10 +83,6 @@ export type newField = {
   owner: string;
   template_type: 'ONBOARDING' | 'OFFBOARDING' | null;
 };
-
-export type LoginRequest = Omit<RegisterRequest, 'confirmPassword'>;
-
-export type LoginResponse = Omit<RegisterResponse, 'user'>;
 
 export type TMutationRequest = {
   form_field_id?: number;

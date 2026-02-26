@@ -1,17 +1,13 @@
 import { cn } from '@/types/utils';
 import { useNavigate } from '@tanstack/react-router';
-import { login } from '@/lib/api';
-import { useState } from 'react';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { isValidEmail } from '@/lib/validEmail';
+import { ComponentProps, useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/ui/spinner';
+import { login } from '../api';
 
-export function LoginComponent({
-  className,
-  ...props
-}: React.ComponentProps<'div'>) {
+export function LoginComponent({ className, ...props }: ComponentProps<'div'>) {
   const navigate = useNavigate();
   const [password, setPassword] = useState<string>('');
   const [email, setEmail] = useState<string>('');

@@ -12,10 +12,6 @@ import {
   AbsenceData,
   delete_user,
   FileResponse,
-  LoginRequest,
-  LoginResponse,
-  RegisterRequest,
-  RegisterResponse,
   Session_API,
   SuccessResponse,
   TDescriptionData,
@@ -30,41 +26,7 @@ import {
   ZEmployeeData,
 } from '@/zod-schemas/schema';
 
-export type Verify = {
-  code: string;
-};
-
-export const login = async (data: LoginRequest): Promise<LoginResponse> => {
-  return API.post<LoginRequest, LoginResponse>('/auth/login', data);
-};
-export const signup = async (
-  data: RegisterRequest
-): Promise<RegisterResponse> => {
-  console.log('why testUser', data);
-  return API.post<RegisterRequest, RegisterResponse>('/auth/register', data);
-};
-
 export const logout = async () => API.get('/auth/logout');
-
-export const verifyEmail = async (
-  verificationCode: Verify
-): Promise<string> => {
-  return API.get<Verify, string>(`/auth/email/verify/${verificationCode.code}`);
-};
-
-export const sendPasswordResetEmail = async (email: string) =>
-  API.post('/auth/password/forgot', { email });
-
-export type resetPassword = {
-  verificationCode: string;
-  password: string;
-};
-
-export const resetPassword = async ({
-  verificationCode,
-  password,
-}: resetPassword): Promise<resetPassword> =>
-  API.post('/auth/password/reset', { verificationCode, password });
 
 export type user = {
   id: number;

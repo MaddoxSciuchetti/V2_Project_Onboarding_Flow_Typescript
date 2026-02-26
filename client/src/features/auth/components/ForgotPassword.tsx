@@ -1,19 +1,18 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { sendPasswordResetEmail, signup } from "@/lib/api";
-import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { CheckCircle } from "lucide-react";
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { useMutation } from '@tanstack/react-query';
+import { useNavigate } from '@tanstack/react-router';
+import { useState } from 'react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { CheckCircle } from 'lucide-react';
+import { sendPasswordResetEmail } from '../api';
 
 const ForgotPassword = () => {
-  const [email, setEmail] = useState<string>("");
+  const [email, setEmail] = useState<string>('');
   const navigate = useNavigate();
 
   const {
     mutate: sendPasswordReset,
-    isPending,
     isSuccess,
     isError,
     error,
@@ -28,7 +27,7 @@ const ForgotPassword = () => {
         <div className="rounded-lg bg-gray-700 shadow-lg p-8">
           {isError && (
             <div className="mb-3 text-red-400">
-              {error.message || "An error occurred"}
+              {error.message || 'An error occurred'}
             </div>
           )}
           <div className="space-y-6">
@@ -69,16 +68,16 @@ const ForgotPassword = () => {
               </>
             )}
             <p className="text-sm text-gray-400">
-              Go back to{" "}
+              Go back to{' '}
               <button
-                onClick={() => navigate({ to: "/login" })}
+                onClick={() => navigate({ to: '/login' })}
                 className="text-white hover:text-gray-300 underline"
               >
                 Sign in
               </button>
               &nbsp;or&nbsp;
               <button
-                onClick={() => navigate({ to: "/signup" })}
+                onClick={() => navigate({ to: '/signup' })}
                 className="text-white hover:text-gray-300 underline"
               >
                 Sign up
