@@ -1,0 +1,47 @@
+import { useQueryClient } from '@tanstack/react-query';
+import { editData, insertHistoryData } from '../api';
+import { formSchema } from '../schemas/index.schema';
+import { User } from 'shared_prisma_types';
+
+function useTaskSubmit(
+  id: number,
+  user: User | undefined,
+  closeModal: () => void
+) {
+  const queryClient = useQueryClient();
+
+  async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const formValues = Object.fromEntries(formData);
+
+    const result = formSchema.safeParse(formValues);
+
+    if (!result.success) {
+      console.log('validation errors', result.error);
+      return;
+    }
+    if (!user) {
+      console.log('user not authenticated');
+      return;
+    }
+
+    await insertHistoryData(result.data, user);
+    queryClient.invalidateQueries({
+      queryKey: ['formHistory', parseInt(result.data.id)],
+    });
+    await editData(result.data);
+
+    await queryClient.invalidateQueries({
+      queryKey: ['somethingelse', id],
+    });
+
+    closeModal();
+  }
+
+  return {
+    handleSubmit,
+  };
+}
+
+export default useTaskSubmit;

@@ -2,7 +2,7 @@ import { FormInputs } from '@/zod-schemas/zodSchema';
 import { UseMutationResult } from '@tanstack/react-query';
 import ModalOverlay from '@/components/modal/ModalOverlay';
 import ModalContent from './lifycycle-modal-content/ModalContent';
-import { TOffboardingItemUser } from '../types';
+import { TOffboardingItemUser } from '../types/index.types';
 
 type LifeCycleModalProps = {
   modal: boolean;

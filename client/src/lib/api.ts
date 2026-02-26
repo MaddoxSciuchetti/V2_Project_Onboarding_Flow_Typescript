@@ -2,7 +2,6 @@ import { sendEmailSchema } from '@/components/admin_data/AdminModal';
 import { File_Request } from '@/components/backround_worker';
 import { TFeatureForm } from '@/components/modal/FeatureModal';
 import API from '@/config/apiClient';
-import { api_Response } from '@/features/task-management/components/TaskManagement';
 import { TFile } from '@/features/Profile';
 import { Mappingform } from '@/types/form-data';
 import {
@@ -97,23 +96,6 @@ export const sendReminderWorker = async (
 ): Promise<unknown> => {
   console.log(data);
   return API.post('/offboarding/sendReminder', data);
-};
-
-export const editData = async (formData: Mappingform) => {
-  return API.put<SuccessResponse, SuccessResponse>(
-    'offboarding/editdata',
-    formData
-  );
-};
-
-export const formattedData = async (
-  id: number,
-  param: string
-): Promise<api_Response> => {
-  const response = await API.get<api_Response, api_Response>(
-    `offboarding/user/${id}?param1=${param}`
-  );
-  return response;
 };
 
 export const specificEmployeeData = async (): Promise<TEmployeeResponse> => {

@@ -4,7 +4,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 import { deleteTaskApi, fetchNameData, postOffboardingData } from '../api';
-import { FormType, OffboardingItem } from '../types';
+import { FormType, OffboardingItem } from '../types/index.types';
 
 function useHome() {
   const [search, setSearch] = useState('');

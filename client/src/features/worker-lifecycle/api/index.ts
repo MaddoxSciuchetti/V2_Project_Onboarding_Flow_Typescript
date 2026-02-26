@@ -1,5 +1,9 @@
 import API from '@/config/apiClient';
-import { delete_user, OffboardingItem, TOffboardingItemUser } from '../types';
+import {
+  delete_user,
+  OffboardingItem,
+  TOffboardingItemUser,
+} from '../types/index.types';
 import { FormInputs } from '@/zod-schemas/zodSchema';
 
 export const fetchNameData = async (): Promise<OffboardingItem[]> => {

@@ -8,7 +8,7 @@ import {
 
 import { Worker_Item } from '../../../components/worker_components/worker_item';
 import { getFirstFormType } from '@/lib/formtype';
-import { OffboardingItem } from '../types';
+import { OffboardingItem } from '../types/index.types';
 
 type LifeCycleTableProps = {
   filtered: OffboardingItem[] | undefined;
