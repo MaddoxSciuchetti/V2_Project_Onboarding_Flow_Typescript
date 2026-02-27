@@ -1,17 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Dispatch, SetStateAction } from 'react';
 import { deleteEmployeeHandler } from '../api';
+import { useEmployeeModal } from './use-employeeModal';
 
-function useDeleteEmployee(
-  toggleSidebar: () => void,
-  setEditEmplyoeeModal: Dispatch<SetStateAction<boolean>>
-) {
+function useDeleteEmployee() {
   const queryClient = useQueryClient();
-
-  const toggleEmployeeModal = () => {
-    setEditEmplyoeeModal((prev) => !prev);
-    toggleSidebar();
-  };
+  const { closeModal } = useEmployeeModal();
 
   const {
     mutate: DeleteEmployee,
@@ -24,6 +17,7 @@ function useDeleteEmployee(
       queryClient.invalidateQueries({
         queryKey: ['EmployeeDataSpecifics'],
       });
+      closeModal();
     },
     onError: () => {
       console.log(errorMutation);
@@ -33,7 +27,6 @@ function useDeleteEmployee(
   return {
     DeleteEmployee,
     isErrorMutation,
-    toggleEmployeeModal,
     isPending,
   };
 }

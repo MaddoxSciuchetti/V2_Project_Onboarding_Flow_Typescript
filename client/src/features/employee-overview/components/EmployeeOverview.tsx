@@ -1,5 +1,4 @@
 import { Table } from '@/components/ui/table';
-import { Spinner } from '@/components/ui/spinner';
 import useDeleteEmployee from '../hooks/use-deleteEmployee';
 import useGetEmployees from '../hooks/use-getEmployees';
 import Header from './table/Header';
@@ -10,29 +9,12 @@ import LoadingAlert from '@/components/alerts/LoadingAlert';
 import ModalOverlay from '@/components/modal/ModalOverlay';
 import ModalEditMitarbeiter from './modals/EditEmployeeModal/EmployeeModal';
 import ModalMitarbeiter from './modals/CreateEmployeeModal/EmployeeModal';
+import { useEmployeeModal } from '../hooks/use-employeeModal';
 
 function EmployeeOverview() {
-  const {
-    toggleModal,
-    toggleSidebar,
-    EmployeeData,
-    isLoading,
-    error,
-    isError,
-    modal,
-    editEmployeeModal,
-    setEditEmployeeModal,
-    setFirstName,
-    idvalue,
-    setIdValue,
-    fullname,
-    setLastName,
-  } = useGetEmployees();
-
-  const { DeleteEmployee, toggleEmployeeModal, isPending } = useDeleteEmployee(
-    toggleSidebar,
-    setEditEmployeeModal
-  );
+  const { EmployeeData, isLoading, error, isError } = useGetEmployees();
+  const { modalState, openCreate, closeModal } = useEmployeeModal();
+  const { DeleteEmployee, isPending } = useDeleteEmployee();
 
   if (isLoading) return <LoadingAlert />;
   if (isPending) return <LoadingAlert />;
@@ -42,32 +24,27 @@ function EmployeeOverview() {
   return (
     <div className="rounded-2xl overflow-x-auto w-full h-full p-6 shadow-gray-200 shadow-lg overflow-auto">
       <div className="h-full w-full flex flex-col">
-        {isLoading && <Spinner className="size-8" />}
-        <Header toggleModal={toggleModal} />
+        <Header openCreate={openCreate} />
         <Table className=" text-left mt-5">
           <EmployeeTableHeader />
           <EmployeeTableBody
             EmployeeData={EmployeeData}
-            toggleEmployeeModal={toggleEmployeeModal}
-            setFirstName={setFirstName}
-            setLastName={setLastName}
-            setIdValue={setIdValue}
             DeleteEmployee={DeleteEmployee}
           />
         </Table>
       </div>
-      {editEmployeeModal && (
-        <ModalOverlay handleToggle={toggleEmployeeModal}>
+      {modalState.kind === 'edit' && (
+        <ModalOverlay handleToggle={closeModal}>
           <ModalEditMitarbeiter
-            fullname={fullname}
-            toggleEmployeeModal={toggleEmployeeModal}
-            id={idvalue}
+            fullname={modalState.fullname}
+            id={modalState.employeeId}
+            toggleEmployeeModal={closeModal}
           />
         </ModalOverlay>
       )}
-      {modal && (
-        <ModalOverlay handleToggle={toggleModal}>
-          <ModalMitarbeiter toggleModal={toggleModal} />
+      {modalState.kind === 'create' && (
+        <ModalOverlay handleToggle={closeModal}>
+          <ModalMitarbeiter toggleModal={closeModal} />
         </ModalOverlay>
       )}
     </div>

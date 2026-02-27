@@ -1,5 +1,4 @@
 import { TableBody } from '@/components/ui/table';
-import { Dispatch, SetStateAction } from 'react';
 import { UseMutateFunction } from '@tanstack/react-query';
 import { user } from '@/lib/api';
 import { TEmployeeResponse } from '../../schemas/schema';
@@ -7,37 +6,28 @@ import EmployeeName from './EmployeeName';
 import EmployeeStatus from './EmployeeStatus';
 import EmployeeSubstitute from './EmployeeSubstitute';
 import EditDropdown from './EditDropdown';
+import { useEmployeeModal } from '../../hooks/use-employeeModal';
 
 type TableBodyProps = {
   EmployeeData: TEmployeeResponse;
-  toggleEmployeeModal: () => void;
-  setFirstName: Dispatch<SetStateAction<string>>;
-  setLastName: Dispatch<SetStateAction<string>>;
-  setIdValue: Dispatch<SetStateAction<string | undefined>>;
   DeleteEmployee: UseMutateFunction<user, Error, string, unknown>;
 };
 
 const EmployeeTableBody = ({
   EmployeeData,
-  toggleEmployeeModal,
-  setFirstName,
-  setLastName,
-  setIdValue,
   DeleteEmployee,
 }: TableBodyProps) => {
+  const { openEdit } = useEmployeeModal();
   return (
     <>
       <TableBody>
-        {EmployeeData?.map((value, index) => (
+        {EmployeeData?.map((value) => (
           <tr
             className="hover:bg-gray-50 rounded-2xl cursor-pointer border-seperate border-spacing-y-2 py-5"
-            key={index}
-            onClick={() => {
-              toggleEmployeeModal();
-              setFirstName(value.vorname);
-              setLastName(value.nachname);
-              setIdValue(value.id);
-            }}
+            key={value.id}
+            onClick={() =>
+              openEdit(value.id, `${value.vorname}${value.nachname}`)
+            }
           >
             <td className="text-sm font-semibold py-5">
               <EmployeeName value={value} />

@@ -2,10 +2,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
 type HeaderProps = {
-  toggleModal: () => void;
+  openCreate: () => void;
 };
 
-const Header = ({ toggleModal }: HeaderProps) => {
+const Header = ({ openCreate }: HeaderProps) => {
   return (
     <>
       <div className="flex gap-5">
@@ -13,7 +13,7 @@ const Header = ({ toggleModal }: HeaderProps) => {
         <div className="flex gap-2">
           <Button
             className="cursor-pointer"
-            onClick={toggleModal}
+            onClick={openCreate}
             variant={'outline'}
           >
             Mitarbeiter Hinzufügen
