@@ -5,7 +5,7 @@ import useGetEmployees from '../hooks/use-getEmployees';
 import Header from './Table/Header';
 import EmployeeTableBody from './Table/TableBody';
 import EmployeeTableHeader from './Table/EmployeeTableHeader';
-import ModalCompound from './Modal/Modal';
+import ModalCompound from './modals/Modal';
 import ErrorAlert from '@/components/alerts/ErrorAlert';
 import LoadingAlert from '@/components/alerts/LoadingAlert';
 
@@ -32,6 +32,7 @@ function EmployeeOverview() {
     setEditEmployeeModal
   );
 
+  if (isLoading) return <LoadingAlert />;
   if (isPending) return <LoadingAlert />;
   if (isError) return <ErrorAlert message={error?.message} />;
   if (!EmployeeData) return <ErrorAlert message="no employees found" />;

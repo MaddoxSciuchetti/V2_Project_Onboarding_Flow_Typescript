@@ -1,10 +1,10 @@
-import { Input } from '../../../../components/ui/input';
-import { Label } from '../../../../components/ui/label';
+import { Input } from '../../../../../components/ui/input';
+import { Label } from '../../../../../components/ui/label';
 import { Button } from '@/components/ui/button';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { editEmployeeAbsence } from '@/lib/api';
 import z from 'zod';
-import useEmployeeData from '@/hooks/use-employeeData';
+import useEmployeeData from '@/features/employee-overview/hooks/use-employeeData';
 import {
   Select,
   SelectContent,
@@ -12,8 +12,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../../../../components/ui/select';
-import { Spinner } from '../../../../components/ui/spinner';
+} from '../../../../../components/ui/select';
+import { Spinner } from '../../../../../components/ui/spinner';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -75,8 +75,6 @@ function ModalEditMitarbeiter({
   });
 
   const onSubmit: SubmitHandler<AbsenceData> = (data) => {
-    console.log('hello');
-    console.log(data);
     EmployeeAbsence.mutate(data);
   };
 

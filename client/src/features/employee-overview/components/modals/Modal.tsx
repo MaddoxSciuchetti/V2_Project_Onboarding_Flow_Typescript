@@ -1,6 +1,6 @@
 import ModalOverlay from '@/components/modal/ModalOverlay';
-import ModalEditMitarbeiter from './ModalEditMitarbeiter';
-import ModalMitarbeiter from './ModalMitarbeiter';
+import ModalEditMitarbeiter from './EditEmployeeModal/ModalEditMitarbeiter';
+import ModalMitarbeiter from './CreateEmployeeModal/ModalMitarbeiter';
 
 type ModalProps = {
   editEmployeeModal: boolean;

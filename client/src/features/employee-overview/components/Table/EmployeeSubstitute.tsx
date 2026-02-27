@@ -1,4 +1,4 @@
-import { TEmployee } from '@/zod-schemas/schema';
+import { TEmployee } from '../../schemas/schema';
 import { calculateData, dateObject } from '../../utils/calculateDate.utils';
 
 type SubstituteProps = {

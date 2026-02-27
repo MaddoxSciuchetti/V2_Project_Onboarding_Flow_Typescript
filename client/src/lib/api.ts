@@ -11,11 +11,7 @@ import {
 } from '@/types/api';
 import { User } from 'shared_prisma_types';
 import z from 'zod';
-import {
-  TEmployeeResponse,
-  ZDescriptionData,
-  ZEmployeeData,
-} from '@/zod-schemas/schema';
+import { ZDescriptionData } from '@/zod-schemas/schema';
 
 export const logout = async () => API.get('/auth/logout');
 
@@ -95,11 +91,6 @@ export const sendReminderWorker = async (
   return API.post('/offboarding/sendReminder', data);
 };
 
-export const specificEmployeeData = async (): Promise<TEmployeeResponse> => {
-  const response = await API.get(`/user/specificEmployeeData`);
-  console.log(response);
-  return ZEmployeeData.parse(response);
-};
 export const editEmployeeAbsence = async (
   data: AbsenceData
 ): Promise<AbsenceData> => {

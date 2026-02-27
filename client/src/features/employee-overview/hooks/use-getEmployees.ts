@@ -1,8 +1,8 @@
 import { useSidebar } from '@/components/ui/sidebar';
-import { specificEmployeeData } from '@/lib/api';
 import { TEmployeeResponse } from '@/zod-schemas/schema';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
+import { specificEmployeeData } from '../api';
 
 function useGetEmployees() {
   const [modal, setModal] = useState<boolean>(false);

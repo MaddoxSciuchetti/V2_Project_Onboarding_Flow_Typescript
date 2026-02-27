@@ -6,8 +6,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { user } from '@/lib/api';
-import { TEmployee } from '@/zod-schemas/schema';
+
 import { UseMutateFunction } from '@tanstack/react-query';
+import { TEmployee } from '../../schemas/schema';
 
 type EditDropdownProps = {
   value: TEmployee;

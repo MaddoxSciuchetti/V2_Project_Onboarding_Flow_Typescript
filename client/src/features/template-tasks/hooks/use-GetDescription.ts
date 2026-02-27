@@ -1,6 +1,6 @@
 import { useSidebar } from '@/components/ui/sidebar';
 import { useState } from 'react';
-import useEmployeeData from '../../../hooks/use-employeeData';
+import useEmployeeData from '../../employee-overview/hooks/use-employeeData';
 import { toast } from 'sonner';
 import useFetchTask from '../../../hooks/use-fetchTask';
 import useDeleteDescription from './use-DeleteDescription';
