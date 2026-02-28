@@ -13,28 +13,6 @@ export type ErrorResponse = {
   error: string;
 };
 
-export type delete_user = {
-  id: number;
-  vorname: string;
-  nachname: string;
-  email: string | null;
-  adresse: string;
-  austrittsdatum: Date | null;
-  createdAt: Date;
-  eintrittsdatum: Date;
-  geburtsdatum: Date;
-  position: string;
-  updatedAt: Date;
-};
-
-export type TOffboardingItemUser = {
-  success: {
-    id: number;
-    vorname: string;
-    nachname: string;
-  };
-};
-
 export type TDescriptionData = {
   form_field_id: number;
   description: string | null;
@@ -75,21 +53,6 @@ export type Session_API = {
   isCurrent: boolean;
 };
 
-export type RegisterRequest = {
-  firstName?: string;
-  lastName?: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  userAgent?: string;
-};
-
-export type RegisterResponse = {
-  user: User;
-  accessToken: string;
-  refreshToken: string;
-};
-
 export type newField = {
   timestamp: Date | null;
   form_field_id: number;
@@ -98,10 +61,6 @@ export type newField = {
   owner: string;
   template_type: 'ONBOARDING' | 'OFFBOARDING' | null;
 };
-
-export type LoginRequest = Omit<RegisterRequest, 'confirmPassword'>;
-
-export type LoginResponse = Omit<RegisterResponse, 'user'>;
 
 export type TMutationRequest = {
   form_field_id?: number;
