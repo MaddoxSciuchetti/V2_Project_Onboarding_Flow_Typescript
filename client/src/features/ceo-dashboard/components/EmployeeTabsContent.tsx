@@ -1,7 +1,7 @@
-import { AccordionDemo } from '@/components/admin_data/CAccordion';
 import { TabsContent } from '@/components/ui/tabs';
 import { SetStateAction } from 'react';
 import { TEmployForm } from '../types/employeeform.type';
+import { EmployeeTabsData } from './EmployeeTabsData';
 
 type CeoTabsContentProps = {
   selectedUser: string;
@@ -18,7 +18,7 @@ function EmployeeTabsContent({
 }: CeoTabsContentProps) {
   return (
     <TabsContent value={selectedUser} className="mt-10">
-      <AccordionDemo
+      <EmployeeTabsData
         cleanData={cleanData}
         user={selectedUser}
         data={currentBSBEmployee}

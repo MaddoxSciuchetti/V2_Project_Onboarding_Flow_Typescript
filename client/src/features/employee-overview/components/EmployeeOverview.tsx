@@ -16,6 +16,27 @@ function EmployeeOverview() {
   const { modalState, openCreate, closeModal } = useEmployeeModal();
   const { DeleteEmployee, isPending } = useDeleteEmployee();
 
+  const renderModal = () => {
+    switch (modalState.kind) {
+      case 'edit':
+        return (
+          <ModalOverlay handleToggle={closeModal}>
+            <ModalEditMitarbeiter
+              fullname={modalState.fullname}
+              id={modalState.employeeId}
+              toggleEmployeeModal={closeModal}
+            />
+          </ModalOverlay>
+        );
+      case 'create':
+        return (
+          <ModalOverlay handleToggle={closeModal}>
+            <ModalMitarbeiter toggleModal={closeModal} />
+          </ModalOverlay>
+        );
+    }
+  };
+
   if (isLoading) return <LoadingAlert />;
   if (isPending) return <LoadingAlert />;
   if (isError) return <ErrorAlert message={error?.message} />;
@@ -33,20 +54,7 @@ function EmployeeOverview() {
           />
         </Table>
       </div>
-      {modalState.kind === 'edit' && (
-        <ModalOverlay handleToggle={closeModal}>
-          <ModalEditMitarbeiter
-            fullname={modalState.fullname}
-            id={modalState.employeeId}
-            toggleEmployeeModal={closeModal}
-          />
-        </ModalOverlay>
-      )}
-      {modalState.kind === 'create' && (
-        <ModalOverlay handleToggle={closeModal}>
-          <ModalMitarbeiter toggleModal={closeModal} />
-        </ModalOverlay>
-      )}
+      {renderModal()}
     </div>
   );
 }

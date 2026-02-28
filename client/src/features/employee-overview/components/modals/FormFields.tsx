@@ -9,17 +9,18 @@ import {
 import { Label } from '@/components/ui/label';
 import { ComponentProps } from 'react';
 
-type FormFieldsProps<TFieldValues extends FieldValues> =
-  ComponentProps<'input'> & {
-    errors: FieldErrors<TFieldValues>;
-    register: UseFormRegister<TFieldValues>;
-    name: Path<TFieldValues>;
-    placeholder?: string;
-    index?: number;
-    label?: string;
-    type?: string;
-    required?: boolean;
-  };
+type FormFieldsProps<TFieldValues extends FieldValues> = Omit<
+  ComponentProps<'input'>,
+  'name'
+> & {
+  errors: FieldErrors<TFieldValues>;
+  register: UseFormRegister<TFieldValues>;
+  name: Path<TFieldValues>;
+  placeholder?: string;
+  label?: string;
+  type?: string;
+  required?: boolean;
+};
 
 const FormFields = <TFieldValues extends FieldValues>({
   errors,

@@ -1,4 +1,4 @@
-import { sendEmailSchema } from '@/components/admin_data/AdminModal';
+import { sendEmailSchema } from '@/features/ceo-dashboard/components/ReminderModal';
 import { File_Request } from '@/components/backround_worker';
 import { TFeatureForm } from '@/components/modal/FeatureModal';
 import API from '@/config/apiClient';

@@ -3,9 +3,10 @@ import useHandwerkerProBSBEmployee from '@/features/ceo-dashboard/hooks/use-uniq
 import { Spinner } from '@/components/ui/spinner';
 import useCurrentBSBEmployee from '@/features/ceo-dashboard/hooks/use-current-bsb-employee';
 import EmployeeTabsContent from './EmployeeTabsContent';
-import ReminderModal from './ReminderModal';
 import EmployeeTabs from './EmployeeTabs';
 import useEmployeeData from '../hooks/use-employee-data';
+import ModalOverlay from '@/components/modal/ModalOverlay';
+import ReminderModal from './ReminderModal';
 
 function CeoDashboard() {
   const {
@@ -26,6 +27,10 @@ function CeoDashboard() {
     allEmployeeData,
     selectedUser
   );
+
+  const toggleModal = () => {
+    setModalOpen(false);
+  };
 
   if (error) console.log(error);
 
@@ -62,11 +67,11 @@ function CeoDashboard() {
             </Tabs>
           </div>
 
-          <ReminderModal
-            modal={modal}
-            setModalOpen={setModalOpen}
-            selectedUser={selectedUser}
-          />
+          {modal && (
+            <ModalOverlay handleToggle={toggleModal}>
+              <ReminderModal onClose={() => toggleModal} />
+            </ModalOverlay>
+          )}
         </>
       )}
     </>

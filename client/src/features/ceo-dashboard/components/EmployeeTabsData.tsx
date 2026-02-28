@@ -4,27 +4,10 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { TEmployForm } from '@/features/ceo-dashboard/components/CeoDashboard';
 import { useMemo } from 'react';
+import { TAccordion } from '../types/employeeData.type';
 
-type TAccordion = {
-  data: TEmployForm;
-  onTaskClick: () => void;
-  user: string;
-  cleanData: Array<[string, TEmployForm]>;
-};
-
-export type EmployeeGroup = {
-  employee: { vorname: string; nachname: string; email: string | null };
-  inputs: Array<{
-    description: string;
-    timestamp: Date;
-    form_field_id: number;
-    status: string;
-  }>;
-};
-
-export function AccordionDemo({ onTaskClick, user, cleanData }: TAccordion) {
+export function EmployeeTabsData({ onTaskClick, user, cleanData }: TAccordion) {
   const employeeGroups = useMemo(() => {
     return cleanData
       .filter(([owner]) => owner === user)
@@ -56,9 +39,6 @@ export function AccordionDemo({ onTaskClick, user, cleanData }: TAccordion) {
       })
       .filter(([, group]) => group.inputs.length > 0);
   }, [cleanData, user]);
-
-  console.log('employee groups:');
-  console.log(employeeGroups);
 
   return (
     <>
