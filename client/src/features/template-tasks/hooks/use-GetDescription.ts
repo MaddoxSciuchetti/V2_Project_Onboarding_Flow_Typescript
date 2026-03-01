@@ -7,7 +7,7 @@ import useDeleteDescription from './use-DeleteDescription';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { newField } from '@/types/api';
 import { addExtraField } from '../api';
-import useEditDescription from './use-editdescription';
+import useEditDescription from './use-EditDescription';
 
 function useDescription() {
   const queryClient = useQueryClient();
