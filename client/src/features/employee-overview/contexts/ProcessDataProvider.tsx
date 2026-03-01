@@ -1,15 +1,10 @@
-import { TApiResponse } from '@/types/api.types';
-import { useQuery } from '@tanstack/react-query';
-import { fetchProcessData } from '../api/employee-overview.api';
+import useFetchProcessData from '../hooks/use-fetchProcessData';
 import { ProcessDataProviderProps } from '../types/context.types';
 import { ProcessDataContext } from './ProcessDataContext';
 
 export const ProcessDataProvider = ({ children }: ProcessDataProviderProps) => {
   const getProcessData = (id: number, form_type: string) => {
-    const queryResult = useQuery<TApiResponse>({
-      queryKey: ['processData', id, form_type],
-      queryFn: () => fetchProcessData(id, form_type),
-    });
+    const { queryResult } = useFetchProcessData(id, form_type);
 
     const completedTasksCount = queryResult.data?.form?.fields
       ? queryResult.data.form.fields.filter(

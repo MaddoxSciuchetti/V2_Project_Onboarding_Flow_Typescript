@@ -1,5 +1,5 @@
 import ModalOverlay from '@/components/modal/ModalOverlay';
-import PreviewComponent from '@/features/task-management/components/PreviewComponent';
+import ModalContent from '@/features/task-management/components/modal/TaskModalContent';
 import { SubmitEvent } from 'react';
 
 type TaskModalProps = {
@@ -25,7 +25,7 @@ const TaskModal = ({
     <>
       {modalState.selectedItem && (
         <ModalOverlay handleToggle={closeModal}>
-          <PreviewComponent
+          <ModalContent
             id={modalState.selectedItem.id}
             description={modalState.selectedItem.description}
             editcomment={modalState.selectedItem.editcomment}

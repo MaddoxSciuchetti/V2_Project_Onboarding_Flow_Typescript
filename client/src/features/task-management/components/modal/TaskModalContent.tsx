@@ -8,8 +8,8 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useBodyScrollLock } from '@/hooks/use-no-scroll';
-import { useEffect, useState } from 'react';
-import { Button } from '../../../components/ui/button';
+import { SubmitEvent, useEffect, useState } from 'react';
+import { Button } from '../../../../components/ui/button';
 
 type PreviewCompoent = {
   id: number;
@@ -17,10 +17,10 @@ type PreviewCompoent = {
   editcomment: string;
   select_option: string;
   form_field_id: number;
-  handleSubmit: (e: React.SubmitEvent<HTMLFormElement>) => void;
+  handleSubmit: (e: SubmitEvent<HTMLFormElement>) => void;
 };
 
-function PreviewComponent({
+function ModalContent({
   id,
   description,
   editcomment,
@@ -81,12 +81,12 @@ function PreviewComponent({
                     value={select_option}
                     className={
                       selectedValue === 'erledigt'
-                        ? ' bg-green-200 px-3 py-1 text-sm w-[17.75rem]'
+                        ? ' bg-green-200 px-3 py-1 text-sm w-71'
                         : selectedValue === 'offen'
-                          ? ' bg-red-200 px-3 py-1 text-sm w-[17.75rem]'
+                          ? ' bg-red-200 px-3 py-1 text-sm w-71'
                           : selectedValue === 'in_bearbeitung'
-                            ? ' bg-yellow-200 px-3 py-1 text-sm w-[17.75rem]'
-                            : '  bg-red-200 px-3 py-1 text-sm w-[17.75rem]'
+                            ? ' bg-yellow-200 px-3 py-1 text-sm w-71'
+                            : '  bg-red-200 px-3 py-1 text-sm w-71'
                     }
                     // className="w-[17.75rem]"
                   >
@@ -121,7 +121,7 @@ function PreviewComponent({
               </div>
               <div>
                 <Button
-                  className="w-[17.75rem] cursor-pointer hover:bg-gray-300"
+                  className="w-71 cursor-pointer hover:bg-gray-300"
                   variant={'outline'}
                   type="submit"
                 >
@@ -136,4 +136,4 @@ function PreviewComponent({
   );
 }
 
-export default PreviewComponent;
+export default ModalContent;

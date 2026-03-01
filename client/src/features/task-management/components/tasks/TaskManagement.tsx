@@ -3,14 +3,14 @@ import { Tabs, TabsContent } from '@/components/ui/tabs';
 import useAuth from '@/features/user-profile/hooks/use-Auth';
 import { useToggleModal } from '@/hooks/use-toggleModal';
 import React, { useState } from 'react';
-import useEditModal from '../hooks/use-editModal';
-import useTaskData from '../hooks/use-fetchTasks';
-import useFilteredData from '../hooks/use-filteredData';
-import useTaskSubmit from '../hooks/use-taskSubmit';
+import useEditModal from '../../hooks/use-editModal';
+import useTaskData from '../../hooks/use-fetchTasks';
+import useFilteredData from '../../hooks/use-filteredData';
+import useTaskSubmit from '../../hooks/use-taskSubmit';
+import WorkerFileUploads from '../modal/files/WorkerFileUploads';
+import TaskModal from '../modal/TaskModal';
 import FilteredTasks from './FilteredTasks';
 import TaskHeader from './TaskHeader';
-import TaskModal from './TaskModal';
-import WorkerFileUploads from './WorkerFileUploads';
 import WorkerTasks from './WorkerTasks';
 
 type OffboardingFormProps = {

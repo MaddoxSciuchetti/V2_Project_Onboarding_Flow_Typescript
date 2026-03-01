@@ -2,44 +2,22 @@ import { useToggleModal } from '@/hooks/use-toggleModal';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import JSZip from 'jszip';
 import { useState } from 'react';
-import { Button } from '../../../components/ui/button';
-import FileUpload01 from '../../../components/ui/file_upload/form-main';
-import { Spinner } from '../../../components/ui/spinner';
-import { deleteFileData, fetchCloudUrl, fetchFileData } from '../api/index.api';
+import { Button } from '../../../../../components/ui/button';
+import FileUpload01 from '../../../../../components/ui/file_upload/form-main';
+import { Spinner } from '../../../../../components/ui/spinner';
+import {
+  deleteFileData,
+  fetchCloudUrl,
+  fetchFileData,
+} from '../../../api/index.api';
+import { File_Request } from '../../../types/index.types';
+import { fileIcon, getFileName } from '../../../utils/fileHandling';
 
-interface Worker_Backround {
+type WorkerFileUploadsProps = {
   id: number;
-}
-
-export type File_Request = {
-  id: number;
-  employee_form_id: number;
-  original_filename: string;
-  content_type: string;
-  cloud_url: string;
-  cloud_key: string;
-  uploaded_at: Date;
-  employee_forms: {
-    form_type: 'Onboarding' | 'Offboarding';
-    id: number;
-    timestamp: string;
-    user_id: number;
-  };
 };
 
-export const fileIcon = (content_type: string) => {
-  if (content_type.startsWith('/image')) return '🖼️';
-  if (content_type.includes('pdf')) return '📄';
-  if (content_type.includes('document') || content_type.includes('word'))
-    return '📝';
-  if (content_type.includes('excel') || content_type.includes('spreadsheet'))
-    return '📊';
-};
-
-export const getFileName = (url: string, originalName: string) => {
-  return originalName || url.split('/').pop() || 'unknown file';
-};
-function WorkerFileUploads({ id }: Worker_Backround) {
+function WorkerFileUploads({ id }: WorkerFileUploadsProps) {
   const [setModal, setModalState] = useState<boolean>(false);
 
   const {
@@ -51,10 +29,6 @@ function WorkerFileUploads({ id }: Worker_Backround) {
     queryKey: ['historyData', id],
     queryFn: () => fetchFileData(id),
   });
-  console.log('Is fetching', isFetching);
-  console.log(id);
-
-  console.log('fetchfiles', fetchFiles);
 
   const queryClient = useQueryClient();
 

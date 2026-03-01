@@ -1,16 +1,3 @@
-// export type User = {
-//   id: string;
-//   email: string;
-//   verified: boolean;
-//   user_permission: 'CHEF' | 'MITARBEITER';
-//   createdAt: Date;
-//   updatedAt: Date;
-//   vorname: string;
-//   nachname: string;
-//   presignedUrl?: string;
-// };
-
-// Prefix EmployeeUser
 export type User = {
   id: string;
   email: string;

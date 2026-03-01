@@ -1,9 +1,9 @@
 import ErrorAlert from '@/components/alerts/ErrorAlert';
-import { TApiResponse, TFormField } from '@/types/api.types';
-import { SubmitEvent } from 'react';
+import type { TApiResponse, TFormField } from '@/types/api.types';
+import type { SubmitEvent } from 'react';
 import WorkerForm from './WorkerForm';
 
-type WorkerTasksProps = {
+interface WorkerTasksProps {
   displayData: TFormField[];
   data: TApiResponse | undefined;
   openEditModal: (
@@ -14,7 +14,7 @@ type WorkerTasksProps = {
     form_field_id: number
   ) => Promise<void>;
   handleSubmit: (event: SubmitEvent<HTMLFormElement>) => Promise<void>;
-};
+}
 
 const WorkerTasks = ({
   displayData,

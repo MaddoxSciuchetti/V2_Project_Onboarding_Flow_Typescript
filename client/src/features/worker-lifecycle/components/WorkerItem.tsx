@@ -26,9 +26,6 @@ export function Worker_Item({
   onRemove,
   item1,
 }: ToDoItem) {
-  // const [modal, setModal] = useState<boolean>(false);
-
-  // const { toggleSidebar } = useSidebar();
   const { modal, setModal, toggleModal } = useToggleModal();
 
   const {

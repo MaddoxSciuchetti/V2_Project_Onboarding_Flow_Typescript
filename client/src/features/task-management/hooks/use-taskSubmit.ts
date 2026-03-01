@@ -1,5 +1,6 @@
 import { User } from '@/features/user-profile/types/auth.type';
 import { useQueryClient } from '@tanstack/react-query';
+import { SubmitEvent } from 'react';
 import { editData, insertHistoryData } from '../api/index.api';
 import { formSchema } from '../schemas/index.schema';
 
@@ -10,7 +11,7 @@ function useTaskSubmit(
 ) {
   const queryClient = useQueryClient();
 
-  async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
+  async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const formValues = Object.fromEntries(formData);

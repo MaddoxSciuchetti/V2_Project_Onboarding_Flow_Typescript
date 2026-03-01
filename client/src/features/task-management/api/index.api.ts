@@ -6,8 +6,7 @@ import {
   TApiResponse,
 } from '@/types/api.types';
 import { DescriptionForm } from '@/types/form-data.types';
-import { File_Request } from '../components/WorkerFileUploads';
-import { THistoryData } from '../types/index.types';
+import { File_Request, THistoryData } from '../types/index.types';
 
 export const formattedData = async (
   id: number,
