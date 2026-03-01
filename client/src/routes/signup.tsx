@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { SignupForm } from '@/features/Register';
+import { SignupForm } from '@/features/auth/components/Register';
 
 export const Route = createFileRoute('/signup')({
   component: Signup,

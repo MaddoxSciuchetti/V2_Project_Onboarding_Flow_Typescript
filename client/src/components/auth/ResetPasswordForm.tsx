@@ -5,9 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { CheckCircle } from 'lucide-react';
 
-import { Link, useNavigate } from '@tanstack/react-router';
-
-import { resetPassword } from '@/lib/api';
+import { useNavigate } from '@tanstack/react-router';
+import { resetPassword } from '@/features/auth/api';
 
 const ResetPasswordForm = ({ code }: any) => {
   const [password, setPassword] = useState('');

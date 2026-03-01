@@ -1,4 +1,5 @@
-import MitarbeiterÜbersicht from '@/features/Mitarbeiter-Uebersicht';
+import { EmployeeModalProvider } from '@/features/context/EmployeeModalContext';
+import EmployeeOverview from '@/features/employee-overview/components/EmployeeOverview';
 import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/mitarbeiter-uebersicht')({
@@ -8,7 +9,9 @@ export const Route = createFileRoute('/mitarbeiter-uebersicht')({
 function RouteComponent() {
   return (
     <>
-      <MitarbeiterÜbersicht />
+      <EmployeeModalProvider>
+        <EmployeeOverview />
+      </EmployeeModalProvider>
     </>
   );
 }
