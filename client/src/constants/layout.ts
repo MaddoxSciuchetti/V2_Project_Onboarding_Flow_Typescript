@@ -3,18 +3,18 @@ import { HandMetal, Home, Inbox, Settings } from 'lucide-react';
 export const LAYOUTITEMS = [
   {
     title: 'Mein Mitarbeiter',
-    to: '/mitarbeiter-uebersicht',
+    to: '/employee-overview',
     icon: Home,
     requiredPermission: 'CHEF',
   },
   {
     title: 'Meine Handwerker',
-    to: '/handwerker',
+    to: '/worker-lifycycle',
     icon: Inbox,
   },
   {
     title: 'Vorlage',
-    to: '/template-konfiguration',
+    to: '/template',
     icon: Settings,
     requiredPermission: 'CHEF',
   },

@@ -19,7 +19,7 @@ export function LoginComponent({ className, ...props }: ComponentProps<'div'>) {
   } = useMutation({
     mutationFn: login,
     onSuccess: () => {
-      navigate({ to: '/handwerker' });
+      navigate({ to: '/employee-overview' });
     },
   });
 

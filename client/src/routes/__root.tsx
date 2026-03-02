@@ -14,8 +14,8 @@ function RootLayout() {
     '/login',
     '/signup',
     '/verify-email',
-    '/passwort/forgot',
-    'passwort/reset',
+    '/password/forgot',
+    '/password/reset',
     '/',
   ]);
   const isbeforeDoorman = verifyPages.has(location.pathname);
