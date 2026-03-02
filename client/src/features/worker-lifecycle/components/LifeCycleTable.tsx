@@ -6,12 +6,12 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
-import { getFirstFormType } from '@/lib/formtype';
-import { OffboardingItem } from '../types/index.types';
+import { getFirstFormType } from '@/features/worker-lifecycle/utils/formtype';
+import { WorkerItem } from '../types/index.types';
 import { Worker_Item } from './WorkerItem';
 
 type LifeCycleTableProps = {
-  filtered: OffboardingItem[] | undefined;
+  filtered: WorkerItem[] | undefined;
   item_value?: number;
   onRemove: (taskId: number) => void;
   gotopage: (taskId: number, form_type: any) => void;
@@ -32,7 +32,7 @@ function LifeCycleTable({ filtered, onRemove, gotopage }: LifeCycleTableProps) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filtered?.map((task: OffboardingItem) => (
+              {filtered?.map((task: WorkerItem) => (
                 <Worker_Item
                   key={task.id}
                   item_value={task.id}

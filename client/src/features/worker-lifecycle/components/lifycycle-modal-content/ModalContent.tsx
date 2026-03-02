@@ -1,14 +1,14 @@
-import { cn } from '@/types/utils.types';
-import { AddWorker } from '@/zod-schemas/zodSchema';
+import { AddWorker } from '@/features/worker-lifecycle/schemas/zod.schemas';
+import { cn } from '@/lib/trycatch';
 import { UseMutationResult } from '@tanstack/react-query';
 import { useState } from 'react';
-import { FormType, TOffboardingItemUser } from '../../types/index.types';
+import { FormType, ItemUser } from '../../types/index.types';
 import RadioSelect from './RadioSelect';
 import { WorkerForm } from './WorkerForm';
 
 type ModalProps = {
   createEmployeeMutation: UseMutationResult<
-    TOffboardingItemUser,
+    ItemUser,
     Error,
     AddWorker,
     unknown
@@ -22,7 +22,7 @@ const ModalContent = ({ createEmployeeMutation, className }: ModalProps) => {
   return (
     <div
       className={cn(
-        'flex flex-col max-h-100 min-h-120 mt-40 mx-auto text-center items-center z-50 bg-gray-200 rounded-xl  w-2xl',
+        'flex flex-col max-h-100 min-h-120 mt-40 mx-auto text-center items-center z-50 bg-muted rounded-xl  w-2xl',
         className
       )}
     >
