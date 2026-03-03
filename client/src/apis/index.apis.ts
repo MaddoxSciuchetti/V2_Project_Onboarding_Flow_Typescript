@@ -17,7 +17,7 @@ export const createWorkerFile = async (
   return response;
 };
 
-export const featureRequest = async (data: TFeatureForm) => {
+export const sendFeatureRequest = async (data: TFeatureForm) => {
   const form = new FormData();
   if (data.file === undefined) {
     form.append('importance', data.importance);
@@ -29,7 +29,7 @@ export const featureRequest = async (data: TFeatureForm) => {
   }
 
   const response = await API.post<TFeatureForm, TFeatureForm>(
-    `/worker/FeatureRequest`,
+    `/user/featurerequest`,
     form
   );
   return response;

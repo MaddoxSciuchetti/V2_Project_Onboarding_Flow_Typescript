@@ -17,7 +17,7 @@ export const addExtraField = async (data: {
   owner: string;
 }): Promise<NewDescriptionField> => {
   const response = await API.post<NewDescriptionField, NewDescriptionField>(
-    `/worker/addFormField`,
+    `/user/addFormField`,
     data
   );
   return response;

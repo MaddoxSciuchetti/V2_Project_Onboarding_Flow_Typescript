@@ -1,3 +1,8 @@
+import {
+    addExtraField,
+    postFeature,
+    sendReminder,
+} from "@/controllers/on_off_boarding.controller";
 import { upload } from "@/middleware/fileparser";
 import { checkChef } from "@/utils/checkChef";
 import { Router } from "express";
@@ -43,9 +48,15 @@ userRoutes.delete(
 );
 userRoutes.get("/fetchTaskData", checkChef, fetchDescriptionHandler);
 
+userRoutes.post("/addFormField", addExtraField);
+
 userRoutes.get("/rawdescription", checkChef, fetchDescriptionHandler);
 
 userRoutes.put("/editTaskData/:id", checkChef, editDescriptionHandler);
+
+userRoutes.post("/sendReminder", sendReminder);
+
+userRoutes.post("/featurerequest", upload.array("files"), postFeature);
 
 userRoutes.post("/createTaskData", checkChef, createDescriptionHandler);
 export default userRoutes;

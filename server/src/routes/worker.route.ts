@@ -1,18 +1,13 @@
 import express from "express";
 import {
-    addExtraField,
     createWorker,
     createWorkerFile,
     deleteWorker,
     deleteWorkerFile,
-    getCloudUrl,
-    getProcessData,
     getWorkerById,
     getWorkerData,
     getWorkerFiles,
     getWorkerHistory,
-    postFeature,
-    sendReminder,
     updateWorker,
     updateWorkerHistory,
 } from "../controllers/on_off_boarding.controller";
@@ -47,13 +42,10 @@ worker.get("/getWorkerFiles/:id", getWorkerFiles);
 
 worker.delete("/deleteWorkerFile/:id", deleteWorkerFile);
 
-worker.post("/addFormField", addExtraField);
-worker.get("/fetchProcessdata/:id", getProcessData);
+//
 
-worker.post("/sendReminder", sendReminder);
+// worker.get("/fetchProcessdata/:id", getProcessData);
 
-worker.get("/getCloudUrl", getCloudUrl);
-
-worker.post("/FeatureRequest", upload.array("files"), postFeature);
+// worker.get("/getCloudUrl", getCloudUrl);
 
 export { worker };
