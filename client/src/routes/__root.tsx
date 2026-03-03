@@ -3,6 +3,7 @@ import Layout from '@/components/layout/Layout';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { ThemeProvider } from '@/context/theme-provider/ThemeContext';
 import { createRootRoute, Outlet, useLocation } from '@tanstack/react-router';
+import { Toaster } from 'sonner';
 
 export const Route = createRootRoute({
   component: RootLayout,
@@ -33,6 +34,7 @@ function RootLayout() {
 
   return (
     <ThemeProvider>
+      <Toaster position={'top-center'} />
       <SidebarProvider>
         <Layout />
       </SidebarProvider>

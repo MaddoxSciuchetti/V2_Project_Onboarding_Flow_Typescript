@@ -1,8 +1,10 @@
+import { USER_PERMISSION } from '@/types/helper.types';
+
 export type User = {
   id: string;
   email: string;
   verified: boolean;
-  user_permission: 'CHEF' | 'MITARBEITER';
+  user_permission: USER_PERMISSION;
   createdAt: Date;
   updatedAt: Date;
   vorname: string;

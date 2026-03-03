@@ -3,6 +3,7 @@ import { Router } from "express";
 import {
     getProfilePhoto,
     getUser,
+    postAgentMessage,
     uploadProfilePhoto,
 } from "../controllers/user.controller";
 
@@ -14,5 +15,7 @@ userRoutes.get("/", getUser);
 
 userRoutes.post("/profile/photo", upload.single("file"), uploadProfilePhoto);
 userRoutes.get("/profile/photo", getProfilePhoto);
+
+userRoutes.post("/sendAgentMessage", postAgentMessage);
 
 export { userRoutes };

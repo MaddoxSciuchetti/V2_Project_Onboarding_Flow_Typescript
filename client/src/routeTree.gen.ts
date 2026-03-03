@@ -16,6 +16,7 @@ import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as EmployeeOverviewRouteImport } from './routes/employee-overview'
+import { Route as AgentAiRouteImport } from './routes/agent-ai'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UserIdRouteImport } from './routes/user/$Id'
 import { Route as PasswordResetRouteImport } from './routes/password/reset'
@@ -58,6 +59,11 @@ const EmployeeOverviewRoute = EmployeeOverviewRouteImport.update({
   path: '/employee-overview',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AgentAiRoute = AgentAiRouteImport.update({
+  id: '/agent-ai',
+  path: '/agent-ai',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -91,6 +97,7 @@ const EmailVerifyCodeRoute = EmailVerifyCodeRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/agent-ai': typeof AgentAiRoute
   '/employee-overview': typeof EmployeeOverviewRoute
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
@@ -106,6 +113,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/agent-ai': typeof AgentAiRoute
   '/employee-overview': typeof EmployeeOverviewRoute
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
@@ -122,6 +130,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/agent-ai': typeof AgentAiRoute
   '/employee-overview': typeof EmployeeOverviewRoute
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
@@ -139,6 +148,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/agent-ai'
     | '/employee-overview'
     | '/login'
     | '/profile'
@@ -154,6 +164,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/agent-ai'
     | '/employee-overview'
     | '/login'
     | '/profile'
@@ -169,6 +180,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/agent-ai'
     | '/employee-overview'
     | '/login'
     | '/profile'
@@ -185,6 +197,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AgentAiRoute: typeof AgentAiRoute
   EmployeeOverviewRoute: typeof EmployeeOverviewRoute
   LoginRoute: typeof LoginRoute
   ProfileRoute: typeof ProfileRoute
@@ -250,6 +263,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmployeeOverviewRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/agent-ai': {
+      id: '/agent-ai'
+      path: '/agent-ai'
+      fullPath: '/agent-ai'
+      preLoaderRoute: typeof AgentAiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -297,6 +317,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AgentAiRoute: AgentAiRoute,
   EmployeeOverviewRoute: EmployeeOverviewRoute,
   LoginRoute: LoginRoute,
   ProfileRoute: ProfileRoute,

@@ -1,5 +1,5 @@
 import { generatePresignedUrl, uploadFileToS3 } from "@/config/aws";
-import { NOT_FOUND, OK } from "../constants/http";
+import { INTERNAL_SERVER_ERROR, NOT_FOUND, OK } from "../constants/http";
 import {
     createDescription,
     getChef,
@@ -69,3 +69,14 @@ export const getProfilePhoto = catchErrors(async (req, res) => {
 
     return res.status(OK).json(presignedUrl);
 });
+
+export const postAgentMessage = async (req, res) => {
+    try {
+        const data = req.body.value;
+        console.log(data);
+        return res.status(OK).json({ sucess: true });
+    } catch (error) {
+        console.log(error);
+        return res.status(INTERNAL_SERVER_ERROR).json({ success: false });
+    }
+};

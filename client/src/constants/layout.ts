@@ -1,6 +1,12 @@
-import { HandMetal, Home, Inbox, Settings } from 'lucide-react';
+import { Angry, HandMetal, Home, Inbox, Settings } from 'lucide-react';
 
 export const LAYOUTITEMS = [
+  {
+    title: 'Agentic AI',
+    to: '/agent-ai',
+    icon: Angry,
+    requiredPermission: 'CHEF',
+  },
   {
     title: 'Mein Mitarbeiter',
     to: '/employee-overview',
