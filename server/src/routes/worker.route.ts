@@ -3,14 +3,14 @@ import {
     addExtraField,
     createWorker,
     deleteFileData,
+    deleteWorker,
     getCloudUrl,
     getFileData,
     gethistoryData,
     getProcessData,
+    getWorkerById,
     getWorkerData,
-    offboardingDeletebyId,
     offboardingEditdata,
-    offboardingGetuserbyId,
     postFeature,
     postFileData,
     postHistoryData,
@@ -23,11 +23,11 @@ const worker = express.Router();
 
 worker.post("/addWorker", createWorker);
 
-worker.get("/fetchData", getWorkerData);
+worker.get("/getWorkerData", getWorkerData);
 
-worker.delete("/delete/:id", offboardingDeletebyId);
+worker.delete("/deleteWorker/:id", deleteWorker);
 
-worker.get("/user/:id", offboardingGetuserbyId);
+worker.get("/getWorker/:id", getWorkerById);
 
 worker.put("/editdata", offboardingEditdata);
 

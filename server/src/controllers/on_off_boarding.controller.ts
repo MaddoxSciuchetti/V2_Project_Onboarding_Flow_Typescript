@@ -6,15 +6,15 @@ import z from "zod";
 import {
     addExtraFormFieldDB,
     deleteFiles,
-    deleteUser,
     editdata,
     fetchFileData,
     getHistoryData,
-    getUserFormData,
     insertFileData,
     insertHistoryData,
     insertWorker,
+    queryWorkerById,
     queryWorkerData,
+    removeWorker,
     sendEmployeeEmail,
 } from "@/services/on_off_boarding.auth";
 import resolveOwner from "@/utils/resolverOwner";
@@ -53,26 +53,26 @@ export const getWorkerData = async (req: Request, res: Response) => {
     return res.status(201).json(worker);
 };
 
-export const offboardingDeletebyId = async (req: Request, res: Response) => {
+export const deleteWorker = async (req: Request, res: Response) => {
     const id = +req.params.id;
 
-    const delete_user = await deleteUser(id);
+    const worker = await removeWorker(id);
 
-    return res.status(204).json(delete_user);
+    return res.status(204).json(worker);
 };
 
 // formfetch
 
-export const offboardingGetuserbyId = async (req: Request, res: Response) => {
+export const getWorkerById = async (req: Request, res: Response) => {
     const id = +req.params.id;
     const param1 = req.query.param1;
 
-    const user = await getUserFormData(id);
-    if (!user) {
+    const worker = await queryWorkerById(id);
+    if (!worker) {
         throw new Error("error occued");
     }
 
-    const form = user.employee_forms.find((f: any) => f.form_type === param1);
+    const form = worker.employee_forms.find((f: any) => f.form_type === param1);
 
     if (!form) {
         return res
@@ -81,10 +81,10 @@ export const offboardingGetuserbyId = async (req: Request, res: Response) => {
     }
 
     const response = {
-        user: {
-            id: user.id,
-            vorname: user.vorname,
-            nachname: user.nachname,
+        worker: {
+            id: worker.id,
+            vorname: worker.vorname,
+            nachname: worker.nachname,
         },
         form: {
             id: form.id,
@@ -242,7 +242,7 @@ export const getProcessData = async (req: Request, res: Response) => {
     try {
         const id = req.params.id;
 
-        const formData = await getUserFormData(id);
+        const formData = await queryWorkerById(id);
         console.log("=== FORMDATA ====");
         console.log(formData);
         return res.status(200).send({ formData });

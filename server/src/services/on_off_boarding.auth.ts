@@ -114,7 +114,7 @@ export const addExtraFormFieldDB = async (data: {
 };
 
 export const queryWorkerData = async () => {
-    const user_information = await prisma.users.findMany({
+    const worker = await prisma.users.findMany({
         where: {
             employee_forms: {
                 some: {
@@ -134,27 +134,22 @@ export const queryWorkerData = async () => {
             },
         },
     });
-
-    user_information.forEach((user) => {
-        console.log(user.employee_forms);
-    });
-
     return {
-        user_information,
+        worker: worker,
     };
 };
 
-export const deleteUser = async (data: number) => {
-    const delete_user = await prisma.users.delete({
+export const removeWorker = async (data: number) => {
+    const worker = await prisma.users.delete({
         where: {
             id: data,
         },
     });
 
-    return delete_user;
+    return worker;
 };
 
-export const getUserFormData = async (id: any) => {
+export const queryWorkerById = async (id: any) => {
     return await prisma.users.findUnique({
         where: {
             id: id,
