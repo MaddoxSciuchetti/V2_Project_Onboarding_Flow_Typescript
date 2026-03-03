@@ -18,7 +18,7 @@ type dataObject = {
 };
 
 type returnObject = {
-    user: {
+    worker: {
         id: number;
         vorname: string;
         nachname: string;
@@ -26,9 +26,9 @@ type returnObject = {
     employee_form: number;
 };
 
-export const createUser = (data: dataObject): Promise<returnObject> => {
+export const insertWorker = (data: dataObject): Promise<returnObject> => {
     return prisma.$transaction(async (tx: any) => {
-        const user = await tx.users.create({
+        const worker = await tx.users.create({
             data: {
                 vorname: data.vorname,
                 nachname: data.nachname,
@@ -47,7 +47,7 @@ export const createUser = (data: dataObject): Promise<returnObject> => {
 
         const employee_forms_table = await tx.employee_forms.create({
             data: {
-                user_id: user.id,
+                user_id: worker.id,
                 form_type: data.type,
             },
             select: {
@@ -74,7 +74,7 @@ export const createUser = (data: dataObject): Promise<returnObject> => {
         });
 
         return {
-            user,
+            worker,
             employee_form: employee_forms_table.id,
         };
     });
@@ -113,7 +113,7 @@ export const addExtraFormFieldDB = async (data: {
     });
 };
 
-export const fetchUser = async () => {
+export const queryWorkerData = async () => {
     const user_information = await prisma.users.findMany({
         where: {
             employee_forms: {

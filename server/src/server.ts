@@ -1,18 +1,17 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-import express from "express";
 import cors from "cors";
+import express from "express";
 
-import { offboarding_router } from "./routes/on_off_boarding.route";
+import cookieParser from "cookie-parser";
+import { APP_ORIGIN } from "./constants/env";
+import authenticate from "./middleware/authenticate";
+import errorHandler from "./middleware/errorHandler";
 import authRoutes from "./routes/auth.route";
 import sessionRoutes from "./routes/session_route";
-import authenticate from "./middleware/authenticate";
-import { APP_ORIGIN } from "./constants/env";
-import cookieParser from "cookie-parser";
 import userRoutes from "./routes/user.route";
-import errorHandler from "./middleware/errorHandler";
-import { checkChef } from "./utils/checkChef";
+import { worker } from "./routes/worker.route";
 
 const PORT = process.env.PORT || 3000;
 
@@ -70,7 +69,7 @@ app.use("/sessions", authenticate, sessionRoutes);
 app.use("/user", authenticate, userRoutes);
 
 // worker
-app.use("/offboarding", offboarding_router);
+app.use("/worker", worker);
 
 app.use(errorHandler);
 

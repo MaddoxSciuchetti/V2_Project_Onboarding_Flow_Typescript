@@ -5,34 +5,30 @@ import z from "zod";
 
 import {
     addExtraFormFieldDB,
-    createUser,
     deleteFiles,
     deleteUser,
     editdata,
     fetchFileData,
-    fetchUser,
     getHistoryData,
     getUserFormData,
     insertFileData,
     insertHistoryData,
+    insertWorker,
+    queryWorkerData,
     sendEmployeeEmail,
 } from "@/services/on_off_boarding.auth";
 import resolveOwner from "@/utils/resolverOwner";
 import { generatePresignedUrl, uploadFileToS3 } from "../config/aws";
 import { INTERNAL_SERVER_ERROR, OK } from "../constants/http";
-export const createUserEmployee = async (req: Request, res: Response) => {
-    // validate the request
+export const createWorker = async (req: Request, res: Response) => {
     try {
         const request = {
             ...req.body.data,
         };
 
-        // business logic
-
-        const { user } = await createUser(request);
-        return res.status(201).json({ success: user });
+        const { worker } = await insertWorker(request);
+        return res.status(201).json({ success: worker });
     } catch (error) {
-        // return the response
         console.log(error);
         return res.status(500).json({ error: "internal error" });
     }
@@ -52,12 +48,9 @@ export const addExtraField = async (req: Request, res: Response) => {
     }
 };
 
-export const fetchOffboardingData = async (req: Request, res: Response) => {
-    const request = {
-        ...req.body,
-    };
-    const { user_information } = await fetchUser();
-    return res.status(201).json(user_information);
+export const getWorkerData = async (req: Request, res: Response) => {
+    const { worker } = await queryWorkerData();
+    return res.status(201).json(worker);
 };
 
 export const offboardingDeletebyId = async (req: Request, res: Response) => {
