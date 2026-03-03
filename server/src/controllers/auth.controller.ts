@@ -2,10 +2,10 @@ import { CREATED, OK, UNAUTHORIZED } from "../constants/http";
 import {
     createAccount,
     loginUser,
+    modifyPassword,
     refreshUserAccessToken,
-    resetPassword,
     sendPasswordResetEmail,
-    verifyEmail,
+    validationEmailCode,
 } from "../services/auth.service";
 import catchErrors from "../utils/catchErrors";
 import {
@@ -26,7 +26,7 @@ import {
 import { prisma } from "@/lib/prisma";
 import appAssert from "../utils/appAssert";
 
-export const registerHandler = catchErrors(async (req, res) => {
+export const register = catchErrors(async (req, res) => {
     //validate request
 
     const request = registerSchema.parse({
@@ -45,7 +45,7 @@ export const registerHandler = catchErrors(async (req, res) => {
     return res.status(CREATED).json(user);
 });
 
-export const loginHandler = catchErrors(async (req, res) => {
+export const login = catchErrors(async (req, res) => {
     // validate request
 
     const request = loginSchema.parse({
@@ -62,7 +62,7 @@ export const loginHandler = catchErrors(async (req, res) => {
     });
 });
 
-export const logoutHandler = catchErrors(async (req, res) => {
+export const logout = catchErrors(async (req, res) => {
     const accessToken = req.cookies.accessToken as string | undefined;
     const { payload } = verifyToken(accessToken || "");
 
@@ -79,7 +79,7 @@ export const logoutHandler = catchErrors(async (req, res) => {
     });
 });
 
-export const refreshHandler = catchErrors(async (req, res) => {
+export const refresh = catchErrors(async (req, res) => {
     console.log(req.cookies.refreshToken);
     const refreshToken = req.cookies.refreshToken as string | undefined;
     appAssert(refreshToken, UNAUTHORIZED, "Missing refresh token");
@@ -103,18 +103,18 @@ export const refreshHandler = catchErrors(async (req, res) => {
         });
 });
 
-export const verifyEmailHandler = catchErrors(async (req, res) => {
+export const verifyEmail = catchErrors(async (req, res) => {
     console.log(req.params.code);
     const verificationCode = verificationCodeSchema.parse(req.params.code);
 
-    await verifyEmail(verificationCode);
+    await validationEmailCode(verificationCode);
 
     return res.status(OK).json({
         message: "Email was sucessfully verified",
     });
 });
 
-export const sendPasswordResetHandler = catchErrors(async (req, res) => {
+export const sendPassword = catchErrors(async (req, res) => {
     const email = emailSchema.parse(req.body.email);
 
     await sendPasswordResetEmail(email);
@@ -124,10 +124,10 @@ export const sendPasswordResetHandler = catchErrors(async (req, res) => {
     });
 });
 
-export const resetPasswordHandler = catchErrors(async (req, res) => {
+export const resetPassword = catchErrors(async (req, res) => {
     const request = resetPasswordSchema.parse(req.body);
 
-    await resetPassword(request);
+    await modifyPassword(request);
 
     return clearAuthCookies(res)
         .status(OK)

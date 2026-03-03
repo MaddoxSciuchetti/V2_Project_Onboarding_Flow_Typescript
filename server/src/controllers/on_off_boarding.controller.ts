@@ -202,8 +202,6 @@ export const getWorkerFiles = async (req: Request, res: Response) => {
                 cloud_url: await generatePresignedUrl(file.cloud_key),
             })),
         );
-        console.log("THESE ARE THE FILES");
-        console.log(files);
         return res.status(200).json(presignedUrl);
     } catch (error) {
         console.log(error);

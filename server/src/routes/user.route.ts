@@ -16,15 +16,10 @@ const userRoutes = Router();
 
 userRoutes.get("/", getUser);
 
-// profile
-
 userRoutes.post("/profile/photo", upload.single("file"), uploadProfilePhoto);
 userRoutes.get("/profile/photo", getProfilePhoto);
 
-// other
-
 userRoutes.post("/sendReminder", sendReminder);
-
 userRoutes.post("/featurerequest", upload.array("files"), postFeature);
 
 export { userRoutes };
