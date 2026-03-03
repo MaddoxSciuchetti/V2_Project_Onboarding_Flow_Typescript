@@ -7,13 +7,13 @@ import { AbsenceData } from '../types/index.types';
 
 export const deleteEmployeeHandler = async (id: string): Promise<User> => {
   const response = await API.delete<typeof id, User>(
-    `/user/deleteEmplyoee/${id}`
+    `/employee/deleteEmplyoee/${id}`
   );
   return response;
 };
 
 export const specificEmployeeData = async (): Promise<EmployeeDataArray> => {
-  const response = await API.get(`/user/employee/specificEmployeeData`);
+  const response = await API.get(`/employee/specificEmployeeData`);
   return employeeDataSchema.parse(response);
 };
 
@@ -27,5 +27,5 @@ export const fetchDescriptionData = async (
 export const editEmployeeAbsence = async (
   data: AbsenceData
 ): Promise<AbsenceData> => {
-  return API.put<AbsenceData, AbsenceData>('/user/editAbsenceData', data);
+  return API.put<AbsenceData, AbsenceData>('/employee/editAbsenceData', data);
 };

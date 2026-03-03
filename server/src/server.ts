@@ -9,8 +9,10 @@ import { APP_ORIGIN } from "./constants/env";
 import authenticate from "./middleware/authenticate";
 import errorHandler from "./middleware/errorHandler";
 import authRoutes from "./routes/auth.route";
+import { employeeRoutes } from "./routes/employee.route";
 import sessionRoutes from "./routes/session_route";
-import userRoutes from "./routes/user.route";
+import { templateRoutes } from "./routes/template.route";
+import { userRoutes } from "./routes/user.route";
 import { worker } from "./routes/worker.route";
 
 const PORT = process.env.PORT || 3000;
@@ -67,6 +69,10 @@ app.use("/sessions", authenticate, sessionRoutes);
 // protected routes
 
 app.use("/user", authenticate, userRoutes);
+
+//
+app.use("/template", authenticate, templateRoutes);
+app.use("employee", authenticate, employeeRoutes);
 
 // worker
 app.use("/worker", worker);

@@ -7,7 +7,7 @@ import {
 import { EditDescriptionData } from '../types/taskForm.types';
 
 export const deleteTemplateTask = async (id: number) => {
-  const response = await API.delete(`/user/template/task/${id}`);
+  const response = await API.delete(`/template/task/${id}`);
   return response;
 };
 
@@ -17,7 +17,7 @@ export const createTemplateTask = async (data: {
   owner: string;
 }): Promise<NewDescriptionField> => {
   const response = await API.post<NewDescriptionField, NewDescriptionField>(
-    `/user/template/createTask`,
+    `/template/createTask`,
     data
   );
   return response;
@@ -25,14 +25,14 @@ export const createTemplateTask = async (data: {
 
 export const getTemplateTask = async (): Promise<DescriptionResponse[]> => {
   const response = await API.get<DescriptionData[], DescriptionResponse[]>(
-    '/user/template/getTask'
+    '/template/getTask'
   );
   return response;
 };
 
 export const updateTemplateTask = async (data: EditDescriptionData) => {
   const response = await API.put<EditDescriptionData, EditDescriptionData>(
-    `/user/template/updateTask/${data.form_field_id}`,
+    `/template/updateTask/${data.form_field_id}`,
     data
   );
   return response;
