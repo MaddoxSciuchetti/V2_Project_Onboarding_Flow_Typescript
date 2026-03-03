@@ -8,7 +8,7 @@ import {
     updateWorkerSchema,
 } from "@/schemas/zod.controller";
 import {
-    addExtraFormFieldDB,
+    insertTemplateTask,
     insertWorker,
     insertWorkerFile,
     insertWorkerHistory,
@@ -38,13 +38,13 @@ export const createWorker = async (req: Request, res: Response) => {
     }
 };
 
-export const addExtraField = async (req: Request, res: Response) => {
+export const createTemplateTask = async (req: Request, res: Response) => {
     try {
         const request = {
             ...req.body,
         };
 
-        const newField = await addExtraFormFieldDB(request);
+        const newField = await insertTemplateTask(request);
         return res.status(201).json({ success: newField });
     } catch (error) {
         console.log(error);

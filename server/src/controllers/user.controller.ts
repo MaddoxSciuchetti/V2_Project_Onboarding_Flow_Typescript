@@ -2,17 +2,17 @@ import { generatePresignedUrl, uploadFileToS3 } from "@/config/aws";
 import { NOT_FOUND, OK } from "../constants/http";
 import {
     createDescription,
-    deleteDescriptionData,
     getChef,
-    getDescriptionData,
     insertProfilePhoto,
+    modifyTemplateTask,
     queryEmployee,
     queryEmployeeWorkerData,
     queryProfilePhoto,
+    queryTask,
     queryUser,
     removeEmployee,
+    removeTemplateTask,
     updateAbsenceData,
-    updateDescriptionData,
 } from "../services/user.protected";
 import appAssert from "../utils/appAssert";
 import catchErrors from "../utils/catchErrors";
@@ -45,28 +45,28 @@ export const getEmployeeWorkerData = catchErrors(async (req, res) => {
     return res.status(OK).json(unifiedData);
 });
 
-export const deleteDescriptionHandler = catchErrors(async (req, res) => {
+export const deleteTemplateTask = catchErrors(async (req, res) => {
     const id = +req.params.id;
 
-    const deletedData = await deleteDescriptionData(id);
+    const deletedData = await removeTemplateTask(id);
 
     return res.status(OK).json(deletedData);
 });
 
-export const fetchDescriptionHandler = catchErrors(async (req, res) => {
+export const getTask = catchErrors(async (req, res) => {
     const id = req.userId;
 
-    const descriptionData = await getDescriptionData();
+    const descriptionData = await queryTask();
 
     return res.status(OK).json(descriptionData);
 });
 
-export const editDescriptionHandler = catchErrors(async (req, res) => {
+export const updateTemplateTask = catchErrors(async (req, res) => {
     const id = +req.params.id;
 
     const { form_field_id, owner, description, template_type } = req.body;
 
-    const updatedDescription = await updateDescriptionData(
+    const updatedDescription = await modifyTemplateTask(
         form_field_id,
         owner,
         description,

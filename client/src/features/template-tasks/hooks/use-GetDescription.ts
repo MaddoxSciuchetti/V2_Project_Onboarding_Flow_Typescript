@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import useEmployeeData from '../../employee-overview/hooks/use-employeeData';
-import { addExtraField } from '../api';
+import { createTemplateTask } from '../api';
 import useDeleteDescription from './use-DeleteDescription';
 import useEditDescription from './use-EditDescription';
 import useFetchTask from './use-fetchTask';
@@ -35,7 +35,7 @@ function useDescription() {
       owner: string;
     }
   >({
-    mutationFn: addExtraField,
+    mutationFn: createTemplateTask,
     onSuccess: () => {
       toast.success('the field has been added');
       queryClient.invalidateQueries({ queryKey: ['description_root'] });

@@ -6,33 +6,33 @@ import {
 } from '@/types/api.types';
 import { EditDescriptionData } from '../types/taskForm.types';
 
-export const deleteDescriptionData = async (id: number) => {
-  const response = await API.delete(`/user/deleteDescriptionData/${id}`);
+export const deleteTemplateTask = async (id: number) => {
+  const response = await API.delete(`/user/template/task/${id}`);
   return response;
 };
 
-export const addExtraField = async (data: {
+export const createTemplateTask = async (data: {
   description: string;
   template_type: 'ONBOARDING' | 'OFFBOARDING';
   owner: string;
 }): Promise<NewDescriptionField> => {
   const response = await API.post<NewDescriptionField, NewDescriptionField>(
-    `/user/addFormField`,
+    `/user/template/createTask`,
     data
   );
   return response;
 };
 
-export const fetchTaskData = async (): Promise<DescriptionResponse[]> => {
+export const getTemplateTask = async (): Promise<DescriptionResponse[]> => {
   const response = await API.get<DescriptionData[], DescriptionResponse[]>(
-    '/user/fetchTaskData'
+    '/user/template/getTask'
   );
   return response;
 };
 
-export const editTaskData = async (data: EditDescriptionData) => {
+export const updateTemplateTask = async (data: EditDescriptionData) => {
   const response = await API.put<EditDescriptionData, EditDescriptionData>(
-    `/user/editTaskData/${data.form_field_id}`,
+    `/user/template/updateTask/${data.form_field_id}`,
     data
   );
   return response;

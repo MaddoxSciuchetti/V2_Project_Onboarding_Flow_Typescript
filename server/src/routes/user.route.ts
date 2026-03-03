@@ -1,5 +1,5 @@
 import {
-    addExtraField,
+    createTemplateTask,
     postFeature,
     sendReminder,
 } from "@/controllers/on_off_boarding.controller";
@@ -7,16 +7,15 @@ import { upload } from "@/middleware/fileparser";
 import { checkChef } from "@/utils/checkChef";
 import { Router } from "express";
 import {
-    createDescriptionHandler,
-    deleteDescriptionHandler,
     deleteEmplyoee,
+    deleteTemplateTask,
     editAbsenceData,
-    editDescriptionHandler,
-    fetchDescriptionHandler,
     getEmployee,
     getEmployeeWorkerData,
     getProfilePhoto,
+    getTask,
     getUser,
+    updateTemplateTask,
     uploadProfilePhoto,
 } from "../controllers/user.controller";
 
@@ -32,9 +31,7 @@ userRoutes.post("/profile/photo", upload.single("file"), uploadProfilePhoto);
 
 userRoutes.get("/profile/photo", getProfilePhoto);
 
-// userRoutes.get("/chefpermission", checkChef, getChefHandler);
-
-// crud operations with users (that are employee)
+// crud operations with users (that are employee): refactor asap ´
 userRoutes.get(
     "/employee/getEmployeeWorkerData",
     checkChef,
@@ -47,22 +44,21 @@ userRoutes.delete("/deleteEmplyoee/:id", checkChef, deleteEmplyoee);
 
 userRoutes.put("/editAbsenceData", checkChef, editAbsenceData);
 
-userRoutes.delete(
-    "/deleteDescriptionData/:id",
-    checkChef,
-    deleteDescriptionHandler,
-);
-userRoutes.get("/fetchTaskData", checkChef, fetchDescriptionHandler);
+// template-tasks
 
-userRoutes.post("/addFormField", addExtraField);
+userRoutes.delete("/template/task/:id", checkChef, deleteTemplateTask);
 
-userRoutes.get("/rawdescription", checkChef, fetchDescriptionHandler);
+userRoutes.get("/template/getTask", checkChef, getTask);
 
-userRoutes.put("/editTaskData/:id", checkChef, editDescriptionHandler);
+userRoutes.post("/template/createTask", createTemplateTask);
+
+userRoutes.put("/template/updateTask/:id", checkChef, updateTemplateTask);
+
+// userRoutes.get("/rawdescription", checkChef, getTask);
 
 userRoutes.post("/sendReminder", sendReminder);
 
 userRoutes.post("/featurerequest", upload.array("files"), postFeature);
 
-userRoutes.post("/createTaskData", checkChef, createDescriptionHandler);
-export default userRoutes;
+// userRoutes.post("/createTaskData", checkChef, createDescriptionHandler);
+// export default userRoutes;

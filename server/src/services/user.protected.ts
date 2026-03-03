@@ -136,7 +136,7 @@ export const queryEmployeeWorkerData = async () => {
     return { unifiedData };
 };
 
-export const getDescriptionData = async () => {
+export const queryTask = async () => {
     const descriptiondata = await prisma.form_fields.findMany({
         select: {
             form_field_id: true,
@@ -156,7 +156,7 @@ export const getDescriptionData = async () => {
     return descriptiondata;
 };
 
-export const updateDescriptionData = async (
+export const modifyTemplateTask = async (
     form_field_id: number,
     owner: string,
     description: string,
@@ -174,7 +174,7 @@ export const updateDescriptionData = async (
     return updatedDescription;
 };
 
-export const deleteDescriptionData = async (id: number) => {
+export const removeTemplateTask = async (id: number) => {
     const deleteData = await prisma.form_fields.delete({
         where: {
             form_field_id: id,

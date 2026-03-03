@@ -80,7 +80,7 @@ export const insertWorker = (data: dataObject): Promise<returnObject> => {
     });
 };
 
-export const addExtraFormFieldDB = async (data: {
+export const insertTemplateTask = async (data: {
     description: string;
     template_type: "ONBOARDING" | "OFFBOARDING";
     owner: string;
