@@ -8,9 +8,9 @@ import {
 } from '@/components/ui/accordion';
 
 import { useGetWorkerHistory } from '@/features/task-management/hooks/use-getWorkerHistory';
-import { getProfilePhoto } from '@/features/user-profile/api/index.api';
 import { useQuery } from '@tanstack/react-query';
-import { FC, SubmitEvent, useEffect, useState } from 'react';
+import { SubmitEvent, useEffect, useState } from 'react';
+import { workerQueries } from '../../query-options/query.options';
 
 interface FormProps {
   id_original: number;
@@ -31,7 +31,7 @@ interface FormProps {
   is_substitute: boolean;
 }
 
-const WorkerForm: FC<FormProps> = ({
+function WorkerForm({
   id_original,
   description,
   officialOwner,
@@ -42,28 +42,21 @@ const WorkerForm: FC<FormProps> = ({
   handleSubmit,
   onEdit,
   is_substitute,
-  // historyResult,
-}) => {
+}: FormProps) {
   const [selectedValue, setSelectedValue] = useState<string>(
     select_option || ''
   );
   const [editcommentValue, setEditComment] = useState<string>(
     editcomment || ''
   );
-
-  const { data, isPending } = useQuery<string>({
-    queryKey: ['profilepic'],
-    queryFn: getProfilePhoto,
-  });
-
   const { historyData } = useGetWorkerHistory(id_original);
+
+  const { data } = useQuery(workerQueries.getFoto());
 
   useEffect(() => {
     setSelectedValue(select_option || '');
     setEditComment(editcomment || '');
   }, [select_option, editcomment]);
-
-  console.log(historyData?.map((val) => console.log(val)));
 
   return (
     <div className="justify-center items-center hover:scale-101 mt-10">
@@ -217,6 +210,6 @@ const WorkerForm: FC<FormProps> = ({
       </form>
     </div>
   );
-};
+}
 
 export default WorkerForm;
