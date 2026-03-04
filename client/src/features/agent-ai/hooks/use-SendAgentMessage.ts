@@ -5,7 +5,6 @@ import { SENDAGENT } from '../consts/angent.consts';
 import { AgentResponse } from '../types/agent.types';
 
 function useSendAgentMessage() {
-  const [message, setMessage] = useState<string>('');
   const [agentreply, setAgentReply] = useState<AgentResponse>();
   const inputRef = useRef<HTMLInputElement>(null);
   console.log(agentreply);
@@ -21,14 +20,13 @@ function useSendAgentMessage() {
   const handleClick = () => {
     const message = inputRef.current?.value;
     if (!message?.trim()) return;
-    setMessage('');
+    if (inputRef.current) {
+      inputRef.current.value = '';
+    }
     sendAgentMessageMutation.mutate(message);
   };
 
   return {
-    sendAgentMessageMutation,
-    message,
-    setMessage,
     handleClick,
     agentreply,
     inputRef,

@@ -9,14 +9,7 @@ type ChatLayoutProps = {};
 
 const ChatLayout = ({}: ChatLayoutProps) => {
   const { user, isError, isLoading } = useAuth();
-  const {
-    agentreply,
-    handleClick,
-    message,
-    sendAgentMessageMutation,
-    setMessage,
-    inputRef,
-  } = useSendAgentMessage();
+  const { agentreply, handleClick, inputRef } = useSendAgentMessage();
 
   if (agentreply === null) return <ErrorAlert />;
 
@@ -30,13 +23,7 @@ const ChatLayout = ({}: ChatLayoutProps) => {
       >
         <div className="h-full">
           <ChatDisplay agentreply={agentreply}>
-            <InputBar
-              handleClick={handleClick}
-              message={message}
-              sendAgentMessageMutation={sendAgentMessageMutation}
-              setMessage={setMessage}
-              inputRef={inputRef}
-            />
+            <InputBar handleClick={handleClick} inputRef={inputRef} />
           </ChatDisplay>
         </div>
       </AsyncWrapper>

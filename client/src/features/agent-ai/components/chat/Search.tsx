@@ -1,18 +1,11 @@
-import { Dispatch, RefObject, SetStateAction } from 'react';
+import { RefObject } from 'react';
 
 type SearchProps = {
-  message: string;
-  setMessage: Dispatch<SetStateAction<string>>;
   handleClick: () => void;
   inputRef: RefObject<HTMLInputElement | null>;
 };
 
-const Search = ({
-  message,
-  setMessage,
-  handleClick,
-  inputRef,
-}: SearchProps) => {
+const Search = ({ handleClick, inputRef }: SearchProps) => {
   return (
     <input
       onKeyDown={(e) => {
