@@ -35,10 +35,10 @@ function TemplateTasks() {
         {TABS.map(({ value, label }) => (
           <Button
             key={value}
-            variant={tab === value ? 'default' : 'outline'}
+            variant={'outline'}
             className={cn(
-              'cursor-pointer',
-              tab === value ? 'bg-gray-400 text-white' : 'bg-gray-200'
+              'cursor-pointer rounded-xl bg-white font-light',
+              tab === value ? 'bg-gray-200' : 'bg-white'
             )}
             onClick={() => setTab(value)}
           >

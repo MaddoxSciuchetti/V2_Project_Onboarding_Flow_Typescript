@@ -19,7 +19,7 @@ function EmployeeTabs({
         <TabsTrigger
           value={user?.owner}
           key={user.owner}
-          className={`text-md flex flex-row  cursor-pointer  ${selectedUser === user.owner ? ` transition delay-150 duration-300 ease-in-out  bg-gray-100` : `hover:bg-gray-50`}`}
+          className={`text-md flex flex-row font-light cursor-pointer  ${selectedUser === user.owner ? ` transition delay-150 duration-300 ease-in-out  bg-gray-100` : `hover:bg-gray-50`}`}
         >
           {user.original_owner}
           {user.is_substitute && (

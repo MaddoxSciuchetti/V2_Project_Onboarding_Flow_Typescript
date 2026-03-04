@@ -30,7 +30,11 @@ const OwnerSelect = ({ errors, control, EmployeeData }: OwnerSelectProps) => {
           control={control}
           render={({ field }) => (
             <Select value={field.value} onValueChange={field.onChange}>
-              <SelectTrigger id="owner" name="owner" className="w-71">
+              <SelectTrigger
+                id="owner"
+                name="owner"
+                className="w-71 rounded-xl"
+              >
                 <SelectValue placeholder="Mitarbeiter" />
               </SelectTrigger>
               <SelectContent className="border-none">

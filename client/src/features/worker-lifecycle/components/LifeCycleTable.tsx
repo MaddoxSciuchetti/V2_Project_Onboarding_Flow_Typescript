@@ -21,14 +21,14 @@ function LifeCycleTable({ filtered, onRemove, gotopage }: LifeCycleTableProps) {
   return (
     <>
       <div className="rounded-2xl overflow-x-auto w-full h-full  overflow-auto">
-        <div className=" w-full flex flex-col">
-          <Table className=" text-left mt-5">
-            <TableHeader className="">
-              <TableRow className="text-lg">
-                <TableHead className="text-left  pl-0">Handwerker</TableHead>
-                <TableHead className="text-left  pl-0">Phase</TableHead>
-                <TableHead className=" pl-0">Fortschritt</TableHead>
-                <TableHead className=" pl-0">Aktionen</TableHead>
+        <div className="text-left w-full flex flex-col ">
+          <Table className="text-left mt-5">
+            <TableHeader className="text-left">
+              <TableRow className="text-left text-lg">
+                <TableHead className="text-left">Handwerker</TableHead>
+                <TableHead>Phase</TableHead>
+                <TableHead>Fortschritt</TableHead>
+                <TableHead>Aktionen</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
