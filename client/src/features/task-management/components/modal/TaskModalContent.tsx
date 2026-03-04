@@ -1,11 +1,12 @@
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useBodyScrollLock } from '@/hooks/use-no-scroll';
-import { SubmitEvent, useEffect, useState } from 'react';
+import { SubmitEvent, useState } from 'react';
 import { Button } from '../../../../components/ui/button';
+import inputConsts from '../../consts/input.consts';
 import SelectOwner from './SelectOwner';
 
-type PreviewCompoent = {
+type ModelContentProps = {
   id: number;
   description: string;
   editcomment: string;
@@ -21,40 +22,10 @@ function ModalContent({
   select_option,
   form_field_id,
   handleSubmit,
-}: PreviewCompoent) {
-  const { lockScroll, unlockScroll } = useBodyScrollLock();
+}: ModelContentProps) {
+  useBodyScrollLock();
   const [selectedValue, setSelectedValue] = useState(select_option || '');
-
-  useEffect(() => {
-    lockScroll();
-
-    return () => {
-      unlockScroll();
-    };
-  }, [lockScroll, unlockScroll]);
-
-  const InputConfig = [
-    {
-      type: 'hidden',
-      name: 'id',
-      value: id,
-    },
-    {
-      type: 'hidden',
-      name: 'form_field_id',
-      value: form_field_id,
-    },
-    {
-      type: 'hidden',
-      name: 'date',
-      value: new Date().toLocaleDateString(),
-    },
-    {
-      type: 'hidden',
-      name: 'select_option',
-      value: selectedValue,
-    },
-  ];
+  const InputConfig = inputConsts(id, form_field_id);
 
   return (
     <>
@@ -65,7 +36,9 @@ function ModalContent({
             onSubmit={handleSubmit}
             name="valuesform"
           >
-            {InputConfig.map((value, index) => (
+            <Input type="hidden" name="select_option" value={selectedValue} />
+
+            {InputConfig.map((value) => (
               <Input
                 key={value.name}
                 type={value.type}
@@ -73,13 +46,6 @@ function ModalContent({
                 value={value.value}
               />
             ))}
-            {/* <Input type="hidden" id="id" name="id" value={id} />
-            <Input
-              type="hidden"
-              id="form_field_id"
-              name="form_field_id"
-              value={form_field_id}
-            /> */}
             <p className="text-left underline">{description}</p>
             <Textarea
               defaultValue={editcomment}
@@ -87,15 +53,6 @@ function ModalContent({
               name="editcomment"
               className="w-xl rounded-xl"
             />
-            {/* <Input
-              type="hidden"
-              id="date"
-              name="date"
-              value={new Date().toLocaleDateString()}
-            />
-
-            <Input type="hidden" name="select_option" value={selectedValue} /> */}
-
             <div className="flex flex-row gap-2">
               <SelectOwner
                 setSelectedValue={setSelectedValue}
