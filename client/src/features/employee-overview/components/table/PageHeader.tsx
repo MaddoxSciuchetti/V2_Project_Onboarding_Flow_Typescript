@@ -10,7 +10,7 @@ function PageHeader({ openCreate }: PageHeaderProps) {
     <>
       <div className="flex gap-5">
         <Input
-          className="focus:border-none focus:outline-none focus:ring-0"
+          className="focus:border-none focus:outline-none focus:ring-0 rounded-xl"
           placeholder="Suche bei Namen"
         />
         <div className="flex gap-2">

@@ -13,6 +13,7 @@ function SearchHeader({ search, setSearch, toggleModal }: SearchHeaderProps) {
       <Input
         value={search}
         onChange={(e) => setSearch(e.target.value)}
+        className="rounded-xl"
         placeholder="Suche bei Namen"
       />
       <div className="flex gap-2 ">

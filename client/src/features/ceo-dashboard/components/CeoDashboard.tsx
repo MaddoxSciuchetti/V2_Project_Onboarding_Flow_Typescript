@@ -1,11 +1,11 @@
-import { Tabs } from '@/components/ui/tabs';
-import useHandwerkerProBSBEmployee from '@/features/ceo-dashboard/hooks/use-unique-user';
-import { Spinner } from '@/components/ui/spinner';
-import useCurrentBSBEmployee from '@/features/ceo-dashboard/hooks/use-current-bsb-employee';
-import EmployeeTabsContent from './employees/EmployeeTabsContent';
-import EmployeeTabs from './employees/EmployeeTabs';
-import useEmployeeData from '../hooks/use-employee-data';
 import ModalOverlay from '@/components/modal/ModalOverlay';
+import { Spinner } from '@/components/ui/spinner';
+import { Tabs } from '@/components/ui/tabs';
+import useCurrentBSBEmployee from '@/features/ceo-dashboard/hooks/use-current-bsb-employee';
+import useHandwerkerProBSBEmployee from '@/features/ceo-dashboard/hooks/use-unique-user';
+import useEmployeeData from '../hooks/use-employee-data';
+import EmployeeTabs from './employees/EmployeeTabs';
+import EmployeeTabsContent from './employees/EmployeeTabsContent';
 import ReminderModal from './ReminderModal';
 
 function CeoDashboard() {
@@ -41,7 +41,7 @@ function CeoDashboard() {
       ) : (
         <>
           <div className="rounded-2xl overflow-x-auto w-full h-full p-6 shadow-gray-200 shadow-lg overflow-auto">
-            <h1 className="mb-5 text-2xl font-light ml-6 ">
+            <h1 className="mb-5 text-xl font-light ml-6 ">
               Deine Mitarbeiter und ihre offenen Aufgaben
             </h1>
             <Tabs

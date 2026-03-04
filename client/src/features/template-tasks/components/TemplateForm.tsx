@@ -52,9 +52,17 @@ const TemplateForm = ({
       name="valuesform"
       className="flex flex-col items-start"
     >
-      {mode === 'EDIT'
-        ? `${template_type === 'ONBOARDING' ? 'Onboarding' : 'Offboarding'} Aufgabe bearbeiten`
-        : `Füge Aufgabe fürs ${template_type === 'ONBOARDING' ? 'Onboarding' : 'Offboarding'} hinzu`}
+      <p className="font-light text-black">
+        {mode === 'EDIT' ? (
+          `${template_type === 'ONBOARDING' ? 'Onboarding' : 'Offboarding'} Aufgabe bearbeiten`
+        ) : (
+          <p>
+            Füge Aufgabe fürs {''}
+            {template_type === 'ONBOARDING' ? 'Onboarding' : 'Offboarding'}{' '}
+            hinzu
+          </p>
+        )}
+      </p>
 
       <input
         {...register('template_type')}
@@ -76,7 +84,7 @@ const TemplateForm = ({
         defaultValue={description || ''}
         id="description"
         name="description"
-        className="w-xl mb-5"
+        className="w-xl mb-5 rounded-xl mt-5"
       />
 
       <ErrorMessage
@@ -97,7 +105,7 @@ const TemplateForm = ({
         <Button
           type="submit"
           variant={'outline'}
-          className="  text-left justify-start cursor-pointer hover:bg-gray-200 w-71"
+          className="rounded-xl text-left justify-start cursor-pointer hover:bg-gray-200 w-71"
         >
           {mode === 'EDIT' ? 'Speichern ' : 'Neue Beschreibung hinzufügen'}
         </Button>
