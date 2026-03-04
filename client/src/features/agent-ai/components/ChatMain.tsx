@@ -6,7 +6,8 @@ import ChatInput from './chat/ChatInput';
 
 const ChatMain = () => {
   const { user, isError, isLoading } = useAuth();
-  const { agentreply, handleClick, inputRef } = useSendAgentMessage();
+  const { agentreply, handleClick, inputRef, isPending } =
+    useSendAgentMessage();
 
   return (
     <>
@@ -18,7 +19,11 @@ const ChatMain = () => {
       >
         <div className="h-full">
           <ChatDisplay agentreply={agentreply}>
-            <ChatInput handleClick={handleClick} inputRef={inputRef} />
+            <ChatInput
+              handleClick={handleClick}
+              inputRef={inputRef}
+              isPending={isPending}
+            />
           </ChatDisplay>
         </div>
       </AsyncWrapper>

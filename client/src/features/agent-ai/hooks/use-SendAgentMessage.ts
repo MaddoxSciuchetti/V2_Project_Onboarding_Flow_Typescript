@@ -1,7 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
-import { sendAgentMessage } from '../apis/agent.apis';
-import { SENDAGENT } from '../consts/angent.consts';
+import { agentQueries } from '../query-mutations/agent.queries';
 import { AgentResponse } from '../types/agent.types';
 
 function useSendAgentMessage() {
@@ -9,11 +8,9 @@ function useSendAgentMessage() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const sendAgentMessageMutation = useMutation<AgentResponse, Error, string>({
-    mutationKey: [SENDAGENT],
-    mutationFn: sendAgentMessage,
+    ...agentQueries.sendMessage(),
     onSuccess: (data) => {
       setAgentReply(data);
-      console.log('sucess');
     },
   });
   const handleClick = () => {
@@ -29,6 +26,7 @@ function useSendAgentMessage() {
     handleClick,
     agentreply,
     inputRef,
+    isPending: sendAgentMessageMutation.isPending,
   };
 }
 
