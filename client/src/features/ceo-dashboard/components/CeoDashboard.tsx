@@ -72,7 +72,7 @@ function CeoDashboard() {
 
         {modal && (
           <ModalOverlay handleToggle={toggleModal}>
-            <ReminderModal onClose={() => toggleModal} />
+            <ReminderModal onClose={() => toggleModal()} />
           </ModalOverlay>
         )}
       </>
