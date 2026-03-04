@@ -19,7 +19,7 @@ function SearchHeader({ search, setSearch, toggleModal }: SearchHeaderProps) {
         <Button
           variant={'outline'}
           onClick={() => toggleModal()}
-          className="cursor-pointer"
+          className="cursor-pointer rounded-xl hover:bg-gray-200"
         >
           Handwerker hinzufügen
         </Button>

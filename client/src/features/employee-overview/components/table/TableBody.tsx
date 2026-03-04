@@ -21,25 +21,25 @@ const EmployeeTableBody = ({
   const { openEdit } = useEmployeeModal();
   return (
     <>
-      <TableBody>
+      <TableBody className="text-left mt-5">
         {EmployeeData?.map((value) => (
           <tr
-            className="hover:bg-gray-50 rounded-2xl cursor-pointer border-seperate border-spacing-y-2 py-5"
+            className="  cursor-pointer py-5"
             key={value.id}
             onClick={() =>
               openEdit(value.id, `${value.vorname}${value.nachname}`)
             }
           >
-            <td className="text-sm font-semibold py-5">
+            <td className="text-sm font-semibold py-5 rounded-l-xl">
               <EmployeeName value={value} />
             </td>
-            <td>
+            <td className="">
               <EmployeeStatus value={value} />
             </td>
-            <td>
+            <td className="">
               <EmployeeSubstitute value={value} />
             </td>
-            <td>
+            <td className="rounded-r-xl">
               <EditDropdown value={value} DeleteEmployee={DeleteEmployee} />
             </td>
           </tr>
