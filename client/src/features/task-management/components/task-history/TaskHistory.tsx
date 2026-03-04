@@ -9,15 +9,10 @@ import HistoryContent from './HistoryContent';
 
 type TaskHistoryProps = {
   historyData: HistoryData[] | undefined;
-  selectedValue: string;
   data: string | undefined;
 };
 
-const TaskHistory = ({
-  historyData,
-  selectedValue,
-  data,
-}: TaskHistoryProps) => {
+const TaskHistory = ({ historyData, data }: TaskHistoryProps) => {
   return (
     <>
       <Accordion type="single" collapsible className="max-w-6xl">
@@ -26,11 +21,7 @@ const TaskHistory = ({
             Bearbeitungsverlauf
           </AccordionTrigger>
           <AccordionContent className="">
-            <HistoryContent
-              historyData={historyData}
-              selectedValue={selectedValue}
-              data={data}
-            />
+            <HistoryContent historyData={historyData} data={data} />
           </AccordionContent>
         </AccordionItem>
       </Accordion>

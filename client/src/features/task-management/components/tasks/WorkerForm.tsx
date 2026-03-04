@@ -137,11 +137,7 @@ function WorkerForm({
             />
           </div>
 
-          <TaskHistory
-            historyData={historyData}
-            selectedValue={selectedValue}
-            data={data}
-          />
+          <TaskHistory historyData={historyData} data={data} />
         </div>
       </form>
     </div>
