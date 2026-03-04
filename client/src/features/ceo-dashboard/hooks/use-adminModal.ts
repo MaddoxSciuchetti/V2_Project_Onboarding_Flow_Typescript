@@ -1,26 +1,29 @@
-import { useMutation } from '@tanstack/react-query';
-import { sendReminderWorker } from '@/lib/api';
-import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { formSchema, sendEmailSchema } from '../types/adminModal.type';
+import { useMutation } from '@tanstack/react-query';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { sendReminderWorker } from '../api/index.api';
+import { sendReminderSchema } from '../schemas/employeeform.schemas';
+import { SendReminder } from '../types/adminModal.types';
 
 function useAdminModal() {
   const {
     mutate: sendReminder,
     isError,
     isSuccess,
-  } = useMutation<unknown, Error, sendEmailSchema>({
+  } = useMutation<unknown, Error, SendReminder>({
     mutationKey: ['employee_email'],
-    mutationFn: (data: sendEmailSchema) => sendReminderWorker(data),
+    mutationFn: (data: SendReminder) => sendReminderWorker(data),
   });
 
-  const onSubmit: SubmitHandler<sendEmailSchema> = (data) => sendReminder(data);
+  const onSubmit: SubmitHandler<SendReminder> = (data) => sendReminder(data);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<sendEmailSchema>({ resolver: zodResolver(formSchema) });
+  } = useForm<SendReminder>({
+    resolver: zodResolver(sendReminderSchema),
+  });
 
   return { isError, isSuccess, onSubmit, register, handleSubmit, errors };
 }

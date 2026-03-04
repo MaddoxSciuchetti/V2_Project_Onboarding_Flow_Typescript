@@ -1,10 +1,10 @@
 import { useSidebar } from '@/components/ui/sidebar';
-import { FormInputs } from '@/zod-schemas/zodSchema';
+import { AddWorker } from '@/features/worker-lifecycle/schemas/zod.schemas';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
-import { deleteTaskApi, fetchNameData, postOffboardingData } from '../api';
-import { FormType, OffboardingItem } from '../types/index.types';
+import { addWorker, deleteWorkerById, getWorkerData } from '../api';
+import { FormType, WorkerItem } from '../types/index.types';
 
 function useHome() {
   const [search, setSearch] = useState('');
@@ -18,9 +18,9 @@ function useHome() {
     toggleSidebar();
   };
 
-  const { data, error, isSuccess } = useQuery<OffboardingItem[]>({
-    queryKey: ['offboarding'],
-    queryFn: fetchNameData,
+  const { data, error, isSuccess } = useQuery<WorkerItem[]>({
+    queryKey: ['allWorkerData'],
+    queryFn: getWorkerData,
   });
 
   const isEmpty = isSuccess && data?.length === 0;
@@ -30,21 +30,21 @@ function useHome() {
   );
 
   const deleteTaskMutation = useMutation({
-    mutationFn: deleteTaskApi,
+    mutationFn: deleteWorkerById,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['offboarding'] });
+      queryClient.invalidateQueries({ queryKey: ['allWorkerData'] });
     },
   });
 
-  const createEmployeeMutation = useMutation({
-    mutationFn: async (data: FormInputs) => {
-      const response = await postOffboardingData(data);
+  const addWorkerMutation = useMutation({
+    mutationFn: async (data: AddWorker) => {
+      const response = await addWorker(data);
       return response;
     },
     onSuccess: async (response) => {
       if (response.success) {
         await queryClient.invalidateQueries({
-          queryKey: ['offboarding'],
+          queryKey: ['allWorkerData'],
           refetchType: 'all',
         });
         toggleModal();
@@ -69,7 +69,7 @@ function useHome() {
     isEmpty,
     filtered,
     deleteTaskMutation,
-    createEmployeeMutation,
+    createEmployeeMutation: addWorkerMutation,
     handleNavigate,
     modal,
     setSearch,

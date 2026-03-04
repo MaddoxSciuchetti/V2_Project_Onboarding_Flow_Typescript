@@ -4,7 +4,7 @@ import { Spinner } from '@/components/ui/spinner';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
-import { signup } from '../api';
+import { signup } from '../api/auth.api';
 
 export function SignupForm() {
   const [email, setEmail] = useState<string>('');
@@ -20,7 +20,7 @@ export function SignupForm() {
   } = useMutation({
     mutationFn: signup,
     onSuccess: () => {
-      navigate({ to: '/handwerker' });
+      navigate({ to: '/worker-lifycycle' });
     },
     onError: () => {
       console.log(

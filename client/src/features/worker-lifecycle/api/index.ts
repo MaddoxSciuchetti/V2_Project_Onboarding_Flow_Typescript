@@ -1,33 +1,22 @@
 import API from '@/config/apiClient';
-import {
-  delete_user,
-  OffboardingItem,
-  TOffboardingItemUser,
-} from '../types/index.types';
-import { FormInputs } from '@/zod-schemas/zodSchema';
+import { AddWorker } from '@/features/worker-lifecycle/schemas/zod.schemas';
+import { DeleteUser, ItemUser, WorkerItem } from '../types/index.types';
 
-export const fetchNameData = async (): Promise<OffboardingItem[]> => {
-  const response = API.get<OffboardingItem[], OffboardingItem[]>(
-    '/offboarding/fetchData'
+export const getWorkerData = async (): Promise<WorkerItem[]> => {
+  const response = API.get<WorkerItem[], WorkerItem[]>('/worker/getWorkerData');
+  return response;
+};
+
+export const deleteWorkerById = async (taskId: number): Promise<DeleteUser> => {
+  const response = await API.delete<DeleteUser, DeleteUser>(
+    `/worker/deleteWorker/${taskId}`
   );
   return response;
 };
 
-export const deleteTaskApi = async (taskId: number): Promise<delete_user> => {
-  const response = await API.delete<delete_user, delete_user>(
-    `/offboarding/delete/${taskId}`
-  );
-  return response;
-};
-
-export const postOffboardingData = async (
-  data: FormInputs
-): Promise<TOffboardingItemUser> => {
-  const response = await API.post<TOffboardingItemUser, TOffboardingItemUser>(
-    '/offboarding/postoffboardingdata',
-    {
-      data,
-    }
-  );
+export const addWorker = async (data: AddWorker): Promise<ItemUser> => {
+  const response = await API.post<ItemUser, ItemUser>('/worker/addWorker', {
+    data,
+  });
   return response;
 };

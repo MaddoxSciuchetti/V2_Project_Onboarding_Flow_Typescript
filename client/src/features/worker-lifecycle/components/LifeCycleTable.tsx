@@ -6,12 +6,12 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
-import { Worker_Item } from '../../../components/worker_components/worker_item';
-import { getFirstFormType } from '@/lib/formtype';
-import { OffboardingItem } from '../types/index.types';
+import { getFirstFormType } from '@/features/worker-lifecycle/utils/formtype';
+import { WorkerItem } from '../types/index.types';
+import { Worker_Item } from './WorkerItem';
 
 type LifeCycleTableProps = {
-  filtered: OffboardingItem[] | undefined;
+  filtered: WorkerItem[] | undefined;
   item_value?: number;
   onRemove: (taskId: number) => void;
   gotopage: (taskId: number, form_type: any) => void;
@@ -21,18 +21,18 @@ function LifeCycleTable({ filtered, onRemove, gotopage }: LifeCycleTableProps) {
   return (
     <>
       <div className="rounded-2xl overflow-x-auto w-full h-full  overflow-auto">
-        <div className=" w-full flex flex-col">
-          <Table className=" text-left mt-5">
-            <TableHeader className="">
-              <TableRow className="text-lg">
-                <TableHead className="text-left  pl-0">Handwerker</TableHead>
-                <TableHead className="text-left  pl-0">Phase</TableHead>
-                <TableHead className=" pl-0">Fortschritt</TableHead>
-                <TableHead className=" pl-0">Aktionen</TableHead>
+        <div className="text-left w-full flex flex-col ">
+          <Table className="text-left mt-5">
+            <TableHeader className="text-left">
+              <TableRow className="text-left text-lg">
+                <TableHead className="text-left">Handwerker</TableHead>
+                <TableHead>Phase</TableHead>
+                <TableHead>Fortschritt</TableHead>
+                <TableHead>Aktionen</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filtered?.map((task: OffboardingItem) => (
+              {filtered?.map((task: WorkerItem) => (
                 <Worker_Item
                   key={task.id}
                   item_value={task.id}

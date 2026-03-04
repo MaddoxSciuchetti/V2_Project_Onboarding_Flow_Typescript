@@ -1,18 +1,38 @@
 import API from '@/config/apiClient';
-import { newField } from '@/types/api';
+import {
+  DescriptionData,
+  DescriptionResponse,
+  NewDescriptionField,
+} from '@/types/api.types';
+import { EditDescriptionData } from '../types/taskForm.types';
 
-export const deleteDescriptionData = async (id: number) => {
-  const response = await API.delete(`/user/deleteDescriptionData/${id}`);
+export const deleteTemplateTask = async (id: number) => {
+  const response = await API.delete(`/template/task/${id}`);
   return response;
 };
 
-export const addExtraField = async (data: {
+export const createTemplateTask = async (data: {
   description: string;
   template_type: 'ONBOARDING' | 'OFFBOARDING';
   owner: string;
-}): Promise<newField> => {
-  const response = await API.post<newField, newField>(
-    `/offboarding/addFormField`,
+}): Promise<NewDescriptionField> => {
+  const response = await API.post<NewDescriptionField, NewDescriptionField>(
+    `/template/createTask`,
+    data
+  );
+  return response;
+};
+
+export const getTemplateTask = async (): Promise<DescriptionResponse[]> => {
+  const response = await API.get<DescriptionData[], DescriptionResponse[]>(
+    '/template/getTask'
+  );
+  return response;
+};
+
+export const updateTemplateTask = async (data: EditDescriptionData) => {
+  const response = await API.put<EditDescriptionData, EditDescriptionData>(
+    `/template/updateTask/${data.form_field_id}`,
     data
   );
   return response;

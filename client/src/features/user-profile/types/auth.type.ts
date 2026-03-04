@@ -7,6 +7,7 @@ export type User = {
   updatedAt: Date;
   vorname: string;
   nachname: string;
+  cloud_url: string;
   presignedUrl?: string;
 };
 

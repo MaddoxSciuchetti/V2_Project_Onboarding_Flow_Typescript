@@ -1,22 +1,25 @@
-import { Textarea } from '../../../components/ui/textarea';
-import { Button } from '../../../components/ui/button';
 import { Dispatch, SetStateAction } from 'react';
-import { TEmployeeResponse } from '@/zod-schemas/schema';
+import { Button } from '../../../components/ui/button';
+import { Textarea } from '../../../components/ui/textarea';
 
 import { ErrorMessage } from '@hookform/error-message';
 import { addSchema, editSchema } from '../schemas/taskForm.schema';
 
-import { TAddDescription, TEditDesription } from '../types/mutation.types';
+import { EmployeeDataArray } from '@/features/employee-overview/schemas/schema';
 import useSubmitForm from '../hooks/use-Form';
+import {
+  AddDescriptionMutation,
+  EditDescriptionMutation,
+} from '../types/mutation.types';
 import OwnerSelect from './OwnerSelect';
 
 type TemplateFormProps = {
-  editDescriptionMutation: TEditDesription;
-  handleAddSubmitMutation: TAddDescription;
+  editDescriptionMutation: EditDescriptionMutation;
+  handleAddSubmitMutation: AddDescriptionMutation;
   selectedValue: string;
   description: string | null | undefined;
   setSelectedValue: Dispatch<SetStateAction<string>>;
-  EmployeeData: TEmployeeResponse | undefined;
+  EmployeeData: EmployeeDataArray | undefined;
   template_type: 'OFFBOARDING' | 'ONBOARDING' | undefined;
   form_field_id: number | null | undefined;
   mode: 'EDIT' | 'ADD' | undefined;
@@ -49,9 +52,17 @@ const TemplateForm = ({
       name="valuesform"
       className="flex flex-col items-start"
     >
-      {mode === 'EDIT'
-        ? `${template_type === 'ONBOARDING' ? 'Onboarding' : 'Offboarding'} Aufgabe bearbeiten`
-        : `Füge Aufgabe fürs ${template_type === 'ONBOARDING' ? 'Onboarding' : 'Offboarding'} hinzu`}
+      <p className="font-light text-black">
+        {mode === 'EDIT' ? (
+          `${template_type === 'ONBOARDING' ? 'Onboarding' : 'Offboarding'} Aufgabe bearbeiten`
+        ) : (
+          <p>
+            Füge Aufgabe fürs {''}
+            {template_type === 'ONBOARDING' ? 'Onboarding' : 'Offboarding'}{' '}
+            hinzu
+          </p>
+        )}
+      </p>
 
       <input
         {...register('template_type')}
@@ -73,7 +84,7 @@ const TemplateForm = ({
         defaultValue={description || ''}
         id="description"
         name="description"
-        className="w-xl mb-5"
+        className="w-xl mb-5 rounded-xl mt-5"
       />
 
       <ErrorMessage
@@ -94,7 +105,7 @@ const TemplateForm = ({
         <Button
           type="submit"
           variant={'outline'}
-          className="  text-left justify-start cursor-pointer hover:bg-gray-200 w-71"
+          className="rounded-xl text-left justify-start cursor-pointer hover:bg-gray-200 w-71"
         >
           {mode === 'EDIT' ? 'Speichern ' : 'Neue Beschreibung hinzufügen'}
         </Button>

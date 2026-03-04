@@ -1,9 +1,6 @@
-import { useSidebar } from '@/components/ui/sidebar';
-
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
-import { specificEmployeeData } from '../api';
-import { TEmployeeResponse } from '../schemas/schema';
+import { specificEmployeeData } from '../api/employee-overview.api';
+import { EmployeeDataArray } from '../schemas/schema';
 
 function useGetEmployees() {
   const {
@@ -11,7 +8,7 @@ function useGetEmployees() {
     isLoading,
     error,
     isError,
-  } = useQuery<TEmployeeResponse>({
+  } = useQuery<EmployeeDataArray>({
     queryKey: ['EmployeeDataSpecifics'],
     queryFn: specificEmployeeData,
   });

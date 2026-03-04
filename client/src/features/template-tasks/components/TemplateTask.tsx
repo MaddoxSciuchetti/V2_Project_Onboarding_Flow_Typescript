@@ -1,12 +1,11 @@
 import ModalOverlay from '@/components/modal/ModalOverlay';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
-
-import { TABS } from '@/lib/constants';
-import { cn } from '@/types/utils';
+import { cn } from '@/lib/trycatch';
+import { TABS } from '../consts/index.consts';
+import useDescription from '../hooks/use-GetDescription';
 import Tasks from './Tasks';
 import TemplateModal from './TemplateModal';
-import useDescription from '../hooks/use-GetDescription';
 
 function TemplateTasks() {
   const {
@@ -36,10 +35,10 @@ function TemplateTasks() {
         {TABS.map(({ value, label }) => (
           <Button
             key={value}
-            variant={tab === value ? 'default' : 'outline'}
+            variant={'outline'}
             className={cn(
-              'cursor-pointer',
-              tab === value ? 'bg-gray-400 text-white' : 'bg-gray-200'
+              'cursor-pointer rounded-xl bg-white font-light',
+              tab === value ? 'bg-gray-200' : 'bg-white'
             )}
             onClick={() => setTab(value)}
           >

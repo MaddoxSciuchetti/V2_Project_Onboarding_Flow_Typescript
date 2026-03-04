@@ -1,11 +1,5 @@
 'use client';
 
-import * as React from 'react';
-import { Slot } from '@radix-ui/react-slot';
-import { cva, type VariantProps } from 'class-variance-authority';
-import { PanelLeftIcon } from 'lucide-react';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { cn } from '@/types/utils';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
@@ -23,6 +17,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { cn } from '@/lib/trycatch';
+import { Slot } from '@radix-ui/react-slot';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { PanelLeftIcon } from 'lucide-react';
+import * as React from 'react';
 
 const SIDEBAR_COOKIE_NAME = 'sidebar_state';
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
@@ -31,7 +31,7 @@ const SIDEBAR_WIDTH_MOBILE = '18rem';
 const SIDEBAR_WIDTH_ICON = '3rem';
 const SIDEBAR_KEYBOARD_SHORTCUT = 'b';
 
-type SidebarContextProps = {
+interface SidebarContextProps {
   state: 'expanded' | 'collapsed';
   open: boolean;
   setOpen: (open: boolean) => void;
@@ -39,7 +39,7 @@ type SidebarContextProps = {
   setOpenMobile: (open: boolean) => void;
   isMobile: boolean;
   toggleSidebar: () => void;
-};
+}
 
 const SidebarContext = React.createContext<SidebarContextProps | null>(null);
 
@@ -169,7 +169,7 @@ function Sidebar({
       <div
         data-slot="sidebar"
         className={cn(
-          'bg-sidebar text-sidebar-foreground flex h-full w-(--sidebar-width) flex-col',
+          'text-sidebar-foreground flex h-full w-(--sidebar-width) flex-col',
           className
         )}
         {...props}
@@ -336,7 +336,7 @@ function SidebarHeader({ className, ...props }: React.ComponentProps<'div'>) {
     <div
       data-slot="sidebar-header"
       data-sidebar="header"
-      className={cn('flex flex-col gap-2 p-2', className)}
+      className={cn('flex flex-col gap-2 p-1', className)}
       {...props}
     />
   );
@@ -386,7 +386,7 @@ function SidebarGroup({ className, ...props }: React.ComponentProps<'div'>) {
     <div
       data-slot="sidebar-group"
       data-sidebar="group"
-      className={cn('relative flex w-full min-w-0 flex-col p-2', className)}
+      className={cn('relative flex w-full min-w-0 flex-col ', className)}
       {...props}
     />
   );

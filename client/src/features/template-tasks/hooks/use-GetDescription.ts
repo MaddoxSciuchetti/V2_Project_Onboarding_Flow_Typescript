@@ -1,13 +1,13 @@
 import { useSidebar } from '@/components/ui/sidebar';
-import { useState } from 'react';
-import useEmployeeData from '../../employee-overview/hooks/use-employeeData';
-import { toast } from 'sonner';
-import useFetchTask from '../../../hooks/use-fetchTask';
-import useDeleteDescription from './use-DeleteDescription';
+import { NewDescriptionField } from '@/types/api.types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { newField } from '@/types/api';
-import { addExtraField } from '../api';
+import { useState } from 'react';
+import { toast } from 'sonner';
+import useEmployeeData from '../../employee-overview/hooks/use-employeeData';
+import { createTemplateTask } from '../api';
+import useDeleteDescription from './use-DeleteDescription';
 import useEditDescription from './use-EditDescription';
+import useFetchTask from './use-fetchTask';
 
 function useDescription() {
   const queryClient = useQueryClient();
@@ -27,7 +27,7 @@ function useDescription() {
   } = useEditDescription();
 
   const { mutate: handleAddSubmitMutation } = useMutation<
-    newField,
+    NewDescriptionField,
     Error,
     {
       description: string;
@@ -35,7 +35,7 @@ function useDescription() {
       owner: string;
     }
   >({
-    mutationFn: addExtraField,
+    mutationFn: createTemplateTask,
     onSuccess: () => {
       toast.success('the field has been added');
       queryClient.invalidateQueries({ queryKey: ['description_root'] });

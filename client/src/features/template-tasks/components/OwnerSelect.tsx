@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from 'react';
+import { Control, Controller, FieldErrors } from 'react-hook-form';
 import {
   Select,
   SelectContent,
@@ -6,10 +8,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../../../components/ui/select';
-import { Dispatch, SetStateAction } from 'react';
-import { TEmployeeResponse } from '@/zod-schemas/schema';
-import { Control, Controller, FieldErrors } from 'react-hook-form';
 
+import { EmployeeDataArray } from '@/features/employee-overview/schemas/schema';
 import { ErrorMessage } from '@hookform/error-message';
 import { HandleAddSubmit } from '../types/taskForm.types';
 
@@ -17,7 +17,7 @@ type OwnerSelectProps = {
   control: Control<HandleAddSubmit, any, HandleAddSubmit>;
   selectedValue: string;
   setSelectedValue: Dispatch<SetStateAction<string>>;
-  EmployeeData: TEmployeeResponse | undefined;
+  EmployeeData: EmployeeDataArray | undefined;
   errors: FieldErrors<HandleAddSubmit>;
 };
 
@@ -30,7 +30,11 @@ const OwnerSelect = ({ errors, control, EmployeeData }: OwnerSelectProps) => {
           control={control}
           render={({ field }) => (
             <Select value={field.value} onValueChange={field.onChange}>
-              <SelectTrigger id="owner" name="owner" className="w-71">
+              <SelectTrigger
+                id="owner"
+                name="owner"
+                className="w-71 rounded-xl"
+              >
                 <SelectValue placeholder="Mitarbeiter" />
               </SelectTrigger>
               <SelectContent className="border-none">
