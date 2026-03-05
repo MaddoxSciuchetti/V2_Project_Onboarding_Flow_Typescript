@@ -34,7 +34,15 @@ const UserMenu = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className="cursor-pointer w-10 h-10">
-          <img className="h-full w-full" src={data} alt="profile image" />
+          <img
+            className="h-full w-full"
+            src={
+              data === undefined
+                ? 'https://thumbs.dreamstime.com/b/default-profile-picture-avatar-photo-placeholder-vector-illustration-default-profile-picture-avatar-photo-placeholder-vector-189495158.jpg'
+                : data
+            }
+            alt="profile image"
+          />
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="bg-gray-200">
