@@ -1,64 +1,22 @@
+import useDeleteWorkerFiles from '@/features/task-management/hooks/use-deleteWorkerFiles';
+import useGetWorkerFiles from '@/features/task-management/hooks/use-getWorkerFiles';
 import { useToggleModal } from '@/hooks/use-toggleModal';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import JSZip from 'jszip';
-import { useState } from 'react';
 import { Button } from '../../../../../components/ui/button';
-import FileUpload01 from '../../../../../components/ui/file_upload/form-main';
 import { Spinner } from '../../../../../components/ui/spinner';
-import {
-  deleteWorkerFile,
-  fetchCloudUrl,
-  getWorkerFiles,
-} from '../../../api/index.api';
-import { File_Request } from '../../../types/index.types';
+import { fetchCloudUrl } from '../../../api/index.api';
 import { fileIcon, getFileName } from '../../../utils/fileHandling';
+import FileUpload01 from './file_upload/form-main';
 
 type WorkerFileUploadsProps = {
   id: number;
 };
 
 function WorkerFileUploads({ id }: WorkerFileUploadsProps) {
-  const [setModal, setModalState] = useState<boolean>(false);
+  const { fetchFiles, isFetching, isLoading } = useGetWorkerFiles(id);
+  const { deleteFiles } = useDeleteWorkerFiles(id);
 
-  const {
-    data: fetchFiles,
-    error,
-    isLoading,
-    isFetching,
-  } = useQuery<File_Request[]>({
-    queryKey: ['historyData', id],
-    queryFn: () => getWorkerFiles(id),
-  });
-
-  const queryClient = useQueryClient();
-
-  const { mutate: deleteFiles } = useMutation({
-    mutationFn: (fileId: number) => deleteWorkerFile(fileId),
-    onMutate: async (fileId) => {
-      await queryClient.cancelQueries({ queryKey: ['historyData', id] });
-
-      queryClient.setQueryData<File_Request[]>(
-        ['historyData', id],
-        (old) => old?.filter((file) => file.id !== fileId) || []
-      );
-    },
-    onError: () => {
-      queryClient.invalidateQueries({ queryKey: ['historyData', id] });
-      console.log('this is the invalidation number');
-    },
-  });
-
-  const { toggleModal } = useToggleModal();
-
-  const openModal = () => {
-    toggleModal();
-    setModalState(true);
-  };
-
-  const closeModal = () => {
-    toggleModal();
-    setModalState((prev) => !prev);
-  };
+  const { toggleModal, modal, setModal } = useToggleModal();
 
   const handleZipExport = async () => {
     const zip = new JSZip();
@@ -92,7 +50,7 @@ function WorkerFileUploads({ id }: WorkerFileUploadsProps) {
               <div className="flex flex-row justify-end pt-5 pr-5">
                 <img
                   className=" flex flex-end cursor-pointer outline rounded-sm p-1"
-                  onClick={openModal}
+                  onClick={toggleModal}
                   src="/assets/copy.svg"
                   alt="Upload File"
                 />
@@ -148,7 +106,7 @@ function WorkerFileUploads({ id }: WorkerFileUploadsProps) {
             <div className="flex flex-row justify-end pt-5 pr-5">
               <img
                 className=" flex flex-end cursor-pointer outline rounded-sm p-1"
-                onClick={openModal}
+                onClick={toggleModal}
                 src="/assets/copy.svg"
                 alt="Upload File"
               />
@@ -198,14 +156,14 @@ function WorkerFileUploads({ id }: WorkerFileUploadsProps) {
         )}
       </div>
 
-      {setModal && (
+      {modal && (
         <div className="fixed inset-0 z-50 flex">
           <div
-            onClick={closeModal}
+            onClick={toggleModal}
             className="fixed inset-0 bg-black/50 cursor-pointer"
             aria-label="Close modal"
           />
-          <FileUpload01 setModal={setModalState} id={id} />
+          <FileUpload01 setModal={setModal} id={id} />
         </div>
       )}
     </>

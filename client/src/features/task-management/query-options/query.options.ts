@@ -9,11 +9,3 @@ export const workerQueries = {
       queryFn: getProfilePhoto,
     }),
 };
-
-// export const agentQueries = {
-//   sendMessage: () =>
-//     mutationOptions({
-//       mutationKey: [SENDAGENT],
-//       mutationFn: sendAgentMessage,
-//     }),
-// };
