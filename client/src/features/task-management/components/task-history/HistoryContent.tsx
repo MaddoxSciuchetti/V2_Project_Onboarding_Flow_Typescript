@@ -25,10 +25,8 @@ const HistoryContent = ({ historyData, data }: HistoryContentProps) => {
                 <p>Nutzer: {item.auth_user?.email}</p>
                 <img className="ml-1 w-5 h-5 " src={data} />
               </div>
-              <p>Status: </p>
-
               <p>
-                Kommentar:{' '}
+                Status:
                 {item.status === 'erledigt' ? (
                   'Erledigt'
                 ) : item.status === 'in_bearbeitung' ? (
@@ -39,6 +37,8 @@ const HistoryContent = ({ historyData, data }: HistoryContentProps) => {
                   'Kein Status'
                 )}
               </p>
+
+              <p>Kommentar: {item.edit} </p>
             </div>
           );
         })

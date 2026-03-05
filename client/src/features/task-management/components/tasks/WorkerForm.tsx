@@ -1,9 +1,7 @@
-import { Input } from '@/components/ui/input';
 import { useGetWorkerHistory } from '@/features/task-management/hooks/use-getWorkerHistory';
 import { useQuery } from '@tanstack/react-query';
 import { SubmitEvent } from 'react';
 import { workerQueries } from '../../query-options/query.options';
-import { STATUS_MAP } from '../../utils/selectOptionTernary';
 import TaskHistory from '../task-history/TaskHistory';
 import StatusBadgeBar from './StatusBadgeBar';
 import WorkerFormHeader from './WorkerFormHeader';
@@ -35,57 +33,36 @@ function WorkerForm({
   editcomment,
   select_option,
   form_field_id,
-  handleSubmit,
   onEdit,
   is_substitute,
 }: FormProps) {
   const { historyData } = useGetWorkerHistory(id_original);
   const { data } = useQuery(workerQueries.getFoto());
 
-  const status = STATUS_MAP[select_option] ?? {
-    label: 'Status',
-    className: 'bg-red-200',
-  };
-
   return (
     <div className="justify-center items-center hover:scale-101 mt-10">
-      <form
-        className="flex flex-col  "
-        onSubmit={handleSubmit}
-        name="valuesform"
-      >
-        <Input type="hidden" id="id" name="id" value={id_original} />
-        <Input type="hidden" name="select_option" value={select_option} />
-        <Input
-          type="hidden"
-          id="form_field_id"
-          name="form_field_id"
-          value={form_field_id}
+      <div className="flex flex-col gap-5">
+        <WorkerFormHeader
+          description={description}
+          onEdit={() =>
+            onEdit(
+              id_original,
+              description,
+              editcomment,
+              select_option,
+              form_field_id
+            )
+          }
         />
-
-        <div className="flex flex-col gap-5">
-          <WorkerFormHeader
-            description={description}
-            onEdit={() =>
-              onEdit(
-                id_original,
-                description,
-                editcomment,
-                select_option,
-                form_field_id
-              )
-            }
-          />
-          <StatusBadgeBar
-            is_substitute={is_substitute}
-            substituteOwner={substituteOwner}
-            officialOwner={officialOwner}
-            status={status}
-            editcomment={editcomment}
-          />
-          <TaskHistory historyData={historyData} data={data} />
-        </div>
-      </form>
+        <StatusBadgeBar
+          is_substitute={is_substitute}
+          substituteOwner={substituteOwner}
+          officialOwner={officialOwner}
+          select_option={select_option}
+          editcomment={editcomment}
+        />
+        <TaskHistory historyData={historyData} data={data} />
+      </div>
     </div>
   );
 }

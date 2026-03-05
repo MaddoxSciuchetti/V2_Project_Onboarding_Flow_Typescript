@@ -1,20 +1,25 @@
+import { STATUS_MAP } from '../../utils/selectOptionTernary';
 import StatusBadge from './StatusBadge';
 
 type StatusBadgeBarProps = {
   is_substitute: boolean;
   substituteOwner: string;
   officialOwner: string;
-  status: { label: string; className: string };
   editcomment: string;
+  select_option: string;
 };
 
 const StatusBadgeBar = ({
   is_substitute,
   substituteOwner,
   officialOwner,
-  status,
   editcomment,
+  select_option,
 }: StatusBadgeBarProps) => {
+  const status = STATUS_MAP[select_option] ?? {
+    label: 'Status',
+    className: 'bg-red-200',
+  };
   return (
     <>
       <div className="flex gap-2 ">
