@@ -1,7 +1,4 @@
-import { useGetWorkerHistory } from '@/features/task-management/hooks/use-getWorkerHistory';
-import { useQuery } from '@tanstack/react-query';
 import { SubmitEvent } from 'react';
-import { workerQueries } from '../../query-options/query.options';
 import TaskHistory from '../task-history/TaskHistory';
 import StatusBadgeBar from './StatusBadgeBar';
 import WorkerFormHeader from './WorkerFormHeader';
@@ -36,9 +33,6 @@ function WorkerForm({
   onEdit,
   is_substitute,
 }: FormProps) {
-  const { historyData } = useGetWorkerHistory(id_original);
-  const { data } = useQuery(workerQueries.getFoto());
-
   return (
     <div className="justify-center items-center hover:scale-101 mt-10">
       <div className="flex flex-col gap-5">
@@ -61,7 +55,7 @@ function WorkerForm({
           select_option={select_option}
           editcomment={editcomment}
         />
-        <TaskHistory historyData={historyData} data={data} />
+        <TaskHistory id_original={id_original} />
       </div>
     </div>
   );

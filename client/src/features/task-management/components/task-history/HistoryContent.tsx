@@ -1,11 +1,14 @@
-import { HistoryData } from '../../types/index.types';
+import { useQuery } from '@tanstack/react-query';
+import { useGetWorkerHistory } from '../../hooks/use-getWorkerHistory';
+import { workerQueries } from '../../query-options/query.options';
 
 type HistoryContentProps = {
-  historyData: HistoryData[] | undefined;
-  data: string | undefined;
+  id_original: number;
 };
 
-const HistoryContent = ({ historyData, data }: HistoryContentProps) => {
+const HistoryContent = ({ id_original }: HistoryContentProps) => {
+  const { historyData } = useGetWorkerHistory(id_original);
+  const { data } = useQuery(workerQueries.getFoto());
   return (
     <>
       {historyData?.length === 0 ? (

@@ -4,15 +4,13 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { HistoryData } from '../../types/index.types';
 import HistoryContent from './HistoryContent';
 
 type TaskHistoryProps = {
-  historyData: HistoryData[] | undefined;
-  data: string | undefined;
+  id_original: number;
 };
 
-const TaskHistory = ({ historyData, data }: TaskHistoryProps) => {
+const TaskHistory = ({ id_original }: TaskHistoryProps) => {
   return (
     <>
       <Accordion type="single" collapsible className="max-w-6xl">
@@ -21,7 +19,7 @@ const TaskHistory = ({ historyData, data }: TaskHistoryProps) => {
             Bearbeitungsverlauf
           </AccordionTrigger>
           <AccordionContent>
-            <HistoryContent historyData={historyData} data={data} />
+            <HistoryContent id_original={id_original} />
           </AccordionContent>
         </AccordionItem>
       </Accordion>
