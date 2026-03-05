@@ -6,6 +6,7 @@ import { workerQueries } from '../../query-options/query.options';
 import { STATUS_MAP } from '../../utils/selectOptionTernary';
 import TaskHistory from '../task-history/TaskHistory';
 import StatusBadgeBar from './StatusBadgeBar';
+import WorkerFormHeader from './WorkerFormHeader';
 
 interface FormProps {
   id_original: number;
@@ -63,23 +64,18 @@ function WorkerForm({
         />
 
         <div className="flex flex-col gap-5">
-          <div className="flex flex-row mt-2">
-            <p className="w-full underline">{description}</p>
-            <img
-              className="cursor-pointer"
-              src="/assets/editReact.svg"
-              alt="text"
-              onClick={() =>
-                onEdit(
-                  id_original,
-                  description,
-                  editcomment,
-                  select_option,
-                  form_field_id
-                )
-              }
-            />
-          </div>
+          <WorkerFormHeader
+            description={description}
+            onEdit={() =>
+              onEdit(
+                id_original,
+                description,
+                editcomment,
+                select_option,
+                form_field_id
+              )
+            }
+          />
           <StatusBadgeBar
             is_substitute={is_substitute}
             substituteOwner={substituteOwner}
