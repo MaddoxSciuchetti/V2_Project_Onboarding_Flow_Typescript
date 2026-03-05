@@ -18,7 +18,7 @@ const TaskHistory = ({ id_original }: TaskHistoryProps) => {
           <AccordionTrigger className=" -blue-600 border-2 p-2 border-gray-300">
             Bearbeitungsverlauf
           </AccordionTrigger>
-          <AccordionContent>
+          <AccordionContent className="mt-5">
             <HistoryContent id_original={id_original} />
           </AccordionContent>
         </AccordionItem>
