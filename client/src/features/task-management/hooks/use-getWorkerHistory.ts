@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { getWorkerHistory } from '../api/index.api';
+import { FORMHISTORY } from '../consts/query-key.consts';
 import { HistoryData } from '../types/index.types';
 
 export type TAuth_User = {
@@ -10,7 +11,7 @@ export type TAuth_User = {
 
 export const useGetWorkerHistory = (id: number) => {
   const { data, isLoading, error, refetch } = useQuery<HistoryData[]>({
-    queryKey: ['formHistory', id],
+    queryKey: [FORMHISTORY, id],
     queryFn: () => getWorkerHistory(id),
     enabled: !!id,
   });
