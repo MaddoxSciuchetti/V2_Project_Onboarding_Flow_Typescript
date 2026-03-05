@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
-import { useEffect } from "react";
+import { Button } from '@/components/ui/button';
+import { Trash2 } from 'lucide-react';
+import { useEffect } from 'react';
 
 interface UploadedFileItemProps {
   file: File;
