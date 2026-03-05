@@ -13,7 +13,7 @@ type FilesContentProps = {
     Pick<SuccessResponse, 'success'>,
     Error,
     number,
-    void
+    unknown
   >;
 };
 
