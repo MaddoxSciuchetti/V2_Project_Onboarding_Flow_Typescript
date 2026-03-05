@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 import { logout } from '@/apis/index.apis';
-import { PROFILEPICTURE } from '@/features/task-management/consts/query-key.consts';
+import { PROFILEPICTURE } from '@/constants/querykey.consts';
 import { getProfilePhoto } from '@/features/user-profile/api/index.api';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';

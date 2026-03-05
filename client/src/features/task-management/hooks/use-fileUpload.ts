@@ -1,39 +1,27 @@
-import { createWorkerFile } from '@/apis/index.apis';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
-import { HISTORYDATA } from '../consts/query-key.consts';
+import { workerMutations } from '../query-options/mutations/worker.mutations';
 
 function useFileUpload(id: number, setModal: (val: boolean) => void) {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [fileProgresses, setFileProgresses] = useState<Record<string, number>>(
     {}
   );
-  const queryClient = useQueryClient();
   const {
     mutate: uploadfiles,
-    data: FileResponse,
     isPending: isLoading,
     error,
-  } = useMutation({
-    mutationFn: (files: File[]) => createWorkerFile(files, id),
-    onSuccess: () => {
-      console.log('Upload successful, invalidting');
-      queryClient.invalidateQueries({
-        queryKey: [HISTORYDATA, id],
-      });
-
-      setModal(false);
-      setUploadedFiles([]);
-      setFileProgresses({});
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-  });
+  } = useMutation(workerMutations.createFile(id));
 
   const handleFileSubmit = async () => {
     if (uploadedFiles.length > 0) {
-      uploadfiles(uploadedFiles);
+      uploadfiles(uploadedFiles, {
+        onSuccess: () => {
+          setModal(false);
+          setUploadedFiles([]);
+          setFileProgresses({});
+        },
+      });
     }
   };
 
