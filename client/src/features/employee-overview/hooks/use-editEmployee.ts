@@ -1,47 +1,31 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { editEmployeeAbsence } from '../api/employee-overview.api';
-import { EMPLOYEE_SPECIFICS } from '../consts/query-keys';
-import { absenceSchema } from '../schemas/schema';
+import { toast } from 'sonner';
+import { employeeMutations } from '../query-options/mutations/employee.mutations';
+import { employeeFormOptions } from '../react-hook-form/employee.options';
 import { AbsenceData } from '../types/index.types';
 
 function useEditEmployee(toggleEmployeeModal: () => void) {
-  const queryClient = useQueryClient();
-  const [success, setSuccess] = useState<boolean>();
-  const EmployeeAbsence = useMutation({
-    mutationFn: editEmployeeAbsence,
-    onSuccess: () => {
-      setSuccess(true);
-      toggleEmployeeModal();
-      queryClient.invalidateQueries({
-        queryKey: [EMPLOYEE_SPECIFICS],
-      });
-      console.log('sucessfully submitted');
-    },
-  });
+  const employeeAbsence = useMutation(employeeMutations.editEmployee());
 
   const {
     register,
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<AbsenceData>({
-    resolver: zodResolver(absenceSchema),
-    criteriaMode: 'all',
-  });
+  } = useForm<AbsenceData>(employeeFormOptions.editEmployeeAbsence);
 
   const onSubmit: SubmitHandler<AbsenceData> = (data) => {
-    console.log(data);
-    EmployeeAbsence.mutate(data);
+    employeeAbsence.mutate(data, {
+      onSuccess: () => {
+        toast.success('Abwesenheit geändert');
+        toggleEmployeeModal();
+      },
+    });
   };
 
   return {
-    success,
-    setSuccess,
-    queryClient,
-    EmployeeAbsence,
+    employeeAbsence,
     register,
     handleSubmit,
     control,

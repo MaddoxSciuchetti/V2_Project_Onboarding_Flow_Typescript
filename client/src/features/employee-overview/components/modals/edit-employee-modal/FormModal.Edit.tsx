@@ -20,7 +20,7 @@ const FormModalEdit = ({
   EmployeeData,
   toggleEmployeeModal,
 }: FormModalEditProps) => {
-  const { success, register, handleSubmit, control, errors, onSubmit } =
+  const { register, handleSubmit, control, errors, onSubmit } =
     useEditEmployee(toggleEmployeeModal);
 
   const employeeOptions = useMemo(
@@ -70,7 +70,6 @@ const FormModalEdit = ({
           label={'Soll vertreten werden von'}
           errors={errors}
         />
-        {success ? <p className="text-green-400">Abwesenheit geädert</p> : ''}
 
         <Button className="cursor-pointer" variant={'outline'} type="submit">
           Speichern
