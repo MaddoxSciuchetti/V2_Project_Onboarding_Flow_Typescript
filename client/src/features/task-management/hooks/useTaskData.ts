@@ -1,14 +1,11 @@
-import { DescriptionFieldResponse } from '@/types/api.types';
 import { useQuery } from '@tanstack/react-query';
-import { getWorkerById } from '../api/index.api';
-import { WORKERBYID } from '../consts/query-key.consts';
+import { workerQueries } from '../query-options/queries/worker.queries';
 
-function useTaskData(id: number, search: { param1: string }) {
-  const { data, error, isLoading, isError } =
-    useQuery<DescriptionFieldResponse>({
-      queryKey: [WORKERBYID, id],
-      queryFn: () => getWorkerById(id, search.param1),
-    });
+function useTaskData(id: number, lifecycleType: string) {
+  const { data, error, isLoading, isError } = useQuery(
+    workerQueries.taskData(id, lifecycleType)
+  );
+  console.log('lifecycle', lifecycleType);
   return {
     data,
     error,

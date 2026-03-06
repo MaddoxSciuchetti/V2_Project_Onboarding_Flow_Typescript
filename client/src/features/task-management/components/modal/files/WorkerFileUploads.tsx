@@ -10,12 +10,12 @@ import FileHeader from './FileHeader';
 import FilesContent from './FilesContent';
 
 type WorkerFileUploadsProps = {
-  id: number;
+  workerId: number;
 };
 
-function WorkerFileUploads({ id }: WorkerFileUploadsProps) {
-  const { fetchFiles } = useGetWorkerFiles(id);
-  const { deleteFiles, options } = useDeleteWorkerFile(id);
+function WorkerFileUploads({ workerId }: WorkerFileUploadsProps) {
+  const { fetchFiles } = useGetWorkerFiles(workerId);
+  const { deleteFiles, options } = useDeleteWorkerFile(workerId);
   const { toggleModal, modal, setModal } = useToggleModal();
 
   if (options.isPending)
@@ -45,7 +45,7 @@ function WorkerFileUploads({ id }: WorkerFileUploadsProps) {
 
       {modal && (
         <ModalOverlay handleToggle={toggleModal}>
-          <FileUpload01 setModal={setModal} id={id} />
+          <FileUpload01 setModal={setModal} workerId={workerId} />
         </ModalOverlay>
       )}
     </>

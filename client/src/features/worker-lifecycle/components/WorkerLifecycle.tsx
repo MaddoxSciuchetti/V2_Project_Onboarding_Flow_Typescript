@@ -29,7 +29,7 @@ function WorkerLifeCycle() {
       </CenteredDiv>
     );
 
-  // if (isError || !user) return <ErrorAlert />;
+  if (isError || !user) return <ErrorAlert />;
   if (error) return <ErrorAlert message={error.message} />;
 
   return (
