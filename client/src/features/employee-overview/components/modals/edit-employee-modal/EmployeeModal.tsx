@@ -1,4 +1,4 @@
-import useEmployeeData from '@/features/employee-overview/hooks/use-employeeData';
+import useGetEmployees from '@/features/employee-overview/hooks/use-getEmployees';
 import FormModalEdit from './FormModal.Edit';
 
 type ModalEditMitarbeiterProps = {
@@ -12,7 +12,7 @@ function ModalEditMitarbeiter({
   toggleEmployeeModal,
   id,
 }: ModalEditMitarbeiterProps) {
-  const { EmployeeData } = useEmployeeData();
+  const { EmployeeData } = useGetEmployees();
 
   return (
     <>

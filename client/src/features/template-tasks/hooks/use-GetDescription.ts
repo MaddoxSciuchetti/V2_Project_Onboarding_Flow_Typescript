@@ -1,9 +1,9 @@
 import { useSidebar } from '@/components/ui/sidebar';
+import useGetEmployees from '@/features/employee-overview/hooks/use-getEmployees';
 import { NewDescriptionField } from '@/types/api.types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import useEmployeeData from '../../employee-overview/hooks/use-employeeData';
 import { createTemplateTask } from '../api';
 import useDeleteDescription from './use-DeleteDescription';
 import useEditDescription from './use-EditDescription';
@@ -13,7 +13,7 @@ function useDescription() {
   const queryClient = useQueryClient();
   const [mode, setMode] = useState<'EDIT' | 'ADD'>();
   const [tab, setTab] = useState<'ONBOARDING' | 'OFFBOARDING'>('ONBOARDING');
-  const { EmployeeData } = useEmployeeData();
+  const { EmployeeData } = useGetEmployees();
   const { OnboardingData, OffboardingData } = useFetchTask();
   const { toggleSidebar } = useSidebar();
   const { deleteDescription } = useDeleteDescription();

@@ -1,22 +1,16 @@
-import { useQuery } from '@tanstack/react-query';
-import { specificEmployeeData } from '../api/employee-overview.api';
-import { EMPLOYEE_SPECIFICS } from '../consts/query-keys';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { employeeQueries } from '../query-options/queries/employee.queries';
 import { EmployeeDataArray } from '../schemas/schema';
 
 function useGetEmployees() {
   const {
     data: EmployeeData,
-    isLoading,
     error,
     isError,
-  } = useQuery<EmployeeDataArray>({
-    queryKey: [EMPLOYEE_SPECIFICS],
-    queryFn: specificEmployeeData,
-  });
+  } = useSuspenseQuery<EmployeeDataArray>(employeeQueries.getEmployees());
 
   return {
     EmployeeData,
-    isLoading,
     error,
     isError,
   };
