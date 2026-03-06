@@ -42,7 +42,7 @@ export function Worker_Item({
   };
 
   const color = calculatePercent(completedTasksCount!, totalTasks!);
-
+  console.log('lifecycle type in worker-lifycycle', item_value, form_type);
   return (
     <tr
       onClick={() => gotopage(item_value, form_type)}

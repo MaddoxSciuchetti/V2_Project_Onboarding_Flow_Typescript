@@ -15,17 +15,20 @@ import TaskHeader from './TaskHeader';
 import WorkerTasks from './WorkerTasks';
 
 type OffboardingFormProps = {
-  id: number;
-  search: { param1: string }; // match validateSearch
+  workerId: number;
+  lifecycleType: string; // match validateSearch
 };
 
-const TaskManagement: React.FC<OffboardingFormProps> = ({ id, search }) => {
+const TaskManagement: React.FC<OffboardingFormProps> = ({
+  workerId,
+  lifecycleType,
+}) => {
   const { user } = useAuth();
   const [activetab, setActiveTab] = useState<string>('form');
   const { toggleModal } = useToggleModal();
-  const numericId = parseInt(String(id));
+  const numericId = parseInt(String(workerId));
 
-  const { data, isLoading } = useTaskData(numericId, search);
+  const { data, isLoading } = useTaskData(numericId, lifecycleType);
   const {
     descriptionSearch,
     setDescriptionSearch,
@@ -74,7 +77,7 @@ const TaskManagement: React.FC<OffboardingFormProps> = ({ id, search }) => {
             />
           </TabsContent>
           <TabsContent value="files">
-            <WorkerFileUploads id={id} />
+            <WorkerFileUploads workerId={workerId} />
           </TabsContent>
         </Tabs>
       </>

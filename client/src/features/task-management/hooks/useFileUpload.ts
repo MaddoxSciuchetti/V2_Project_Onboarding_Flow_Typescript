@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { workerMutations } from '../query-options/mutations/worker.mutations';
 
-function useFileUpload(id: number, setModal: (val: boolean) => void) {
+function useFileUpload(workerId: number, setModal: (val: boolean) => void) {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [fileProgresses, setFileProgresses] = useState<Record<string, number>>(
     {}
@@ -11,7 +11,7 @@ function useFileUpload(id: number, setModal: (val: boolean) => void) {
     mutate: uploadfiles,
     isPending: isLoading,
     error,
-  } = useMutation(workerMutations.createFile(id));
+  } = useMutation(workerMutations.createFile(workerId));
 
   const handleFileSubmit = async () => {
     if (uploadedFiles.length > 0) {

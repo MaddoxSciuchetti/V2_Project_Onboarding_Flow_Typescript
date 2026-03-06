@@ -1,9 +1,9 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { workerQueries } from '../query-options/queries/worker.queries';
 
-function useGetWorkerFiles(id: number) {
+function useGetWorkerFiles(workerId: number) {
   const { data: fetchFiles, isPending } = useSuspenseQuery(
-    workerQueries.getFiles(id)
+    workerQueries.getFiles(workerId)
   );
 
   return { fetchFiles, isPending };

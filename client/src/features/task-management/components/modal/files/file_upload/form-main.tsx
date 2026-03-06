@@ -6,11 +6,14 @@ import { FileDropzone } from './dropzone';
 import { FileList } from './file-list';
 
 interface FileUploadProps01 {
-  id: number;
+  workerId: number;
   setModal: (val: boolean) => void;
 }
 
-export default function FileUpload01({ id, setModal }: FileUploadProps01) {
+export default function FileUpload01({
+  workerId,
+  setModal,
+}: FileUploadProps01) {
   const {
     uploadedFiles,
     setUploadedFiles,
@@ -19,7 +22,7 @@ export default function FileUpload01({ id, setModal }: FileUploadProps01) {
     error,
     isLoading,
     handleFileSubmit,
-  } = useFileUpload(id, setModal);
+  } = useFileUpload(workerId, setModal);
 
   const {
     fileInputRef,
