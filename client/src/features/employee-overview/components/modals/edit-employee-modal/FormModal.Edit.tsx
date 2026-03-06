@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { absenceReason } from '@/features/employee-overview/consts/SelectInput';
-import useEditEmployee from '@/features/employee-overview/hooks/use-editEmployee';
+import useEditEmployee from '@/features/employee-overview/hooks/useEditEmployee';
 import { EmployeeDataArray } from '@/features/employee-overview/schemas/schema';
 import { useMemo } from 'react';
 import FormFields from '../../../../../components/form/FormFields';

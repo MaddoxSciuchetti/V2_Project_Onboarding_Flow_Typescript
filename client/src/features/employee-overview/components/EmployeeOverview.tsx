@@ -1,11 +1,11 @@
 import { Table } from '@/components/ui/table';
-import useDeleteEmployee from '../hooks/use-deleteEmployee';
-import useGetEmployees from '../hooks/use-getEmployees';
+import useDeleteEmployee from '../hooks/useDeleteEmployee';
+import useGetEmployees from '../hooks/useGetEmployees';
 
 import CenteredDiv from '@/components/alerts/layout-wrapper/CenteredDiv';
 import LoadingAlert from '@/components/alerts/LoadingAlert';
 import ModalOverlay from '@/components/modal/ModalOverlay';
-import { useEmployeeModal } from '../hooks/use-employeeModal';
+import { useEmployeeModal } from '../hooks/useEmployeeModal';
 import ModalMitarbeiter from './modals/create-employee-modal/EmployeeModal';
 import ModalEditMitarbeiter from './modals/edit-employee-modal/EmployeeModal';
 import EmployeeTableHeader from './table/EmployeeTableHeader';

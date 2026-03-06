@@ -1,4 +1,4 @@
-import useGetEmployees from '@/features/employee-overview/hooks/use-getEmployees';
+import useGetEmployees from '@/features/employee-overview/hooks/useGetEmployees';
 import FormModalEdit from './FormModal.Edit';
 
 type ModalEditMitarbeiterProps = {

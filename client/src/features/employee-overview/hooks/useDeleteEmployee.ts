@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { employeeMutations } from '../query-options/mutations/employee.mutations';
-import { useEmployeeModal } from './use-employeeModal';
+import { useEmployeeModal } from './useEmployeeModal';
 
 function useDeleteEmployee() {
   const { closeModal } = useEmployeeModal();
