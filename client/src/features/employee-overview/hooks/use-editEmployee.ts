@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { editEmployeeAbsence } from '../api/employee-overview.api';
+import { EMPLOYEE_SPECIFICS } from '../consts/query-keys';
 import { absenceSchema } from '../schemas/schema';
 import { AbsenceData } from '../types/index.types';
 
@@ -15,7 +16,7 @@ function useEditEmployee(toggleEmployeeModal: () => void) {
       setSuccess(true);
       toggleEmployeeModal();
       queryClient.invalidateQueries({
-        queryKey: ['EmployeeDataSpecifics'],
+        queryKey: [EMPLOYEE_SPECIFICS],
       });
       console.log('sucessfully submitted');
     },
