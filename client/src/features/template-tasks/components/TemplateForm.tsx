@@ -5,7 +5,6 @@ import { Textarea } from '../../../components/ui/textarea';
 import { ErrorMessage } from '@hookform/error-message';
 import { addSchema, editSchema } from '../schemas/taskForm.schema';
 
-import { EmployeeDataArray } from '@/features/employee-overview/schemas/schema';
 import useSubmitForm from '../hooks/useSubmitForm';
 import {
   AddDescriptionMutation,
@@ -19,7 +18,6 @@ type TemplateFormProps = {
   selectedValue: string;
   description: string | null | undefined;
   setSelectedValue: Dispatch<SetStateAction<string>>;
-  EmployeeData: EmployeeDataArray | undefined;
   template_type: 'OFFBOARDING' | 'ONBOARDING' | undefined;
   form_field_id: number | null | undefined;
   mode: 'EDIT' | 'ADD' | undefined;
@@ -32,7 +30,6 @@ const TemplateForm = ({
   selectedValue,
   description,
   setSelectedValue,
-  EmployeeData,
   template_type,
   form_field_id,
   mode,
@@ -97,7 +94,6 @@ const TemplateForm = ({
           errors={errors}
           selectedValue={selectedValue}
           setSelectedValue={setSelectedValue}
-          EmployeeData={EmployeeData}
         />
         <Button
           type="submit"

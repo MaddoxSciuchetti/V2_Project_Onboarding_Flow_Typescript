@@ -1,4 +1,3 @@
-import { EmployeeDataArray } from '@/features/employee-overview/schemas/schema';
 import useRootForm from '@/hooks/useRootForm';
 import { DescriptionData } from '@/types/api.types';
 import { Dispatch, SetStateAction } from 'react';
@@ -15,7 +14,6 @@ type TemplateModalProps = {
   description: string | null | undefined;
   owner: string | null | undefined;
   template_type?: 'ONBOARDING' | 'OFFBOARDING';
-  EmployeeData: EmployeeDataArray | undefined;
   OnboardingData?: DescriptionData[] | undefined;
   OffboardingData?: DescriptionData[] | undefined;
   mode: 'EDIT' | 'ADD' | undefined;
@@ -29,7 +27,6 @@ function TemplateModal({
   description,
   owner,
   template_type,
-  EmployeeData,
   mode,
   setMode,
 }: TemplateModalProps) {
@@ -45,7 +42,6 @@ function TemplateModal({
             selectedValue={selectedValue}
             description={description}
             setSelectedValue={setSelectedValue}
-            EmployeeData={EmployeeData}
             mode={mode}
             setMode={setMode}
             template_type={template_type}

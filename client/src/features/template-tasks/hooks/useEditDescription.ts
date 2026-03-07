@@ -1,13 +1,9 @@
 import { useSidebar } from '@/components/ui/sidebar';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
-import { toast } from 'sonner';
-import { updateTemplateTask } from '../api';
-import { DESCRIPTION_ROOT } from '../consts/query-key.consts';
-import { EditDescriptionData } from '../types/taskForm.types';
+import { templateMutations } from '../query-options/mutations/template.mutations';
 
 function useEditDescription() {
-  const queryClient = useQueryClient();
   const [modal, setModal] = useState(false);
   const { toggleSidebar } = useSidebar();
   const [modalState, setModalState] = useState<{
@@ -40,21 +36,15 @@ function useEditDescription() {
     });
   }
 
-  const { mutate: editDescriptionMutation } = useMutation<
-    EditDescriptionData,
-    Error,
-    EditDescriptionData
-  >({
-    mutationFn: updateTemplateTask,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [DESCRIPTION_ROOT] });
-      setModalState({ selectedItem: null });
-      toggleModal();
-    },
-    onError: () => {
-      toast.error('Fehler beim Bearbeiten');
-    },
-  });
+  const { mutate: editDescriptionMutation } = useMutation(
+    templateMutations.update()
+  );
+
+  // onError: () => {
+  //   toast.error('Fehler beim Bearbeiten');
+  // },
+  // setModalState({ selectedItem: null });
+  // toggleModal();
 
   return {
     modal,
