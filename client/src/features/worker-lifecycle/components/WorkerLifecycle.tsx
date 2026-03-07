@@ -10,7 +10,6 @@ import SearchHeader from './SearchHeader';
 function WorkerLifeCycle() {
   const { user, isLoading, isError } = useAuth();
   const {
-    isEmpty,
     deleteTaskMutation,
     error,
     filtered,
