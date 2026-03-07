@@ -3,7 +3,9 @@ import { AddWorker } from '@/features/worker-lifecycle/schemas/zod.schemas';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
-import { addWorker, deleteWorkerById, getWorkerData } from '../api';
+import { addWorker, deleteWorkerById } from '../api';
+import { ALL_WORKER_DATA } from '../consts/query-key.consts';
+import { workerLifecycleQueries } from '../query-options/queries/worker-lifycycle.queries';
 import { FormType, WorkerItem } from '../types/index.types';
 
 function useHome() {
@@ -18,10 +20,9 @@ function useHome() {
     toggleSidebar();
   };
 
-  const { data, error, isSuccess } = useQuery<WorkerItem[]>({
-    queryKey: ['allWorkerData'],
-    queryFn: getWorkerData,
-  });
+  const { data, error, isSuccess } = useQuery<WorkerItem[]>(
+    workerLifecycleQueries.workerData()
+  );
 
   const isEmpty = isSuccess && data?.length === 0;
 
@@ -32,7 +33,7 @@ function useHome() {
   const deleteTaskMutation = useMutation({
     mutationFn: deleteWorkerById,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['allWorkerData'] });
+      queryClient.invalidateQueries({ queryKey: [ALL_WORKER_DATA] });
     },
   });
 
