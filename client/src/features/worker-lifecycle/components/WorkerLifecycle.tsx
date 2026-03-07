@@ -15,7 +15,7 @@ function WorkerLifeCycle() {
     filtered,
     handleNavigate,
     modal,
-    createEmployeeMutation,
+    addWorkerMutation,
     search,
     setSearch,
     toggleModal,
@@ -47,7 +47,7 @@ function WorkerLifeCycle() {
         <LifeCycleModal
           modal={modal}
           toggleModal={toggleModal}
-          createEmployeeMutation={createEmployeeMutation}
+          addWorkerMutation={addWorkerMutation}
         />
       </div>
     </div>

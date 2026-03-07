@@ -1,22 +1,21 @@
-import { AddWorker } from '@/features/worker-lifecycle/schemas/zod.schemas';
 import { cn } from '@/lib/trycatch';
-import { UseMutationResult } from '@tanstack/react-query';
 import { useState } from 'react';
-import { FormType, ItemUser } from '../../types/index.types';
+import { FormType } from '../../types/index.types';
+import { AddWorkerMutation } from '../../types/mutation.types';
 import RadioSelect from './RadioSelect';
 import { WorkerForm } from './WorkerForm';
 
 type ModalProps = {
-  createEmployeeMutation: UseMutationResult<
-    ItemUser,
-    Error,
-    AddWorker,
-    unknown
-  >;
+  toggleModal: () => void;
+  addWorkerMutation: AddWorkerMutation;
   className?: string;
 };
 
-const ModalContent = ({ createEmployeeMutation, className }: ModalProps) => {
+const ModalContent = ({
+  addWorkerMutation,
+  className,
+  toggleModal,
+}: ModalProps) => {
   const [selectedOption, setSelectedOption] = useState<FormType | null>(null);
 
   return (
@@ -36,7 +35,8 @@ const ModalContent = ({ createEmployeeMutation, className }: ModalProps) => {
           <WorkerForm
             setSelectedOption={setSelectedOption}
             type={selectedOption}
-            success={createEmployeeMutation.mutate}
+            success={addWorkerMutation}
+            toggleModal={toggleModal}
           />
         )}
       </div>
