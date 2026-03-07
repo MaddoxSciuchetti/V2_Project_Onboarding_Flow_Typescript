@@ -18,6 +18,16 @@ type TemplateModalProps = {
   OffboardingData?: DescriptionData[] | undefined;
   mode: 'EDIT' | 'ADD' | undefined;
   setMode: Dispatch<SetStateAction<'EDIT' | 'ADD' | undefined>>;
+  toggleModal: () => void;
+  setModalState: Dispatch<
+    SetStateAction<{
+      selectedItem: {
+        form_field_id: number | null | undefined;
+        description: string | null | undefined;
+        owner: string | null | undefined;
+      } | null;
+    }>
+  >;
 };
 
 function TemplateModal({
@@ -29,6 +39,8 @@ function TemplateModal({
   template_type,
   mode,
   setMode,
+  toggleModal,
+  setModalState,
 }: TemplateModalProps) {
   const { selectedValue, setSelectedValue } = useRootForm(owner);
 
@@ -37,6 +49,8 @@ function TemplateModal({
       <div className="flex flex-col max-h-100 min-h-120 mt-40 mx-auto text-center items-center z-50 bg-gray-200 rounded-xl  w-2xl">
         <div className="flex flex-col max-w-xl h-full w-xl my-10 items-start">
           <TemplateForm
+            setModalState={setModalState}
+            toggleModal={toggleModal}
             editDescriptionMutation={editDescriptionMutation}
             handleAddSubmitMutation={handleAddSubmitMutation}
             selectedValue={selectedValue}

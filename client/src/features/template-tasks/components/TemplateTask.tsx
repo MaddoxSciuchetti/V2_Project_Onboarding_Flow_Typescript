@@ -1,9 +1,9 @@
-import CenteredDiv from '@/components/alerts/layout-wrapper/CenteredDiv';
+import LoadingAlert from '@/components/alerts/LoadingAlert';
 import ModalOverlay from '@/components/modal/ModalOverlay';
 import { Button } from '@/components/ui/button';
-import { Spinner } from '@/components/ui/spinner';
 import { cn } from '@/lib/trycatch';
 import { TABS } from '../consts/index.consts';
+import useEditDescription from '../hooks/useEditDescription';
 import useFetchTask from '../hooks/useFetchTask';
 import useGetDescription from '../hooks/useGetDescription';
 import Tasks from './Tasks';
@@ -11,25 +11,25 @@ import TemplateModal from './TemplateModal';
 
 function TemplateTasks() {
   const {
-    editDescriptionMutation,
     handleAddSubmitMutation,
     modal,
-    modalState,
-    openDescriptionModal,
     tab,
     setTab,
     mode,
     setMode,
-    handleOpenModal,
+    toggleModal,
   } = useGetDescription();
   const { OnboardingData, OffboardingData } = useFetchTask();
 
+  const {
+    editDescriptionMutation,
+    modalState,
+    setModalState,
+    openDescriptionModal,
+  } = useEditDescription(toggleModal);
+
   if (OnboardingData === undefined || OffboardingData === undefined) {
-    return (
-      <CenteredDiv>
-        <Spinner className="w-8" />
-      </CenteredDiv>
-    );
+    return <LoadingAlert />;
   }
 
   return (
@@ -67,8 +67,10 @@ function TemplateTasks() {
       />
 
       {modalState.selectedItem && modal && (
-        <ModalOverlay handleToggle={handleOpenModal}>
+        <ModalOverlay handleToggle={toggleModal}>
           <TemplateModal
+            setModalState={setModalState}
+            toggleModal={toggleModal}
             editDescriptionMutation={editDescriptionMutation}
             handleAddSubmitMutation={handleAddSubmitMutation}
             form_field_id={modalState.selectedItem.form_field_id}

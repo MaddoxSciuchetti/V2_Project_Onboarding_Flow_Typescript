@@ -11,16 +11,16 @@ function useGetDescription() {
   const queryClient = useQueryClient();
   const [mode, setMode] = useState<'EDIT' | 'ADD'>();
   const [tab, setTab] = useState<'ONBOARDING' | 'OFFBOARDING'>('ONBOARDING');
-
   const { toggleSidebar } = useSidebar();
-  const {
-    modal,
-    setModal,
-    openDescriptionModal,
-    editDescriptionMutation,
-    modalState,
-    toggleModal,
-  } = useEditDescription();
+  const [modal, setModal] = useState(false);
+
+  const toggleModal = () => {
+    setModal((prev) => !prev);
+    toggleSidebar();
+  };
+
+  const { openDescriptionModal, editDescriptionMutation, modalState } =
+    useEditDescription(toggleModal);
 
   const { mutate: handleAddSubmitMutation } = useMutation<
     NewDescriptionField,
@@ -42,11 +42,6 @@ function useGetDescription() {
     },
   });
 
-  const handleOpenModal = () => {
-    setModal((prev) => !prev);
-    toggleSidebar();
-  };
-
   return {
     editDescriptionMutation,
     handleAddSubmitMutation,
@@ -57,7 +52,7 @@ function useGetDescription() {
     openDescriptionModal,
     tab,
     setTab,
-    handleOpenModal,
+    toggleModal,
   };
 }
 

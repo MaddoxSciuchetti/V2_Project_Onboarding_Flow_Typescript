@@ -22,6 +22,16 @@ type TemplateFormProps = {
   form_field_id: number | null | undefined;
   mode: 'EDIT' | 'ADD' | undefined;
   setMode: Dispatch<SetStateAction<'EDIT' | 'ADD' | undefined>>;
+  toggleModal: () => void;
+  setModalState: Dispatch<
+    SetStateAction<{
+      selectedItem: {
+        form_field_id: number | null | undefined;
+        description: string | null | undefined;
+        owner: string | null | undefined;
+      } | null;
+    }>
+  >;
 };
 
 const TemplateForm = ({
@@ -33,6 +43,8 @@ const TemplateForm = ({
   template_type,
   form_field_id,
   mode,
+  toggleModal,
+  setModalState,
 }: TemplateFormProps) => {
   const schema = mode === 'EDIT' ? editSchema : addSchema;
 
@@ -40,7 +52,9 @@ const TemplateForm = ({
     mode,
     schema,
     editDescriptionMutation,
-    handleAddSubmitMutation
+    handleAddSubmitMutation,
+    toggleModal,
+    setModalState
   );
 
   return (
