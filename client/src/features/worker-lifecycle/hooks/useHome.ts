@@ -3,8 +3,8 @@ import { AddWorker } from '@/features/worker-lifecycle/schemas/zod.schemas';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
-import { addWorker, deleteWorkerById } from '../api';
-import { ALL_WORKER_DATA } from '../consts/query-key.consts';
+import { addWorker } from '../api';
+import { workerLifecycleMutations } from '../query-options/mutations/worker-lifycycle.mutations';
 import { workerLifecycleQueries } from '../query-options/queries/worker-lifycycle.queries';
 import { FormType, WorkerItem } from '../types/index.types';
 
@@ -30,12 +30,9 @@ function useHome() {
     item.vorname.toLowerCase().includes(search.toLowerCase())
   );
 
-  const deleteTaskMutation = useMutation({
-    mutationFn: deleteWorkerById,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [ALL_WORKER_DATA] });
-    },
-  });
+  const deleteTaskMutation = useMutation(
+    workerLifecycleMutations.deleteWorker()
+  );
 
   const addWorkerMutation = useMutation({
     mutationFn: async (data: AddWorker) => {
