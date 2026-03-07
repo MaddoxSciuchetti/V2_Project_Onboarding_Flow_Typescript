@@ -48,7 +48,15 @@ function useSubmitForm(
         },
       });
     } else {
-      handleAddSubmitMutation(data as HandleAddSubmit);
+      handleAddSubmitMutation(data as HandleAddSubmit, {
+        onSuccess: () => {
+          toast.success('the field has been added');
+          toggleModal();
+        },
+        onError: () => {
+          toast.error('the field could not be added');
+        },
+      });
     }
   };
 
