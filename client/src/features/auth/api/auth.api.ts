@@ -1,7 +1,6 @@
 import API from '@/config/apiClient';
 
 import { Session_API, SuccessResponse } from '@/types/api.types';
-// import { User } from 'shared_prisma_types';
 
 import { User } from '@/features/user-profile/types/auth.type';
 import {
