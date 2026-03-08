@@ -16,7 +16,7 @@ const ForgotPassword = () => {
     isSuccess,
     isError,
     error,
-  } = useMutation(authMutations.PasswortResetMail());
+  } = useMutation(authMutations.passwortResetMail());
 
   return (
     <div className="min-h-screen flex items-center justify-center">

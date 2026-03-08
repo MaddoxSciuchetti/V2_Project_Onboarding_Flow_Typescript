@@ -2,6 +2,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import ResetPasswordForm from '@/features/auth/components/ResetPasswordForm';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import { AlertCircle } from 'lucide-react';
+import { currentDate } from '../utils/dateNow';
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -10,8 +11,7 @@ const ResetPassword = () => {
   const code = search.code as string | undefined;
   const exp = search.exp ? Number(search.exp) : undefined;
 
-  const now = Date.now();
-  const linkIsValid = code && exp && exp > now;
+  const linkIsValid = code && exp && exp > currentDate;
   return (
     <div className="min-h-screen flex justify-center">
       <div className="mx-auto max-w-md py-12 px-6 text-center">

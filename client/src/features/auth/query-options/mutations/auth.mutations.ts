@@ -3,7 +3,7 @@ import { mutationOptions } from '@tanstack/react-query';
 import { sendPasswordResetEmail } from '../../api/auth.api';
 
 export const authMutations = {
-  PasswortResetMail: () => {
+  passwortResetMail: () => {
     return mutationOptions<SuccessResponse<string>, Error, string>({
       mutationFn: sendPasswordResetEmail,
     });
