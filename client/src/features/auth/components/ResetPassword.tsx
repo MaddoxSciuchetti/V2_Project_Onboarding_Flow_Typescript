@@ -9,10 +9,6 @@ const ResetPassword = () => {
 
   const code = search.code as string | undefined;
   const exp = search.exp ? Number(search.exp) : undefined;
-  console.log('this is the code', code);
-  console.log('this is the exp', exp);
-
-  console.log(code);
 
   const now = Date.now();
   const linkIsValid = code && exp && exp > now;

@@ -5,7 +5,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { CheckCircle } from 'lucide-react';
 import { useState } from 'react';
-import { sendPasswordResetEmail } from '../api/auth.api';
+import { authMutations } from '../query-options/mutations/auth.mutations';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState<string>('');
@@ -16,9 +16,7 @@ const ForgotPassword = () => {
     isSuccess,
     isError,
     error,
-  } = useMutation({
-    mutationFn: sendPasswordResetEmail,
-  });
+  } = useMutation(authMutations.PasswortResetMail());
 
   return (
     <div className="min-h-screen flex items-center justify-center">

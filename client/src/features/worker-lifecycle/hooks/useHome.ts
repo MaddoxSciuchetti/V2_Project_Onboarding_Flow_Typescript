@@ -36,7 +36,6 @@ function useHome() {
   );
 
   const handleNavigate = (taskId: number, form_type: FormType) => {
-    console.log('in nvagiation', form_type);
     navigate({
       to: '/user/$Id',
       params: { Id: String(taskId) },
