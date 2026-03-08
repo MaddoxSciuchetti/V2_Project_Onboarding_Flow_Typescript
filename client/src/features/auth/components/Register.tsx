@@ -152,7 +152,11 @@ export function SignupForm() {
         <p className="text-sm text-gray-400">
           Already have an account?{' '}
           <button
-            onClick={() => navigate({ to: '/worker-lifycycle' })}
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate({ to: '/login' });
+            }}
             className="text-white hover:text-gray-300 underline"
           >
             Sign in

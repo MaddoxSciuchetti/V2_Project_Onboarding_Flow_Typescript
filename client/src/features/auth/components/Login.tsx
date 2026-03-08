@@ -108,7 +108,10 @@ export function LoginComponent() {
             <Button
               type="button"
               variant="link"
-              onClick={() => navigate({ to: '/signup' })}
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate({ to: '/signup' });
+              }}
               className="cursor-pointer h-auto p-0 text-white hover:text-gray-300"
             >
               Sign up
