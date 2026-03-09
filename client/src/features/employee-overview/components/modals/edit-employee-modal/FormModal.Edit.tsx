@@ -1,3 +1,4 @@
+import FormSelectOptions from '@/components/form/FormSelectOptions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { absenceReason } from '@/features/employee-overview/consts/SelectInput';
@@ -5,7 +6,6 @@ import useEditEmployee from '@/features/employee-overview/hooks/useEditEmployee'
 import { EmployeeDataArray } from '@/features/employee-overview/schemas/schema';
 import { useMemo } from 'react';
 import FormFields from '../../../../../components/form/FormFields';
-import EmployeeSelect from './EmployeeSelect';
 
 type FormModalEditProps = {
   id: string | undefined;
@@ -38,13 +38,21 @@ const FormModalEdit = ({
         <h1 className="text-left w-full">
           Abwesenheit eintragen für: {fullname}
         </h1>
-        <EmployeeSelect
+        {/* <EmployeeSelect
           name="absencetype"
           control={control}
           options={absenceReason}
           placeholder="Grund"
           label={'Grund der Abwesenheit'}
           errors={errors}
+        /> */}
+        <FormSelectOptions
+          name="absencetype"
+          control={control}
+          data={absenceReason}
+          placeholder={'Grund'}
+          errors={errors}
+          label={'Grund der Abwesenheit'}
         />
         <FormFields
           label={'Abwesenheitsbeginn'}
@@ -61,13 +69,21 @@ const FormModalEdit = ({
           name="absenceEnd"
           errors={errors}
         />
-        <EmployeeSelect
+        {/* <EmployeeSelect
           name={'substitute'}
           control={control}
           options={employeeOptions}
           placeholder={'Mitarbeiter'}
           label={'Soll vertreten werden von'}
           errors={errors}
+        /> */}
+        <FormSelectOptions
+          name="substitute"
+          control={control}
+          data={employeeOptions}
+          placeholder={'Mitarbeiter'}
+          errors={errors}
+          label={'Soll vertreten werden von'}
         />
 
         <Button className="cursor-pointer" variant={'outline'} type="submit">
