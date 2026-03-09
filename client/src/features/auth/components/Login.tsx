@@ -68,10 +68,11 @@ export function LoginComponent() {
               register={register}
               name="email"
               label="Email Address"
+              labelClassName="text-white text-sm font-medium"
               id="email"
               type="email"
-              required
               placeholder="m@example.com"
+              className="text-white bg-gray-600 border-gray-500"
             />
           </div>
 
@@ -81,9 +82,10 @@ export function LoginComponent() {
               register={register}
               name="password"
               label="Password"
+              labelClassName="text-white text-sm font-medium"
               id="password"
               type="password"
-              required
+              className="text-white bg-gray-600 border-gray-500"
             />
           </div>
         </div>

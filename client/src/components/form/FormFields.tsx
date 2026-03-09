@@ -19,6 +19,7 @@ type FormFieldsProps<TFieldValues extends FieldValues> = Omit<
   name: Path<TFieldValues>;
   placeholder?: string;
   label?: string;
+  labelClassName?: string;
   type?: string;
   required?: boolean;
 };
@@ -27,13 +28,14 @@ const FormFields = <TFieldValues extends FieldValues>({
   errors,
   register,
   label,
+  labelClassName,
   name,
   className,
   ...props
 }: FormFieldsProps<TFieldValues>) => {
   return (
     <>
-      {label && <Label>{label}</Label>}
+      {label && <Label className={cn(labelClassName)}>{label}</Label>}
       <Input
         className={cn('rounded-xl', className)}
         {...props}
@@ -41,7 +43,7 @@ const FormFields = <TFieldValues extends FieldValues>({
       />
       <ErrorMessage
         errors={errors}
-        name={name as any}
+        name={name as unknown as never}
         render={({ message }) => (
           <p className="text-red-400 text-sm">{message}</p>
         )}

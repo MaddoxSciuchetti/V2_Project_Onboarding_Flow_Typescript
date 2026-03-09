@@ -67,16 +67,17 @@ export function SignupForm() {
           {error?.message || 'An error occurred'}
         </div>
       )}
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-6">
         <div className="space-y-2">
           <FormFields
             errors={errors}
             register={register}
             name="email"
             label="Email Address"
+            labelClassName="text-white text-sm font-medium"
             id="email"
             type="email"
-            required
+            className="text-white bg-gray-600 border-gray-500"
           />
         </div>
         <div className="flex gap-3">
@@ -86,9 +87,10 @@ export function SignupForm() {
               register={register}
               name="firstName"
               label="Vorname"
+              labelClassName="text-white text-sm font-medium"
               id="firstName"
               type="text"
-              required
+              className="text-white bg-gray-600 border-gray-500"
             />
           </div>
           <div className="space-y-2 flex-1">
@@ -99,7 +101,8 @@ export function SignupForm() {
               id="lastName"
               type="text"
               label="Nachname"
-              required
+              labelClassName="text-white text-sm font-medium"
+              className="text-white bg-gray-600 border-gray-500"
             />
           </div>
         </div>
@@ -110,9 +113,10 @@ export function SignupForm() {
             register={register}
             name="password"
             label="Password"
+            labelClassName="text-white text-sm font-medium"
             id="password"
             type="password"
-            required
+            className="text-white bg-gray-600 border-gray-500"
           />
           <p className="text-gray-400 text-xs text-left mt-2">
             - Must be at least 6 characters long.
@@ -125,9 +129,10 @@ export function SignupForm() {
             register={register}
             name="confirmPassword"
             label="Confirm Password"
+            labelClassName="text-white text-sm font-medium"
             id="confirmPassword"
             type="password"
-            required
+            className="text-white bg-gray-600 border-gray-500"
           />
         </div>
         <Button
