@@ -14,6 +14,8 @@ type FormModalAddProps = {
   register: UseFormRegister<CreateWorker>;
   errors: FieldErrors<CreateWorker>;
   onFormSubmit: SubmitHandler<CreateWorker>;
+  isError: boolean;
+  error: { message?: string } | null;
 };
 
 const FormModalAdd = ({
@@ -21,15 +23,23 @@ const FormModalAdd = ({
   register,
   onFormSubmit,
   errors,
+  isError,
+  error,
 }: FormModalAddProps) => {
   return (
-    <>
+    <div className="flex-1 w-full min-h-0 overflow-y-auto overflow-x-hidden pr-1">
+      {isError && (
+        <div className="mb-3 text-red-400">
+          {error?.message || 'An error occurred'}
+        </div>
+      )}
       <p className="mb-5">
         Ein Mitarbeiter erhält eine E-Mail mit der Bitte, sich einzuloggen.
       </p>
       <form
         onSubmit={handleSubmit(onFormSubmit)}
-        className="flex flex-col gap-5 w-full"
+        noValidate
+        className="flex w-full min-w-0 flex-col gap-5"
       >
         {CreateMitarbeiterInputs.map((value) => (
           <FormFields
@@ -39,7 +49,6 @@ const FormModalAdd = ({
             name={value.name}
             errors={errors}
             register={register}
-            required={value.required}
           />
         ))}
         <Button
@@ -50,7 +59,7 @@ const FormModalAdd = ({
           Nutzer Erstellen
         </Button>
       </form>
-    </>
+    </div>
   );
 };
 

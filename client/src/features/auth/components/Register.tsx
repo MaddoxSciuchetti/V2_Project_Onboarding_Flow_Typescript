@@ -1,22 +1,36 @@
 import CenteredDiv from '@/components/alerts/layout-wrapper/CenteredDiv';
+import FormFields from '@/components/form/FormFields';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
-import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import {
+  RegisterFormValues,
+  registerSchema,
+} from '../../../../../server/src/schemas/auth.schemas';
 import { signup } from '../api/auth.api';
 import DoorManCard from './resuable/DoorManCard';
 import DoorManFooter from './resuable/DoorManFooter';
 
 export function SignupForm() {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [firstName, setFirstName] = useState<string>('');
-  const [lastName, setLastName] = useState<string>('');
-  const [confirmPassword, setConfirmPassword] = useState<string>('');
   const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegisterFormValues>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      email: '',
+      firstName: '',
+      lastName: '',
+      password: '',
+      confirmPassword: '',
+    },
+  });
 
   const {
     mutate: createAccount,
@@ -35,6 +49,10 @@ export function SignupForm() {
     },
   });
 
+  const onSubmit: SubmitHandler<RegisterFormValues> = (data) => {
+    createAccount(data);
+  };
+
   if (isPending)
     return (
       <CenteredDiv>
@@ -49,58 +67,55 @@ export function SignupForm() {
           {error?.message || 'An error occurred'}
         </div>
       )}
-      <div className="space-y-6">
+      <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-6">
         <div className="space-y-2">
-          <Label htmlFor="email" className="text-white text-sm font-medium">
-            Email Address
-          </Label>
-          <Input
+          <FormFields
+            errors={errors}
+            register={register}
+            name="email"
+            label="Email Address"
+            labelClassName="text-white text-sm font-medium"
             id="email"
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            autoFocus
             className="text-white bg-gray-600 border-gray-500"
           />
         </div>
         <div className="flex gap-3">
-          <div className="space-y-2">
-            <Label htmlFor="email" className="text-white text-sm font-medium">
-              Vorname
-            </Label>
-            <Input
+          <div className="space-y-2 flex-1">
+            <FormFields
+              errors={errors}
+              register={register}
+              name="firstName"
+              label="Vorname"
+              labelClassName="text-white text-sm font-medium"
               id="firstName"
-              type="firstName"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              autoFocus
+              type="text"
               className="text-white bg-gray-600 border-gray-500"
             />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="email" className="text-white text-sm font-medium">
-              Nachname
-            </Label>
-            <Input
+          <div className="space-y-2 flex-1">
+            <FormFields
+              errors={errors}
+              register={register}
+              name="lastName"
               id="lastName"
-              type="lastName"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              autoFocus
+              type="text"
+              label="Nachname"
+              labelClassName="text-white text-sm font-medium"
               className="text-white bg-gray-600 border-gray-500"
             />
           </div>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="password" className="text-white text-sm font-medium">
-            Password
-          </Label>
-          <Input
+          <FormFields
+            errors={errors}
+            register={register}
+            name="password"
+            label="Password"
+            labelClassName="text-white text-sm font-medium"
             id="password"
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
             className="text-white bg-gray-600 border-gray-500"
           />
           <p className="text-gray-400 text-xs text-left mt-2">
@@ -109,42 +124,21 @@ export function SignupForm() {
         </div>
 
         <div className="space-y-2">
-          <Label
-            htmlFor="confirmPassword"
-            className="text-white text-sm font-medium"
-          >
-            Confirm Password
-          </Label>
-          <Input
+          <FormFields
+            errors={errors}
+            register={register}
+            name="confirmPassword"
+            label="Confirm Password"
+            labelClassName="text-white text-sm font-medium"
             id="confirmPassword"
             type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            onKeyDown={(e) =>
-              e.key === 'Enter' &&
-              createAccount({
-                email,
-                firstName,
-                lastName,
-                password,
-                confirmPassword,
-              })
-            }
             className="text-white bg-gray-600 border-gray-500"
           />
         </div>
         <Button
+          type="submit"
           className="w-full my-2 text-white "
           variant={'outline'}
-          onClick={() =>
-            createAccount({
-              email,
-              firstName,
-              lastName,
-              password,
-              confirmPassword,
-            })
-          }
         >
           Create Account
         </Button>
@@ -153,7 +147,7 @@ export function SignupForm() {
           action="Signin"
           nav={() => navigate({ to: `/login` })}
         />
-      </div>
+      </form>
     </DoorManCard>
   );
 }

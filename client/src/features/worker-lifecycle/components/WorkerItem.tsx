@@ -1,10 +1,4 @@
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import DropDownResuable from '@/components/DropDownResuable';
 import useFetchProcessData from '@/features/employee-overview/hooks/useFetchProcessData';
 import { UseMutateFunction } from '@tanstack/react-query';
 import { DeleteUser } from '../types/index.types';
@@ -75,27 +69,11 @@ export function Worker_Item({
       </th>
 
       <td>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <img
-              className="hover:scale-110 bg-muted-foreground"
-              src="/assets/editReact.svg"
-            />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className={`w-40 bg-gray-100`} align="start">
-            <DropdownMenuGroup>
-              <DropdownMenuItem
-                className="hover:bg-gray-200 cursor-pointer"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onRemove(item_value);
-                }}
-              >
-                Löschen
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <DropDownResuable
+          description="Löschen"
+          action={() => onRemove(item_value)}
+          imgsrc="/assets/editReact.svg"
+        />
       </td>
     </tr>
   );

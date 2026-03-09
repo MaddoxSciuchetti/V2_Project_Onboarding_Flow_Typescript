@@ -1,7 +1,13 @@
-import { AbsenceData } from '@/features/employee-overview/types/index.types';
+import {
+  Control,
+  Controller,
+  FieldErrors,
+  FieldValues,
+  Path,
+} from 'react-hook-form';
+
 import { ErrorMessage } from '@hookform/error-message';
-import { Control, Controller, FieldErrors } from 'react-hook-form';
-import { Label } from '../../../../../components/ui/label';
+import { Label } from '../ui/label';
 import {
   Select,
   SelectContent,
@@ -9,25 +15,25 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../../../../../components/ui/select';
+} from '../ui/select';
 
-type EmployeeSelectProps = {
-  name: string;
-  control: Control<any>;
-  options: { label: string; value: string }[] | undefined;
-  errors: FieldErrors<AbsenceData>;
-  label: string;
-  placeholder?: string;
+type FormSelectOptionsProps<T extends FieldValues> = {
+  control: Control<T>;
+  errors: FieldErrors<T>;
+  data: { value: string; label: string }[];
+  name: Path<T>;
+  placeholder: string;
+  label?: string;
 };
 
-const EmployeeSelect = ({
-  name,
+const FormSelectOptions = <T extends FieldValues>({
   control,
-  options,
+  data,
+  errors,
+  name,
   placeholder,
   label,
-  errors,
-}: EmployeeSelectProps) => {
+}: FormSelectOptionsProps<T>) => {
   return (
     <>
       <Label>{label}</Label>
@@ -35,14 +41,13 @@ const EmployeeSelect = ({
         name={name}
         control={control}
         render={({ field }) => (
-          <Select onValueChange={field.onChange} value={field.value ?? ''}>
-            {' '}
-            <SelectTrigger name={name}>
+          <Select value={field.value} onValueChange={field.onChange}>
+            <SelectTrigger id={name} name={name} className="w-full rounded-xl">
               <SelectValue placeholder={placeholder} />
             </SelectTrigger>
             <SelectContent className="border-none">
               <SelectGroup className="bg-white cursor-pointer">
-                {options?.map((item) => (
+                {data?.map((item) => (
                   <SelectItem
                     className="hover:bg-gray-200 cursor-pointer"
                     id={`select-${item.value}`}
@@ -59,13 +64,13 @@ const EmployeeSelect = ({
       />
       <ErrorMessage
         errors={errors}
-        name={'substitute'}
+        name={name as any}
         render={({ message }) => (
-          <p className="text-red-400 text-sm">{message}</p>
+          <p className="text-red-400 text-left text-sm mt-5">{message}</p>
         )}
       />
     </>
   );
 };
 
-export default EmployeeSelect;
+export default FormSelectOptions;
