@@ -18,7 +18,7 @@ const EmployeeTableBody = ({
   EmployeeData,
   DeleteEmployee,
 }: TableBodyProps) => {
-  const { openEdit } = useEmployeeModal();
+  const { openEdit, employeeCreate } = useEmployeeModal();
   return (
     <>
       <TableBody className="text-left mt-5">
@@ -33,7 +33,7 @@ const EmployeeTableBody = ({
             <td className="text-sm font-semibold py-5 rounded-l-xl">
               <EmployeeName value={value} />
             </td>
-            <td>Offene Aufgaben</td>
+            <td onClick={() => employeeCreate()}>Offene Aufgaben</td>
             <td className="">
               <EmployeeStatus value={value} />
             </td>

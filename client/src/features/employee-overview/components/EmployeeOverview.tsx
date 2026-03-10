@@ -9,13 +9,13 @@ import ModalOverlay from '@/components/modal/ModalOverlay';
 import { useEmployeeModal } from '../hooks/useEmployeeModal';
 import ModalMitarbeiter from './modals/create-employee-modal/EmployeeModal';
 import ModalEditMitarbeiter from './modals/edit-employee-modal/EmployeeModal';
+import ViewEmployeeModal from './modals/view-employeedata-modal/viewEmployeeModal';
 import EmployeeTableHeader from './table/EmployeeTableHeader';
 import EmployeeTableBody from './table/TableBody';
 
 function EmployeeOverview() {
   const { EmployeeData } = useGetEmployees();
-  const { modalState, openCreate, closeModal, employeeCreate } =
-    useEmployeeModal();
+  const { modalState, openCreate, closeModal } = useEmployeeModal();
   const { DeleteEmployee, isPending } = useDeleteEmployee();
 
   const renderModal = () => {
@@ -40,7 +40,7 @@ function EmployeeOverview() {
       case 'employeecreate':
         return (
           <ModalOverlay handleToggle={closeModal}>
-            <ModalMitarbeiter toggleModal={closeModal} />
+            <ViewEmployeeModal toggleModal={closeModal} />
           </ModalOverlay>
         );
     }
