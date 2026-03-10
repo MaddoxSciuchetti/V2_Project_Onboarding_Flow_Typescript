@@ -2,9 +2,13 @@ import { useEmployeeModal } from '@/features/employee-overview/hooks/useEmployee
 
 type EmployeeOpenTasksProps = {
   owner: string;
+  openTaskCount: number;
 };
 
-const EmployeeOpenTasks = ({ owner }: EmployeeOpenTasksProps) => {
+const EmployeeOpenTasks = ({
+  owner,
+  openTaskCount,
+}: EmployeeOpenTasksProps) => {
   const { employeeCreate } = useEmployeeModal();
 
   return (
@@ -16,7 +20,7 @@ const EmployeeOpenTasks = ({ owner }: EmployeeOpenTasksProps) => {
           employeeCreate(owner);
         }}
       >
-        Offene Aufgaben
+        {openTaskCount} Offene Aufgaben
       </p>
     </>
   );

@@ -40,10 +40,7 @@ function EmployeeOverview() {
       case 'employeecreate':
         return (
           <ModalOverlay handleToggle={closeModal}>
-            <ViewEmployeeModal
-              toggleModal={closeModal}
-              selectedOwner={modalState.owner}
-            />
+            <ViewEmployeeModal selectedOwner={modalState.owner} />
           </ModalOverlay>
         );
     }

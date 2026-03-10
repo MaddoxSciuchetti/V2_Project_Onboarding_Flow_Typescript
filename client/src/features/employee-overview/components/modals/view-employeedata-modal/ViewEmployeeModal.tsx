@@ -7,14 +7,10 @@ import ReminderModal from '@/features/employee-overview/components/modals/view-e
 import useEmployeeData from '@/features/employee-overview/hooks/useEmployeeData';
 
 type ViewEmployeeModalProps = {
-  toggleModal: () => void;
   selectedOwner: string;
 };
 
-const ViewEmployeeModal = ({
-  toggleModal,
-  selectedOwner,
-}: ViewEmployeeModalProps) => {
+const ViewEmployeeModal = ({ selectedOwner }: ViewEmployeeModalProps) => {
   const { setModalOpen, modal, isLoading, cleanData } = useEmployeeData();
 
   if (isLoading)

@@ -1,5 +1,7 @@
 import { TableBody } from '@/components/ui/table';
 import { UseMutateFunction } from '@tanstack/react-query';
+import { useMemo } from 'react';
+import useEmployeeData from '../../hooks/useEmployeeData';
 import { useEmployeeModal } from '../../hooks/useEmployeeModal';
 import { EmployeeDataArray } from '../../schemas/schema';
 
@@ -20,6 +22,20 @@ const EmployeeTableBody = ({
   DeleteEmployee,
 }: TableBodyProps) => {
   const { openEdit } = useEmployeeModal();
+  const { cleanData } = useEmployeeData();
+
+  const openTaskCountsByOwner = useMemo(() => {
+    return new Map(
+      cleanData.map(([owner, items]) => {
+        const totalOpenTasks = items.reduce(
+          (count, item) => count + item.inputs.length,
+          0
+        );
+        return [owner, totalOpenTasks] as const;
+      })
+    );
+  }, [cleanData]);
+
   return (
     <>
       <TableBody className="text-left mt-5">
@@ -37,7 +53,10 @@ const EmployeeTableBody = ({
                 <EmployeeName value={value} />
               </td>
               <td>
-                <EmployeeOpenTasks owner={value.id} />
+                <EmployeeOpenTasks
+                  owner={value.id}
+                  openTaskCount={openTaskCountsByOwner.get(value.id) ?? 0}
+                />
               </td>
               <td className="">
                 <EmployeeStatus value={value} />
