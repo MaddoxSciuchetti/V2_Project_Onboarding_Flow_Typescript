@@ -33,6 +33,7 @@ const EmployeeTableBody = ({
             <td className="text-sm font-semibold py-5 rounded-l-xl">
               <EmployeeName value={value} />
             </td>
+            <td>Offene Aufgaben</td>
             <td className="">
               <EmployeeStatus value={value} />
             </td>
