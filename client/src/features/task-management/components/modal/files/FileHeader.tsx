@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { File_Request } from '@/features/task-management/types/index.types';
+import { PlusSquare } from 'lucide-react';
 
 type FileHeaderProps = {
   toggleModal: () => void;
@@ -14,12 +15,10 @@ const FileHeader = ({
 }: FileHeaderProps) => {
   return (
     <>
-      <div className="flex flex-row justify-end pt-5 pr-5">
-        <img
-          className="flex flex-end cursor-pointer rounded-xl p-1 outline outline-border"
+      <div className="flex flex-row justify-end pt-5 pr-5 items-center">
+        <PlusSquare
+          className="flex flex-end cursor-pointer rounded-xl w-8 h-8 bg-(--dropdown-surface) p-1 transition-colors hover:bg-(--hover-bg)"
           onClick={toggleModal}
-          src="/assets/copy.svg"
-          alt="Upload File"
         />
 
         <Button

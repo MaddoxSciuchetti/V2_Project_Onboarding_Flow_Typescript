@@ -7,19 +7,19 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Edit } from 'lucide-react';
 
-type DropDownResuableProps<T> = {
+type DropDownResuableProps = {
   imgsrc: string;
   disabled?: boolean;
   description: string;
   action: () => void;
 };
 
-const DropDownResuable = <T,>({
+const DropDownResuable = ({
   description,
   imgsrc,
   disabled,
   action,
-}: DropDownResuableProps<T>) => {
+}: DropDownResuableProps) => {
   return (
     <>
       <DropdownMenu>
@@ -27,13 +27,15 @@ const DropDownResuable = <T,>({
           <Edit />
         </DropdownMenuTrigger>
         <DropdownMenuContent
-          className="w-40 bg-popover text-popover-foreground"
+          className="w-40 rounded-xl border border-border bg-(--dropdown-surface) p-1.5 text-popover-foreground shadow-md"
           align="start"
+          sideOffset={8}
+          collisionPadding={16}
         >
           <DropdownMenuGroup>
             <DropdownMenuItem
               disabled={disabled}
-              className="cursor-pointer hover:bg-accent hover:text-accent-foreground"
+              className="cursor-pointer rounded-lg text-sm font-medium focus:bg-accent focus:text-accent-foreground"
               onClick={(e) => {
                 e.stopPropagation();
                 action();

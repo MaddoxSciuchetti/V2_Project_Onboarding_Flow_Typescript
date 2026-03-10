@@ -27,7 +27,9 @@ const HistoryContent = ({ id_original }: HistoryContentProps) => {
                   </p>
                   <div className="flex">
                     <p>Nutzer: {item.auth_user?.email}</p>
-                    <img className="ml-1 w-5 h-5 " src={data} />
+                    <div className="flex bg-white rounded-full w-5 h-5 overflow-hidden ml-2 items-center justify-center">
+                      <img className="" src={data} />
+                    </div>
                   </div>
                   Status: {''}
                   {STATUS_MAP[item.status ?? '']?.label ?? 'Kein Status'}

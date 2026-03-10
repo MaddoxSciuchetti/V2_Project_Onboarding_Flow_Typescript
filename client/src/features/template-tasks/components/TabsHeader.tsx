@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/trycatch';
+import { PlusSquare } from 'lucide-react';
 import { Dispatch, SetStateAction } from 'react';
 import { TABS } from '../consts/index.consts';
 
@@ -18,7 +19,7 @@ const TabsHeader = ({
 }: TabsHeaderProps) => {
   return (
     <>
-      <div className="flex gap-2 justify-start">
+      <div className="flex gap-2 justify-start items-center ">
         {TABS.map(({ value, label }) => (
           <Button
             key={value}
@@ -32,14 +33,12 @@ const TabsHeader = ({
             {label}
           </Button>
         ))}
-        <img
+        <PlusSquare
           className="w-7 cursor-pointer"
-          src="assets/copy.svg"
           onClick={() => {
             openDescriptionModal();
             setMode('ADD');
           }}
-          alt="add description"
         />
       </div>
     </>

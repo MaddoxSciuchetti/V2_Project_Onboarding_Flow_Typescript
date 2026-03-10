@@ -1,5 +1,5 @@
 import { DescriptionResponse } from '@/types/api.types';
-import { Edit } from 'lucide-react';
+import { Edit, TrashIcon } from 'lucide-react';
 import { Dispatch, SetStateAction } from 'react';
 import useDeleteDescription from '../hooks/useDeleteDescription';
 
@@ -20,11 +20,9 @@ const Tasks = ({ items, openDescriptionModal, setMode }: TasksProps) => {
   return items?.map((item, index) => (
     <div className=" flex flex-row  w-full items-center mt-5" key={index}>
       <div className="flex items-center gap-5">
-        <img
+        <TrashIcon
+          className="text-red-600 w-5 h-5 cursor-pointer"
           onClick={() => deleteDescription(item.form_field_id)}
-          src="/assets/x_delete.svg"
-          alt="deleticon"
-          className="items-center cursor-pointer "
         />
         <p className="underline w-20">{item.description}</p>
       </div>
