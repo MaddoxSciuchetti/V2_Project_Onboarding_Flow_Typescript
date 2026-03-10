@@ -4,10 +4,10 @@ import { Spinner } from '@/components/ui/spinner';
 import { Tabs } from '@/components/ui/tabs';
 import useCurrentBSBEmployee from '@/features/ceo-dashboard/hooks/useCurrentBSBEmployee';
 import useHandwerkerProBSBEmployee from '@/features/ceo-dashboard/hooks/useHandwerkerProBSBEmployee';
+import ReminderModal from '../../employee-overview/components/modals/view-employeedata-modal/ReminderModal';
 import useEmployeeData from '../hooks/useEmployeeData';
 import EmployeeTabs from './employees/EmployeeTabs';
 import EmployeeTabsContent from './employees/EmployeeTabsContent';
-import ReminderModal from './ReminderModal';
 
 function CeoDashboard() {
   const {
