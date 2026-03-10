@@ -24,16 +24,25 @@ const EmployeeTableBody = ({
       <TableBody className="text-left mt-5">
         {EmployeeData?.map((value) => (
           <tr
-            className="  cursor-pointer py-5"
+            className="  py-5"
             key={value.id}
-            onClick={() =>
-              openEdit(value.id, `${value.vorname}${value.nachname}`)
-            }
+            onClick={(e) => {
+              e.stopPropagation();
+              openEdit(value.id, `${value.vorname}${value.nachname}`);
+            }}
           >
             <td className="text-sm font-semibold py-5 rounded-l-xl">
               <EmployeeName value={value} />
             </td>
-            <td onClick={() => employeeCreate()}>Offene Aufgaben</td>
+            <td
+              className="cursor-pointer"
+              onClick={(e) => {
+                e.stopPropagation();
+                employeeCreate();
+              }}
+            >
+              Offene Aufgaben
+            </td>
             <td className="">
               <EmployeeStatus value={value} />
             </td>
