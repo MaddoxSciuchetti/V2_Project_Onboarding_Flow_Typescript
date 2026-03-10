@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button';
 import { useEmployeeModal } from '@/features/employee-overview/hooks/useEmployeeModal';
 
 type EmployeeOpenTasksProps = {
@@ -13,15 +14,21 @@ const EmployeeOpenTasks = ({
 
   return (
     <>
-      <p
-        className="cursor-pointer"
-        onClick={(e) => {
-          e.stopPropagation();
-          employeeCreate(owner);
-        }}
-      >
-        {openTaskCount} Offene Aufgaben
-      </p>
+      <div className="flex items-center gap-3">
+        <p>{openTaskCount} Offene Aufgaben</p>
+        <Button
+          type="button"
+          size="sm"
+          variant="outline"
+          className="cursor-pointer pointer-events-none opacity-0 transition-opacity duration-150 group-hover:pointer-events-auto group-hover:opacity-100"
+          onClick={(e) => {
+            e.stopPropagation();
+            employeeCreate(owner);
+          }}
+        >
+          Ansehen
+        </Button>
+      </div>
     </>
   );
 };
