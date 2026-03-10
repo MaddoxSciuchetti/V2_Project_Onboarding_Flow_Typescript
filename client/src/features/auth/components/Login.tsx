@@ -103,7 +103,7 @@ export function LoginComponent() {
             type="submit"
             className="w-full cursor-pointer"
           >
-            Login
+            {isPending ? 'Logging in...' : 'Login'}
           </Button>
 
           <DoorManFooter

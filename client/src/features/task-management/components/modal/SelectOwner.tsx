@@ -31,7 +31,7 @@ const SelectOwner = ({
         >
           <SelectValue placeholder="Status" />
         </SelectTrigger>
-        <SelectContent className="border border-border bg-popover text-popover-foreground">
+        <SelectContent className="border border-border bg-(--dropdown-surface) text-popover-foreground">
           <SelectGroup className="cursor-pointer">
             <SelectItem className="cursor-pointer" id="select1" value="offen">
               Offen

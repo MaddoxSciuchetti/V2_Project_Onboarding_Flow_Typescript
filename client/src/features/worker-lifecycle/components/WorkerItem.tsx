@@ -33,10 +33,9 @@ export function Worker_Item({
     const percent = (completedTasks / total) * 100;
     console.log('this is the percent calculation');
     console.log(percent);
-    if (percent < 20) return 'text-(--status-error-foreground)';
-    if (percent > 20 && percent <= 99)
-      return 'text-(--status-warning-foreground)';
-    if (percent === 100) return 'text-(--status-success-foreground)';
+    if (percent < 20) return 'text-(--chart-5)';
+    if (percent >= 20 && percent < 100) return 'text-orange-500';
+    if (percent === 100) return 'text-(--chart-2)';
   };
 
   const color = calculatePercent(completedTasksCount!, totalTasks!);
@@ -63,8 +62,8 @@ export function Worker_Item({
       <td
         className={
           form_type === 'Onboarding'
-            ? 'text-sm underline decoration-2 decoration-(--status-info-foreground) justify-center items-center py-5'
-            : 'text-sm underline decoration-2 decoration-(--status-error-foreground) justify-center items-center py-5'
+            ? 'text-sm underline text-(--chart-1) justify-center items-center py-5'
+            : 'text-sm underline text-(--chart-5) justify-center items-center py-5'
         }
         lang="en"
       >
