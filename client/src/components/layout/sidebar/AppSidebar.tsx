@@ -72,7 +72,7 @@ export function AppSidebar({ openModal }: { openModal: () => void }) {
                         variant={'outline'}
                         ref={isTarget ? isItem : undefined}
                         asChild
-                        className="mt-2 rounded-xl py-5 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                        className="mt-2 rounded-xl py-5 transition-colors hover:bg-(--hover-bg) hover:text-(--hover-foreground)"
                       >
                         <Link to={item.to}>
                           <item.icon />
@@ -91,7 +91,7 @@ export function AppSidebar({ openModal }: { openModal: () => void }) {
         <Button
           onClick={() => openModal()}
           variant={'outline'}
-          className="mx-1 mb-1 cursor-pointer rounded-xl bg-sidebar-accent/40 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+          className="mx-1 mb-1 cursor-pointer rounded-xl bg-muted transition-colors hover:bg-(--hover-bg) hover:text-(--hover-foreground)"
         >
           Feature Request{' '}
         </Button>

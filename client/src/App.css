@@ -30,9 +30,13 @@
   --muted: hsl(240 4.8% 95.9%);
   --muted-foreground: hsl(240 3.8% 46.1%);
 
+  /* Hover surface tokens */
+  --hover-bg: hsl(220 14% 92%);
+  --hover-foreground: hsl(240 5.9% 10%);
+
   /* Accent (hover states, highlights) */
-  --accent: hsl(240 4.8% 95.9%);
-  --accent-foreground: hsl(240 5.9% 10%);
+  --accent: var(--hover-bg);
+  --accent-foreground: var(--hover-foreground);
 
   /* Destructive (errors, delete actions) */
   --destructive: hsl(0 84.2% 60.2%);
@@ -63,8 +67,8 @@
   --sidebar-foreground: hsl(240 5.3% 26.1%);
   --sidebar-primary: hsl(240 5.9% 10%);
   --sidebar-primary-foreground: hsl(0 0% 98%);
-  --sidebar-accent: hsl(240 4.8% 95.9%);
-  --sidebar-accent-foreground: hsl(240 5.9% 10%);
+  --sidebar-accent: var(--hover-bg);
+  --sidebar-accent-foreground: var(--hover-foreground);
   --sidebar-border: hsl(220 13% 91%);
   --sidebar-ring: hsl(217.2 91.2% 59.8%);
 }
@@ -91,8 +95,12 @@
   --muted: hsl(240 3.7% 15.9%);
   --muted-foreground: hsl(240 5% 64.9%);
 
-  --accent: hsl(240 3.7% 15.9%);
-  --accent-foreground: hsl(0 0% 98%);
+  /* Hover surface tokens */
+  --hover-bg: hsl(240 4.6% 22%);
+  --hover-foreground: hsl(0 0% 98%);
+
+  --accent: var(--hover-bg);
+  --accent-foreground: var(--hover-foreground);
 
   --destructive: hsl(0 62.8% 30.6%);
   --destructive-foreground: hsl(0 0% 98%);
@@ -119,8 +127,8 @@
   --sidebar-foreground: hsl(240 4.8% 95.9%);
   --sidebar-primary: hsl(224.3 76.3% 48%);
   --sidebar-primary-foreground: hsl(0 0% 100%);
-  --sidebar-accent: hsl(240 3.7% 15.9%);
-  --sidebar-accent-foreground: hsl(240 4.8% 95.9%);
+  --sidebar-accent: var(--hover-bg);
+  --sidebar-accent-foreground: var(--hover-foreground);
   --sidebar-border: hsl(240 3.7% 15.9%);
   --sidebar-ring: hsl(217.2 91.2% 59.8%);
 }

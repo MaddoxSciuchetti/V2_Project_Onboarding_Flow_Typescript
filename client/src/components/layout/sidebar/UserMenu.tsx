@@ -61,14 +61,14 @@ const UserMenu = () => {
         className="w-40 rounded-xl border border-border bg-(--dropdown-surface) p-1.5 text-popover-foreground shadow-md [&>[data-slot=dropdown-menu-item]:last-child]:mt-1.5 [&>[data-slot=dropdown-menu-item]:last-child]:border-t [&>[data-slot=dropdown-menu-item]:last-child]:border-border [&>[data-slot=dropdown-menu-item]:last-child]:pt-2"
       >
         <DropdownMenuItem
-          className="cursor-pointer rounded-lg text-sm font-medium focus:bg-accent focus:text-accent-foreground"
+          className="cursor-pointer rounded-lg text-sm font-medium focus:bg-accent focus:text-accent-foreground "
           onClick={() => fileInputRef.current?.click()}
         >
           Profile Foto
           <Upload className="ml-2 h-4 w-4 text-muted-foreground" />
         </DropdownMenuItem>
         <DropdownMenuItem
-          className="cursor-pointer rounded-lg text-sm font-medium focus:bg-accent focus:text-accent-foreground"
+          className="cursor-pointer rounded-lg text-sm font-medium focus:bg-accent focus:text-accent-foreground "
           onClick={toggle}
         >
           {theme === 'dark' ? 'Light mode' : 'Dark mode'}
@@ -79,7 +79,7 @@ const UserMenu = () => {
           )}
         </DropdownMenuItem>
         <DropdownMenuItem
-          className="cursor-pointer rounded-lg text-sm font-medium focus:bg-accent focus:text-accent-foreground"
+          className="cursor-pointer rounded-lg text-sm font-medium focus:bg-accent focus:text-accent-foreground "
           onClick={() => signOut()}
         >
           Logout

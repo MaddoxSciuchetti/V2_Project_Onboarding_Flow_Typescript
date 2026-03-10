@@ -1,4 +1,5 @@
 import { DescriptionResponse } from '@/types/api.types';
+import { Edit } from 'lucide-react';
 import { Dispatch, SetStateAction } from 'react';
 import useDeleteDescription from '../hooks/useDeleteDescription';
 
@@ -33,9 +34,8 @@ const Tasks = ({ items, openDescriptionModal, setMode }: TasksProps) => {
           {item.auth_user.vorname} {item.auth_user.nachname}
         </span>
         <div className="grow" />
-        <img
+        <Edit
           className="cursor-pointer"
-          src="/assets/editReact.svg"
           onClick={() => {
             openDescriptionModal(
               item.description,

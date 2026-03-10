@@ -27,7 +27,7 @@ const SearchHeaderResuable = <T extends string | number>({
           <Button
             variant={'outline'}
             onClick={() => toggleModal()}
-            className="cursor-pointer rounded-xl hover:bg-accent hover:text-accent-foreground transition-colors"
+            className="cursor-pointer rounded-xl hover:bg-accent hover:text-accent-foreground transition-colors hover:bg-(--hover-bg) hover:text-(--hover-foreground)"
           >
             {description}
           </Button>

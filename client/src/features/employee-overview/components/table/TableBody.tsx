@@ -42,7 +42,7 @@ const EmployeeTableBody = ({
       <TableBody className="text-left mt-5">
         {EmployeeData?.map((value) => {
           return (
-            <tr className="group py-5" key={value.id}>
+            <tr className="group py-5 transition-colors " key={value.id}>
               <td className="text-sm font-semibold py-5 rounded-l-xl">
                 <div className="flex items-center gap-3">
                   <EmployeeName value={value} />

@@ -4,8 +4,8 @@
     --sidebar-foreground: oklch(0.145 0 0);
     --sidebar-primary: oklch(0.205 0 0);
     --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
+    --sidebar-accent: var(--hover-bg);
+    --sidebar-accent-foreground: var(--hover-foreground);
     --sidebar-border: oklch(0.922 0 0);
     --sidebar-ring: oklch(0.708 0 0);
     --background: 0 0% 100%;
@@ -22,8 +22,10 @@
     --secondary-foreground: 240 5.9% 10%;
     --muted: 240 4.8% 95.9%;
     --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
+    --hover-bg: 220 14% 92%;
+    --hover-foreground: 240 5.9% 10%;
+    --accent: var(--hover-bg);
+    --accent-foreground: var(--hover-foreground);
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --status-success-bg: 142 69% 90%;
@@ -45,8 +47,8 @@
     --sidebar-foreground: oklch(0.985 0 0);
     --sidebar-primary: oklch(0.488 0.243 264.376);
     --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
+    --sidebar-accent: var(--hover-bg);
+    --sidebar-accent-foreground: var(--hover-foreground);
     --sidebar-border: oklch(1 0 0 / 10%);
     --sidebar-ring: oklch(0.439 0 0);
     --background: 240 5.9% 10%;
@@ -63,8 +65,10 @@
     --secondary-foreground: 0 0% 98%;
     --muted: 240 3.7% 15.9%;
     --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
+    --hover-bg: 240 4.6% 22%;
+    --hover-foreground: 0 0% 98%;
+    --accent: var(--hover-bg);
+    --accent-foreground: var(--hover-foreground);
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
     --status-success-bg: 142 40% 22%;

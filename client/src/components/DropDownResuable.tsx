@@ -5,6 +5,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Edit } from 'lucide-react';
 
 type DropDownResuableProps<T> = {
   imgsrc: string;
@@ -23,7 +24,7 @@ const DropDownResuable = <T,>({
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <img className="hover:scale-110" src={imgsrc} />
+          <Edit />
         </DropdownMenuTrigger>
         <DropdownMenuContent
           className="w-40 bg-popover text-popover-foreground"
