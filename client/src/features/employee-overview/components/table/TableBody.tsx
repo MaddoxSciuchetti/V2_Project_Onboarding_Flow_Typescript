@@ -6,6 +6,7 @@ import { EmployeeDataArray } from '../../schemas/schema';
 import DropDownResuable from '@/components/DropDownResuable';
 import { User } from '@/features/user-profile/types/auth.type';
 import EmployeeName from './table-row-item/EmployeeName';
+import EmployeeOpenTasks from './table-row-item/EmployeeOpenTasks';
 import EmployeeStatus from './table-row-item/EmployeeStatus';
 import EmployeeSubstitute from './table-row-item/EmployeeSubstitute';
 
@@ -18,7 +19,7 @@ const EmployeeTableBody = ({
   EmployeeData,
   DeleteEmployee,
 }: TableBodyProps) => {
-  const { openEdit, employeeCreate } = useEmployeeModal();
+  const { openEdit } = useEmployeeModal();
   return (
     <>
       <TableBody className="text-left mt-5">
@@ -34,14 +35,8 @@ const EmployeeTableBody = ({
             <td className="text-sm font-semibold py-5 rounded-l-xl">
               <EmployeeName value={value} />
             </td>
-            <td
-              className="cursor-pointer"
-              onClick={(e) => {
-                e.stopPropagation();
-                employeeCreate();
-              }}
-            >
-              Offene Aufgaben
+            <td>
+              <EmployeeOpenTasks />
             </td>
             <td className="">
               <EmployeeStatus value={value} />

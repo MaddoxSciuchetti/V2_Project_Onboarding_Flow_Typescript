@@ -6,10 +6,11 @@ import CenteredDiv from '@/components/alerts/layout-wrapper/CenteredDiv';
 import LoadingAlert from '@/components/alerts/LoadingAlert';
 import SearchHeaderResuable from '@/components/layout/headers/SearchHeaderResuable';
 import ModalOverlay from '@/components/modal/ModalOverlay';
+import useEmployeeData from '@/features/ceo-dashboard/hooks/useEmployeeData';
 import { useEmployeeModal } from '../hooks/useEmployeeModal';
 import ModalMitarbeiter from './modals/create-employee-modal/EmployeeModal';
 import ModalEditMitarbeiter from './modals/edit-employee-modal/EmployeeModal';
-import ViewEmployeeModal from './modals/view-employeedata-modal/viewEmployeeModal';
+import ViewEmployeeModal from './modals/view-employeedata-modal/ViewEmployeeModal';
 import EmployeeTableHeader from './table/EmployeeTableHeader';
 import EmployeeTableBody from './table/TableBody';
 
@@ -17,6 +18,17 @@ function EmployeeOverview() {
   const { EmployeeData } = useGetEmployees();
   const { modalState, openCreate, closeModal } = useEmployeeModal();
   const { DeleteEmployee, isPending } = useDeleteEmployee();
+
+  const {
+    allEmployeeData,
+    setSelectedUser,
+    setModalOpen,
+    modal,
+    selectedUser,
+    isLoading,
+    error,
+    cleanData,
+  } = useEmployeeData();
 
   const renderModal = () => {
     switch (modalState.kind) {
