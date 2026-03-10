@@ -8,7 +8,6 @@ import {
 import { Edit } from 'lucide-react';
 
 type DropDownResuableProps = {
-  imgsrc: string;
   disabled?: boolean;
   description: string;
   action: () => void;
@@ -16,7 +15,6 @@ type DropDownResuableProps = {
 
 const DropDownResuable = ({
   description,
-  imgsrc,
   disabled,
   action,
 }: DropDownResuableProps) => {

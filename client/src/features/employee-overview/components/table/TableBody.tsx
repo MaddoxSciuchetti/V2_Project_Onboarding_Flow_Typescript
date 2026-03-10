@@ -75,7 +75,6 @@ const EmployeeTableBody = ({
               <td className="rounded-r-xl">
                 <DropDownResuable
                   description="Löschen"
-                  imgsrc="/assets/editReact.svg"
                   disabled={value.user_permission === 'CHEF'}
                   action={() => DeleteEmployee(value.id)}
                 />
