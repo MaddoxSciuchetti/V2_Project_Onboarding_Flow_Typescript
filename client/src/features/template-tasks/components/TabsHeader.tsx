@@ -24,8 +24,8 @@ const TabsHeader = ({
             key={value}
             variant={'outline'}
             className={cn(
-              'cursor-pointer rounded-xl bg-white font-light',
-              tab === value ? 'bg-gray-200' : 'bg-white'
+              'cursor-pointer rounded-xl font-light transition-colors hover:bg-accent hover:text-accent-foreground',
+              tab === value && 'bg-accent text-accent-foreground'
             )}
             onClick={() => setTab(value)}
           >

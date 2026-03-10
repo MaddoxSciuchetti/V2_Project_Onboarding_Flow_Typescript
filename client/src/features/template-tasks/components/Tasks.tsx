@@ -29,7 +29,7 @@ const Tasks = ({ items, openDescriptionModal, setMode }: TasksProps) => {
       </div>
       <div className="grow" />
       <div className="flex gap-5 w-70 ">
-        <span className="rounded-2xl bg-gray-100 py-1 w-40 text-center text-sm cursor-pointer group">
+        <span className="w-40 cursor-pointer rounded-2xl bg-muted py-1 text-center text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground group">
           {item.auth_user.vorname} {item.auth_user.nachname}
         </span>
         <div className="grow" />

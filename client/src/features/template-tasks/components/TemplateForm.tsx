@@ -114,7 +114,7 @@ const TemplateForm = ({
         <Button
           type="submit"
           variant={'outline'}
-          className="flex-1 cursor-pointer justify-start rounded-xl text-left hover:bg-gray-200"
+          className="flex-1 cursor-pointer justify-start rounded-xl text-left transition-colors hover:bg-accent hover:text-accent-foreground"
         >
           {mode === 'EDIT' ? 'Speichern ' : 'Neue Beschreibung hinzufügen'}
         </Button>

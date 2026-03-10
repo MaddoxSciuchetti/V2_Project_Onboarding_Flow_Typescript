@@ -31,24 +31,24 @@ const SelectOwner = ({
         >
           <SelectValue placeholder="Status" />
         </SelectTrigger>
-        <SelectContent className="border-none ">
-          <SelectGroup className="bg-white cursor-pointer">
+        <SelectContent className="border border-border bg-popover text-popover-foreground">
+          <SelectGroup className="cursor-pointer">
             <SelectItem
-              className="hover:bg-gray-200 cursor-pointer"
+              className="cursor-pointer"
               id="select1"
               value="offen"
             >
               Offen
             </SelectItem>
             <SelectItem
-              className="hover:bg-gray-200 cursor-pointer"
+              className="cursor-pointer"
               id="select2"
               value="in_bearbeitung"
             >
               In Bearbeitung
             </SelectItem>
             <SelectItem
-              className="hover:bg-gray-200 cursor-pointer"
+              className="cursor-pointer"
               id="select3"
               value="erledigt"
             >
