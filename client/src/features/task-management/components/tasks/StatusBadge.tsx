@@ -20,7 +20,7 @@ const StatusBadge = ({
         )}
       >
         {badgeDescription}
-        <div className="invisible absolute bottom-full left-0 z-10 mb-2 whitespace-nowrap rounded-lg border border-border bg-popover p-3 text-popover-foreground opacity-0 shadow-lg transition-all duration-200 group-hover:visible group-hover:opacity-100">
+        <div className="invisible absolute bottom-full left-0 z-10 mb-2 whitespace-nowrap rounded-lg border border-border bg-(--dropdown-surface) p-3 text-popover-foreground opacity-0 shadow-lg transition-all duration-200 group-hover:visible group-hover:opacity-100">
           {tooltip}
         </div>
       </span>
