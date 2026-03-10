@@ -22,14 +22,16 @@ const ViewEmployeeModal = ({ selectedOwner }: ViewEmployeeModalProps) => {
 
   return (
     <SmallWrapper className="items-stretch justify-start overflow-hidden">
-      <div className="p-6">
+      <div className="flex h-full min-h-0 flex-col p-6">
         <h2 className="mb-4 text-lg font-medium">Offene Aufgaben</h2>
-        <EmployeeTabsData
-          user={selectedOwner}
-          cleanData={cleanData}
-          data={[]}
-          onTaskClick={() => setModalOpen(true)}
-        />
+        <div className="min-h-0 flex-1 overflow-y-auto pr-1">
+          <EmployeeTabsData
+            user={selectedOwner}
+            cleanData={cleanData}
+            data={[]}
+            onTaskClick={() => setModalOpen(true)}
+          />
+        </div>
       </div>
 
       {modal && (
