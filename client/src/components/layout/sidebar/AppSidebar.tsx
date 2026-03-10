@@ -3,7 +3,6 @@ import {
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -19,6 +18,7 @@ import UserMenu from './UserMenu';
 
 export function AppSidebar({ openModal }: { openModal: () => void }) {
   const { user } = useAuth();
+  const fullName = `${user?.vorname ?? ''} ${user?.nachname ?? ''}`.trim();
 
   const hasPermission = useMemo(() => {
     return (requiredPermission: string | undefined) => {
@@ -47,11 +47,18 @@ export function AppSidebar({ openModal }: { openModal: () => void }) {
   return (
     <>
       <Sidebar className=" p-5">
-        <SidebarHeader className="flex flex-row items-center">
-          <UserMenu />
-          <SidebarGroupLabel className="flex text-xl items-center font-light ">
-            BSB Team
-          </SidebarGroupLabel>
+        <SidebarHeader className="rounded-xl  bg-muted/40 p-2">
+          <div className="flex items-center gap-2.5">
+            <UserMenu />
+            <div className="min-w-0">
+              <p className="truncate text-lg leading-none text-foreground font-medium">
+                {fullName || 'Unbekannter Nutzer'}
+              </p>
+              <p className="mt-1 font-light truncate text-xs text-muted-foreground">
+                {user.email}
+              </p>
+            </div>
+          </div>
         </SidebarHeader>
         <SidebarContent>
           <SidebarGroup>

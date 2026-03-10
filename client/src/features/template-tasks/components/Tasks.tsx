@@ -17,13 +17,13 @@ type TasksProps = {
 const Tasks = ({ items, openDescriptionModal, setMode }: TasksProps) => {
   const { deleteDescription } = useDeleteDescription();
   return items?.map((item, index) => (
-    <div className="flex flex-row  w-full items-center mt-5" key={index}>
+    <div className=" flex flex-row  w-full items-center mt-5" key={index}>
       <div className="flex items-center gap-5">
         <img
           onClick={() => deleteDescription(item.form_field_id)}
           src="/assets/x_delete.svg"
           alt="deleticon"
-          className="items-center cursor-pointer"
+          className="items-center cursor-pointer "
         />
         <p className="underline w-20">{item.description}</p>
       </div>
