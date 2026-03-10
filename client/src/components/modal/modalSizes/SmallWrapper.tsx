@@ -11,7 +11,9 @@ const SmallWrapper = ({ children, className }: SmappWrapperProps) => {
         className
       )}
     >
-      <div className="flex h-full min-h-0 w-full flex-col">{children}</div>
+      <div className="flex h-full min-h-0 w-full flex-col items-center justify-center">
+        {children}
+      </div>
     </div>
   );
 };

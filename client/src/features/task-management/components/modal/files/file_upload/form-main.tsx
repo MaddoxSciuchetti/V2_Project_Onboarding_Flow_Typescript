@@ -37,9 +37,9 @@ export default function FileUpload01({
   return (
     <>
       <SmallWrapper className="min-h-80 max-h-80">
-        <div className="mb-6 flex w-full min-w-0 items-center justify-center">
+        <div className="flex flex-col w-full min-w-0 items-center justify-center ">
           {error ? <div>Try again</div> : ''}
-          <CardContent className="flex w-full min-w-0 flex-col p-0">
+          <CardContent className="flex w-full min-w-0 flex-col">
             <FileDropzone
               fileInputRef={fileInputRef}
               handleBoxClick={handleBoxClick}
