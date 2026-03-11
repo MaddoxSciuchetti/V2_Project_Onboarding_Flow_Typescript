@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { EmployeeModalContextType } from './Provider';
+import { EmployeeModalContextType } from './ModalProvider';
 
 export const EmployeeModalContext =
   createContext<EmployeeModalContextType | null>(null);

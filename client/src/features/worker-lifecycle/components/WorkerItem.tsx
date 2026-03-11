@@ -1,3 +1,4 @@
+import '@/App.css';
 import DropDownResuable from '@/components/DropDownResuable';
 import { Button } from '@/components/ui/button';
 import useFetchProcessData from '@/features/employee-overview/hooks/useFetchProcessData';
@@ -34,14 +35,14 @@ export function Worker_Item({
     console.log('this is the percent calculation');
     console.log(percent);
     if (percent < 20) return 'text-(--chart-5)';
-    if (percent >= 20 && percent < 100) return 'text-orange-500';
+    if (percent >= 20 && percent < 100) return 'text-(--chart-3)';
     if (percent === 100) return 'text-(--chart-2)';
   };
 
   const color = calculatePercent(completedTasksCount!, totalTasks!);
-  console.log('lifecycle type in worker-lifycycle', item_value, form_type);
+
   return (
-    <tr className="group rounded-2xl py-5 transition-colors hover:bg-muted/50">
+    <tr className="group rounded-2xl py-5 transition-colors  ">
       <td className="text-sm font-semibold">
         <div className="flex items-center gap-3">
           <span>
@@ -62,8 +63,8 @@ export function Worker_Item({
       <td
         className={
           form_type === 'Onboarding'
-            ? 'text-sm underline text-(--chart-1) justify-center items-center py-5'
-            : 'text-sm underline text-(--chart-5) justify-center items-center py-5'
+            ? 'text-sm underline text-(--ring) justify-center items-center py-5'
+            : 'text-sm underline text-(--destructive) justify-center items-center py-5'
         }
         lang="en"
       >

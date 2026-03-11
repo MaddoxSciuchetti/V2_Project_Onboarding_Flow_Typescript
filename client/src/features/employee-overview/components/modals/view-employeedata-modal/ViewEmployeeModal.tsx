@@ -1,17 +1,20 @@
 import CenteredDiv from '@/components/alerts/layout-wrapper/CenteredDiv';
-import ModalOverlay from '@/components/modal/ModalOverlay';
 import SmallWrapper from '@/components/modal/modalSizes/SmallWrapper';
+import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import { EmployeeTabsData } from '@/features/employee-overview/components/employees/EmployeeTabsData';
-import ReminderModal from '@/features/employee-overview/components/modals/view-employeedata-modal/ReminderModal';
+import ReminderWindow from '@/features/employee-overview/components/modals/view-employeedata-modal/ReminderWindow';
 import useEmployeeData from '@/features/employee-overview/hooks/useEmployeeData';
+import { ChevronLeft } from 'lucide-react';
+import { useState } from 'react';
 
 type ViewEmployeeModalProps = {
   selectedOwner: string;
 };
 
 const ViewEmployeeModal = ({ selectedOwner }: ViewEmployeeModalProps) => {
-  const { setModalOpen, modal, isLoading, cleanData } = useEmployeeData();
+  const { isLoading, cleanData } = useEmployeeData();
+  const [isReminderStep, setIsReminderStep] = useState(false);
 
   if (isLoading)
     return (
@@ -23,22 +26,35 @@ const ViewEmployeeModal = ({ selectedOwner }: ViewEmployeeModalProps) => {
   return (
     <SmallWrapper className="items-stretch justify-start overflow-hidden">
       <div className="flex h-full w-full min-h-0 flex-col p-6">
-        <h2 className="mb-4 text-lg font-medium">Aufgaben</h2>
+        <div className="mb-4 flex items-center gap-2">
+          {isReminderStep && (
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsReminderStep(false)}
+              className="h-7 w-7 text-muted-foreground hover:text-foreground"
+              aria-label="Zurueck zu Aufgaben"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+          )}
+          <h2 className="text-lg font-medium">
+            {isReminderStep ? 'Erinnerung senden' : 'Aufgaben'}
+          </h2>
+        </div>
         <div className="min-h-0 flex-1 overflow-y-auto pr-1">
-          <EmployeeTabsData
-            user={selectedOwner}
-            cleanData={cleanData}
-            data={[]}
-            onTaskClick={() => setModalOpen(true)}
-          />
+          {isReminderStep ? (
+            <ReminderWindow onClose={() => setIsReminderStep(false)} />
+          ) : (
+            <EmployeeTabsData
+              user={selectedOwner}
+              cleanData={cleanData}
+              onTaskClick={() => setIsReminderStep(true)}
+            />
+          )}
         </div>
       </div>
-
-      {modal && (
-        <ModalOverlay handleToggle={() => setModalOpen(false)}>
-          <ReminderModal onClose={() => setModalOpen(false)} />
-        </ModalOverlay>
-      )}
     </SmallWrapper>
   );
 };

@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useMemo, useState } from 'react';
-import { CreateDarkModecontext } from './Context';
+import { CreateDarkModecontext } from './themecontext';
 
 const STORAGE_KEY = 'theme-preference';
 const isBrowser = typeof window !== 'undefined';

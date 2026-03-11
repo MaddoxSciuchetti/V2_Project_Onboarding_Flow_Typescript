@@ -1,7 +1,7 @@
 import { ReactNode, useReducer } from 'react';
-import { modalReducer } from '../features/employee-overview/reducers/employee-modal-reducer';
-import { ModalState } from '../features/employee-overview/types/reducer.types';
-import { EmployeeModalContext } from './Context';
+import { modalReducer } from '../reducers/employee-modal-reducer';
+import { ModalState } from '../types/reducer.types';
+import { EmployeeModalContext } from './modalcontext';
 
 export type EmployeeModalContextType = {
   modalState: ModalState;
