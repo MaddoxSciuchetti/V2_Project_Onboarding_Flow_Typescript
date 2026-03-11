@@ -34,7 +34,7 @@ export function Worker_Item({
     console.log('this is the percent calculation');
     console.log(percent);
     if (percent < 20) return 'text-(--chart-5)';
-    if (percent >= 20 && percent < 100) return 'text-orange-500';
+    if (percent >= 20 && percent < 100) return 'text-(--chart-3)';
     if (percent === 100) return 'text-(--chart-2)';
   };
 

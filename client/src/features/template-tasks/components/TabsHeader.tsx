@@ -1,3 +1,4 @@
+import '@/App.css';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/trycatch';
 import { PlusSquare } from 'lucide-react';
@@ -21,7 +22,7 @@ const TabsHeader = ({
     <>
       {/* <div className="flex gap-2 justify-start items-center "> */}
       <div className="mb-6 flex items-center justify-between">
-        <div className="inline-flex rounded-lg border border-border bg-muted/40 p-1">
+        <div className="inline-flex rounded-lg border border-border/70 bg-muted/40 p-1">
           {TABS.map(({ value, label }) => (
             <Button
               key={value}
@@ -43,16 +44,14 @@ const TabsHeader = ({
 
         <Button
           size="sm"
-          className="gap-1.5 cursor-pointer bg-accent"
-          variant={'outline'}
+          className="cursor-pointer gap-1.5 border border-border bg-(--dropdown-surface) text-foreground hover:bg-(--hover-bg) hover:text-(--hover-foreground)"
+          variant={'ghost'}
+          onClick={() => {
+            openDescriptionModal();
+            setMode('ADD');
+          }}
         >
-          <PlusSquare
-            className="w-7 cursor-pointer"
-            onClick={() => {
-              openDescriptionModal();
-              setMode('ADD');
-            }}
-          />
+          <PlusSquare className="h-4 w-4" />
           Add Task
         </Button>
       </div>

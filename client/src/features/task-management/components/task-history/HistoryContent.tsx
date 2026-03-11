@@ -21,7 +21,7 @@ const HistoryContent = ({ id_original }: HistoryContentProps) => {
     <>
       <div className="px-4 pb-4">
         <div className="relative pl-6">
-          <div className="absolute left-[7px] top-2 bottom-2 w-px bg-gray-300" />
+          <div className="absolute left-[7px] top-2 bottom-2 w-px bg-border" />
 
           <div className="space-y-4">
             {historyData?.map((entry) => {
