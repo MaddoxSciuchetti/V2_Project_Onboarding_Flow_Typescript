@@ -27,7 +27,6 @@ const TaskManagement: React.FC<OffboardingFormProps> = ({
   const [activetab, setActiveTab] = useState<string>('form');
   const { toggleModal } = useToggleModal();
   const numericId = parseInt(String(workerId));
-
   const { data, isLoading } = useTaskData(numericId, lifecycleType);
   const {
     descriptionSearch,
@@ -36,9 +35,7 @@ const TaskManagement: React.FC<OffboardingFormProps> = ({
     handleMeFilter,
     displayData,
   } = useFilteredData(data);
-
   const { modalState, openEditModal, closeModal } = useEditModal(toggleModal);
-
   const { handleSubmit } = useTaskSubmit(numericId, user, closeModal);
 
   if (isLoading)
