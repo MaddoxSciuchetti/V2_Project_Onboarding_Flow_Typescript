@@ -5,15 +5,22 @@ type ModalOverlayProps = {
   handleToggle: () => void;
   children: ReactNode;
   backdropClassName?: string;
+  className?: string;
 };
 
 const ModalOverlay = ({
   handleToggle,
   children,
   backdropClassName,
+  className,
 }: ModalOverlayProps) => {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm ">
+    <div
+      className={cn(
+        'fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm',
+        className
+      )}
+    >
       <div
         onClick={handleToggle}
         className={cn(
