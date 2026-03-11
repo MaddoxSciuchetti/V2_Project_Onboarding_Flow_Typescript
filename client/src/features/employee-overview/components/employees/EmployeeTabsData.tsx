@@ -4,6 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/trycatch';
 import { CalendarDays, ChevronRight } from 'lucide-react';
 import useEmployeeGroups from '../../hooks/useEmployeeGroups';
@@ -48,11 +49,9 @@ export function EmployeeTabsData({ onTaskClick, user, cleanData }: TAccordion) {
                     task.status === 'null' ? 'Nicht angefangen' : task.status;
 
                   return (
-                    <button
-                      type="button"
+                    <div
                       key={`${task.form_field_id}-${task.timestamp.toISOString()}`}
-                      onClick={onTaskClick}
-                      className="flex w-full items-start gap-4 px-4 py-3 text-left transition-colors hover:bg-muted/40"
+                      className="flex w-full items-start gap-4 px-4 py-3 text-left"
                     >
                       <div className="min-w-0 flex-1">
                         <p className="truncate text-sm font-medium text-foreground">
@@ -70,7 +69,7 @@ export function EmployeeTabsData({ onTaskClick, user, cleanData }: TAccordion) {
                           </span>
                         </div>
                       </div>
-                    </button>
+                    </div>
                   );
                 })}
               </div>
@@ -79,8 +78,16 @@ export function EmployeeTabsData({ onTaskClick, user, cleanData }: TAccordion) {
         ))}
       </Accordion>
 
-      <p className="mt-4  pt-3 text-xs text-muted-foreground">
-        Klicke auf eine Aufgabe, um Details zu öffnen
+      <Button
+        type="button"
+        onClick={onTaskClick}
+        className="mt-4 w-full rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent cursor-pointer"
+      >
+        Erinnerung senden
+      </Button>
+
+      <p className="mt-3 pt-3 text-xs text-muted-foreground">
+        Klicke auf Erinnerung senden, um die E-Mail zu versenden
       </p>
     </>
   );

@@ -34,7 +34,10 @@ const ViewEmployeeModal = ({ selectedOwner }: ViewEmployeeModalProps) => {
       </div>
 
       {modal && (
-        <ModalOverlay handleToggle={() => setModalOpen(false)}>
+        <ModalOverlay
+          handleToggle={() => setModalOpen(false)}
+          backdropClassName="bg-transparent"
+        >
           <ReminderModal onClose={() => setModalOpen(false)} />
         </ModalOverlay>
       )}
