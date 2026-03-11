@@ -33,6 +33,18 @@ function useEmployeeData() {
     return Array.from(groups.entries());
   }, [allEmployeeData]);
 
+  const openTaskCountsByOwner = useMemo(() => {
+    return new Map(
+      cleanData.map(([owner, items]) => {
+        const totalOpenTasks = items.reduce(
+          (count, item) => count + item.inputs.length,
+          0
+        );
+        return [owner, totalOpenTasks] as const;
+      })
+    );
+  }, [cleanData]);
+
   return {
     allEmployeeData,
     selectedUser,
@@ -42,6 +54,7 @@ function useEmployeeData() {
     isLoading,
     error,
     cleanData,
+    openTaskCountsByOwner,
   };
 }
 

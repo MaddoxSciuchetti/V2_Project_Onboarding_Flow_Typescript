@@ -28,7 +28,6 @@ const ViewEmployeeModal = ({ selectedOwner }: ViewEmployeeModalProps) => {
           <EmployeeTabsData
             user={selectedOwner}
             cleanData={cleanData}
-            data={[]}
             onTaskClick={() => setModalOpen(true)}
           />
         </div>

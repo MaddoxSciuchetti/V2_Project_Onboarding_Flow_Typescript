@@ -2,7 +2,6 @@ import useEmployeeGroups from '../hooks/useEmployeeGroups';
 import { EmployeeWorker } from './employeeform.types';
 
 export type TAccordion = {
-  data: EmployeeWorker;
   onTaskClick: () => void;
   user: string;
   cleanData: Array<[string, EmployeeWorker]>;
