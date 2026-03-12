@@ -1,15 +1,17 @@
+import { STATUS_META } from '../consts/status.shared';
+
 export const STATUS_MAP: Record<string, { label: string; className: string }> =
   {
     erledigt: {
-      label: 'Erledigt',
-      className: 'bg-(--status-success-bg) text-(--status-success-foreground)',
+      label: STATUS_META.erledigt.label,
+      className: STATUS_META.erledigt.className,
     },
     in_bearbeitung: {
-      label: 'In Bearbeitung',
-      className: 'bg-(--status-warning-bg) text-(--status-warning-foreground)',
+      label: STATUS_META.in_bearbeitung.label,
+      className: STATUS_META.in_bearbeitung.className,
     },
     offen: {
-      label: 'Offen',
-      className: 'bg-(--status-error-bg) text-(--status-error-foreground)',
+      label: STATUS_META.offen.label,
+      className: STATUS_META.offen.className,
     },
   };
