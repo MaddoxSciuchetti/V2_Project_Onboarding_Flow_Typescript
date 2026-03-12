@@ -51,7 +51,7 @@ app.use((req, res, next) => {
         const headers = res.getHeaders();
         if (headers["access-control-allow-origin"]) {
             console.log(
-                "✅ Final Access-Control-Allow-Origin:",
+                "Final Access-Control-Allow-Origin:",
                 headers["access-control-allow-origin"],
             );
         }

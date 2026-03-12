@@ -4,8 +4,9 @@ import useDeleteWorkerFile from '@/features/task-management/hooks/useDeleteWorke
 import useGetWorkerFiles from '@/features/task-management/hooks/useGetWorkerFiles';
 import handleZipExport from '@/features/task-management/utils/handleZipExport';
 import { useToggleModal } from '@/hooks/useToggleModal';
-import { Spinner } from '../../../../../components/ui/spinner';
-import FileUpload01 from './file_upload/form-main';
+import { Spinner } from '../../../../components/ui/spinner';
+
+import FileUploadForm from './file_upload/FileUploadForm';
 import FileHeader from './FileHeader';
 import FilesContent from './FilesContent';
 
@@ -45,7 +46,7 @@ function WorkerFileUploads({ workerId }: WorkerFileUploadsProps) {
 
       {modal && (
         <ModalOverlay handleToggle={toggleModal}>
-          <FileUpload01 setModal={setModal} workerId={workerId} />
+          <FileUploadForm setModal={setModal} workerId={workerId} />
         </ModalOverlay>
       )}
     </>

@@ -1,18 +1,19 @@
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/trycatch';
 import { DescriptionField } from '@/types/api.types';
 import { STATUS_MAP } from '../../utils/selectOptionTernary';
 
-type NewWorkerTaskProps = {
+type TaskIndividualProps = {
   tasks: DescriptionField[];
   selectedTaskId: number | null;
   handleSelectTask: (id: number) => void;
 };
 
-const NewWorkerTask = ({
+const TaskIndividual = ({
   tasks,
   selectedTaskId,
   handleSelectTask,
-}: NewWorkerTaskProps) => {
+}: TaskIndividualProps) => {
   return (
     <main className="flex-1 py-4">
       <ul className="space-y-1 max-w-4xl">
@@ -23,7 +24,7 @@ const NewWorkerTask = ({
             STATUS_MAP.offen;
           return (
             <li key={task.id}>
-              <button
+              <Button
                 onClick={() => handleSelectTask(task.id)}
                 className={cn(
                   'text-left px-4 py-3 rounded-lg transition-all flex items-center gap-4 group w-full',
@@ -32,7 +33,6 @@ const NewWorkerTask = ({
                     : 'hover:bg-(--hover-bg)'
                 )}
               >
-                {/* Number */}
                 <span
                   className={cn(
                     'text-sm w-5 shrink-0',
@@ -42,7 +42,6 @@ const NewWorkerTask = ({
                   {String(index + 1).padStart(2, '0')}
                 </span>
 
-                {/* Status dot */}
                 <span
                   className={cn(
                     'h-2 w-2 rounded-full shrink-0 transition-all',
@@ -62,8 +61,6 @@ const NewWorkerTask = ({
                 >
                   {task.description}
                 </span>
-
-                {/* Assignee */}
                 <span
                   className={cn(
                     'text-sm shrink-0',
@@ -74,7 +71,7 @@ const NewWorkerTask = ({
                     ? task.substituteOwner
                     : task.officialOwner}
                 </span>
-              </button>
+              </Button>
             </li>
           );
         })}
@@ -83,4 +80,4 @@ const NewWorkerTask = ({
   );
 };
 
-export default NewWorkerTask;
+export default TaskIndividual;

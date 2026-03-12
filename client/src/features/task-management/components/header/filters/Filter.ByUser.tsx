@@ -3,7 +3,7 @@ type FilteredTasksProps = {
   handleMeFilter: () => Promise<void>;
 };
 
-const FilteredTasks = ({ showMyItems, handleMeFilter }: FilteredTasksProps) => {
+const FilterByUser = ({ showMyItems, handleMeFilter }: FilteredTasksProps) => {
   return (
     <>
       <span>
@@ -22,4 +22,4 @@ const FilteredTasks = ({ showMyItems, handleMeFilter }: FilteredTasksProps) => {
   );
 };
 
-export default FilteredTasks;
+export default FilterByUser;

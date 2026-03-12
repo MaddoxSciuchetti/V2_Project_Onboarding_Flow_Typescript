@@ -6,6 +6,7 @@ type SearchHeaderResuableProps<T extends string | number> = {
   setSearch?: (value: T) => void;
   description: string;
   toggleModal: () => void;
+  action?: () => void;
 };
 
 const SearchHeaderResuable = <T extends string | number>({
@@ -13,6 +14,7 @@ const SearchHeaderResuable = <T extends string | number>({
   setSearch,
   toggleModal,
   description,
+  action,
 }: SearchHeaderResuableProps<T>) => {
   return (
     <>
@@ -26,7 +28,11 @@ const SearchHeaderResuable = <T extends string | number>({
         <div className="flex gap-2 ">
           <Button
             variant={'outline'}
-            onClick={() => toggleModal()}
+            onClick={(e) => {
+              e.stopPropagation();
+              action?.();
+              toggleModal();
+            }}
             className="cursor-pointer rounded-xl hover:bg-accent hover:text-accent-foreground transition-colors hover:bg-(--hover-bg) hover:text-(--hover-foreground)"
           >
             {description}
