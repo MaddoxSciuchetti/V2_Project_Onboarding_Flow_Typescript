@@ -2,7 +2,8 @@ import { Dispatch, SetStateAction } from 'react';
 import { Control, FieldErrors } from 'react-hook-form';
 
 import FormSelectOptions from '@/components/form/FormSelectOptions';
-import useGetEmployees from '@/features/employee-overview/hooks/useGetEmployees';
+import { employeeQueries } from '@/features/employee-overview/query-options/queries/employee.queries';
+import { useQuery } from '@tanstack/react-query';
 import { HandleAddSubmit } from '../types/taskForm.types';
 
 type OwnerSelectProps = {
@@ -13,7 +14,8 @@ type OwnerSelectProps = {
 };
 
 const OwnerSelect = ({ errors, control }: OwnerSelectProps) => {
-  const { EmployeeData } = useGetEmployees();
+  const { data: employees = [] } = useQuery(employeeQueries.getEmployees());
+
   return (
     <>
       <FormSelectOptions
@@ -21,7 +23,7 @@ const OwnerSelect = ({ errors, control }: OwnerSelectProps) => {
         control={control}
         errors={errors}
         placeholder="Mitarbeiter"
-        data={EmployeeData.map((e) => ({
+        data={employees.map((e) => ({
           value: e.id,
           label: `${e.vorname} ${e.nachname}`,
         }))}
