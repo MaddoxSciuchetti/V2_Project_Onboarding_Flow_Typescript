@@ -2,17 +2,15 @@ import { Input } from '@/components/ui/input';
 import { TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dispatch, SetStateAction } from 'react';
 
-type TaskHeaderProps = {
+type WorkerHeaderProps = {
   descriptionSearch: string;
   setDescriptionSearch: Dispatch<SetStateAction<string>>;
-  activetab: string;
-  setActiveTab: Dispatch<SetStateAction<string>>;
 };
 
-const TaskHeader = ({
+const WorkerHeader = ({
   descriptionSearch,
   setDescriptionSearch,
-}: TaskHeaderProps) => {
+}: WorkerHeaderProps) => {
   return (
     <div className="flex justify gap-5">
       <Input
@@ -32,4 +30,4 @@ const TaskHeader = ({
   );
 };
 
-export default TaskHeader;
+export default WorkerHeader;

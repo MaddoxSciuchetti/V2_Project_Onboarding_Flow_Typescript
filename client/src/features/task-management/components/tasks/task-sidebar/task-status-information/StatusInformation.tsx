@@ -2,28 +2,26 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
 import { SubmitEvent, useState } from 'react';
-import { Button } from '../../../../components/ui/button';
-import inputConsts from '../../consts/input.consts';
-import { TaskStatus } from '../../utils/selectOptionTernary';
+import { Button } from '../../../../../../components/ui/button';
+import inputConsts from '../../../../consts/input.consts';
+import { TaskStatus } from '../../../../utils/selectOptionTernary';
 import SelectOwner from './SelectOwner';
 
-type ModelContentProps = {
+type StatusInformationProps = {
   id: number;
-  description: string;
   editcomment: string;
   select_option: TaskStatus;
   form_field_id: number;
   handleSubmit: (e: SubmitEvent<HTMLFormElement>) => void;
 };
 
-function ModalContent({
+function StatusInformation({
   id,
-  description,
   editcomment,
   select_option,
   form_field_id,
   handleSubmit,
-}: ModelContentProps) {
+}: StatusInformationProps) {
   useBodyScrollLock();
   const [selectedValue, setSelectedValue] = useState<TaskStatus>(
     select_option || 'offen'
@@ -77,4 +75,4 @@ function ModalContent({
   );
 }
 
-export default ModalContent;
+export default StatusInformation;

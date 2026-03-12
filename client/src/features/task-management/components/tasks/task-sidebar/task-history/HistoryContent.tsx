@@ -1,8 +1,8 @@
-import { useGetWorkerHistory } from '../../hooks/useGetWorkerHistory';
+import { useGetWorkerHistory } from '../../../../hooks/useGetWorkerHistory';
 
 import { cn } from '@/lib/trycatch';
-import { StatusIcon } from '../../consts/status.consts';
-import { STATUS_MAP } from '../../utils/selectOptionTernary';
+import { StatusIcon } from '../../../../consts/status.consts';
+import { STATUS_MAP } from '../../../../utils/selectOptionTernary';
 type HistoryContentProps = {
   id_original: number;
 };

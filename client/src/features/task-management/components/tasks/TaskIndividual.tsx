@@ -2,17 +2,17 @@ import { cn } from '@/lib/trycatch';
 import { DescriptionField } from '@/types/api.types';
 import { STATUS_MAP } from '../../utils/selectOptionTernary';
 
-type NewWorkerTaskProps = {
+type TaskIndividualProps = {
   tasks: DescriptionField[];
   selectedTaskId: number | null;
   handleSelectTask: (id: number) => void;
 };
 
-const NewWorkerTask = ({
+const TaskIndividual = ({
   tasks,
   selectedTaskId,
   handleSelectTask,
-}: NewWorkerTaskProps) => {
+}: TaskIndividualProps) => {
   return (
     <main className="flex-1 py-4">
       <ul className="space-y-1 max-w-4xl">
@@ -32,7 +32,6 @@ const NewWorkerTask = ({
                     : 'hover:bg-(--hover-bg)'
                 )}
               >
-                {/* Number */}
                 <span
                   className={cn(
                     'text-sm w-5 shrink-0',
@@ -42,7 +41,6 @@ const NewWorkerTask = ({
                   {String(index + 1).padStart(2, '0')}
                 </span>
 
-                {/* Status dot */}
                 <span
                   className={cn(
                     'h-2 w-2 rounded-full shrink-0 transition-all',
@@ -62,8 +60,6 @@ const NewWorkerTask = ({
                 >
                   {task.description}
                 </span>
-
-                {/* Assignee */}
                 <span
                   className={cn(
                     'text-sm shrink-0',
@@ -83,4 +79,4 @@ const NewWorkerTask = ({
   );
 };
 
-export default NewWorkerTask;
+export default TaskIndividual;

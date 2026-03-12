@@ -1,31 +1,22 @@
-import CenteredDiv from '@/components/alerts/layout-wrapper/CenteredDiv';
-import { Spinner } from '@/components/ui/spinner';
+import ErrorAlert from '@/components/alerts/ErrorAlert';
+import LoadingAlert from '@/components/alerts/LoadingAlert';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
-import useAuth from '@/features/user-profile/hooks/useAuth';
-import React, { useState } from 'react';
 import useFilteredData from '../../hooks/useFilteredData';
 import useTaskData from '../../hooks/useTaskData';
 import useTaskSubmit from '../../hooks/useTaskSubmit';
-import WorkerFileUploads from '../modal/files/WorkerFileUploads';
-import FilteredTasks from './FilteredTasks';
-import NewWorkerTask from './NewWorkerTask';
-import TaskHeader from './TaskHeader';
+import WorkerFileUploads from '../files/WorkerFileUploads';
+import FilterByUser from '../header/filters/Filter.ByUser';
+import WorkerHeader from '../header/WorkerHeader';
 import TaskSidebar from './task-sidebar/TaskSidebar';
+import TaskIndividual from './TaskIndividual';
 
-type OffboardingFormProps = {
+type TaskManagementProps = {
   workerId: number;
-  lifecycleType: string; // match validateSearch
+  lifecycleType: string;
 };
 
-const TaskManagement: React.FC<OffboardingFormProps> = ({
-  workerId,
-  lifecycleType,
-}) => {
-  const { user } = useAuth();
-  const [activetab, setActiveTab] = useState<string>('form');
-  const [selectedTaskId, setSelectedTaskId] = useState<number | null>(null);
-  const numericId = parseInt(String(workerId));
-  const { data, isLoading } = useTaskData(numericId, lifecycleType);
+const TaskManagement = ({ workerId, lifecycleType }: TaskManagementProps) => {
+  const { data, isLoading } = useTaskData(workerId, lifecycleType);
   const {
     descriptionSearch,
     setDescriptionSearch,
@@ -33,35 +24,30 @@ const TaskManagement: React.FC<OffboardingFormProps> = ({
     handleMeFilter,
     displayData,
   } = useFilteredData(data);
-  const closeSidebar = () => setSelectedTaskId(null);
-  const { handleSubmit } = useTaskSubmit(numericId, user, closeSidebar);
+
+  const { handleSubmit, selectedTaskId, setSelectedTaskId } =
+    useTaskSubmit(workerId);
+
   const selectedTask =
     displayData.find((field) => field.id === selectedTaskId) ?? null;
 
-  if (isLoading)
-    return (
-      <CenteredDiv>
-        <Spinner className="w-8" />
-      </CenteredDiv>
-    );
-  if (!data) return <div>Daten Laden</div>;
+  if (isLoading) return <LoadingAlert />;
+  if (!data) return <ErrorAlert />;
 
   return (
     <div className="flex flex-col w-5xl h-150 rounded-2xl mx-auto  overflow-auto p-6 md:max-w-8xl md:h-300">
       <>
         <Tabs defaultValue="form" className="">
-          <TaskHeader
+          <WorkerHeader
             descriptionSearch={descriptionSearch}
             setDescriptionSearch={setDescriptionSearch}
-            activetab={activetab}
-            setActiveTab={setActiveTab}
           />
           <TabsContent value="form">
-            <FilteredTasks
+            <FilterByUser
               showMyItems={showMyItems}
               handleMeFilter={handleMeFilter}
             />
-            <NewWorkerTask
+            <TaskIndividual
               tasks={displayData}
               selectedTaskId={selectedTaskId}
               handleSelectTask={setSelectedTaskId}

@@ -1,5 +1,5 @@
 import { cn } from '@/lib/trycatch';
-import { UploadedFileItem } from './file-item';
+import { UploadedFileItem } from './FileItem';
 
 interface UploadedFileListProps {
   uploadedFiles: File[];

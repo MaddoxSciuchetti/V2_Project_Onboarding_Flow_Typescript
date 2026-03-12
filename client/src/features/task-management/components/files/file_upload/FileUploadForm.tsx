@@ -3,18 +3,18 @@ import { Button } from '@/components/ui/button';
 import { CardContent } from '@/components/ui/card';
 import useFileSelect from '@/features/task-management/hooks/useFileSelect';
 import useFileUpload from '@/features/task-management/hooks/useFileUpload';
-import { FileDropzone } from './dropzone';
-import { FileList } from './file-list';
+import { FileDropzone } from './Dropzone';
+import { FileList } from './FileList';
 
-interface FileUploadProps01 {
+interface FileUploadFormProps {
   workerId: number;
   setModal: (val: boolean) => void;
 }
 
-export default function FileUpload01({
+export default function FileUploadForm({
   workerId,
   setModal,
-}: FileUploadProps01) {
+}: FileUploadFormProps) {
   const {
     uploadedFiles,
     setUploadedFiles,

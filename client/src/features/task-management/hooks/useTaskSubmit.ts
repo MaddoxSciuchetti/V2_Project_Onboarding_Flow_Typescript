@@ -1,16 +1,15 @@
-import { User } from '@/features/user-profile/types/auth.type';
+import useAuth from '@/features/user-profile/hooks/useAuth';
 import { useQueryClient } from '@tanstack/react-query';
-import { SubmitEvent } from 'react';
+import { SubmitEvent, useState } from 'react';
 import { updateWorkerData, updateWorkerHistory } from '../api/index.api';
 import { FORMHISTORY, WORKERBYID } from '../consts/query-key.consts';
 import { formSchema } from '../schemas/index.schema';
 
-function useTaskSubmit(
-  id: number,
-  user: User | undefined,
-  closeModal: () => void
-) {
+function useTaskSubmit(id: number) {
   const queryClient = useQueryClient();
+  const [selectedTaskId, setSelectedTaskId] = useState<number | null>(null);
+  const closeSidebar = () => setSelectedTaskId(null);
+  const { user } = useAuth();
 
   async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -36,11 +35,13 @@ function useTaskSubmit(
       queryKey: [WORKERBYID, id],
     });
 
-    closeModal();
+    closeSidebar();
   }
 
   return {
     handleSubmit,
+    setSelectedTaskId,
+    selectedTaskId,
   };
 }
 
