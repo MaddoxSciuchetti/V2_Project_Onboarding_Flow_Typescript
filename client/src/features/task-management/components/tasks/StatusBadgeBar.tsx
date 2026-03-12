@@ -1,4 +1,4 @@
-import { STATUS_MAP } from '../../utils/selectOptionTernary';
+import { STATUS_MAP, TaskStatus } from '../../utils/selectOptionTernary';
 import StatusBadge from './StatusBadge';
 
 type StatusBadgeBarProps = {
@@ -6,7 +6,7 @@ type StatusBadgeBarProps = {
   substituteOwner: string;
   officialOwner: string;
   editcomment: string;
-  select_option: string;
+  select_option: TaskStatus;
 };
 
 const StatusBadgeBar = ({

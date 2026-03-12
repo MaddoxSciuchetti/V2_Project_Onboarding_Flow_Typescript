@@ -7,11 +7,11 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Dispatch, SetStateAction } from 'react';
-import { STATUS_MAP } from '../../utils/selectOptionTernary';
+import { STATUS_MAP, TaskStatus } from '../../utils/selectOptionTernary';
 
 type SelectOwnerProps = {
   setSelectedValue: Dispatch<SetStateAction<string>>;
-  selectedValue: string;
+  selectedValue: TaskStatus;
   select_option: string;
 };
 
