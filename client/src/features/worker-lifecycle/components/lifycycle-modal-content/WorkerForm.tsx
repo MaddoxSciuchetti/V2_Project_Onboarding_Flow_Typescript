@@ -24,9 +24,11 @@ export const WorkerForm = ({
   type,
   toggleModal,
 }: WorkerFormProps) => {
-  const { mutate: addWorkerMutation, isError } = useMutation(
-    workerLifecycleMutations.addWorker()
-  );
+  const {
+    mutate: addWorkerMutation,
+    isError,
+    error,
+  } = useMutation(workerLifecycleMutations.addWorker());
 
   const {
     register,
@@ -68,7 +70,11 @@ export const WorkerForm = ({
         onSubmit={handleSubmit(submitWorkerForm)}
         className=" gap-4  flex flex-col"
       >
-        {isError && <p>Email already in use</p>}
+        {isError && (
+          <div className="mb-3 text-(--destructive)">
+            {error?.message || 'An error occurred'}
+          </div>
+        )}
         <Button
           className="w-20 cursor-pointer rounded-xl transition-colors hover:bg-accent hover:text-accent-foreground"
           variant={'outline'}
