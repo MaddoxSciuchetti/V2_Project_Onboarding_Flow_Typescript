@@ -5,13 +5,14 @@ import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
 import { SubmitEvent, useState } from 'react';
 import { Button } from '../../../../components/ui/button';
 import inputConsts from '../../consts/input.consts';
+import { TaskStatus } from '../../utils/selectOptionTernary';
 import SelectOwner from './SelectOwner';
 
 type ModelContentProps = {
   id: number;
   description: string;
   editcomment: string;
-  select_option: string;
+  select_option: TaskStatus;
   form_field_id: number;
   handleSubmit: (e: SubmitEvent<HTMLFormElement>) => void;
 };
@@ -25,7 +26,9 @@ function ModalContent({
   handleSubmit,
 }: ModelContentProps) {
   useBodyScrollLock();
-  const [selectedValue, setSelectedValue] = useState(select_option || '');
+  const [selectedValue, setSelectedValue] = useState<TaskStatus>(
+    select_option || 'offen'
+  );
   const InputConfig = inputConsts(id, form_field_id);
 
   return (
