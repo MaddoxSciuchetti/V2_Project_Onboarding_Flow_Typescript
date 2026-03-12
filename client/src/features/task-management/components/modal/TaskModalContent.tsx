@@ -32,7 +32,7 @@ function ModalContent({
   const InputConfig = inputConsts(id, form_field_id);
 
   return (
-    <SmallWrapper>
+    <SmallWrapper className="min-h-60 max-h-60">
       <form
         className="flex flex-col gap-5 w-full"
         onSubmit={handleSubmit}
