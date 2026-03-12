@@ -25,7 +25,12 @@ const StatusBadgeBar = ({
 
   return (
     <>
-      <div className="flex gap-2 ">
+      <div className="flex items-center gap-2">
+        <span
+          aria-label={`Status: ${status.label}`}
+          title={status.label}
+          className={`h-4 w-4 shrink-0 rounded-full ${status.className}`}
+        />
         {is_substitute ? (
           <div className="flex flex-row gap-1">
             <StatusBadge
@@ -45,11 +50,6 @@ const StatusBadgeBar = ({
             className={'bg-muted text-muted-foreground'}
           />
         )}
-        <StatusBadge
-          badgeDescription={status.label}
-          tooltip="Status"
-          className={status.className}
-        />
         <StatusBadge
           badgeDescription={'Letzter Kommentar'}
           tooltip={
