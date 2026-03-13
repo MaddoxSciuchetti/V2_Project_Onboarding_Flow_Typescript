@@ -1,6 +1,6 @@
 import ErrorAlert from '@/components/alerts/ErrorAlert';
 import LoadingAlert from '@/components/alerts/LoadingAlert';
-import { AvatarCropModal } from '@/components/layout/sidebar/profile-upload-modal/AvatarCropModal';
+import { AvatarCropModal } from '@/features/sidebar/profile-upload-modal/AvatarCropModal';
 import useAuth from '@/features/user-profile/hooks/useAuth';
 import useUploadProfieImage from '../hooks/useUploadProfieImage';
 import ProfileBio from './ProfileBio';

@@ -1,10 +1,10 @@
+import { AppSidebar } from '@/features/sidebar/AppSidebar';
+import FeatureModal from '@/features/sidebar/feature-modal/FeatureModal';
 import { useThemeProvider } from '@/hooks/useThemeProvider';
 import { Outlet } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import ModalOverlay from '../modal/ModalOverlay';
 import { SidebarInset, SidebarTrigger, useSidebar } from '../ui/sidebar';
-import { AppSidebar } from './sidebar/AppSidebar';
-import FeatureModal from './sidebar/feature-modal/FeatureModal';
 
 function Layout() {
   const [modal, setModal] = useState<boolean>(false);

@@ -1,14 +1,10 @@
-import { useAvatarBackgroundLayer } from '@/components/layout/sidebar/hooks/useAvatarBackgroundLayer';
-import { useAvatarCropSave } from '@/components/layout/sidebar/hooks/useAvatarCropSave';
-import { getModalStyle } from '@/components/layout/sidebar/styles/avatarCrop.styles';
-import {
-  moveDrag,
-  onImgLoad,
-  startDrag,
-} from '@/components/layout/sidebar/utils/avatarCrop.utils';
 import { Button } from '@/components/ui/button';
 import { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { useAvatarBackgroundLayer } from '../hooks/useAvatarBackgroundLayer';
+import { useAvatarCropSave } from '../hooks/useAvatarCropSave';
+import { getModalStyle } from '../styles/avatarCrop.styles';
+import { moveDrag, onImgLoad, startDrag } from '../utils/avatarCrop.utils';
 import ImageCrop from './crop-functionality/ImageCrop';
 import ImageCropHeader from './ImageCropHeader';
 

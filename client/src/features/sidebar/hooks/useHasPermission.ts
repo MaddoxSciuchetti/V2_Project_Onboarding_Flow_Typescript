@@ -2,7 +2,7 @@ import { LAYOUTITEMS } from '@/constants/layout.consts';
 import useAuth from '@/features/user-profile/hooks/useAuth';
 import { useMemo } from 'react';
 
-function useSidebarData() {
+function useHasPermission() {
   const { user } = useAuth();
   const fullName = `${user?.vorname ?? ''} ${user?.nachname ?? ''}`.trim();
 
@@ -27,4 +27,4 @@ function useSidebarData() {
     accessibleItems,
   };
 }
-export default useSidebarData;
+export default useHasPermission;

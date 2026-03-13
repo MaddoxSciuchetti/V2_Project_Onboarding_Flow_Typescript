@@ -11,12 +11,12 @@ import {
 import { Link } from '@tanstack/react-router';
 
 import ErrorAlert from '@/components/alerts/ErrorAlert';
-import { Button } from '../../ui/button';
+import { Button } from '@/components/ui/button';
 import UserMenu from './UserMenu';
-import useSidebarData from './hooks/useSidebar';
+import useHasPermission from './hooks/useHasPermission';
 
 export function AppSidebar({ openModal }: { openModal: () => void }) {
-  const { user, fullName, accessibleItems } = useSidebarData();
+  const { user, fullName, accessibleItems } = useHasPermission();
 
   if (user === undefined) return <ErrorAlert />;
 

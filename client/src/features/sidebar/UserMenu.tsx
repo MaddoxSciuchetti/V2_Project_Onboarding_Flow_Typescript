@@ -7,7 +7,6 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 import { logout } from '@/apis/index.apis';
-import { AvatarCropModal } from '@/components/layout/sidebar/profile-upload-modal/AvatarCropModal';
 import { Input } from '@/components/ui/input';
 import { PROFILEPICTURE } from '@/constants/querykey.consts';
 import { getProfilePhoto } from '@/features/user-profile/api/index.api';
@@ -17,6 +16,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { Moon, Sun, Upload, UserRound } from 'lucide-react';
 import { useRef, useState } from 'react';
+import { AvatarCropModal } from './profile-upload-modal/AvatarCropModal';
 
 const UserMenu = () => {
   const queryClient = useQueryClient();
