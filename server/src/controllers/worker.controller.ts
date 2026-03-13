@@ -116,9 +116,24 @@ export const getWorkerHistory = async (req: Request, res: Response) => {
 
     const parsedId = z.coerce.number().parse(id);
 
-    const HistoryData = await queryWorkerHistory(parsedId);
+    const historyData = await queryWorkerHistory(parsedId);
 
-    return res.status(200).json(HistoryData);
+    const historyWithPresignedUrls = await Promise.all(
+        historyData.map(async (entry) => {
+            if (!entry.auth_user?.cloud_url) return entry;
+
+            const key = new URL(entry.auth_user.cloud_url).pathname.slice(1);
+            return {
+                ...entry,
+                auth_user: {
+                    ...entry.auth_user,
+                    cloud_url: await generatePresignedUrl(key),
+                },
+            };
+        }),
+    );
+
+    return res.status(200).json(historyWithPresignedUrls);
 };
 
 export const updateWorkerHistory = async (req: Request, res: Response) => {

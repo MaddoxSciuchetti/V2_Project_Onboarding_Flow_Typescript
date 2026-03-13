@@ -181,6 +181,7 @@ export const queryWorkerHistory = async (data: number) => {
                     id: true,
                     email: true,
                     verified: true,
+                    cloud_url: true,
                 },
             },
         },
