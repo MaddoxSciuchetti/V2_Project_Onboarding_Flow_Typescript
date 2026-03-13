@@ -10,3 +10,12 @@ export type SignupProfile = {
 };
 
 export type SignupTestUser = LoginCredentials & SignupProfile;
+
+export type OutboxEmail = {
+  to: string;
+  subject: string;
+  text: string;
+  html: string;
+  providerId?: string;
+  createdAt: string;
+};
