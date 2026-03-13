@@ -4,6 +4,7 @@ import { Tabs, TabsContent } from '@/components/ui/tabs';
 import useFilteredData from '../../hooks/useFilteredData';
 import useTaskData from '../../hooks/useTaskData';
 import useTaskSubmit from '../../hooks/useTaskSubmit';
+import { LifecycleType } from '../../types/index.types';
 import WorkerFileUploads from '../files/WorkerFileUploads';
 import FilterByUser from '../header/filters/Filter.ByUser';
 import WorkerHeader from '../header/WorkerHeader';
@@ -12,7 +13,7 @@ import TaskIndividual from './TaskIndividual';
 
 type TaskManagementProps = {
   workerId: number;
-  lifecycleType: string;
+  lifecycleType: LifecycleType;
 };
 
 const TaskManagement = ({ workerId, lifecycleType }: TaskManagementProps) => {
