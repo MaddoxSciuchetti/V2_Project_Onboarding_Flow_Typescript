@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button';
 import { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useAvatarBackgroundLayer } from '../hooks/useAvatarBackgroundLayer';
@@ -6,6 +5,7 @@ import { useAvatarCropSave } from '../hooks/useAvatarCropSave';
 import { getModalStyle } from '../styles/avatarCrop.styles';
 import { moveDrag, onImgLoad, startDrag } from '../utils/avatarCrop.utils';
 import ImageCrop from './crop-functionality/ImageCrop';
+import ImageCropFooter from './ImageCropFooter';
 import ImageCropHeader from './ImageCropHeader';
 
 const PREVIEW_SIZE = 220;
@@ -79,14 +79,7 @@ export const AvatarCropModal = ({
         setNaturalSize={setNaturalSize}
         setImageScale={setImageScale}
       />
-
-      <Button
-        size="sm"
-        className="mt-1 w-full cursor-pointer"
-        onClick={handleSave}
-      >
-        Speichern
-      </Button>
+      <ImageCropFooter handleSave={handleSave} />
     </div>,
     document.body
   );

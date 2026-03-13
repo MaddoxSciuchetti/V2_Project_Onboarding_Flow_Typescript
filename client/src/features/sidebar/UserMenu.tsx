@@ -20,10 +20,10 @@ import { AvatarCropModal } from './profile-upload-modal/AvatarCropModal';
 
 const UserMenu = () => {
   const queryClient = useQueryClient();
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const avatarRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const { theme, toggle } = useThemeProvider();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const avatarRef = useRef<HTMLDivElement>(null);
   const [pendingFile, setPendingFile] = useState<File | null>(null);
   const [anchorRect, setAnchorRect] = useState<DOMRect | undefined>();
 

@@ -5,6 +5,7 @@ export type TAuth_User = {
   id: string;
   email: string;
   verified: boolean;
+  cloud_url: string | null;
 };
 
 export const useGetWorkerHistory = (id: number) => {
