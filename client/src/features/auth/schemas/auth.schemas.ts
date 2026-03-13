@@ -8,6 +8,7 @@ const emailSchema = z
 
 const passwordSchema = z
   .string()
+  .trim()
   .min(1, { message: 'Password is required' })
   .min(6, { message: 'Password must be at least 6 characters' })
   .max(255, { message: 'Password must be at most 255 characters' });
@@ -22,6 +23,7 @@ export const registerSchema = loginSchema
   .extend({
     confirmPassword: z
       .string()
+      .trim()
       .min(1, { message: 'Confirm password is required' })
       .min(6, { message: 'Confirm password must be at least 6 characters' })
       .max(255, { message: 'Confirm password must be at most 255 characters' }),
