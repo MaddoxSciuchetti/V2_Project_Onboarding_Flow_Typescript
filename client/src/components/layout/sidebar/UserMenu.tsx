@@ -1,4 +1,4 @@
-import { Avatar, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,7 +14,7 @@ import { userProfileMutations } from '@/features/user-profile/query-options/muta
 import { useThemeProvider } from '@/hooks/useThemeProvider';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
-import { Moon, Sun, Upload } from 'lucide-react';
+import { Moon, Sun, Upload, UserRound } from 'lucide-react';
 import { useRef } from 'react';
 
 const UserMenu = () => {
@@ -52,6 +52,9 @@ const UserMenu = () => {
             src={data}
             alt="profile image"
           />
+          <AvatarFallback className="h-full w-full rounded-xl border border-border bg-muted">
+            <UserRound className="h-5 w-5 text-muted-foreground" />
+          </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent
