@@ -1,6 +1,7 @@
 import ErrorAlert from '@/components/alerts/ErrorAlert';
 import LoadingAlert from '@/components/alerts/LoadingAlert';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
+import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
 import useFilteredData from '../../hooks/useFilteredData';
 import useTaskData from '../../hooks/useTaskData';
 import useTaskSubmit from '../../hooks/useTaskSubmit';
@@ -28,12 +29,14 @@ const TaskManagement = ({ workerId, lifecycleType }: TaskManagementProps) => {
 
   const { handleSubmit, selectedTaskId, setSelectedTaskId } =
     useTaskSubmit(workerId);
+  useBodyScrollLock();
 
   const selectedTask =
     displayData.find((field) => field.id === selectedTaskId) ?? null;
 
   if (isLoading) return <LoadingAlert />;
-  if (!data) return <ErrorAlert />;
+  if (!data)
+    return <ErrorAlert message="The tasks could not load, reload page" />;
 
   return (
     <div className="flex flex-col w-5xl h-150 rounded-2xl mx-auto  overflow-auto p-6 md:max-w-8xl md:h-300">

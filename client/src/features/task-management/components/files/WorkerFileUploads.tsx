@@ -4,6 +4,7 @@ import useGetWorkerFiles from '@/features/task-management/hooks/useGetWorkerFile
 import handleZipExport from '@/features/task-management/utils/handleZipExport';
 import { useToggleModal } from '@/hooks/useToggleModal';
 
+import ErrorAlert from '@/components/alerts/ErrorAlert';
 import LoadingAlert from '@/components/alerts/LoadingAlert';
 import FileUploadForm from './file_upload/FileUploadForm';
 import FileHeader from './FileHeader';
@@ -19,6 +20,7 @@ function WorkerFileUploads({ workerId }: WorkerFileUploadsProps) {
   const { toggleModal, modal, setModal } = useToggleModal();
 
   if (options.isPending) return <LoadingAlert />;
+  if (options.isError) return <ErrorAlert />;
 
   return (
     <>
