@@ -31,15 +31,20 @@ export function Worker_Item({
   } = useFetchProcessData(item_value, form_type);
 
   const calculatePercent = (completedTasks: number, total: number) => {
+    if (total <= 0) return 'text-(--chart-5)';
+
     const percent = (completedTasks / total) * 100;
-    console.log('this is the percent calculation');
-    console.log(percent);
+
     if (percent < 20) return 'text-(--chart-5)';
     if (percent >= 20 && percent < 100) return 'text-(--chart-3)';
     if (percent === 100) return 'text-(--chart-2)';
+
+    return 'text-(--chart-5)';
   };
 
-  const color = calculatePercent(completedTasksCount!, totalTasks!);
+  const completedCount = completedTasksCount ?? 0;
+  const totalCount = totalTasks ?? 0;
+  const color = calculatePercent(completedCount, totalCount);
 
   return (
     <tr className="group rounded-2xl py-5 transition-colors  ">
@@ -53,7 +58,9 @@ export function Worker_Item({
             size={'sm'}
             variant="outline"
             className="cursor-pointer pointer-events-none opacity-0 transition-opacity duration-150 group-hover:pointer-events-auto group-hover:opacity-100"
-            onClick={() => gotopage(item_value, form_type, `${item} ${item1 ?? ''}`.trim())}
+            onClick={() =>
+              gotopage(item_value, form_type, `${item} ${item1 ?? ''}`.trim())
+            }
           >
             Anschauen
           </Button>
@@ -72,12 +79,8 @@ export function Worker_Item({
       </td>
 
       <th className="">
-        <span className={color}>
-          {processLoading ? '...' : completedTasksCount}
-        </span>
-        <span className="font-medium text-foreground">
-          /{processData?.form?.fields?.length || 0}
-        </span>
+        <span className={color}>{processLoading ? '...' : completedCount}</span>
+        <span className="font-medium text-foreground">/{totalCount}</span>
       </th>
 
       <td>

@@ -3,7 +3,7 @@ import { cn } from '@/lib/trycatch';
 type TaskStatusBarProps = {
   isSelected: boolean;
   index: number;
-  statusConfig: { className: string };
+  statusConfig: { className: string; dotClassName?: string };
   task: {
     description: string;
     is_substitute: boolean;
@@ -34,7 +34,7 @@ const TaskStatusBar = ({
       <span
         className={cn(
           'h-2 w-2 rounded-full shrink-0 transition-all',
-          statusConfig.className,
+          statusConfig.dotClassName ?? statusConfig.className,
           isSelected && 'h-2.5 w-2.5'
         )}
       />
