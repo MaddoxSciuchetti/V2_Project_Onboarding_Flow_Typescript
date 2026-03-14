@@ -9,6 +9,8 @@ const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 const authStatePath = path.resolve(__dirname, 'playwright/.auth/chef.json');
+const authenticatedJourneyMatch =
+  /(?:create-employee-journey|create-worker-journey)\.spec\.ts/;
 
 export default defineConfig({
   testDir: './tests',
@@ -29,21 +31,33 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
-      testIgnore: ['**/auth.setup.ts', '**/create-employee-journey.spec.ts'],
+      testIgnore: [
+        '**/auth.setup.ts',
+        '**/create-employee-journey.spec.ts',
+        '**/create-worker-journey.spec.ts',
+      ],
     },
     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
-      testIgnore: ['**/auth.setup.ts', '**/create-employee-journey.spec.ts'],
+      testIgnore: [
+        '**/auth.setup.ts',
+        '**/create-employee-journey.spec.ts',
+        '**/create-worker-journey.spec.ts',
+      ],
     },
     {
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
-      testIgnore: ['**/auth.setup.ts', '**/create-employee-journey.spec.ts'],
+      testIgnore: [
+        '**/auth.setup.ts',
+        '**/create-employee-journey.spec.ts',
+        '**/create-worker-journey.spec.ts',
+      ],
     },
     {
       name: 'authenticated-chromium',
-      testMatch: /create-employee-journey\.spec\.ts/,
+      testMatch: authenticatedJourneyMatch,
       dependencies: ['auth-setup'],
       use: {
         ...devices['Desktop Chrome'],
@@ -52,7 +66,7 @@ export default defineConfig({
     },
     {
       name: 'authenticated-firefox',
-      testMatch: /create-employee-journey\.spec\.ts/,
+      testMatch: authenticatedJourneyMatch,
       dependencies: ['auth-setup'],
       use: {
         ...devices['Desktop Firefox'],
@@ -61,7 +75,7 @@ export default defineConfig({
     },
     {
       name: 'authenticated-webkit',
-      testMatch: /create-employee-journey\.spec\.ts/,
+      testMatch: authenticatedJourneyMatch,
       dependencies: ['auth-setup'],
       use: {
         ...devices['Desktop Safari'],

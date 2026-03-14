@@ -19,3 +19,20 @@ export type OutboxEmail = {
   providerId?: string;
   createdAt: string;
 };
+
+export type WorkerFixture = {
+  firstName: string;
+  lastName: string;
+  fullName: string;
+  email: string;
+  birthDate: string;
+  address: string;
+  entryDate: string;
+  position: string;
+};
+
+export type WorkerListItem = {
+  id: number;
+  vorname: string;
+  nachname: string;
+};
