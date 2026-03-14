@@ -12,7 +12,7 @@ const WorkerHeader = ({
   setDescriptionSearch,
 }: WorkerHeaderProps) => {
   return (
-    <div className="flex justify gap-5">
+    <div className="flex items-end justify-between gap-5">
       <Input
         value={descriptionSearch}
         onChange={(e) => setDescriptionSearch(e.target.value)}

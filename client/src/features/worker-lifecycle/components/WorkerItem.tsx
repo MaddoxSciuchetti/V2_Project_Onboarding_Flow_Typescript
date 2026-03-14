@@ -3,13 +3,13 @@ import DropDownResuable from '@/components/DropDownResuable';
 import { Button } from '@/components/ui/button';
 import useFetchProcessData from '@/features/employee-overview/hooks/useFetchProcessData';
 import { UseMutateFunction } from '@tanstack/react-query';
-import { DeleteUser } from '../types/index.types';
+import { DeleteUser, FormType } from '../types/index.types';
 
 interface ToDoItem {
   item_value: number;
   item: string;
-  form_type: string;
-  gotopage: (taskId: number, form_type: any) => void;
+  form_type: FormType;
+  gotopage: (taskId: number, form_type: FormType, workerName: string) => void;
   onRemove: UseMutateFunction<DeleteUser, Error, number, unknown>;
   className?: string;
   item1?: string;
@@ -53,7 +53,7 @@ export function Worker_Item({
             size={'sm'}
             variant="outline"
             className="cursor-pointer pointer-events-none opacity-0 transition-opacity duration-150 group-hover:pointer-events-auto group-hover:opacity-100"
-            onClick={() => gotopage(item_value, form_type)}
+            onClick={() => gotopage(item_value, form_type, `${item} ${item1 ?? ''}`.trim())}
           >
             Anschauen
           </Button>
