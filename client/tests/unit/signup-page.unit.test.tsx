@@ -39,4 +39,13 @@ describe('Signup page', () => {
       await screen.findByText(/^Password is required$/i)
     ).toBeInTheDocument();
   });
+
+  it('shows a email is required error when submitting without email', async () => {
+    const user = userEvent.setup();
+    renderWithProviders(<SignupForm />);
+
+    await user.click(screen.getByRole('button', { name: /Create Account/i }));
+
+    expect(await screen.findByText(/^Email is required$/i)).toBeInTheDocument();
+  });
 });
