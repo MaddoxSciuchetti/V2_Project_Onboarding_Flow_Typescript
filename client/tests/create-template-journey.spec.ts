@@ -24,8 +24,7 @@ test.describe('Create template journey', () => {
     await descriptionInput.fill(task.description);
 
     const ownerSelectTrigger = modalForm
-      .locator('[data-slot="select-trigger"]')
-      .filter({ hasText: /Mitarbeiter/i })
+      .locator('[data-slot="select-trigger"][id="owner"]')
       .first();
     await expect(ownerSelectTrigger).toBeVisible();
     await ownerSelectTrigger.click();
@@ -53,7 +52,7 @@ test.describe('Create template journey', () => {
     await deleteTrigger.click();
 
     const confirmDeleteButton = page.getByRole('button', {
-      name: /Ja,\s*löschen/i,
+      name: /Löschen bestätigen/i,
     });
     await expect(confirmDeleteButton).toBeVisible();
     await confirmDeleteButton.click();

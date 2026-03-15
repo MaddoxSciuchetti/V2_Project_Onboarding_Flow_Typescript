@@ -86,14 +86,16 @@ test.describe('Onboarding worker view journey', () => {
     await expect(createdWorkerRow).toBeVisible({ timeout: 15_000 });
 
     const actionsTrigger = createdWorkerRow.getByRole('button', {
-      name: /Löschen Aktionen öffnen/i,
+      name: /Löschen öffnen/i,
     });
     await expect(actionsTrigger).toBeVisible();
     await actionsTrigger.click();
 
-    const deleteMenuItem = page.getByRole('menuitem', { name: /Löschen/i });
-    await expect(deleteMenuItem).toBeVisible();
-    await deleteMenuItem.click();
+    const confirmDeleteButton = page.getByRole('button', {
+      name: /Löschen bestätigen/i,
+    });
+    await expect(confirmDeleteButton).toBeVisible();
+    await confirmDeleteButton.click();
 
     await expect(createdWorkerRow).toHaveCount(0, { timeout: 15_000 });
   });

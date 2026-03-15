@@ -40,7 +40,7 @@ const DropDownResuable = ({
             setIsModalOpen(true);
           }
         }}
-        aria-label={`${description}`}
+        aria-label={`${description} öffnen`}
       >
         <TrashIcon className="h-4 w-4" />
       </Button>
@@ -62,6 +62,7 @@ const DropDownResuable = ({
                 <Button
                   type="button"
                   variant="destructive"
+                  aria-label="Löschen bestätigen"
                   className="bg-(--destructive) text-(--destructive-foreground) hover:bg-(--destructive)"
                   onClick={confirmDelete}
                 >
