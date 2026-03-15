@@ -23,10 +23,6 @@ test.describe('Create employee journey', () => {
     await request.delete(`${API_BASE_URL}/test/emails`, {
       data: { email: employee.email },
     });
-
-    await request.delete(`${API_BASE_URL}/test/deleteTestUser`, {
-      data: { email: employee.email },
-    });
   });
 
   test('creates an employee, shows it in overview, and sends verification email', async ({
@@ -84,5 +80,24 @@ test.describe('Create employee journey', () => {
     expect(verificationEmail.subject).toContain('Verfiziere dein Konto');
     expect(verificationEmail.html).toContain('/email/verify/');
     expect(verificationEmail.html).toContain(employee.password);
+
+    const employeeRow = page
+      .locator('tr', {
+        hasText: new RegExp(`${employee.firstName}\\s*${employee.lastName}`),
+      })
+      .first();
+    await expect(employeeRow).toBeVisible();
+
+    const actionsTrigger = employeeRow.getByRole('button', {
+      name: /Löschen Aktionen öffnen/i,
+    });
+    await expect(actionsTrigger).toBeVisible();
+    await actionsTrigger.click();
+
+    const deleteMenuItem = page.getByRole('menuitem', { name: /Löschen/i });
+    await expect(deleteMenuItem).toBeVisible();
+    await deleteMenuItem.click();
+
+    await expect(employeeRow).not.toBeVisible();
   });
 });

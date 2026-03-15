@@ -22,7 +22,13 @@ const DropDownResuable = ({
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Edit />
+          <button
+            type="button"
+            aria-label={`${description} Aktionen öffnen`}
+            className="cursor-pointer"
+          >
+            <Edit />
+          </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent
           className="w-40 rounded-xl border border-border bg-(--dropdown-surface) p-1.5 text-popover-foreground shadow-md"
