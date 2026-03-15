@@ -1,5 +1,4 @@
 import { expect, test } from '@playwright/test';
-import { API_BASE_URL } from './constants';
 import { createWorkerFixture } from './fixtures/test-workers';
 import {
   clickViewButton,
@@ -11,13 +10,6 @@ test.describe('Onboarding worker view journey', () => {
   test.setTimeout(90_000);
 
   const worker = createWorkerFixture();
-
-  test.afterAll(async ({ request }) => {
-    await request.delete(`${API_BASE_URL}/test/deleteTestWorker`, {
-      data: { email: worker.email },
-      failOnStatusCode: false,
-    });
-  });
 
   test('creates an onboarding worker, opens the worker view, and shows the worker name in the page header', async ({
     page,
@@ -42,5 +34,23 @@ test.describe('Onboarding worker view journey', () => {
     await expect(
       page.locator('header').getByText(worker.fullName, { exact: true })
     ).toBeVisible();
+
+    await page.goBack();
+    await expect(page).toHaveURL(/\/worker-lifycycle$/);
+
+    const createdWorkerRow = getWorkerRow(page, worker.fullName);
+    await expect(createdWorkerRow).toBeVisible();
+
+    const actionsTrigger = createdWorkerRow.getByRole('button', {
+      name: /Löschen Aktionen öffnen/i,
+    });
+    await expect(actionsTrigger).toBeVisible();
+    await actionsTrigger.click();
+
+    const deleteMenuItem = page.getByRole('menuitem', { name: /Löschen/i });
+    await expect(deleteMenuItem).toBeVisible();
+    await deleteMenuItem.click();
+
+    await expect(createdWorkerRow).not.toBeVisible();
   });
 });
