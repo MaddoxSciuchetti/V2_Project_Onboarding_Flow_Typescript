@@ -1,11 +1,18 @@
 import { Locator, Page, expect } from '@playwright/test';
 import { WorkerFixture } from '../types';
 
+const escapeRegExp = (value: string) =>
+  value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
 export const getWorkerRow = (page: Page, fullName: string): Locator =>
   page
     .getByRole('row')
-    .filter({ hasText: fullName })
-    .filter({ hasText: 'Onboarding' });
+    .filter({
+      has: page.getByRole('cell', {
+        name: new RegExp(`${escapeRegExp(fullName)}\\s*Anschauen`),
+      }),
+    })
+    .filter({ has: page.getByRole('cell', { name: /^\s*Onboarding\s*$/ }) });
 
 export const clickViewButton = async (page: Page, workerRow: Locator) => {
   const viewButton = workerRow.getByRole('button', { name: /Anschauen/i });

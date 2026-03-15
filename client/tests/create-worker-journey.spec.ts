@@ -36,6 +36,7 @@ test.describe('Onboarding worker view journey', () => {
     await page.getByRole('button', { name: /^Hinzufügen$/i }).click();
 
     const workerRow = getWorkerRow(page, worker.fullName);
+    await expect(workerRow).toHaveCount(1, { timeout: 15_000 });
     await expect(workerRow).toBeVisible({ timeout: 15_000 });
 
     await clickViewButton(page, workerRow);
@@ -81,7 +82,8 @@ test.describe('Onboarding worker view journey', () => {
     await expect(page).toHaveURL(/\/worker-lifycycle$/);
 
     const createdWorkerRow = getWorkerRow(page, worker.fullName);
-    await expect(createdWorkerRow).toBeVisible();
+    await expect(createdWorkerRow).toHaveCount(1, { timeout: 15_000 });
+    await expect(createdWorkerRow).toBeVisible({ timeout: 15_000 });
 
     const actionsTrigger = createdWorkerRow.getByRole('button', {
       name: /Löschen Aktionen öffnen/i,
@@ -93,6 +95,6 @@ test.describe('Onboarding worker view journey', () => {
     await expect(deleteMenuItem).toBeVisible();
     await deleteMenuItem.click();
 
-    await expect(createdWorkerRow).not.toBeVisible({ timeout: 15_000 });
+    await expect(createdWorkerRow).toHaveCount(0, { timeout: 15_000 });
   });
 });
