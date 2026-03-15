@@ -6,14 +6,22 @@ import {
   getWorkerRow,
 } from './utils/create-worker-journey.utils';
 
+const PNG_B64 =
+  'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI6QAAAABJRU5ErkJggg==';
+const TEST_FILE_NAME = 'test-upload.png';
+
 test.describe('Onboarding worker view journey', () => {
   test.setTimeout(90_000);
 
-  const worker = createWorkerFixture();
-
-  test('creates an onboarding worker, opens the worker view, and shows the worker name in the page header', async ({
+  test('creates a worker, opens the detail view, uploads and deletes a file, then deletes the worker', async ({
     page,
-  }) => {
+    browserName,
+  }, testInfo) => {
+    const uniqueSeed = `${browserName}-${testInfo.workerIndex}-${Math.floor(
+      Math.random() * 1_000_000
+    )}`;
+    const worker = createWorkerFixture(uniqueSeed);
+
     await page.goto('/worker-lifycycle');
     await expect(page).toHaveURL(/\/worker-lifycycle$/);
 
@@ -28,12 +36,46 @@ test.describe('Onboarding worker view journey', () => {
     await page.getByRole('button', { name: /^Hinzufügen$/i }).click();
 
     const workerRow = getWorkerRow(page, worker.fullName);
+    await expect(workerRow).toBeVisible({ timeout: 15_000 });
 
     await clickViewButton(page, workerRow);
-
+    await expect(page).toHaveURL(/\/user\/\d+.*lifecycleType=Onboarding/);
     await expect(
       page.locator('header').getByText(worker.fullName, { exact: true })
     ).toBeVisible();
+
+    await page.getByRole('tab', { name: 'Dateien' }).click();
+
+    await page.getByTestId('open-file-upload').click();
+    await expect(
+      page.getByRole('button', { name: /Hochladen$/i })
+    ).toBeVisible();
+
+    const fileBuffer = Buffer.from(PNG_B64, 'base64');
+
+    await page.locator('#fileUpload').setInputFiles({
+      name: TEST_FILE_NAME,
+      mimeType: 'image/png',
+      buffer: fileBuffer,
+    });
+
+    await page.getByRole('button', { name: /Hochladen$/i }).click();
+
+    await expect(
+      page.getByRole('button', { name: /Hochladen$/i })
+    ).not.toBeVisible({ timeout: 30_000 });
+
+    await expect(page.getByText(TEST_FILE_NAME)).toBeVisible({
+      timeout: 15_000,
+    });
+
+    await page
+      .getByRole('button', { name: `${TEST_FILE_NAME} löschen` })
+      .click();
+
+    await expect(page.getByText(TEST_FILE_NAME)).not.toBeVisible({
+      timeout: 15_000,
+    });
 
     await page.goBack();
     await expect(page).toHaveURL(/\/worker-lifycycle$/);
@@ -51,6 +93,6 @@ test.describe('Onboarding worker view journey', () => {
     await expect(deleteMenuItem).toBeVisible();
     await deleteMenuItem.click();
 
-    await expect(createdWorkerRow).not.toBeVisible();
+    await expect(createdWorkerRow).not.toBeVisible({ timeout: 15_000 });
   });
 });
