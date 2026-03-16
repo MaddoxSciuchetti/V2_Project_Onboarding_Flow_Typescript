@@ -97,6 +97,13 @@ describe('Employee absence status integration', () => {
 
     const absentText = await screen.findByText('Abwesend vom');
     expect(absentText).toHaveClass('text-(--chart-5)');
+
+    const updatedRow = screen.getByText('MaxMustermann').closest('tr');
+    expect(updatedRow).not.toBeNull();
+    const expectedSubstituteName = `${absentStatus.sub_user?.vorname} ${absentStatus.sub_user?.nachname}`;
+    const rowCells = within(updatedRow!).getAllByRole('cell');
+    const vertretungCell = rowCells[3];
+    expect(vertretungCell).toHaveTextContent(expectedSubstituteName);
     expect(getSpy).toHaveBeenCalledWith('/employee/specificEmployeeData');
   });
 });
