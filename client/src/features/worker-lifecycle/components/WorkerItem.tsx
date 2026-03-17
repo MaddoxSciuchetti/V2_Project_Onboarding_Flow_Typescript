@@ -4,6 +4,7 @@ import DropdownActionTrigger from '@/components/DropdownActionTrigger';
 import { Button } from '@/components/ui/button';
 import useFetchProcessData from '@/features/employee-overview/hooks/useFetchProcessData';
 import { UseMutateFunction } from '@tanstack/react-query';
+import { Info } from 'lucide-react';
 import { useState } from 'react';
 import {
   DeleteUser,
@@ -11,6 +12,7 @@ import {
   ItemUser,
   WorkerListMode,
 } from '../types/index.types';
+import WorkerInfoModal from './WorkerInfoModal';
 
 interface ToDoItem {
   item_value: number;
@@ -43,6 +45,7 @@ export function Worker_Item({
   } = useFetchProcessData(item_value, form_type);
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const calculatePercent = (completedTasks: number, total: number) => {
     if (total <= 0) return 'text-(--lifecycle-progress-zero-text)';
 
@@ -66,6 +69,19 @@ export function Worker_Item({
           <span>
             {item} {item1}
           </span>
+          <Button
+            type="button"
+            size="icon-sm"
+            variant="ghost"
+            aria-label="Handwerker Informationen"
+            className="cursor-pointer rounded-md text-muted-foreground hover:text-foreground"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsInfoModalOpen(true);
+            }}
+          >
+            <Info className="h-4 w-4" />
+          </Button>
           <Button
             type="button"
             size={'sm'}
@@ -124,6 +140,12 @@ export function Worker_Item({
             onRemove(item_value);
             setIsDeleteModalOpen(false);
           }}
+        />
+        <WorkerInfoModal
+          isOpen={isInfoModalOpen}
+          workerId={item_value}
+          lifecycleType={form_type}
+          onClose={() => setIsInfoModalOpen(false)}
         />
       </td>
     </tr>
