@@ -1,9 +1,8 @@
 import ModalOverlay from '@/components/modal/ModalOverlay';
 import SmallWrapper from '@/components/modal/modalSizes/SmallWrapper';
 import { Button } from '@/components/ui/button';
-import { useQuery } from '@tanstack/react-query';
 import { workerInfos } from '../consts/worker-info.consts';
-import { workerLifecycleQueries } from '../query-options/queries/worker-lifycycle.queries';
+import useWorkerInfo from '../hooks/useWorkerInfo';
 import { FormType } from '../types/index.types';
 
 type WorkerInfoModalProps = {
@@ -19,14 +18,11 @@ const WorkerInfoModal = ({
   lifecycleType,
   onClose,
 }: WorkerInfoModalProps) => {
-  const {
-    data: workerInfo,
-    isLoading,
-    isError,
-  } = useQuery({
-    ...workerLifecycleQueries.workerById(workerId, lifecycleType),
-    enabled: isOpen,
-  });
+  const { isError, isLoading, workerInfo } = useWorkerInfo(
+    isOpen,
+    workerId,
+    lifecycleType
+  );
 
   if (!isOpen) {
     return null;
