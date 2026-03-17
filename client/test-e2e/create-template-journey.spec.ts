@@ -31,14 +31,20 @@ test.describe('Create template journey', () => {
     await expect(ownerSelectTrigger).toBeVisible();
     await ownerSelectTrigger.click();
 
+    // Root cause: a global first() select-item can hit the wrong Radix portal
+    // entry or a stale node. Only choose currently visible owner options.
     const firstEmployeeOption = page
-      .locator('[data-slot="select-item"]')
+      .locator('[data-slot="select-item"]:visible')
       .first();
     await expect(firstEmployeeOption).toBeVisible();
     await firstEmployeeOption.click();
-    await page
-      .getByRole('button', { name: /Neue Beschreibung hinzufügen/i })
-      .click();
+
+    const submitButton = modalForm.getByRole('button', {
+      name: /^Neue Beschreibung hinzufügen$/i,
+    });
+    await expect(submitButton).toBeVisible();
+
+    await submitButton.click();
     await expect(modalForm).not.toBeVisible();
 
     const createdTaskRow = page.locator('li', { hasText: description }).first();
