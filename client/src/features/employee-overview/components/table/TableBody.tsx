@@ -26,13 +26,8 @@ const EmployeeTableBody = ({
   const { openEditEmployee } = useEmployeeModal();
   const { openTaskCountsByOwner } = useEmployeeData();
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const closeModal = () => setIsModalOpen(false);
-  // const handleConfirm = () => {
-  //   onConfirm();
-  //   closeModal();
-  // };
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const closeDeleteModalHandler = () => setIsDeleteModalOpen(false);
 
   return (
     <>
@@ -76,14 +71,14 @@ const EmployeeTableBody = ({
                 <TrashButton
                   disabled={employee.user_permission === 'CHEF'}
                   description={'Löschen'}
-                  onClick={() => setIsModalOpen(true)}
+                  onClick={() => setIsDeleteModalOpen(true)}
                 />
                 <DeleteConfirmModal
-                  isOpen={isModalOpen}
-                  onCancel={closeModal}
+                  isOpen={isDeleteModalOpen}
+                  onCancel={closeDeleteModalHandler}
                   onConfirm={() => {
                     handleDeleteEmployee(employee.id);
-                    closeModal();
+                    closeDeleteModalHandler();
                   }}
                 />
               </td>
