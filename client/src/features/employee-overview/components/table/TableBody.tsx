@@ -13,21 +13,21 @@ import EmployeeStatus from './table-row-item/EmployeeStatus';
 import EmployeeSubstitute from './table-row-item/EmployeeSubstitute';
 
 type TableBodyProps = {
-  EmployeeData: EmployeeDataArray;
+  filteredEmployeesByFirstName: EmployeeDataArray;
   DeleteEmployee: UseMutateFunction<User, Error, string, unknown>;
 };
 
 const EmployeeTableBody = ({
-  EmployeeData,
+  filteredEmployeesByFirstName,
   DeleteEmployee,
 }: TableBodyProps) => {
-  const { openEdit } = useEmployeeModal();
+  const { openEditEmployee: openEdit } = useEmployeeModal();
   const { openTaskCountsByOwner } = useEmployeeData();
 
   return (
     <>
       <TableBody className="text-left mt-5">
-        {EmployeeData?.map((value) => {
+        {filteredEmployeesByFirstName?.map((value) => {
           return (
             <tr className="group py-5 transition-colors" key={value.id}>
               <td className="text-sm font-semibold py-5 rounded-l-xl">
@@ -60,11 +60,11 @@ const EmployeeTableBody = ({
                 <EmployeeSubstitute value={value} />
               </td>
               <td className="rounded-r-xl">
-                  <TrashWithModal
-                    description="Löschen"
-                    disabled={value.user_permission === 'CHEF'}
-                    onConfirm={() => DeleteEmployee(value.id)}
-                  />
+                <TrashWithModal
+                  description="Löschen"
+                  disabled={value.user_permission === 'CHEF'}
+                  onConfirm={() => DeleteEmployee(value.id)}
+                />
               </td>
             </tr>
           );

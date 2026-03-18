@@ -5,7 +5,7 @@ import { EmployeeWorker } from '../types/employeeform.types';
 
 function useEmployeeData() {
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
-  const [modal, setModalOpen] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const {
     data: allEmployeeData,
     isLoading,
@@ -15,6 +15,7 @@ function useEmployeeData() {
   const cleanData = useMemo(() => {
     if (!allEmployeeData) return [];
     const groups = new Map<string, EmployeeWorker>();
+
     allEmployeeData.forEach((item) => {
       if (!groups.has(item.owner)) {
         groups.set(item.owner, []);
@@ -49,8 +50,8 @@ function useEmployeeData() {
     allEmployeeData,
     selectedUser,
     setSelectedUser,
-    modal,
-    setModalOpen,
+    modal: isModalOpen,
+    setModalOpen: setIsModalOpen,
     isLoading,
     error,
     cleanData,

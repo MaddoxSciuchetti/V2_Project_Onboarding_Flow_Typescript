@@ -10,7 +10,7 @@ const EmployeeOpenTasks = ({
   owner,
   openTaskCount,
 }: EmployeeOpenTasksProps) => {
-  const { employeeCreate } = useEmployeeModal();
+  const { openEmployeeReminder: employeeCreate } = useEmployeeModal();
 
   return (
     <>

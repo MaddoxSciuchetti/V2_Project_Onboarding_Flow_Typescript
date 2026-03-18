@@ -15,11 +15,11 @@ import EmployeeTableBody from './table/TableBody';
 
 function EmployeeOverview() {
   const { EmployeeData, isLoading } = useGetEmployees();
-  const { modalState, openCreate, closeModal } = useEmployeeModal();
+  const { modalState, openCreateEmployee, closeEmployee } = useEmployeeModal();
   const { DeleteEmployee, isPending } = useDeleteEmployee();
   const [search, setSearch] = useState('');
 
-  const filteredEmployees = (EmployeeData ?? []).filter((employee) =>
+  const filteredEmployeesByFirstName = (EmployeeData ?? []).filter((employee) =>
     employee.vorname.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -27,24 +27,24 @@ function EmployeeOverview() {
     switch (modalState.kind) {
       case 'edit':
         return (
-          <ModalOverlay handleToggle={closeModal}>
+          <ModalOverlay handleToggle={closeEmployee}>
             <ModalEditMitarbeiter
               fullname={modalState.fullname}
               id={modalState.employeeId}
-              toggleEmployeeModal={closeModal}
+              toggleEmployeeModal={closeEmployee}
             />
           </ModalOverlay>
         );
       case 'create':
         return (
-          <ModalOverlay handleToggle={closeModal}>
-            <ModalMitarbeiter toggleModal={closeModal} />
+          <ModalOverlay handleToggle={closeEmployee}>
+            <ModalMitarbeiter toggleModal={closeEmployee} />
           </ModalOverlay>
         );
 
       case 'employeecreate':
         return (
-          <ModalOverlay handleToggle={closeModal}>
+          <ModalOverlay handleToggle={closeEmployee}>
             <ViewEmployeeModal selectedOwner={modalState.owner} />
           </ModalOverlay>
         );
@@ -59,13 +59,13 @@ function EmployeeOverview() {
         <SearchHeaderResuable
           search={search}
           setSearch={setSearch}
-          toggleModal={openCreate}
+          openModal={openCreateEmployee}
           description=" Mitarbeiter Hinzufügen"
         />
         <Table className="text-left mt-5 border-seperate border-spacing-y-2">
           <EmployeeTableHeader />
           <EmployeeTableBody
-            EmployeeData={filteredEmployees}
+            filteredEmployeesByFirstName={filteredEmployeesByFirstName}
             DeleteEmployee={DeleteEmployee}
           />
         </Table>

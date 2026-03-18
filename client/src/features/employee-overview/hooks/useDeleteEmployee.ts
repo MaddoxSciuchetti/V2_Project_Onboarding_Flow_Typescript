@@ -3,7 +3,7 @@ import { employeeMutations } from '../query-options/mutations/employee.mutations
 import { useEmployeeModal } from './useEmployeeModal';
 
 function useDeleteEmployee() {
-  const { closeModal } = useEmployeeModal();
+  const { closeEmployee: closeModal } = useEmployeeModal();
 
   const {
     mutate: triggerDelete,

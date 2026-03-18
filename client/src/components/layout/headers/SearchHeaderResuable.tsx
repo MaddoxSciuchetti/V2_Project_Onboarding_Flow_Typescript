@@ -5,14 +5,14 @@ type SearchHeaderResuableProps<T extends string | number> = {
   search?: T;
   setSearch?: (value: T) => void;
   description: string;
-  toggleModal: () => void;
+  openModal: () => void;
   action?: () => void;
 };
 
 const SearchHeaderResuable = <T extends string | number>({
   search,
   setSearch,
-  toggleModal,
+  openModal,
   description,
   action,
 }: SearchHeaderResuableProps<T>) => {
@@ -34,7 +34,7 @@ const SearchHeaderResuable = <T extends string | number>({
             onClick={(e) => {
               e.stopPropagation();
               action?.();
-              toggleModal();
+              openModal();
             }}
             className="cursor-pointer rounded-xl hover:bg-accent hover:text-accent-foreground transition-colors hover:bg-(--hover-bg) hover:text-(--hover-foreground)"
           >
