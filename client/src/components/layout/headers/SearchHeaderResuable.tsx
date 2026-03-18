@@ -16,6 +16,8 @@ const SearchHeaderResuable = <T extends string | number>({
   description,
   action,
 }: SearchHeaderResuableProps<T>) => {
+  const buttonLabel = description.trim();
+
   return (
     <>
       <div className="flex gap-5">
@@ -28,7 +30,7 @@ const SearchHeaderResuable = <T extends string | number>({
         <div className="flex gap-2 ">
           <Button
             variant={'outline'}
-            aria-label="search-header-button"
+            aria-label={buttonLabel}
             onClick={(e) => {
               e.stopPropagation();
               action?.();

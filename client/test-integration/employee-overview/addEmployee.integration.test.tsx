@@ -51,7 +51,7 @@ describe('should create the employee', () => {
     );
 
     const button = await screen.findByRole('button', {
-      name: /search-header-button/i,
+      name: /Mitarbeiter Hinzufügen/i,
     });
     await user.click(button);
 
