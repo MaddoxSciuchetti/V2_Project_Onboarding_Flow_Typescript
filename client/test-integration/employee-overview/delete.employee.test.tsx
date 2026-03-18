@@ -6,8 +6,8 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { EmployeeRecord } from './types';
-import { buildEmployee } from './utils';
+import { EmployeeRecord } from '../types';
+import { buildEmployee } from '../utils';
 
 describe('Delete a employee', () => {
   beforeEach(() => {
