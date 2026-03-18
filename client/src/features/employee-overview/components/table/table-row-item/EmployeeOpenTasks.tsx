@@ -2,12 +2,12 @@ import { Button } from '@/components/ui/button';
 import { useEmployeeModal } from '@/features/employee-overview/hooks/useEmployeeModal';
 
 type EmployeeOpenTasksProps = {
-  owner: string;
+  employee: string;
   openTaskCount: number;
 };
 
 const EmployeeOpenTasks = ({
-  owner,
+  employee,
   openTaskCount,
 }: EmployeeOpenTasksProps) => {
   const { openEmployeeReminder: employeeCreate } = useEmployeeModal();
@@ -23,7 +23,7 @@ const EmployeeOpenTasks = ({
           className="cursor-pointer pointer-events-none opacity-0 transition-opacity duration-150 group-hover:pointer-events-auto group-hover:opacity-100"
           onClick={(e) => {
             e.stopPropagation();
-            employeeCreate(owner);
+            employeeCreate(employee);
           }}
         >
           Ansehen

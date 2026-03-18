@@ -14,25 +14,25 @@ import EmployeeSubstitute from './table-row-item/EmployeeSubstitute';
 
 type TableBodyProps = {
   filteredEmployeesByFirstName: EmployeeDataArray;
-  DeleteEmployee: UseMutateFunction<User, Error, string, unknown>;
+  handleDeleteEmployee: UseMutateFunction<User, Error, string, unknown>;
 };
 
 const EmployeeTableBody = ({
   filteredEmployeesByFirstName,
-  DeleteEmployee,
+  handleDeleteEmployee,
 }: TableBodyProps) => {
-  const { openEditEmployee: openEdit } = useEmployeeModal();
+  const { openEditEmployee } = useEmployeeModal();
   const { openTaskCountsByOwner } = useEmployeeData();
 
   return (
     <>
       <TableBody className="text-left mt-5">
-        {filteredEmployeesByFirstName?.map((value) => {
+        {filteredEmployeesByFirstName?.map((employee) => {
           return (
-            <tr className="group py-5 transition-colors" key={value.id}>
+            <tr className="group py-5 transition-colors" key={employee.id}>
               <td className="text-sm font-semibold py-5 rounded-l-xl">
                 <div className="flex items-center gap-3">
-                  <EmployeeName value={value} />
+                  <EmployeeName employee={employee} />
                   <Button
                     type="button"
                     size="sm"
@@ -40,7 +40,10 @@ const EmployeeTableBody = ({
                     className="cursor-pointer pointer-events-none opacity-0 transition-opacity duration-150 group-hover:pointer-events-auto group-hover:opacity-100"
                     onClick={(e) => {
                       e.stopPropagation();
-                      openEdit(value.id, `${value.vorname}${value.nachname}`);
+                      openEditEmployee(
+                        employee.id,
+                        `${employee.vorname}${employee.nachname}`
+                      );
                     }}
                   >
                     Abwesenheit eintragen
@@ -49,21 +52,21 @@ const EmployeeTableBody = ({
               </td>
               <td>
                 <EmployeeOpenTasks
-                  owner={value.id}
-                  openTaskCount={openTaskCountsByOwner.get(value.id) ?? 0}
+                  employee={employee.id}
+                  openTaskCount={openTaskCountsByOwner.get(employee.id) ?? 0}
                 />
               </td>
               <td className="">
-                <EmployeeStatus value={value} />
+                <EmployeeStatus employee={employee} />
               </td>
               <td className="">
-                <EmployeeSubstitute value={value} />
+                <EmployeeSubstitute employee={employee} />
               </td>
               <td className="rounded-r-xl">
                 <TrashWithModal
                   description="Löschen"
-                  disabled={value.user_permission === 'CHEF'}
-                  onConfirm={() => DeleteEmployee(value.id)}
+                  disabled={employee.user_permission === 'CHEF'}
+                  onConfirm={() => handleDeleteEmployee(employee.id)}
                 />
               </td>
             </tr>

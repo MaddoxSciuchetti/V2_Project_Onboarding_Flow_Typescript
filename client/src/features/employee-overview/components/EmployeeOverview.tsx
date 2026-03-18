@@ -16,7 +16,7 @@ import EmployeeTableBody from './table/TableBody';
 function EmployeeOverview() {
   const { EmployeeData, isLoading } = useGetEmployees();
   const { modalState, openCreateEmployee, closeEmployee } = useEmployeeModal();
-  const { DeleteEmployee, isPending } = useDeleteEmployee();
+  const { handleDeleteEmployee, isPending } = useDeleteEmployee();
   const [search, setSearch] = useState('');
 
   const filteredEmployeesByFirstName = (EmployeeData ?? []).filter((employee) =>
@@ -66,7 +66,7 @@ function EmployeeOverview() {
           <EmployeeTableHeader />
           <EmployeeTableBody
             filteredEmployeesByFirstName={filteredEmployeesByFirstName}
-            DeleteEmployee={DeleteEmployee}
+            handleDeleteEmployee={handleDeleteEmployee}
           />
         </Table>
       </div>

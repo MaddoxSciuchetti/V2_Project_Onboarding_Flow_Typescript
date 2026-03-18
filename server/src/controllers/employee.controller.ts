@@ -14,7 +14,6 @@ export const getEmployeeWorkerData = catchErrors(async (req, res) => {
 
 export const getEmployee = catchErrors(async (req, res) => {
     const EmployeeData = await queryEmployee();
-    console.log(EmployeeData);
     return res.status(OK).json(EmployeeData);
 });
 
