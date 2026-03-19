@@ -21,7 +21,11 @@ export const queryEmployeeWorkerData = async () => {
                             absencebegin: true,
                             absenceEnd: true,
                             sub_user: {
-                                select: { id: true, vorname: true, nachname: true },
+                                select: {
+                                    id: true,
+                                    vorname: true,
+                                    nachname: true,
+                                },
                             },
                         },
                     },
@@ -40,7 +44,12 @@ export const queryEmployeeWorkerData = async () => {
             employee_forms: {
                 select: {
                     users: {
-                        select: { id: true, vorname: true, nachname: true, email: true },
+                        select: {
+                            id: true,
+                            vorname: true,
+                            nachname: true,
+                            email: true,
+                        },
                     },
                 },
             },

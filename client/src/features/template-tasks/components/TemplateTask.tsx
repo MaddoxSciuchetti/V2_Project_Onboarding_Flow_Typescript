@@ -3,7 +3,7 @@ import SearchHeaderResuable from '@/components/layout/headers/SearchHeaderResuab
 import ModalOverlay from '@/components/modal/ModalOverlay';
 import useEditDescription from '../hooks/useEditDescription';
 import useFetchTask from '../hooks/useFetchTask';
-import useGetDescription from '../hooks/useGetDescription';
+import usePostTask from '../hooks/usePostTask';
 import TabsHeader from './TabsHeader';
 import Tasks from './Tasks';
 import TemplateModal from './TemplateModal';
@@ -17,7 +17,7 @@ function TemplateTasks() {
     mode,
     setMode,
     toggleModal,
-  } = useGetDescription();
+  } = usePostTask();
   const {
     filteredByType,
     taskLengthByTemplateType,
