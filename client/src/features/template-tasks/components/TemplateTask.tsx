@@ -4,6 +4,7 @@ import ModalOverlay from '@/components/modal/ModalOverlay';
 import useEditDescription from '../hooks/useEditDescription';
 import useFetchTask from '../hooks/useFetchTask';
 import usePostTask from '../hooks/usePostTask';
+import Pagination from './Pagination';
 import TabsHeader from './TabsHeader';
 import Tasks from './Tasks';
 import TemplateModal from './TemplateModal';
@@ -25,6 +26,10 @@ function TemplateTasks() {
     isLoading,
     search,
     setSearch,
+    currentPage,
+    setCurrentPage,
+    postsPerPage,
+    paginatedType,
   } = useFetchTask();
 
   const {
@@ -33,7 +38,6 @@ function TemplateTasks() {
     setModalState,
     openDescriptionModal,
   } = useEditDescription(toggleModal);
-
   if (isLoading) {
     return <LoadingAlert />;
   }
@@ -49,10 +53,16 @@ function TemplateTasks() {
       />
       <TabsHeader tab={tab} setTab={setTab} />
       <Tasks
-        items={filteredByType[tab]}
+        items={paginatedType[tab]}
         openDescriptionModal={openDescriptionModal}
         mode={mode}
         setMode={setMode}
+      />
+      <Pagination
+        postsPerPage={postsPerPage}
+        totalPosts={filteredByType[tab].length}
+        setCurrentPage={setCurrentPage}
+        currentPage={currentPage}
       />
       {tab === 'OFFBOARDING' ? (
         <p className="font-light text-xs text-(--muted-foreground) mt-4">

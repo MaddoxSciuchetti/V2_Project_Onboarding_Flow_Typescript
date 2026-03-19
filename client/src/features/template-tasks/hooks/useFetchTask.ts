@@ -7,6 +7,11 @@ function useFetchTask() {
   const { data = [], isPending } = useQuery(templateQueries.getTask());
   const [search, setSearch] = useState('');
   const normalizedSearch = search.trim().toLowerCase();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(10);
+
+  const indexOffLastPost = currentPage * postsPerPage;
+  const indexOffFirstPost = indexOffLastPost - postsPerPage;
 
   const tasksByTemplateType = useMemo(
     () => ({
@@ -28,12 +33,26 @@ function useFetchTask() {
     [tasksByTemplateType, normalizedSearch]
   );
 
+  const paginatedType = useMemo(
+    () => ({
+      ONBOARDING: filteredByType.ONBOARDING.slice(
+        indexOffFirstPost,
+        indexOffLastPost
+      ),
+      OFFBOARDING: filteredByType.OFFBOARDING.slice(
+        indexOffFirstPost,
+        indexOffLastPost
+      ),
+    }),
+    [indexOffFirstPost, indexOffLastPost, filteredByType]
+  );
+
   const taskLengthByTemplateType = useMemo(
     () => ({
-      ONBOARDING: tasksByTemplateType.ONBOARDING.length,
-      OFFBOARDING: tasksByTemplateType.OFFBOARDING.length,
+      ONBOARDING: filteredByType.ONBOARDING.length,
+      OFFBOARDING: filteredByType.OFFBOARDING.length,
     }),
-    [tasksByTemplateType]
+    [filteredByType]
   );
 
   return {
@@ -43,6 +62,11 @@ function useFetchTask() {
     taskLengthByTemplateType,
     search,
     setSearch,
+    currentPage,
+    setCurrentPage,
+    paginatedType,
+
+    postsPerPage,
   };
 }
 
