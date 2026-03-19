@@ -53,10 +53,6 @@ const EditTemplateModal = ({}: EditTemplateModalProps) => {
       />
     </SmallWrapper>
   );
-
-  // Fix: Show description in edit mode ()
-  // make sure that the logic works
-  // add everything into a context
 };
 
 export default EditTemplateModal;

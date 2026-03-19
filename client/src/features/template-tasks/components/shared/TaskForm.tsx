@@ -15,7 +15,7 @@ type TaskFormProps<T extends FieldValues> = {
   templateHeaderAdjective: string;
   register: UseFormRegister<T>;
   errors: FieldErrors<T>;
-  control: Control<T, any, T>;
+  control: Control<T, T, T>;
   tab: 'ONBOARDING' | 'OFFBOARDING';
   submit: () => void;
   buttonsaveText: string;

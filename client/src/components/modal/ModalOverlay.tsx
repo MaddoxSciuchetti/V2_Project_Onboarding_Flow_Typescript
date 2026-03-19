@@ -7,6 +7,7 @@ type ModalOverlayProps = {
   children: ReactNode;
   backdropClassName?: string;
   className?: string;
+  size?: string;
 };
 
 const ModalOverlay = ({
@@ -14,6 +15,7 @@ const ModalOverlay = ({
   children,
   backdropClassName,
   className,
+  size = 'max-w-md',
 }: ModalOverlayProps) => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -42,7 +44,7 @@ const ModalOverlay = ({
         aria-hidden="true"
       />
 
-      <div className="relative z-10 w-full max-w-md">
+      <div className={`relative z-10 w-full ${size}`}>
         <button
           onClick={handleToggle}
           aria-label="Modal schließen"
