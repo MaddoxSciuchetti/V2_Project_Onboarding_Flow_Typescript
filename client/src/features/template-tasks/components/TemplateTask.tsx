@@ -1,7 +1,6 @@
 import LoadingAlert from '@/components/alerts/LoadingAlert';
 import SearchHeaderResuable from '@/components/layout/headers/SearchHeaderResuable';
 import ModalOverlay from '@/components/modal/ModalOverlay';
-import useEditDescription from '../hooks/useEditDescription';
 import useFetchTask from '../hooks/useFetchTask';
 import useTemplateModalContext from '../hooks/useTemplateModalContext';
 import AddTemplateModal from './AddTemplateModal';
@@ -11,7 +10,6 @@ import TabsHeader from './TabsHeader';
 import Tasks from './Tasks';
 
 function TemplateTasks() {
-  const { tab, setTab } = useEditDescription();
   const {
     filteredByType,
     taskLengthByTemplateType,
@@ -25,7 +23,7 @@ function TemplateTasks() {
     paginatedType,
   } = useFetchTask();
 
-  const { modalState, closeTask, openCreateTask, openEditTask } =
+  const { modalState, closeTask, openCreateTask, openEditTask, tab, setTab } =
     useTemplateModalContext();
 
   const renderModal = () => {
@@ -33,13 +31,13 @@ function TemplateTasks() {
       case 'open-create':
         return (
           <ModalOverlay handleToggle={closeTask}>
-            <AddTemplateModal tab={tab} />
+            <AddTemplateModal />
           </ModalOverlay>
         );
       case 'open-edit':
         return (
           <ModalOverlay handleToggle={closeTask}>
-            <EditTemplateModal tab={tab} />
+            <EditTemplateModal />
           </ModalOverlay>
         );
     }

@@ -8,9 +8,6 @@ export function modalReducer(
     case 'OPEN_CREATE': {
       return {
         kind: 'open-create',
-        form_field_id: action.form_field_id,
-        description: action.description,
-        owner: action.owner,
       };
     }
     case 'OPEN_EDIT': {

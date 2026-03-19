@@ -7,12 +7,11 @@ import { editSchema } from '../schemas/taskForm.schema';
 import { HandleEditSubmit } from '../types/taskForm.types';
 import TaskForm from './shared/TaskForm';
 
-type EditTemplateModalProps = {
-  tab: 'ONBOARDING' | 'OFFBOARDING';
-};
-const EditTemplateModal = ({ tab }: EditTemplateModalProps) => {
+type EditTemplateModalProps = {};
+const EditTemplateModal = ({}: EditTemplateModalProps) => {
   const { closeTask, modalState } = useTemplateModalContext();
   const { editDescriptionMutation } = useEditDescription();
+  const { tab } = useTemplateModalContext();
   const {
     register,
     handleSubmit,
@@ -30,9 +29,9 @@ const EditTemplateModal = ({ tab }: EditTemplateModalProps) => {
   return (
     <SmallWrapper>
       <TaskForm
-        template_header="Onboarding"
-        templateHeaderAdjective="hinzufügen"
-        buttonsaveText="New hinzufügen"
+        template_header={tab === 'ONBOARDING' ? 'Onboarden' : 'Offboden'}
+        templateHeaderAdjective="editieren"
+        buttonsaveText="Speichern"
         register={register}
         submit={handleSubmit(onSubmit)}
         control={control}

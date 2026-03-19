@@ -1,12 +1,12 @@
 import SmallWrapper from '@/components/modal/modalSizes/SmallWrapper';
 import useAddNewTask from '../hooks/useAddNewTask';
+import useTemplateModalContext from '../hooks/useTemplateModalContext';
 import TaskForm from './shared/TaskForm';
 
-type AddTemplateModalProps = {
-  tab: 'ONBOARDING' | 'OFFBOARDING';
-};
+type AddTemplateModalProps = {};
 
-const AddTemplateModal = ({ tab }: AddTemplateModalProps) => {
+const AddTemplateModal = ({}: AddTemplateModalProps) => {
+  const { tab } = useTemplateModalContext();
   const { register, handleSubmit, control, errors, onSubmit } = useAddNewTask();
 
   return (
