@@ -44,7 +44,7 @@ function TemplateTasks() {
         search={search}
         setSearch={setSearch}
         description="Add Task"
-        toggleModal={openDescriptionModal}
+        openModal={openDescriptionModal}
         action={() => setMode('ADD')}
       />
       <TabsHeader tab={tab} setTab={setTab} />
