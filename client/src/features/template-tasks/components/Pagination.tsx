@@ -1,8 +1,8 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, MouseEvent, SetStateAction } from 'react';
 
 type PaginationProps = {
   postsPerPage: number;
-  totalPosts: any;
+  totalPosts: number;
   setCurrentPage: Dispatch<SetStateAction<number>>;
   currentPage: number;
 };
@@ -19,7 +19,7 @@ const Pagination = ({
     pageNumbers.push(i);
   }
 
-  const paginate = (pageNumber: any, e: any) => {
+  const paginate = (pageNumber: number, e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     setCurrentPage(pageNumber);
   };
