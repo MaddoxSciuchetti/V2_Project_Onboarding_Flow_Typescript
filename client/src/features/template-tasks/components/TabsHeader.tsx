@@ -10,6 +10,7 @@ type TabsHeaderProps = {
 };
 
 const TabsHeader = ({ tab, setTab }: TabsHeaderProps) => {
+  console.log(tab);
   return (
     <>
       <div className="mb-6 flex items-center justify-between mt-5">

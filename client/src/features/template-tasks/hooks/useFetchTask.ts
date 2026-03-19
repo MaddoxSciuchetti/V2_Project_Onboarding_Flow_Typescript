@@ -21,6 +21,8 @@ function useFetchTask() {
     [data]
   );
 
+  console.log(data.filter((value) => value.template_type));
+
   const filteredByType = useMemo(
     () => ({
       ONBOARDING: tasksByTemplateType.ONBOARDING.filter((item) =>
@@ -39,7 +41,7 @@ function useFetchTask() {
         indexOfFirstPost,
         indexOfLastPost
       ),
-      OFFBOARDING: filteredByType.ONBOARDING.slice(
+      OFFBOARDING: filteredByType.OFFBOARDING.slice(
         indexOfFirstPost,
         indexOfLastPost
       ),
