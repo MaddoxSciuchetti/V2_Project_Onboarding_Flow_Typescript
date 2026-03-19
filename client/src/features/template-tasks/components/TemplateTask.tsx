@@ -58,22 +58,25 @@ function TemplateTasks() {
         mode={mode}
         setMode={setMode}
       />
-      <Pagination
-        postsPerPage={postsPerPage}
-        totalPosts={filteredByType[tab].length}
-        setCurrentPage={setCurrentPage}
-        currentPage={currentPage}
-      />
-      {tab === 'OFFBOARDING' ? (
-        <p className="font-light text-xs text-(--muted-foreground) mt-4">
-          {taskLengthByTemplateType.OFFBOARDING} Aufgaben in Offboarding
-          template
-        </p>
-      ) : (
-        <p className="font-light text-xs text-(--muted-foreground) mt-4">
-          {taskLengthByTemplateType.ONBOARDING} Aufgaben in Onboarding template
-        </p>
-      )}
+      <div className="flex justify-between mt-2 items-center">
+        <Pagination
+          postsPerPage={postsPerPage}
+          totalPosts={filteredByType[tab].length}
+          setCurrentPage={setCurrentPage}
+          currentPage={currentPage}
+        />
+        {tab === 'OFFBOARDING' ? (
+          <p className="font-light text-xs text-(--muted-foreground)">
+            {taskLengthByTemplateType.OFFBOARDING} Aufgaben in Offboarding
+            template
+          </p>
+        ) : (
+          <p className="font-light text-xs text-(--muted-foreground)">
+            {taskLengthByTemplateType.ONBOARDING} Aufgaben in Onboarding
+            template
+          </p>
+        )}
+      </div>
       {modalState.selectedItem && modal && (
         <ModalOverlay handleToggle={toggleModal}>
           <TemplateModal

@@ -22,11 +22,11 @@ type TasksProps = {
 const Tasks = ({ items, openDescriptionModal, setMode }: TasksProps) => {
   const { deleteDescription } = useDeleteDescription();
   return (
-    <div className="rounded-lg border border-border  overflow-hidden">
-      <ul className="divide-y divide-border">
+    <div className="rounded-lg min-h-150 max-h-150 overflow-hidden">
+      <ul className="divide-y divide-border mt-3 border rounded-2xl ">
         {items?.map((item) => (
           <li
-            className="group flex items-center overflow-x-hidden justify-between gap-4 px-4 py-3 transition-colors hover:bg-(--secondary)"
+            className="group flex items-center overflow-x-hidden border-b last:border-b-0 justify-between gap-4 px-4 py-3 transition-colors hover:bg-(--secondary)"
             key={item.form_field_id}
           >
             <div className="flex-1 min-w-0">

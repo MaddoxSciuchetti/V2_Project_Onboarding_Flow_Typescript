@@ -19,21 +19,24 @@ const Pagination = ({
     pageNumbers.push(i);
   }
 
-  const paginate = (pageNumber: number, e: MouseEvent<HTMLAnchorElement>) => {
+  const handlePageUpdate = (
+    number: number,
+    e: MouseEvent<HTMLAnchorElement>
+  ) => {
     e.preventDefault();
-    setCurrentPage(pageNumber);
+    setCurrentPage(number);
   };
 
   return (
     <nav>
-      <ul>
+      <ul className="flex gap-2 ">
         {pageNumbers.map((number) => (
           <li
             key={number}
-            className={`page-item ${currentPage === number ? 'text-sm bg-(--destructive)' : 'text-sm text-(--destructive)'}`}
+            className={`page-item ${currentPage === number ? 'text-(--muted-foreground) underline' : 'text-(--foreground)'}`}
           >
             <a
-              onClick={(e) => paginate(number, e)}
+              onClick={(e) => handlePageUpdate(number, e)}
               href="!#"
               className="page-link"
             >

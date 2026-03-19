@@ -10,8 +10,8 @@ function useFetchTask() {
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(10);
 
-  const indexOffLastPost = currentPage * postsPerPage;
-  const indexOffFirstPost = indexOffLastPost - postsPerPage;
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
 
   const tasksByTemplateType = useMemo(
     () => ({
@@ -36,23 +36,23 @@ function useFetchTask() {
   const paginatedType = useMemo(
     () => ({
       ONBOARDING: filteredByType.ONBOARDING.slice(
-        indexOffFirstPost,
-        indexOffLastPost
+        indexOfFirstPost,
+        indexOfLastPost
       ),
-      OFFBOARDING: filteredByType.OFFBOARDING.slice(
-        indexOffFirstPost,
-        indexOffLastPost
+      OFFBOARDING: filteredByType.ONBOARDING.slice(
+        indexOfFirstPost,
+        indexOfLastPost
       ),
     }),
-    [indexOffFirstPost, indexOffLastPost, filteredByType]
+    [indexOfFirstPost, indexOfLastPost, filteredByType]
   );
 
   const taskLengthByTemplateType = useMemo(
     () => ({
-      ONBOARDING: filteredByType.ONBOARDING.length,
-      OFFBOARDING: filteredByType.OFFBOARDING.length,
+      ONBOARDING: paginatedType.ONBOARDING.length,
+      OFFBOARDING: paginatedType.OFFBOARDING.length,
     }),
-    [filteredByType]
+    [paginatedType]
   );
 
   return {
