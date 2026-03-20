@@ -8,17 +8,20 @@ import { HandleAddSubmit } from '../../types/taskForm.types';
 type OwnerSelectProps<T extends FieldValues> = {
   control: Control<T, any, T>;
   errors: FieldErrors<HandleAddSubmit>;
+  defaultvalue?: string;
 };
 
 const OwnerSelect = <T extends FieldValues>({
   errors,
   control,
+  defaultvalue,
 }: OwnerSelectProps<T>) => {
   const { data: employees = [] } = useQuery(employeeQueries.getEmployees());
 
   return (
     <>
       <FormSelectOptions
+        defaultValue={defaultvalue}
         name={'owner' as unknown as never}
         control={control}
         errors={errors}

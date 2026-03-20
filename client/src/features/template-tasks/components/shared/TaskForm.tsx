@@ -8,6 +8,7 @@ import {
   Path,
   UseFormRegister,
 } from 'react-hook-form';
+import useTemplateModalContext from '../../hooks/useTemplateModalContext';
 import OwnerSelect from './OwnerSelect';
 
 type TaskFormProps<T extends FieldValues> = {
@@ -37,6 +38,9 @@ const TaskForm = <T extends FieldValues>({
   description,
   descriptionFormName,
 }: TaskFormProps<T>) => {
+  const { modalState } = useTemplateModalContext();
+  const isModalState = modalState.kind === 'open-edit' ? modalState.owner : '';
+
   return (
     <form onSubmit={submit} className="flex w-full flex-col items-start ">
       <p>{`${template_header} Aufgabe ${templateHeaderAdjective}`}</p>
@@ -58,7 +62,11 @@ const TaskForm = <T extends FieldValues>({
       />
       <div className="flex w-full min-w-0 flex-row items-start gap-2">
         <div className="min-w-0 flex-1">
-          <OwnerSelect control={control} errors={errors} />
+          <OwnerSelect
+            control={control}
+            errors={errors}
+            defaultvalue={isModalState}
+          />
         </div>
         <Button
           type="submit"
