@@ -1,6 +1,7 @@
 import LoadingAlert from '@/components/alerts/LoadingAlert';
 import SearchHeaderResuable from '@/components/layout/headers/SearchHeaderResuable';
 import ModalOverlay from '@/components/modal/ModalOverlay';
+import { useEffect } from 'react';
 import useFetchTask from '../hooks/useFetchTask';
 import useTemplateModalContext from '../hooks/useTemplateModalContext';
 import AddTemplateModal from './AddTemplateModal';
@@ -24,6 +25,10 @@ function TemplateTasks() {
 
   const { modalState, closeTask, openCreateTask, openEditTask, tab, setTab } =
     useTemplateModalContext();
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [tab, setCurrentPage]);
 
   const renderModal = () => {
     switch (modalState.kind) {
