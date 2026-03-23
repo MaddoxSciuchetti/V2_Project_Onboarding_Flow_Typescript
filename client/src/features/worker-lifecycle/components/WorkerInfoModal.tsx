@@ -1,5 +1,6 @@
 import ModalOverlay from '@/components/modal/ModalOverlay';
-import SmallWrapper from '@/components/modal/modalSizes/SmallWrapper';
+import MediumWrapper from '@/components/modal/modalSizes/MediumWrapper';
+import { Check, X } from 'lucide-react';
 import { MouseEvent, useState } from 'react';
 import { workerInfos } from '../consts/worker-info.consts';
 import useWorkerInfo from '../hooks/useWorkerInfo';
@@ -29,20 +30,28 @@ const WorkerInfoModal = ({
   const [inputState, setInputState] = useState<boolean>();
   const [inputValue, setInputValue] = useState<string>();
 
+  const handleSubmit = (label: string) => {
+    if (!workerInfo || !inputValue) return;
+    const item = workerInfos(workerInfo).filter(
+      (value) => value.label === label
+    );
+    console.log(item);
+  };
+
   if (!isOpen) {
     return null;
   }
 
   return (
-    <ModalOverlay handleToggle={onClose}>
-      <SmallWrapper className="h-auto min-h-0 max-h-none w-full max-w-md p-5">
+    <ModalOverlay size={'max-w-2xl'} handleToggle={onClose}>
+      <MediumWrapper>
         <div
           className="flex w-full flex-col gap-3 text-left"
           onClick={() => setInputState(false)}
         >
           <WorkerInfoHeader isLoading={isLoading} isError={isError} />
           {workerInfo ? (
-            <div className="grid grid-cols-2 gap-2 text-xs">
+            <div className="grid grid-cols-2 gap-2 text-md ">
               {workerInfos(workerInfo).map((item, idx) => (
                 <>
                   <span
@@ -52,17 +61,28 @@ const WorkerInfoModal = ({
                     {item.label}
                   </span>
                   {uniqueInput === idx && inputState ? (
-                    <input
-                      placeholder={`${item.value}`}
-                      value={inputValue}
-                      onChange={(e) => setInputValue(e.target.value)}
-                      className=""
-                      onClick={(e: MouseEvent<HTMLInputElement>) =>
-                        e.stopPropagation()
-                      }
-                    />
+                    <span className="flex">
+                      <input
+                        placeholder={`${item.value}`}
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
+                        className=""
+                        onClick={(e: MouseEvent<HTMLInputElement>) =>
+                          e.stopPropagation()
+                        }
+                      />
+                      <X
+                        className="cursor-pointer"
+                        onClick={() => setInputState(false)}
+                      />
+                      <Check
+                        className="cursor-pointer"
+                        onClick={() => handleSubmit(item.label)}
+                      />
+                    </span>
                   ) : (
                     <span
+                      className="truncate"
                       key={`${item.label}-value`}
                       onClick={(e: MouseEvent<HTMLSpanElement>) => {
                         e.stopPropagation();
@@ -78,7 +98,7 @@ const WorkerInfoModal = ({
             </div>
           ) : null}
         </div>
-      </SmallWrapper>
+      </MediumWrapper>
     </ModalOverlay>
   );
 };
