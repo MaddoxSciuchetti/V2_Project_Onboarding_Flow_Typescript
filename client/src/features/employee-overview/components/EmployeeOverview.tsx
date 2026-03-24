@@ -53,7 +53,7 @@ function EmployeeOverview() {
       case 'employeeinfo':
         return (
           <ModalOverlay handleToggle={closeEmployee}>
-            <EmployeeInfoModal />
+            <EmployeeInfoModal employeeId={modalState.employeeId} />;
           </ModalOverlay>
         );
     }

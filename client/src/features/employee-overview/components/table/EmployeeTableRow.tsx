@@ -36,7 +36,7 @@ export const EmployeeRow = ({
           <EmployeeName employee={employee} />
           <Button
             className="cursor-pointer"
-            onClick={() => openInfoModal(1, 'Offboarding')}
+            onClick={() => openInfoModal(employee.id)}
           >
             <Info />
           </Button>

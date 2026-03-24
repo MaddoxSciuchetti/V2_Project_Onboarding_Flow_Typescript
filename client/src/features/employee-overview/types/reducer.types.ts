@@ -5,11 +5,11 @@ export type ModalState =
   | { kind: 'create' }
   | { kind: 'edit'; employeeId: string; fullname: string }
   | { kind: 'employeecreate'; owner: string }
-  | { kind: 'employeeinfo'; workerId: number; lifecycleType: FormType };
+  | { kind: 'employeeinfo'; employeeId: string };
 
 export type ModalAction =
   | { type: 'OPEN_CREATE' }
   | { type: 'OPEN_EDIT'; employeeId: string; fullname: string }
   | { type: 'CLOSE' }
   | { type: 'EMPLOYEE_CREATE'; owner: string }
-  | { type: 'OPEN_EMPLOYEE_INFO'; workerId: number; lifecycleType: FormType };
+  | { type: 'OPEN_EMPLOYEE_INFO'; employeeId: string };

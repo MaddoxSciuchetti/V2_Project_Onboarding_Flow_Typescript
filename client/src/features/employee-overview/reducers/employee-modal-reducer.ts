@@ -20,8 +20,7 @@ export function modalReducer(
     case 'OPEN_EMPLOYEE_INFO':
       return {
         kind: 'employeeinfo',
-        workerId: action.workerId,
-        lifecycleType: action.lifecycleType,
+        employeeId: action.employeeId,
       };
     default:
       return state;
