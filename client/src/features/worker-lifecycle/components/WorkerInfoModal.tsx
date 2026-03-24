@@ -44,24 +44,32 @@ const WorkerInfoModal = ({
           <WorkerInfoHeader isLoading={isLoading} isError={isError} />
           {workerInfo ? (
             <div className="w-full">
-              {workerInfos(workerInfo).map((item, idx) => (
-                <div
-                  key={idx}
-                  className="group flex items-center justify-between gap-4 py-3.5"
-                >
-                  <WorkerDescription item={item} />
-                  <WorkerInput
-                    item={item}
-                    idx={idx}
-                    workerInfo={workerInfo}
-                    workerId={workerId}
-                    inputState={inputState}
-                    setInputState={setInputState}
-                    uniqueInput={uniqueInput}
-                    setUniqueInput={setUniqueInput}
-                  />
-                </div>
-              ))}
+              {workerInfos(workerInfo)
+                .filter(
+                  (value) =>
+                    !(
+                      lifecycleType === 'Onboarding' &&
+                      value.schemaKey === 'austrittsdatum'
+                    )
+                )
+                .map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="group flex items-center justify-between gap-4 py-3.5"
+                  >
+                    <WorkerDescription item={item} />
+                    <WorkerInput
+                      item={item}
+                      idx={idx}
+                      workerInfo={workerInfo}
+                      workerId={workerId}
+                      inputState={inputState}
+                      setInputState={setInputState}
+                      uniqueInput={uniqueInput}
+                      setUniqueInput={setUniqueInput}
+                    />
+                  </div>
+                ))}
             </div>
           ) : null}
         </div>
