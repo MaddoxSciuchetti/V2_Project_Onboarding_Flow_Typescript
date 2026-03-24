@@ -36,9 +36,9 @@ const WorkerInfoModal = ({
 
   return (
     <ModalOverlay size={'max-w-2xl'} handleToggle={onClose}>
-      <MediumWrapper>
+      <MediumWrapper width="w-full max-w-xl" height="min-h-auto h-150">
         <div
-          className="flex w-full flex-col gap-3 text-left"
+          className="flex w-full flex-col gap-3 p-10 text-left"
           onClick={() => setInputState(false)}
         >
           <WorkerInfoHeader isLoading={isLoading} isError={isError} />
