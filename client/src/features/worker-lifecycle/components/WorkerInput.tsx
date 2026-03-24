@@ -60,6 +60,7 @@ const WorkerInput = ({
     <div className="w-96 shrink-0">
       {uniqueInput === idx && inputState && item.form ? (
         <ActiveField
+          inputValue={inputValue}
           setInputState={setInputState}
           setInputValue={setInputValue}
           handleSubmit={handleSubmit}

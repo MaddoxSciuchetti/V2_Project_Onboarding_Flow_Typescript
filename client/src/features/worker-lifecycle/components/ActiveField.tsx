@@ -11,6 +11,7 @@ type ActiveFieldProps = {
   item: WorkerInfoItem;
   variables: UpdatePayload;
   isPending: boolean;
+  inputValue: string | undefined;
 };
 
 const ActiveField = ({
@@ -20,6 +21,7 @@ const ActiveField = ({
   item,
   variables,
   isPending,
+  inputValue,
 }: ActiveFieldProps) => {
   return (
     <div className="w-full">
@@ -31,6 +33,7 @@ const ActiveField = ({
             'focus:border-foreground/70 transition-colors duration-150 pb-0.5',
             ' placeholder:text-muted-foreground/50'
           )}
+          value={inputValue}
           placeholder={`${isPending ? String(variables[item.schemaKey!]) : item.value}`}
           onChange={(e) => setInputValue(e.target.value)}
           onClick={(e: MouseEvent<HTMLInputElement>) => e.stopPropagation()}

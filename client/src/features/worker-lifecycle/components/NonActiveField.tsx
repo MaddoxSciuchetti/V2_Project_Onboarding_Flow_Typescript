@@ -31,7 +31,7 @@ const NonActiveField = ({
             e.stopPropagation();
             setInputState(true);
             setUniqueInput(idx);
-            setInputValue('');
+            setInputValue(String(item.value));
           }}
         >
           {isPending ? String(variables[item.schemaKey!]) : (item.value ?? '-')}
