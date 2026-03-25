@@ -1,10 +1,8 @@
 import '@/App.css';
 import DeleteConfirmModal from '@/components/DeleteConfirmModal';
 import DropdownActionTrigger from '@/components/DropdownActionTrigger';
-import { Button } from '@/components/ui/button';
 import useFetchProcessData from '@/features/employee-overview/hooks/useFetchProcessData';
 import { UseMutateFunction } from '@tanstack/react-query';
-import { Info } from 'lucide-react';
 import { useState } from 'react';
 import {
   DeleteUser,
@@ -13,6 +11,7 @@ import {
   WorkerListMode,
 } from '../types/index.types';
 import WorkerInfoModal from './WorkerInfoModal';
+import WorkerItemInfo from './WorkerItemInfo';
 
 interface ToDoItem {
   item_value: number;
@@ -65,37 +64,15 @@ export function Worker_Item({
   return (
     <tr className="group rounded-2xl py-5 transition-colors  ">
       <td className="text-sm font-semibold">
-        <div className="flex items-center gap-3">
-          <span>
-            {item} {item1}
-          </span>
-          <Button
-            type="button"
-            size="icon-sm"
-            variant="ghost"
-            aria-label="Handwerker Informationen"
-            className="cursor-pointer rounded-md text-muted-foreground hover:text-foreground"
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsInfoModalOpen(true);
-            }}
-          >
-            <Info className="h-4 w-4" />
-          </Button>
-          <Button
-            type="button"
-            size={'sm'}
-            variant="outline"
-            className="cursor-pointer pointer-events-none opacity-0 transition-opacity duration-150 group-hover:pointer-events-auto group-hover:opacity-100"
-            onClick={() =>
-              gotopage(item_value, form_type, `${item} ${item1 ?? ''}`.trim())
-            }
-          >
-            Anschauen
-          </Button>
-        </div>
+        <WorkerItemInfo
+          setIsInfoModalOpen={setIsInfoModalOpen}
+          gotopage={gotopage}
+          item_value={item_value}
+          form_type={form_type}
+          item={item}
+          item1={item1}
+        />
       </td>
-
       <td
         className={
           form_type === 'Onboarding'
