@@ -55,8 +55,8 @@ function LifeCycleTable({
                     key={task.id}
                     item_value={task.id}
                     form_type={getFirstFormType(task)}
-                    item={task.vorname}
-                    item1={task.nachname}
+                    vorname={task.vorname}
+                    nachname={task.nachname}
                     onRemove={onRemove}
                     onArchive={onArchive}
                     onUnarchive={onUnarchive}

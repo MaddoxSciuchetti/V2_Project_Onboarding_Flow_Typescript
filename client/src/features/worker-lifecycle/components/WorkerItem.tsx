@@ -15,7 +15,6 @@ import WorkerItemInfo from './WorkerItemInfo';
 
 interface ToDoItem {
   item_value: number;
-  item: string;
   form_type: FormType;
   gotopage: (taskId: number, form_type: FormType, workerName: string) => void;
   onRemove: UseMutateFunction<DeleteUser, Error, number, unknown>;
@@ -23,19 +22,20 @@ interface ToDoItem {
   onUnarchive: UseMutateFunction<ItemUser, Error, number, unknown>;
   mode: WorkerListMode;
   className?: string;
-  item1?: string;
+  nachname?: string;
+  vorname: string;
 }
 
 export function Worker_Item({
+  vorname,
+  nachname,
   form_type,
   item_value,
-  item,
   gotopage,
   onRemove,
   onArchive,
   onUnarchive,
   mode,
-  item1,
 }: ToDoItem) {
   const {
     isLoading: processLoading,
@@ -69,8 +69,8 @@ export function Worker_Item({
           gotopage={gotopage}
           item_value={item_value}
           form_type={form_type}
-          item={item}
-          item1={item1}
+          vorname={vorname}
+          nachname={nachname}
         />
       </td>
       <td

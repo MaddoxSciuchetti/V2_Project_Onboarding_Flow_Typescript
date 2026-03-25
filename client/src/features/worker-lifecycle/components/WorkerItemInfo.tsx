@@ -8,8 +8,8 @@ type WorkerItemInfoProps = {
   gotopage: (taskId: number, form_type: FormType, workerName: string) => void;
   item_value: number;
   form_type: FormType;
-  item: string;
-  item1: string | undefined;
+  vorname: string;
+  nachname: string | undefined;
 };
 
 const WorkerItemInfo = ({
@@ -17,14 +17,14 @@ const WorkerItemInfo = ({
   gotopage,
   item_value,
   form_type,
-  item,
-  item1,
+  vorname,
+  nachname,
 }: WorkerItemInfoProps) => {
   return (
     <>
       <div className="flex items-center gap-3">
         <span>
-          {item} {item1}
+          {vorname} {nachname}
         </span>
         <Button
           type="button"
@@ -45,7 +45,11 @@ const WorkerItemInfo = ({
           variant="outline"
           className="cursor-pointer pointer-events-none opacity-0 transition-opacity duration-150 group-hover:pointer-events-auto group-hover:opacity-100"
           onClick={() =>
-            gotopage(item_value, form_type, `${item} ${item1 ?? ''}`.trim())
+            gotopage(
+              item_value,
+              form_type,
+              `${vorname} ${nachname ?? ''}`.trim()
+            )
           }
         >
           Anschauen
