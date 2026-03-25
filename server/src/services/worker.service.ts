@@ -5,7 +5,6 @@ import {
     InsertWorkerResponse,
     WorkerForm,
 } from "@/types/worker.types";
-import { datevalidation } from "@/utils/datevalidation";
 
 export type WorkerListMode = "active" | "archived";
 
@@ -18,9 +17,9 @@ export const insertWorker = (
                 vorname: data.vorname,
                 nachname: data.nachname,
                 email: data.email,
-                geburtsdatum: datevalidation(data.geburtsdatum),
+                geburtsdatum: new Date(data.geburtsdatum),
                 adresse: data.adresse,
-                eintrittsdatum: datevalidation(data.eintrittsdatum),
+                eintrittsdatum: new Date(data.eintrittsdatum),
                 position: data.position,
             },
             select: {
@@ -332,8 +331,19 @@ export const insertDataPoint = async (
     value: any,
     workerId: number,
 ) => {
+    const dateKeys = new Set([
+        "geburtsdatum",
+        "eintrittsdatum",
+        "austrittsdatum",
+    ]);
+
+    const normalizedValue =
+        dateKeys.has(key) && typeof value === "string"
+            ? new Date(value)
+            : value;
+
     await prisma.users.update({
         where: { id: workerId },
-        data: { [key]: value },
+        data: { [key]: normalizedValue },
     });
 };

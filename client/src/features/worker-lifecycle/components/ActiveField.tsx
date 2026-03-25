@@ -3,6 +3,7 @@ import { cn } from '@/lib/trycatch';
 import { Check, X } from 'lucide-react';
 import { Dispatch, MouseEvent, SetStateAction } from 'react';
 import { WorkerInfoItem } from '../consts/worker-info.consts';
+import { getPlaceholderValue } from '../utils/workerInputDisplay';
 
 type ActiveFieldProps = {
   setIsInputActive: Dispatch<SetStateAction<boolean | undefined>>;
@@ -10,7 +11,6 @@ type ActiveFieldProps = {
   handleSubmit: (item: WorkerInfoItem) => void;
   item: WorkerInfoItem;
   variables: UpdatePayload;
-  isPending: boolean;
   inputValue: string | undefined;
 };
 
@@ -20,9 +20,10 @@ const ActiveField = ({
   handleSubmit,
   item,
   variables,
-  isPending,
   inputValue,
 }: ActiveFieldProps) => {
+  const placeholderValue = getPlaceholderValue(item, variables);
+
   return (
     <div className="w-full">
       <span className="grid w-full grid-cols-[1fr_auto] items-center gap-1">
@@ -34,7 +35,7 @@ const ActiveField = ({
             ' placeholder:text-muted-foreground/50'
           )}
           value={inputValue}
-          placeholder={`${isPending ? String(variables[item.schemaKey!]) : item.value}`}
+          placeholder={String(placeholderValue)}
           onChange={(e) => setInputValue(e.target.value)}
           onClick={(e: MouseEvent<HTMLInputElement>) => e.stopPropagation()}
         />

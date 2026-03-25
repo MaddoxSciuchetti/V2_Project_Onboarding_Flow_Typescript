@@ -90,7 +90,6 @@ const WorkerInput = ({
           handleSubmit={handleSubmit}
           item={item}
           variables={variables as UpdatePayload}
-          isPending={isPending}
         />
       ) : (
         <NonActiveField

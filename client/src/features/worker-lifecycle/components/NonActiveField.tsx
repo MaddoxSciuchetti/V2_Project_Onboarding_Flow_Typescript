@@ -1,6 +1,11 @@
 import { UpdatePayload } from '@/features/task-management/types/index.types';
 import { Dispatch, MouseEvent, SetStateAction } from 'react';
 import { WorkerInfoItem } from '../consts/worker-info.consts';
+import {
+  getDisplayValue,
+  getInputValueForActivation,
+  getPendingDisplayValue,
+} from '../utils/workerInputDisplay';
 
 type NonActiveFieldProps = {
   item: WorkerInfoItem;
@@ -21,6 +26,9 @@ const NonActiveField = ({
   variables,
   idx,
 }: NonActiveFieldProps) => {
+  const displayValue = getDisplayValue(item);
+  const pendingDisplayValue = getPendingDisplayValue(item, variables);
+
   return (
     <div className="w-full">
       <span className="grid w-full grid-cols-[1fr_auto] items-center gap-1">
@@ -31,10 +39,10 @@ const NonActiveField = ({
             e.stopPropagation();
             setIsInputActive(true);
             setUniqueInput(idx);
-            setInputValue(String(item.value));
+            setInputValue(getInputValueForActivation(item));
           }}
         >
-          {isPending ? String(variables[item.schemaKey!]) : (item.value ?? '-')}
+          {isPending ? pendingDisplayValue : displayValue}
         </span>
         <span className="flex items-center justify-end gap-1 opacity-0">
           <span className="h-7 w-7" />
