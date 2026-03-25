@@ -16,7 +16,7 @@ type WorkerInputProps = {
   idx: number;
   workerInfo: DescriptionFieldResponse | undefined;
   workerId: number;
-  inputState: boolean | undefined;
+  isInputActive: boolean | undefined;
   setIsInputActive: Dispatch<SetStateAction<boolean | undefined>>;
   uniqueInput: number | undefined;
   setUniqueInput: Dispatch<SetStateAction<number | undefined>>;
@@ -27,7 +27,7 @@ const WorkerInput = ({
   idx,
   workerInfo,
   workerId,
-  inputState,
+  isInputActive,
   setIsInputActive,
   uniqueInput,
   setUniqueInput,
@@ -58,7 +58,7 @@ const WorkerInput = ({
 
   return (
     <div className="w-96 shrink-0">
-      {uniqueInput === idx && inputState && item.form ? (
+      {uniqueInput === idx && isInputActive && item.form ? (
         <ActiveField
           inputValue={inputValue}
           setIsInputActive={setIsInputActive}
