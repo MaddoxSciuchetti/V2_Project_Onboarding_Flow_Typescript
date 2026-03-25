@@ -1,6 +1,7 @@
 import express from "express";
 
 import {
+    addWorkerTask,
     archiveWorkerById,
     createWorker,
     createWorkerFile,
@@ -30,6 +31,7 @@ worker.delete("/deleteWorker/:id", deleteWorker);
 worker.get("/getWorker/:id", getWorkerById);
 worker.put("/updateWorker", catchErrors(updateWorker));
 worker.put("/singleWorkerDataPoint", catchErrors(updateDataPoint));
+worker.post("/createWorkerTask/:workerId", catchErrors(addWorkerTask));
 
 // worker history Data
 

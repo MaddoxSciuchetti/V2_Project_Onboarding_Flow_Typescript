@@ -50,6 +50,7 @@ const EditTemplateModal = ({}: EditTemplateModalProps) => {
         description={
           modalState.kind === 'open-edit' ? modalState.description : undefined
         }
+        defaultOwner={modalState.kind === 'open-edit' ? modalState.owner : ''}
       />
     </SmallWrapper>
   );

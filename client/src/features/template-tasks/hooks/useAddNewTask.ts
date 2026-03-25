@@ -37,7 +37,6 @@ function useAddNewTask(tab: 'ONBOARDING' | 'OFFBOARDING') {
   const onSubmit: SubmitHandler<HandleAddSubmit> = (data) => {
     handleAddSubmitMutation(data as HandleAddSubmit, {
       onSuccess: () => {
-        console.log('hello');
         closeTask();
         toast.success('the field has been added');
       },

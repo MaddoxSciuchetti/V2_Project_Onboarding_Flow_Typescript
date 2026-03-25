@@ -5,6 +5,7 @@ import { ALL_WORKER_DATA } from '@/features/worker-lifecycle/consts/query-key.co
 import { FileResponse, SuccessResponse } from '@/types/api.types';
 import { mutationOptions } from '@tanstack/react-query';
 import {
+  createWorkerTask,
   deleteWorkerFile,
   updateData,
   updateWorkerData,
@@ -16,6 +17,7 @@ import {
   WORKERBYID,
 } from '../../consts/query-key.consts';
 import {
+  CreateWorkerTaskPayload,
   File_Request,
   InsertHistoryData,
   UpdatePayload,
@@ -102,5 +104,18 @@ export const workerMutations = {
         },
       }
     );
+  },
+
+  createWorkerTask: (workerId: number) => {
+    return mutationOptions<void, Error, CreateWorkerTaskPayload>({
+      mutationFn: async (data) => {
+        await createWorkerTask(workerId, data);
+      },
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({
+          queryKey: [WORKERBYID, workerId],
+        });
+      },
+    });
   },
 };

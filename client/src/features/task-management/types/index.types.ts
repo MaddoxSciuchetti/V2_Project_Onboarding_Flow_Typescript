@@ -38,6 +38,12 @@ export type UpdatePayload = Partial<
 
 export type LifecycleType = 'Onboarding' | 'Offboarding';
 
+export type CreateWorkerTaskPayload = {
+  description: string;
+  template_type: 'ONBOARDING' | 'OFFBOARDING';
+  owner: string;
+};
+
 export type InsertHistoryData = z.infer<typeof formSchema>;
 
 export type WorkerTab = 'form' | 'files';

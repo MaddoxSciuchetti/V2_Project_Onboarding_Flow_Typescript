@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { InsertWorkerHistory } from "@/schemas/worker.schemas";
+import { CreateWorkerTask, InsertWorkerHistory } from "@/schemas/worker.schemas";
 import {
     InsertWorker,
     InsertWorkerResponse,
@@ -345,5 +345,60 @@ export const insertDataPoint = async (
     await prisma.users.update({
         where: { id: workerId },
         data: { [key]: normalizedValue },
+    });
+};
+
+export const createWorkerTask = async (
+    workerId: number,
+    data: CreateWorkerTask,
+) => {
+    return prisma.$transaction(async (tx) => {
+        const formType =
+            data.template_type === "OFFBOARDING" ? "Offboarding" : "Onboarding";
+
+        const employeeForm = await tx.employee_forms.findFirst({
+            where: {
+                user_id: workerId,
+                form_type: formType,
+            },
+            select: { id: true },
+        });
+
+        if (!employeeForm) {
+            throw new Error("Worker form not found for requested lifecycle");
+        }
+
+        // Worker-native task metadata lives in form_fields, but stays out of template lists via null template_type.
+        const workerField = await tx.form_fields.create({
+            data: {
+                description: data.description,
+                owner: data.owner,
+                template_type: null,
+            },
+            select: {
+                form_field_id: true,
+                description: true,
+                owner: true,
+            },
+        });
+
+        const workerInput = await tx.form_inputs.create({
+            data: {
+                employee_form_id: employeeForm.id,
+                form_field_id: workerField.form_field_id,
+            },
+            select: {
+                id: true,
+                employee_form_id: true,
+                form_field_id: true,
+                status: true,
+                edit: true,
+            },
+        });
+
+        return {
+            field: workerField,
+            input: workerInput,
+        };
     });
 };

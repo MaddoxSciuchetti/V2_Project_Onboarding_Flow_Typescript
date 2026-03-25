@@ -6,6 +6,7 @@ import {
   EditDescriptionForm as UpdateWorkerDescription,
 } from '@/types/api.types';
 import {
+  CreateWorkerTaskPayload,
   File_Request,
   HistoryData,
   InsertHistoryData,
@@ -74,4 +75,11 @@ export const deleteWorkerFile = async (
 
 export const updateData = async (data: UpdatePayload, workerId: number) => {
   return await API.put('/worker/singleWorkerDataPoint', { ...data, workerId });
+};
+
+export const createWorkerTask = async (
+  workerId: number,
+  data: CreateWorkerTaskPayload
+) => {
+  return await API.post(`/worker/createWorkerTask/${workerId}`, data);
 };
