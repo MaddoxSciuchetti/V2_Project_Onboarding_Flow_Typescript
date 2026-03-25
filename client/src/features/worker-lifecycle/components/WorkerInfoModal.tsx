@@ -2,12 +2,10 @@ import LoadingAlert from '@/components/alerts/LoadingAlert';
 import ModalOverlay from '@/components/modal/ModalOverlay';
 import MediumWrapper from '@/components/modal/modalSizes/MediumWrapper';
 import { useState } from 'react';
-import { workerInfos } from '../consts/worker-info.consts';
 import useWorkerInfo from '../hooks/useWorkerInfo';
 import { FormType } from '../types/index.types';
-import WorkerDescription from './WorkerDescription';
 import WorkerInfoHeader from './WorkerInfoHeader';
-import WorkerInput from './WorkerInput';
+import WorkerInfos from './WorkerInfos';
 
 type WorkerInfoModalProps = {
   isOpen: boolean;
@@ -47,37 +45,17 @@ const WorkerInfoModal = ({
             <div className="flex w-full min-h-104 items-center justify-center">
               <LoadingAlert className="min-h-0" />
             </div>
-          ) : workerInfo ? (
-            <div className="w-full">
-              {workerInfos(workerInfo)
-                .filter(
-                  (value) =>
-                    !(
-                      lifecycleType === 'Onboarding' &&
-                      value.schemaKey === 'austrittsdatum'
-                    )
-                )
-                .map((item, idx) => (
-                  <div key={`${item.label}-${idx}`}>
-                    <div className="group flex items-center justify-between gap-4 py-3.5">
-                      <WorkerDescription item={item} />
-                      <div className="w-96 shrink-0">
-                        <WorkerInput
-                          item={item}
-                          idx={idx}
-                          workerInfo={workerInfo}
-                          workerId={workerId}
-                          isInputActive={isInputActive}
-                          setIsInputActive={setIsInputActive}
-                          uniqueInput={uniqueInput}
-                          setUniqueInput={setUniqueInput}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                ))}
-            </div>
-          ) : null}
+          ) : (
+            <WorkerInfos
+              workerId={workerId}
+              workerInfo={workerInfo}
+              lifecycleType={lifecycleType}
+              isInputActive={isInputActive}
+              setIsInputActive={setIsInputActive}
+              uniqueInput={uniqueInput}
+              setUniqueInput={setUniqueInput}
+            />
+          )}
         </div>
       </MediumWrapper>
     </ModalOverlay>
