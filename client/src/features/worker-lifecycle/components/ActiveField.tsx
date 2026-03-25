@@ -6,7 +6,7 @@ import { WorkerInfoItem } from '../consts/worker-info.consts';
 
 type ActiveFieldProps = {
   setIsInputActive: Dispatch<SetStateAction<boolean | undefined>>;
-  setInputValue: Dispatch<SetStateAction<string | undefined>>;
+  setInputValue: (value: string) => void;
   handleSubmit: (item: WorkerInfoItem) => void;
   item: WorkerInfoItem;
   variables: UpdatePayload;

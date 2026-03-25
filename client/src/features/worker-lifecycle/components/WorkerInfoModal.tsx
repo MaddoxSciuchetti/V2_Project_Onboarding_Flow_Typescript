@@ -58,21 +58,22 @@ const WorkerInfoModal = ({
                     )
                 )
                 .map((item, idx) => (
-                  <div
-                    key={idx}
-                    className="group flex items-center justify-between gap-4 py-3.5"
-                  >
-                    <WorkerDescription item={item} />
-                    <WorkerInput
-                      item={item}
-                      idx={idx}
-                      workerInfo={workerInfo}
-                      workerId={workerId}
-                      isInputActive={isInputActive}
-                      setIsInputActive={setIsInputActive}
-                      uniqueInput={uniqueInput}
-                      setUniqueInput={setUniqueInput}
-                    />
+                  <div key={`${item.label}-${idx}`}>
+                    <div className="group flex items-center justify-between gap-4 py-3.5">
+                      <WorkerDescription item={item} />
+                      <div className="w-96 shrink-0">
+                        <WorkerInput
+                          item={item}
+                          idx={idx}
+                          workerInfo={workerInfo}
+                          workerId={workerId}
+                          isInputActive={isInputActive}
+                          setIsInputActive={setIsInputActive}
+                          uniqueInput={uniqueInput}
+                          setUniqueInput={setUniqueInput}
+                        />
+                      </div>
+                    </div>
                   </div>
                 ))}
             </div>
