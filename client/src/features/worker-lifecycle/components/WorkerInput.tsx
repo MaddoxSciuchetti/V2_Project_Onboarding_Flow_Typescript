@@ -25,28 +25,13 @@ const WorkerInput = ({
   setUniqueInput,
 }: WorkerInputProps) => {
   const {
-    key,
-    handleFormSubmit,
+    handleSubmit,
     errorMessage,
-    setValue,
-    mutate,
     isPending,
     variables,
     inputValue,
-    setInputValue,
+    handleInputChange,
   } = useUpdateWorkerInfo(item, workerId);
-
-  const handleInputChange = (value: string) => {
-    if (!key) return;
-    setInputValue(value);
-    setValue(key, value, { shouldValidate: true, shouldDirty: true });
-  };
-  const handleSubmit = () => {
-    if (!key) return;
-    handleFormSubmit((data) => {
-      mutate(data as UpdatePayload);
-    })();
-  };
 
   return (
     <div className="w-full">

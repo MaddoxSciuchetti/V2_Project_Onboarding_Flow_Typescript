@@ -1,4 +1,5 @@
 import { workerMutations } from '@/features/task-management/query-options/mutations/worker.mutations';
+import { UpdatePayload } from '@/features/task-management/types/index.types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -24,12 +25,26 @@ function useUpdateWorkerInfo(item: WorkerInfoItem, workerId: number) {
     workerMutations.updateDataPoint(workerId)
   );
 
+  const handleSubmit = () => {
+    if (!key) return;
+    handleFormSubmit((data) => {
+      mutate(data as UpdatePayload);
+    })();
+  };
+
+  const handleInputChange = (value: string) => {
+    if (!key) return;
+    setInputValue(value);
+    setValue(key, value, { shouldValidate: true, shouldDirty: true });
+  };
+
   const errorMessage = key ? errors[key]?.message : undefined;
 
   return {
     key,
     schema,
     handleFormSubmit,
+    handleInputChange,
     errors,
     setValue,
     setInputValue,
@@ -38,6 +53,7 @@ function useUpdateWorkerInfo(item: WorkerInfoItem, workerId: number) {
     variables,
     inputValue,
     errorMessage,
+    handleSubmit,
   };
 }
 
