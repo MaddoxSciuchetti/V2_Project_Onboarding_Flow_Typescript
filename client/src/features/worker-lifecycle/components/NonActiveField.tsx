@@ -11,7 +11,7 @@ type NonActiveFieldProps = {
   item: WorkerInfoItem;
   setIsInputActive: Dispatch<SetStateAction<boolean | undefined>>;
   setUniqueInput: Dispatch<SetStateAction<number | undefined>>;
-  setInputValue: (value: string) => void;
+  handleInputChange: (value: string) => void;
   isPending: boolean;
   variables: UpdatePayload;
   idx: number;
@@ -21,7 +21,7 @@ const NonActiveField = ({
   item,
   setIsInputActive,
   setUniqueInput,
-  setInputValue,
+  handleInputChange,
   isPending,
   variables,
   idx,
@@ -39,7 +39,7 @@ const NonActiveField = ({
             e.stopPropagation();
             setIsInputActive(true);
             setUniqueInput(idx);
-            setInputValue(getInputValueForActivation(item));
+            handleInputChange(getInputValueForActivation(item));
           }}
         >
           {isPending ? pendingDisplayValue : displayValue}

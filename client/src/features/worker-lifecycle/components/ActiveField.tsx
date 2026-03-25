@@ -7,7 +7,7 @@ import { getPlaceholderValue } from '../utils/workerInputDisplay';
 
 type ActiveFieldProps = {
   setIsInputActive: Dispatch<SetStateAction<boolean | undefined>>;
-  setInputValue: (value: string) => void;
+  handleInputChange: (value: string) => void;
   handleSubmit: () => void;
   item: WorkerInfoItem;
   variables: UpdatePayload;
@@ -16,7 +16,7 @@ type ActiveFieldProps = {
 
 const ActiveField = ({
   setIsInputActive,
-  setInputValue,
+  handleInputChange,
   handleSubmit,
   item,
   variables,
@@ -36,7 +36,7 @@ const ActiveField = ({
           )}
           value={inputValue}
           placeholder={String(placeholderValue)}
-          onChange={(e) => setInputValue(e.target.value)}
+          onChange={(e) => handleInputChange(e.target.value)}
           onClick={(e: MouseEvent<HTMLInputElement>) => e.stopPropagation()}
         />
         <span className="flex items-center justify-end gap-1">

@@ -1,11 +1,7 @@
-import { workerMutations } from '@/features/task-management/query-options/mutations/worker.mutations';
 import { UpdatePayload } from '@/features/task-management/types/index.types';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
 import { Dispatch, SetStateAction } from 'react';
-import { useForm, useWatch } from 'react-hook-form';
 import { WorkerInfoItem } from '../consts/worker-info.consts';
-import { getWorkerFieldSchema } from '../utils/workerInputValidation';
+import useUpdateWorkerInfo from '../hooks/useUpdateWorkerInfo';
 import ActiveField from './ActiveField';
 import NonActiveField from './NonActiveField';
 
@@ -28,31 +24,21 @@ const WorkerInput = ({
   uniqueInput,
   setUniqueInput,
 }: WorkerInputProps) => {
-  const key = item.schemaKey;
-  const schema = key ? getWorkerFieldSchema(key) : undefined;
-
   const {
-    handleSubmit: handleFormSubmit,
-    formState: { errors },
+    key,
+    handleFormSubmit,
+    errors,
     setValue,
-    control,
-  } = useForm<Record<string, unknown>>({
-    resolver: schema ? zodResolver(schema) : undefined,
-    mode: 'onChange',
-  });
-
-  const { mutate, isPending, variables } = useMutation(
-    workerMutations.updateDataPoint(workerId)
-  );
-
-  const inputValue = useWatch({
-    control,
-    name: (key ?? 'unused') as string,
-  }) as string | undefined;
+    mutate,
+    isPending,
+    variables,
+    inputValue,
+    setInputValue,
+  } = useUpdateWorkerInfo(item, workerId);
 
   const handleInputChange = (value: string) => {
     if (!key) return;
-
+    setInputValue(value);
     setValue(key, value, { shouldValidate: true, shouldDirty: true });
   };
 
@@ -66,7 +52,7 @@ const WorkerInput = ({
         <ActiveField
           inputValue={inputValue}
           setIsInputActive={setIsInputActive}
-          setInputValue={handleInputChange}
+          handleInputChange={handleInputChange}
           handleSubmit={() => {
             if (!key) return;
 
@@ -82,7 +68,7 @@ const WorkerInput = ({
           item={item}
           setIsInputActive={setIsInputActive}
           setUniqueInput={setUniqueInput}
-          setInputValue={handleInputChange}
+          handleInputChange={handleInputChange}
           isPending={isPending}
           variables={variables as UpdatePayload}
           idx={idx}

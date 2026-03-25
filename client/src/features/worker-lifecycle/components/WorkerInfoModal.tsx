@@ -45,7 +45,7 @@ const WorkerInfoModal = ({
             <div className="flex w-full min-h-104 items-center justify-center">
               <LoadingAlert className="min-h-0" />
             </div>
-          ) : (
+          ) : workerInfo ? (
             <WorkerInfos
               workerId={workerId}
               workerInfo={workerInfo}
@@ -55,7 +55,7 @@ const WorkerInfoModal = ({
               uniqueInput={uniqueInput}
               setUniqueInput={setUniqueInput}
             />
-          )}
+          ) : null}
         </div>
       </MediumWrapper>
     </ModalOverlay>
