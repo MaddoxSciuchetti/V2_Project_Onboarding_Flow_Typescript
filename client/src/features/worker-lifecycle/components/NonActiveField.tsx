@@ -1,40 +1,48 @@
 import { UpdatePayload } from '@/features/task-management/types/index.types';
 import { Dispatch, MouseEvent, SetStateAction } from 'react';
 import { WorkerInfoItem } from '../consts/worker-info.consts';
+import {
+  getDisplayValue,
+  getInputValueForActivation,
+  getPendingDisplayValue,
+} from '../utils/workerInputDisplay';
 
 type NonActiveFieldProps = {
-  item: WorkerInfoItem;
-  setInputState: Dispatch<SetStateAction<boolean | undefined>>;
+  workerInfo: WorkerInfoItem;
+  setIsInputActive: Dispatch<SetStateAction<boolean | undefined>>;
   setUniqueInput: Dispatch<SetStateAction<number | undefined>>;
-  setInputValue: Dispatch<SetStateAction<string | undefined>>;
+  handleInputChange: (value: string) => void;
   isPending: boolean;
   variables: UpdatePayload;
   idx: number;
 };
 
 const NonActiveField = ({
-  item,
-  setInputState,
+  workerInfo,
+  setIsInputActive,
   setUniqueInput,
-  setInputValue,
+  handleInputChange,
   isPending,
   variables,
   idx,
 }: NonActiveFieldProps) => {
+  const displayValue = getDisplayValue(workerInfo);
+  const pendingDisplayValue = getPendingDisplayValue(workerInfo, variables);
+
   return (
     <div className="w-full">
       <span className="grid w-full grid-cols-[1fr_auto] items-center gap-1">
         <span
           className="block w-full cursor-text truncate border-b border-foreground/30 pb-0.5 text-left text-sm text-foreground"
-          key={`${item.label}-value`}
+          key={`${workerInfo.label}-value`}
           onClick={(e: MouseEvent<HTMLSpanElement>) => {
             e.stopPropagation();
-            setInputState(true);
+            setIsInputActive(true);
             setUniqueInput(idx);
-            setInputValue(String(item.value));
+            handleInputChange(getInputValueForActivation(workerInfo));
           }}
         >
-          {isPending ? String(variables[item.schemaKey!]) : (item.value ?? '-')}
+          {isPending ? pendingDisplayValue : displayValue}
         </span>
         <span className="flex items-center justify-end gap-1 opacity-0">
           <span className="h-7 w-7" />

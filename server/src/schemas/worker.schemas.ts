@@ -17,4 +17,11 @@ export const insertWorkerHistorySchema = z.object({
     user: userSchema,
 });
 
+export const createWorkerTaskSchema = z.object({
+    description: z.string().min(6),
+    template_type: z.enum(["ONBOARDING", "OFFBOARDING"]),
+    owner: z.string(),
+});
+
 export type InsertWorkerHistory = z.infer<typeof insertWorkerHistorySchema>;
+export type CreateWorkerTask = z.infer<typeof createWorkerTaskSchema>;

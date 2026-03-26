@@ -1,5 +1,6 @@
 import ErrorAlert from '@/components/alerts/ErrorAlert';
 import LoadingAlert from '@/components/alerts/LoadingAlert';
+import ModalOverlay from '@/components/modal/ModalOverlay';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 import { useState } from 'react';
 import useFilteredData from '../../hooks/useFilteredData';
@@ -9,6 +10,7 @@ import { LifecycleType, WorkerTab } from '../../types/index.types';
 import WorkerFileUploads from '../files/WorkerFileUploads';
 import FilterByUser from '../header/filters/Filter.ByUser';
 import WorkerHeader from '../header/WorkerHeader';
+import AddWorkerTaskModal from './AddWorkerTaskModal';
 import TaskSidebar from './task-sidebar/TaskSidebar';
 import TaskIndividual from './TaskIndividual';
 
@@ -20,6 +22,7 @@ type TaskManagementProps = {
 const TaskManagement = ({ workerId, lifecycleType }: TaskManagementProps) => {
   const [activeTab, setActiveTab] = useState<WorkerTab>('form');
   const [fileDescriptionSearch, setFileDescriptionSearch] = useState('');
+  const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false);
 
   const { data, isLoading } = useTaskData(workerId, lifecycleType);
   const {
@@ -62,6 +65,7 @@ const TaskManagement = ({ workerId, lifecycleType }: TaskManagementProps) => {
             searchValue={searchValue}
             setSearchValue={setSearchValue}
             searchPlaceholder={searchPlaceholder}
+            handleAddTask={() => setIsAddTaskModalOpen(true)}
           />
           <TabsContent value="form">
             <FilterByUser
@@ -86,6 +90,16 @@ const TaskManagement = ({ workerId, lifecycleType }: TaskManagementProps) => {
             />
           </TabsContent>
         </Tabs>
+
+        {isAddTaskModalOpen && (
+          <ModalOverlay handleToggle={() => setIsAddTaskModalOpen(false)}>
+            <AddWorkerTaskModal
+              workerId={workerId}
+              lifecycleType={lifecycleType}
+              onClose={() => setIsAddTaskModalOpen(false)}
+            />
+          </ModalOverlay>
+        )}
       </>
     </div>
   );

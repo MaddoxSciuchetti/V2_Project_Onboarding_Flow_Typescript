@@ -1,6 +1,5 @@
 import { DescriptionFieldResponse } from '@/types/api.types';
 import { addWorkerBaseSchema } from '../schemas/zod.schemas';
-import { formatDate } from '../utils/dateCalculation';
 
 export type WorkerInfoItem = {
   label: string;
@@ -37,7 +36,7 @@ export const workerInfos = (
   {
     label: 'Geburtsdatum',
     className: 'text-muted-foreground',
-    value: formatDate(workerInfo.worker.geburtsdatum),
+    value: workerInfo.worker.geburtsdatum || '',
     schemaKey: 'geburtsdatum',
     form: true,
   },
@@ -51,7 +50,7 @@ export const workerInfos = (
   {
     label: 'Eintrittsdatum',
     className: 'text-muted-foreground',
-    value: formatDate(workerInfo.worker.eintrittsdatum),
+    value: workerInfo.worker.eintrittsdatum || '',
     schemaKey: 'eintrittsdatum',
     form: true,
   },
@@ -65,7 +64,7 @@ export const workerInfos = (
   {
     label: 'Austrittsdatum',
     className: 'text-muted-foreground',
-    value: formatDate(workerInfo.worker.austrittsdatum),
+    value: workerInfo.worker.austrittsdatum || '',
     schemaKey: 'austrittsdatum',
     form: true,
   },

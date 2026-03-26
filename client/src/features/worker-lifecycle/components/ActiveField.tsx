@@ -1,26 +1,18 @@
-import { UpdatePayload } from '@/features/task-management/types/index.types';
 import { cn } from '@/lib/trycatch';
 import { Check, X } from 'lucide-react';
 import { Dispatch, MouseEvent, SetStateAction } from 'react';
-import { WorkerInfoItem } from '../consts/worker-info.consts';
 
 type ActiveFieldProps = {
-  setInputState: Dispatch<SetStateAction<boolean | undefined>>;
-  setInputValue: Dispatch<SetStateAction<string | undefined>>;
-  handleSubmit: (item: WorkerInfoItem) => void;
-  item: WorkerInfoItem;
-  variables: UpdatePayload;
-  isPending: boolean;
+  setIsInputActive: Dispatch<SetStateAction<boolean | undefined>>;
+  handleInputChange: (value: string) => void;
+  handleSubmit: () => void;
   inputValue: string | undefined;
 };
 
 const ActiveField = ({
-  setInputState,
-  setInputValue,
+  setIsInputActive,
+  handleInputChange,
   handleSubmit,
-  item,
-  variables,
-  isPending,
   inputValue,
 }: ActiveFieldProps) => {
   return (
@@ -34,13 +26,12 @@ const ActiveField = ({
             ' placeholder:text-muted-foreground/50'
           )}
           value={inputValue}
-          placeholder={`${isPending ? String(variables[item.schemaKey!]) : item.value}`}
-          onChange={(e) => setInputValue(e.target.value)}
+          onChange={(e) => handleInputChange(e.target.value)}
           onClick={(e: MouseEvent<HTMLInputElement>) => e.stopPropagation()}
         />
         <span className="flex items-center justify-end gap-1">
           <button
-            onClick={() => setInputState(false)}
+            onClick={() => setIsInputActive(false)}
             className="cursor-pointer p-1 text-muted-foreground transition-colors hover:text-(--destructive)"
             aria-label="Abbrechen"
           >
@@ -48,7 +39,7 @@ const ActiveField = ({
           </button>
           <button
             className="cursor-pointer p-1 text-muted-foreground transition-colors hover:text-(--chart-2)"
-            onClick={() => handleSubmit(item)}
+            onClick={handleSubmit}
           >
             <Check size={20} strokeWidth={1.75} />
           </button>

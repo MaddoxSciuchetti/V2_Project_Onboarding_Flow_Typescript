@@ -1,48 +1,44 @@
 import '@/App.css';
 import DeleteConfirmModal from '@/components/DeleteConfirmModal';
 import DropdownActionTrigger from '@/components/DropdownActionTrigger';
-import { Button } from '@/components/ui/button';
 import useFetchProcessData from '@/features/employee-overview/hooks/useFetchProcessData';
-import { UseMutateFunction } from '@tanstack/react-query';
-import { Info } from 'lucide-react';
+import { LifecycleType } from '@/features/task-management/types/index.types';
 import { useState } from 'react';
-import {
-  DeleteUser,
-  FormType,
-  ItemUser,
-  WorkerListMode,
-} from '../types/index.types';
+import useWorkerMutations from '../hooks/useWorkerMutaitons';
+import { WorkerListMode } from '../types/index.types';
 import WorkerInfoModal from './WorkerInfoModal';
+import WorkerItemInfo from './WorkerItemInfo';
 
 interface ToDoItem {
   item_value: number;
-  item: string;
-  form_type: FormType;
-  gotopage: (taskId: number, form_type: FormType, workerName: string) => void;
-  onRemove: UseMutateFunction<DeleteUser, Error, number, unknown>;
-  onArchive: UseMutateFunction<ItemUser, Error, number, unknown>;
-  onUnarchive: UseMutateFunction<ItemUser, Error, number, unknown>;
+  form_type: LifecycleType;
+  gotopage: (
+    taskId: number,
+    form_type: LifecycleType,
+    workerName: string
+  ) => void;
   mode: WorkerListMode;
   className?: string;
-  item1?: string;
+  nachname?: string;
+  vorname: string;
 }
 
 export function Worker_Item({
+  vorname,
+  nachname,
   form_type,
   item_value,
-  item,
   gotopage,
-  onRemove,
-  onArchive,
-  onUnarchive,
   mode,
-  item1,
 }: ToDoItem) {
   const {
     isLoading: processLoading,
     completedTasksCount,
     totalTasks,
   } = useFetchProcessData(item_value, form_type);
+
+  const { archiveWorkerMutation, deleteTaskMutation, unarchiveWorkerMutation } =
+    useWorkerMutations();
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
@@ -65,37 +61,15 @@ export function Worker_Item({
   return (
     <tr className="group rounded-2xl py-5 transition-colors  ">
       <td className="text-sm font-semibold">
-        <div className="flex items-center gap-3">
-          <span>
-            {item} {item1}
-          </span>
-          <Button
-            type="button"
-            size="icon-sm"
-            variant="ghost"
-            aria-label="Handwerker Informationen"
-            className="cursor-pointer rounded-md text-muted-foreground hover:text-foreground"
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsInfoModalOpen(true);
-            }}
-          >
-            <Info className="h-4 w-4" />
-          </Button>
-          <Button
-            type="button"
-            size={'sm'}
-            variant="outline"
-            className="cursor-pointer pointer-events-none opacity-0 transition-opacity duration-150 group-hover:pointer-events-auto group-hover:opacity-100"
-            onClick={() =>
-              gotopage(item_value, form_type, `${item} ${item1 ?? ''}`.trim())
-            }
-          >
-            Anschauen
-          </Button>
-        </div>
+        <WorkerItemInfo
+          setIsInfoModalOpen={setIsInfoModalOpen}
+          gotopage={gotopage}
+          item_value={item_value}
+          form_type={form_type}
+          vorname={vorname}
+          nachname={nachname}
+        />
       </td>
-
       <td
         className={
           form_type === 'Onboarding'
@@ -122,8 +96,8 @@ export function Worker_Item({
               label: mode === 'active' ? 'Archivieren' : 'Wiederherstellen',
               action: () =>
                 mode === 'active'
-                  ? onArchive(item_value)
-                  : onUnarchive(item_value),
+                  ? archiveWorkerMutation(item_value)
+                  : unarchiveWorkerMutation(item_value),
               variant: 'default',
             },
             {
@@ -137,7 +111,7 @@ export function Worker_Item({
           isOpen={isDeleteModalOpen}
           onCancel={() => setIsDeleteModalOpen(false)}
           onConfirm={() => {
-            onRemove(item_value);
+            deleteTaskMutation(item_value);
             setIsDeleteModalOpen(false);
           }}
         />

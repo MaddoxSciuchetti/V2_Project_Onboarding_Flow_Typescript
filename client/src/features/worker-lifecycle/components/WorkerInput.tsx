@@ -1,83 +1,60 @@
-import { workerMutations } from '@/features/task-management/query-options/mutations/worker.mutations';
 import { UpdatePayload } from '@/features/task-management/types/index.types';
-import { DescriptionFieldResponse } from '@/types/api.types';
-import { useMutation } from '@tanstack/react-query';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { WorkerInfoItem } from '../consts/worker-info.consts';
-import {
-  addWorkerBaseSchema,
-  OffboardingValidation,
-} from '../schemas/zod.schemas';
+import useUpdateWorkerInfo from '../hooks/useUpdateWorkerInfo';
 import ActiveField from './ActiveField';
 import NonActiveField from './NonActiveField';
 
 type WorkerInputProps = {
-  item: WorkerInfoItem;
+  workerInfo: WorkerInfoItem;
   idx: number;
-  workerInfo: DescriptionFieldResponse | undefined;
   workerId: number;
-  inputState: boolean | undefined;
-  setInputState: Dispatch<SetStateAction<boolean | undefined>>;
+  isInputActive: boolean | undefined;
+  setIsInputActive: Dispatch<SetStateAction<boolean | undefined>>;
   uniqueInput: number | undefined;
   setUniqueInput: Dispatch<SetStateAction<number | undefined>>;
 };
 
 const WorkerInput = ({
-  item,
-  idx,
   workerInfo,
+  idx,
   workerId,
-  inputState,
-  setInputState,
+  isInputActive,
+  setIsInputActive,
   uniqueInput,
   setUniqueInput,
 }: WorkerInputProps) => {
-  const [inputValue, setInputValue] = useState<string>();
-  const { mutate, isPending, variables } = useMutation(
-    workerMutations.updateDataPoint(workerId)
-  );
-
-  const handleSubmit = (item: WorkerInfoItem) => {
-    if (!workerInfo || !inputValue) return;
-    const key = item.schemaKey!;
-    const schema =
-      key === 'austrittsdatum'
-        ? OffboardingValidation.pick({ [key]: true } as Record<
-            'austrittsdatum',
-            true
-          >)
-        : addWorkerBaseSchema.pick({ [key]: true } as Record<typeof key, true>);
-
-    const result = schema.safeParse({ [item.schemaKey!]: inputValue });
-    if (!result.success) {
-      console.log(result.error);
-      return;
-    }
-    mutate(result.data);
-  };
+  const {
+    handleSubmit,
+    errorMessage,
+    isPending,
+    variables,
+    inputValue,
+    handleInputChange,
+  } = useUpdateWorkerInfo(workerInfo, workerId);
 
   return (
-    <div className="w-96 shrink-0">
-      {uniqueInput === idx && inputState && item.form ? (
+    <div className="w-full">
+      {uniqueInput === idx && isInputActive && workerInfo.form ? (
         <ActiveField
           inputValue={inputValue}
-          setInputState={setInputState}
-          setInputValue={setInputValue}
+          setIsInputActive={setIsInputActive}
+          handleInputChange={handleInputChange}
           handleSubmit={handleSubmit}
-          item={item}
-          variables={variables as UpdatePayload}
-          isPending={isPending}
         />
       ) : (
         <NonActiveField
-          item={item}
-          setInputState={setInputState}
+          workerInfo={workerInfo}
+          setIsInputActive={setIsInputActive}
           setUniqueInput={setUniqueInput}
-          setInputValue={setInputValue}
+          handleInputChange={handleInputChange}
           isPending={isPending}
           variables={variables as UpdatePayload}
           idx={idx}
         />
+      )}
+      {errorMessage && (
+        <span className="mt-1 block text-(--destructive)">{errorMessage}</span>
       )}
     </div>
   );

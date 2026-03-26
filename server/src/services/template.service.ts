@@ -12,6 +12,9 @@ export const removeTemplateTask = async (id: number) => {
 
 export const queryTask = async () => {
     const descriptiondata = await prisma.form_fields.findMany({
+        where: {
+            template_type: { not: null },
+        },
         select: {
             form_field_id: true,
             description: true,

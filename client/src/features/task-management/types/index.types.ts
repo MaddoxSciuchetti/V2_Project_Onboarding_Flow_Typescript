@@ -23,7 +23,7 @@ export type File_Request = {
   cloud_key: string;
   uploaded_at: Date;
   employee_forms: {
-    form_type: 'Onboarding' | 'Offboarding';
+    form_type: LifecycleType;
     id: number;
     timestamp: string;
     user_id: number;
@@ -37,6 +37,12 @@ export type UpdatePayload = Partial<
 >;
 
 export type LifecycleType = 'Onboarding' | 'Offboarding';
+
+export type CreateWorkerTaskPayload = {
+  description: string;
+  template_type: 'ONBOARDING' | 'OFFBOARDING';
+  owner: string;
+};
 
 export type InsertHistoryData = z.infer<typeof formSchema>;
 
