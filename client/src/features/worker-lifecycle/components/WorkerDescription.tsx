@@ -1,17 +1,17 @@
 import { WorkerInfoItem } from '../consts/worker-info.consts';
 
 type WorkerDescriptionProps = {
-  item: WorkerInfoItem;
+  workerInfo: WorkerInfoItem;
 };
 
-const WorkerDescription = ({ item }: WorkerDescriptionProps) => {
+const WorkerDescription = ({ workerInfo }: WorkerDescriptionProps) => {
   return (
     <>
       <span
-        key={`${item.label}-label`}
-        className={item.className ?? 'text-muted-foreground'}
+        key={`${workerInfo.label}-label`}
+        className={workerInfo.className ?? 'text-muted-foreground'}
       >
-        {item.label}
+        {workerInfo.label}
       </span>
     </>
   );

@@ -31,13 +31,13 @@ const WorkerInfos = ({
   return (
     <>
       <div className="w-full">
-        {workers.map((item, idx) => (
-          <div key={`${item.label}-${idx}`}>
+        {workers.map((workerInfo, idx) => (
+          <div key={`${workerInfo.label}-${idx}`}>
             <div className="group flex items-center justify-between gap-4 py-3.5">
-              <WorkerDescription item={item} />
+              <WorkerDescription workerInfo={workerInfo} />
               <div className="w-96 shrink-0">
                 <WorkerInput
-                  item={item}
+                  workerInfo={workerInfo}
                   idx={idx}
                   workerId={workerId}
                   isInputActive={isInputActive}

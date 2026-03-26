@@ -23,10 +23,10 @@ export const getPendingDisplayValue = (
   return isDateField(item) ? formatDate(pendingValue) : pendingValue;
 };
 
-export const getDisplayValue = (item: WorkerInfoItem) =>
-  isDateField(item)
-    ? formatDate(String(item.value || ''))
-    : (item.value ?? '-');
+export const getDisplayValue = (workerInfo: WorkerInfoItem) =>
+  isDateField(workerInfo)
+    ? formatDate(String(workerInfo.value || ''))
+    : (workerInfo.value ?? '-');
 
 export const getPlaceholderValue = (
   item: WorkerInfoItem,

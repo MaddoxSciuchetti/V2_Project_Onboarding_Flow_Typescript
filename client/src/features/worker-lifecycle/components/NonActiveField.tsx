@@ -8,7 +8,7 @@ import {
 } from '../utils/workerInputDisplay';
 
 type NonActiveFieldProps = {
-  item: WorkerInfoItem;
+  workerInfo: WorkerInfoItem;
   setIsInputActive: Dispatch<SetStateAction<boolean | undefined>>;
   setUniqueInput: Dispatch<SetStateAction<number | undefined>>;
   handleInputChange: (value: string) => void;
@@ -18,7 +18,7 @@ type NonActiveFieldProps = {
 };
 
 const NonActiveField = ({
-  item,
+  workerInfo,
   setIsInputActive,
   setUniqueInput,
   handleInputChange,
@@ -26,20 +26,20 @@ const NonActiveField = ({
   variables,
   idx,
 }: NonActiveFieldProps) => {
-  const displayValue = getDisplayValue(item);
-  const pendingDisplayValue = getPendingDisplayValue(item, variables);
+  const displayValue = getDisplayValue(workerInfo);
+  const pendingDisplayValue = getPendingDisplayValue(workerInfo, variables);
 
   return (
     <div className="w-full">
       <span className="grid w-full grid-cols-[1fr_auto] items-center gap-1">
         <span
           className="block w-full cursor-text truncate border-b border-foreground/30 pb-0.5 text-left text-sm text-foreground"
-          key={`${item.label}-value`}
+          key={`${workerInfo.label}-value`}
           onClick={(e: MouseEvent<HTMLSpanElement>) => {
             e.stopPropagation();
             setIsInputActive(true);
             setUniqueInput(idx);
-            handleInputChange(getInputValueForActivation(item));
+            handleInputChange(getInputValueForActivation(workerInfo));
           }}
         >
           {isPending ? pendingDisplayValue : displayValue}

@@ -6,7 +6,7 @@ import ActiveField from './ActiveField';
 import NonActiveField from './NonActiveField';
 
 type WorkerInputProps = {
-  item: WorkerInfoItem;
+  workerInfo: WorkerInfoItem;
   idx: number;
   workerId: number;
   isInputActive: boolean | undefined;
@@ -16,7 +16,7 @@ type WorkerInputProps = {
 };
 
 const WorkerInput = ({
-  item,
+  workerInfo,
   idx,
   workerId,
   isInputActive,
@@ -31,22 +31,22 @@ const WorkerInput = ({
     variables,
     inputValue,
     handleInputChange,
-  } = useUpdateWorkerInfo(item, workerId);
+  } = useUpdateWorkerInfo(workerInfo, workerId);
 
   return (
     <div className="w-full">
-      {uniqueInput === idx && isInputActive && item.form ? (
+      {uniqueInput === idx && isInputActive && workerInfo.form ? (
         <ActiveField
           inputValue={inputValue}
           setIsInputActive={setIsInputActive}
           handleInputChange={handleInputChange}
           handleSubmit={handleSubmit}
-          item={item}
+          workerInfo={workerInfo}
           variables={variables as UpdatePayload}
         />
       ) : (
         <NonActiveField
-          item={item}
+          workerInfo={workerInfo}
           setIsInputActive={setIsInputActive}
           setUniqueInput={setUniqueInput}
           handleInputChange={handleInputChange}

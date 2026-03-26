@@ -9,7 +9,7 @@ type ActiveFieldProps = {
   setIsInputActive: Dispatch<SetStateAction<boolean | undefined>>;
   handleInputChange: (value: string) => void;
   handleSubmit: () => void;
-  item: WorkerInfoItem;
+  workerInfo: WorkerInfoItem;
   variables: UpdatePayload;
   inputValue: string | undefined;
 };
@@ -18,11 +18,11 @@ const ActiveField = ({
   setIsInputActive,
   handleInputChange,
   handleSubmit,
-  item,
+  workerInfo,
   variables,
   inputValue,
 }: ActiveFieldProps) => {
-  const placeholderValue = getPlaceholderValue(item, variables);
+  const placeholderValue = getPlaceholderValue(workerInfo, variables);
 
   return (
     <div className="w-full">
