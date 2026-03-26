@@ -41,8 +41,6 @@ const WorkerInput = ({
           setIsInputActive={setIsInputActive}
           handleInputChange={handleInputChange}
           handleSubmit={handleSubmit}
-          workerInfo={workerInfo}
-          variables={variables as UpdatePayload}
         />
       ) : (
         <NonActiveField

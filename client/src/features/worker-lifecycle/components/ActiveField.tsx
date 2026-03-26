@@ -1,16 +1,11 @@
-import { UpdatePayload } from '@/features/task-management/types/index.types';
 import { cn } from '@/lib/trycatch';
 import { Check, X } from 'lucide-react';
 import { Dispatch, MouseEvent, SetStateAction } from 'react';
-import { WorkerInfoItem } from '../consts/worker-info.consts';
-import { getPlaceholderValue } from '../utils/workerInputDisplay';
 
 type ActiveFieldProps = {
   setIsInputActive: Dispatch<SetStateAction<boolean | undefined>>;
   handleInputChange: (value: string) => void;
   handleSubmit: () => void;
-  workerInfo: WorkerInfoItem;
-  variables: UpdatePayload;
   inputValue: string | undefined;
 };
 
@@ -18,12 +13,8 @@ const ActiveField = ({
   setIsInputActive,
   handleInputChange,
   handleSubmit,
-  workerInfo,
-  variables,
   inputValue,
 }: ActiveFieldProps) => {
-  const placeholderValue = getPlaceholderValue(workerInfo, variables);
-
   return (
     <div className="w-full">
       <span className="grid w-full grid-cols-[1fr_auto] items-center gap-1">
@@ -35,7 +26,6 @@ const ActiveField = ({
             ' placeholder:text-muted-foreground/50'
           )}
           value={inputValue}
-          placeholder={String(placeholderValue)}
           onChange={(e) => handleInputChange(e.target.value)}
           onClick={(e: MouseEvent<HTMLInputElement>) => e.stopPropagation()}
         />

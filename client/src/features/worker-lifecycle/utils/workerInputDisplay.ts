@@ -2,25 +2,26 @@ import { UpdatePayload } from '@/features/task-management/types/index.types';
 import { WorkerInfoItem } from '../consts/worker-info.consts';
 import { formatDate } from './dateCalculation';
 
-export const isDateField = (item: WorkerInfoItem) =>
-  item.schemaKey === 'geburtsdatum' ||
-  item.schemaKey === 'eintrittsdatum' ||
-  item.schemaKey === 'austrittsdatum';
+export const isDateField = (workerItem: WorkerInfoItem) =>
+  workerItem.schemaKey === 'geburtsdatum' ||
+  workerItem.schemaKey === 'eintrittsdatum' ||
+  workerItem.schemaKey === 'austrittsdatum';
 
 export const getPendingValue = (
-  item: WorkerInfoItem,
+  workerItem: WorkerInfoItem,
   variables?: UpdatePayload
-) => (item.schemaKey ? String(variables?.[item.schemaKey] ?? '') : '');
+) =>
+  workerItem.schemaKey ? String(variables?.[workerItem.schemaKey] ?? '') : '';
 
 export const getPendingDisplayValue = (
-  item: WorkerInfoItem,
+  workerItem: WorkerInfoItem,
   variables?: UpdatePayload
 ) => {
-  const pendingValue = getPendingValue(item, variables);
+  const pendingValue = getPendingValue(workerItem, variables);
 
   if (!pendingValue) return '';
 
-  return isDateField(item) ? formatDate(pendingValue) : pendingValue;
+  return isDateField(workerItem) ? formatDate(pendingValue) : pendingValue;
 };
 
 export const getDisplayValue = (workerInfo: WorkerInfoItem) =>
@@ -28,26 +29,9 @@ export const getDisplayValue = (workerInfo: WorkerInfoItem) =>
     ? formatDate(String(workerInfo.value || ''))
     : (workerInfo.value ?? '-');
 
-export const getPlaceholderValue = (
-  item: WorkerInfoItem,
-  variables?: UpdatePayload
-) => {
-  const pendingValue = getPendingValue(item, variables);
-
-  if (!isDateField(item)) {
-    return pendingValue || String(item.value ?? '');
-  }
-
-  if (pendingValue) {
-    return formatDate(pendingValue);
-  }
-
-  return item.value ? formatDate(String(item.value)) : '';
-};
-
-export const getInputValueForActivation = (item: WorkerInfoItem) =>
-  isDateField(item)
-    ? item.value
-      ? formatDate(String(item.value))
+export const getInputValueForActivation = (workerItem: WorkerInfoItem) =>
+  isDateField(workerItem)
+    ? workerItem.value
+      ? formatDate(String(workerItem.value))
       : ''
-    : String(item.value);
+    : String(workerItem.value);
