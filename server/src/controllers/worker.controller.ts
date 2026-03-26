@@ -2,11 +2,15 @@ import { generatePresignedUrl, uploadFileToS3 } from "@/config/aws";
 import { CONFLICT } from "@/constants/http";
 import { prisma } from "@/lib/prisma";
 import {
+    createWorkerTaskSchema,
     insertWorkerHistorySchema,
     updateWorkerSchema,
 } from "@/schemas/worker.schemas";
+import { notifyEmployeesAboutWorkerCreated } from "@/services/worker.notification.service";
 import {
     archiveWorker,
+    createWorkerTask,
+    insertDataPoint,
     insertWorker,
     insertWorkerFile,
     insertWorkerHistory,
@@ -19,7 +23,6 @@ import {
     removeWorkerFile,
     unarchiveWorker,
 } from "@/services/worker.service";
-import { notifyEmployeesAboutWorkerCreated } from "@/services/worker.notification.service";
 import appAssert from "@/utils/appAssert";
 import resolveOwner from "@/utils/resolverOwner";
 import { Request, Response } from "express";
@@ -255,4 +258,21 @@ export const deleteWorkerFile = async (req: Request, res: Response) => {
         console.log(error);
         return res.status(404).json({ error: "File not found" });
     }
+};
+
+export const updateDataPoint = async (req: Request, res: Response) => {
+    const { workerId, ...rest } = req.body;
+    const key = Object.keys(rest)[0];
+    const value = rest[key];
+    const data = await insertDataPoint(key, value, workerId);
+    return res.status(200).json(data);
+};
+
+export const addWorkerTask = async (req: Request, res: Response) => {
+    const workerId = z.coerce.number().parse(req.params.workerId);
+    const request = createWorkerTaskSchema.parse(req.body);
+
+    const data = await createWorkerTask(workerId, request);
+
+    return res.status(201).json({ success: data });
 };

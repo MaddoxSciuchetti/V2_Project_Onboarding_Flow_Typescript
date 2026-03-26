@@ -1,7 +1,7 @@
-export type FormType = 'Onboarding' | 'Offboarding';
+import { LifecycleType } from '@/features/task-management/types/index.types';
 
 export type EmployeeForm = {
-  form_type: FormType;
+  form_type: LifecycleType;
 };
 
 export type WorkerItem = {
@@ -64,7 +64,7 @@ export type WorkerOverviewResponse = {
   };
   form: {
     id: number;
-    type: FormType;
+    type: LifecycleType;
     fields: WorkerOverviewField[];
   };
 };

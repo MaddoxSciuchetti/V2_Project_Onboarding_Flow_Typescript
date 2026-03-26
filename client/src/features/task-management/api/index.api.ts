@@ -6,10 +6,12 @@ import {
   EditDescriptionForm as UpdateWorkerDescription,
 } from '@/types/api.types';
 import {
+  CreateWorkerTaskPayload,
   File_Request,
   HistoryData,
   InsertHistoryData,
   LifecycleType,
+  UpdatePayload,
 } from '../types/index.types';
 
 export const getWorkerById = async (
@@ -69,4 +71,15 @@ export const deleteWorkerFile = async (
   id: number
 ): Promise<SuccessResponse<string>> => {
   return API.delete(`worker/deleteWorkerFile/${id}`);
+};
+
+export const updateData = async (data: UpdatePayload, workerId: number) => {
+  return await API.put('/worker/singleWorkerDataPoint', { ...data, workerId });
+};
+
+export const createWorkerTask = async (
+  workerId: number,
+  data: CreateWorkerTaskPayload
+) => {
+  return await API.post(`/worker/createWorkerTask/${workerId}`, data);
 };

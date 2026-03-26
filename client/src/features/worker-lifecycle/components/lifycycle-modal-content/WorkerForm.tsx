@@ -1,4 +1,5 @@
 import FormFields from '@/components/form/FormFields';
+import { LifecycleType } from '@/features/task-management/types/index.types';
 import {
   AddWorker,
   addWorkerSchema,
@@ -11,11 +12,10 @@ import { toast } from 'sonner';
 import { Button } from '../../../../components/ui/button';
 import { Inputs } from '../../consts/form.consts';
 import { workerLifecycleMutations } from '../../query-options/mutations/worker-lifycycle.mutations';
-import { FormType } from '../../types/index.types';
 
 interface WorkerFormProps {
-  setSelectedOption: (value: FormType | null) => void;
-  type: FormType;
+  setSelectedOption: (value: LifecycleType | null) => void;
+  type: LifecycleType;
   toggleModal: () => void;
   className?: string;
 }

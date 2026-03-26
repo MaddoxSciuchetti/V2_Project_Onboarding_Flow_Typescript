@@ -1,17 +1,15 @@
 import ErrorAlert from '@/components/alerts/ErrorAlert';
 import LoadingAlert from '@/components/alerts/LoadingAlert';
 import SearchHeaderResuable from '@/components/layout/headers/SearchHeaderResuable';
-import { Button } from '@/components/ui/button';
 import useAuth from '@/features/user-profile/hooks/useAuth';
 import LifeCycleModal from '@/features/worker-lifecycle/components/LifeCycleModal';
 import LifeCycleTable from '@/features/worker-lifecycle/components/LifeCycleTable';
 import useHome from '@/features/worker-lifecycle/hooks/useHome';
+import ActiveArchiveHeader from './ActiveArchiveHeader';
 
 function WorkerLifeCycle() {
   const { user, isLoading, isError } = useAuth();
   const {
-    archiveWorkerMutation,
-    deleteTaskMutation,
     error,
     filtered,
     handleNavigate,
@@ -21,7 +19,6 @@ function WorkerLifeCycle() {
     setSearch,
     setMode,
     toggleModal,
-    unarchiveWorkerMutation,
   } = useHome();
 
   if (isLoading) return <LoadingAlert />;
@@ -37,38 +34,9 @@ function WorkerLifeCycle() {
           setSearch={setSearch}
           description="Handwerker hinzufügen"
         />
-        <div className="mt-4 flex items-center justify-start gap-2">
-          <Button
-            type="button"
-            variant={mode === 'active' ? 'default' : 'outline'}
-            size={'sm'}
-            className={
-              mode === 'active'
-                ? 'h-8 rounded-full px-4 text-xs font-medium shadow-sm ring-2 ring-primary/30'
-                : 'h-8 rounded-full px-4 text-xs font-medium text-muted-foreground'
-            }
-            onClick={() => setMode('active')}
-          >
-            Aktiv
-          </Button>
-          <Button
-            type="button"
-            variant={mode === 'archived' ? 'default' : 'outline'}
-            className={
-              mode === 'archived'
-                ? 'h-8 rounded-full px-4 text-xs font-medium shadow-sm ring-2 ring-primary/30'
-                : 'h-8 rounded-full px-4 text-xs font-medium text-muted-foreground'
-            }
-            onClick={() => setMode('archived')}
-          >
-            Archiv
-          </Button>
-        </div>
+        <ActiveArchiveHeader mode={mode} setMode={setMode} />
         <LifeCycleTable
           filtered={filtered}
-          onRemove={deleteTaskMutation}
-          onArchive={archiveWorkerMutation}
-          onUnarchive={unarchiveWorkerMutation}
           mode={mode}
           gotopage={handleNavigate}
         />

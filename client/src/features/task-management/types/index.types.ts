@@ -1,3 +1,4 @@
+import { addWorkerBaseSchema } from '@/features/worker-lifecycle/schemas/zod.schemas';
 import z from 'zod';
 import { TAuth_User } from '../hooks/useGetWorkerHistory';
 import { formSchema } from '../schemas/index.schema';
@@ -22,14 +23,26 @@ export type File_Request = {
   cloud_key: string;
   uploaded_at: Date;
   employee_forms: {
-    form_type: 'Onboarding' | 'Offboarding';
+    form_type: LifecycleType;
     id: number;
     timestamp: string;
     user_id: number;
   };
 };
 
+export type UpdatePayload = Partial<
+  z.infer<typeof addWorkerBaseSchema> & {
+    austrittsdatum: string;
+  }
+>;
+
 export type LifecycleType = 'Onboarding' | 'Offboarding';
+
+export type CreateWorkerTaskPayload = {
+  description: string;
+  template_type: 'ONBOARDING' | 'OFFBOARDING';
+  owner: string;
+};
 
 export type InsertHistoryData = z.infer<typeof formSchema>;
 

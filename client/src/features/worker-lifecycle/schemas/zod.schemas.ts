@@ -1,5 +1,25 @@
 import z from 'zod';
-import { dateSchema } from '../../../schemas/schema';
+
+const germanDatePattern = /^\d{2}\.\d{2}\.\d{4}$/;
+
+const workerDateSchema = z
+  .string()
+  .regex(germanDatePattern, 'Format: DD.MM.YYYY')
+  .refine((value) => {
+    const [day, month, year] = value.split('.').map(Number);
+    const date = new Date(Date.UTC(year, month - 1, day));
+
+    return (
+      date.getUTCFullYear() === year &&
+      date.getUTCMonth() + 1 === month &&
+      date.getUTCDate() === day
+    );
+  }, 'Ungültiges Datum')
+  .transform((value) => {
+    const [day, month, year] = value.split('.').map(Number);
+    return new Date(Date.UTC(year, month - 1, day)).toISOString();
+  })
+  .pipe(z.string().datetime());
 
 export const addWorkerBaseSchema = z.object({
   vorname: z.string().min(1, 'erforderlich'),
@@ -9,9 +29,9 @@ export const addWorkerBaseSchema = z.object({
     .min(1, 'erforderlich')
     .email('Ungültige email')
     .toLowerCase(),
-  geburtsdatum: dateSchema,
+  geburtsdatum: workerDateSchema,
   adresse: z.string().min(1, 'erforderlich'),
-  eintrittsdatum: dateSchema,
+  eintrittsdatum: workerDateSchema,
   position: z.string().min(1, 'Position erforderlich'),
 });
 
@@ -21,7 +41,7 @@ export const OnboardingValidation = addWorkerBaseSchema.extend({
 
 export const OffboardingValidation = addWorkerBaseSchema.extend({
   type: z.literal('Offboarding'),
-  austrittsdatum: z.string().min(1, 'erforderlich'),
+  austrittsdatum: workerDateSchema,
 });
 
 export const addWorkerSchema = z.discriminatedUnion('type', [

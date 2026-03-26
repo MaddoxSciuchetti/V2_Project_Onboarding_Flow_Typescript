@@ -6,13 +6,12 @@ import {
   FieldTitle,
 } from '@/components/ui/field';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { LifecycleType } from '@/features/task-management/types/index.types';
 import { Dispatch, SetStateAction } from 'react';
 
 type RadioSelectProps = {
-  selectedOption: 'Onboarding' | 'Offboarding' | null;
-  setSelectedOption: Dispatch<
-    SetStateAction<'Onboarding' | 'Offboarding' | null>
-  >;
+  selectedOption: LifecycleType | null;
+  setSelectedOption: Dispatch<SetStateAction<LifecycleType | null>>;
 };
 
 const RadioSelect = ({
@@ -23,9 +22,7 @@ const RadioSelect = ({
     <>
       <RadioGroup
         className="h-full flex flex-row items-center"
-        onValueChange={(value) =>
-          setSelectedOption(value as 'Onboarding' | 'Offboarding')
-        }
+        onValueChange={(value) => setSelectedOption(value as LifecycleType)}
         value={selectedOption}
       >
         <FieldLabel
