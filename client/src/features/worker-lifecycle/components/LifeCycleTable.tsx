@@ -6,14 +6,19 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { LifecycleType } from '@/features/task-management/types/index.types';
 import { getFirstFormType } from '@/features/worker-lifecycle/utils/formtype';
-import { FormType, WorkerItem, WorkerListMode } from '../types/index.types';
+import { WorkerItem, WorkerListMode } from '../types/index.types';
 import { Worker_Item } from './WorkerItem';
 
 type LifeCycleTableProps = {
   filtered: WorkerItem[] | undefined;
   mode: WorkerListMode;
-  gotopage: (taskId: number, form_type: FormType, workerName: string) => void;
+  gotopage: (
+    taskId: number,
+    form_type: LifecycleType,
+    workerName: string
+  ) => void;
 };
 
 function LifeCycleTable({ filtered, mode, gotopage }: LifeCycleTableProps) {

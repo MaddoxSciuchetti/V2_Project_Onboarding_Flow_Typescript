@@ -1,11 +1,11 @@
+import { LifecycleType } from '@/features/task-management/types/index.types';
 import { useQuery } from '@tanstack/react-query';
 import { workerLifecycleQueries } from '../query-options/queries/worker-lifycycle.queries';
-import { FormType } from '../types/index.types';
 
 function useWorkerInfo(
   isOpen: boolean,
   workerId: number,
-  lifecycleType: FormType
+  lifecycleType: LifecycleType
 ) {
   const {
     data: workerInfo,

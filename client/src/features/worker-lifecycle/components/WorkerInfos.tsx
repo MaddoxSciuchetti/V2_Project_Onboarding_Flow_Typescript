@@ -1,13 +1,13 @@
+import { LifecycleType } from '@/features/task-management/types/index.types';
 import { DescriptionFieldResponse } from '@/types/api.types';
 import { Dispatch, SetStateAction } from 'react';
 import { workerInfos } from '../consts/worker-info.consts';
-import { FormType } from '../types/index.types';
 import WorkerDescription from './WorkerDescription';
 import WorkerInput from './WorkerInput';
 
 type WorkerInfosProps = {
   workerInfo: DescriptionFieldResponse;
-  lifecycleType: FormType;
+  lifecycleType: LifecycleType;
   workerId: number;
   isInputActive: boolean | undefined;
   setIsInputActive: Dispatch<SetStateAction<boolean | undefined>>;

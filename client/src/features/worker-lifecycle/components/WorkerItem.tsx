@@ -2,16 +2,21 @@ import '@/App.css';
 import DeleteConfirmModal from '@/components/DeleteConfirmModal';
 import DropdownActionTrigger from '@/components/DropdownActionTrigger';
 import useFetchProcessData from '@/features/employee-overview/hooks/useFetchProcessData';
+import { LifecycleType } from '@/features/task-management/types/index.types';
 import { useState } from 'react';
 import useWorkerMutations from '../hooks/useWorkerMutaitons';
-import { FormType, WorkerListMode } from '../types/index.types';
+import { WorkerListMode } from '../types/index.types';
 import WorkerInfoModal from './WorkerInfoModal';
 import WorkerItemInfo from './WorkerItemInfo';
 
 interface ToDoItem {
   item_value: number;
-  form_type: FormType;
-  gotopage: (taskId: number, form_type: FormType, workerName: string) => void;
+  form_type: LifecycleType;
+  gotopage: (
+    taskId: number,
+    form_type: LifecycleType,
+    workerName: string
+  ) => void;
   mode: WorkerListMode;
   className?: string;
   nachname?: string;

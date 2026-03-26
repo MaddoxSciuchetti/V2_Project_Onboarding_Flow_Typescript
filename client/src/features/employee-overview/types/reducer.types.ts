@@ -1,5 +1,3 @@
-import { FormType } from '@/features/worker-lifecycle/types/index.types';
-
 export type ModalState =
   | { kind: 'closed' }
   | { kind: 'create' }

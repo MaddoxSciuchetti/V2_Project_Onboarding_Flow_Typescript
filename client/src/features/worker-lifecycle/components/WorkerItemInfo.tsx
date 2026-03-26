@@ -1,13 +1,17 @@
 import { Button } from '@/components/ui/button';
+import { LifecycleType } from '@/features/task-management/types/index.types';
 import { Info } from 'lucide-react';
 import { Dispatch, SetStateAction } from 'react';
-import { FormType } from '../types/index.types';
 
 type WorkerItemInfoProps = {
   setIsInfoModalOpen: Dispatch<SetStateAction<boolean>>;
-  gotopage: (taskId: number, form_type: FormType, workerName: string) => void;
+  gotopage: (
+    taskId: number,
+    form_type: LifecycleType,
+    workerName: string
+  ) => void;
   item_value: number;
-  form_type: FormType;
+  form_type: LifecycleType;
   vorname: string;
   nachname: string | undefined;
 };

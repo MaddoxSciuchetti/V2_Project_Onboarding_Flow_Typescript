@@ -23,7 +23,7 @@ export type File_Request = {
   cloud_key: string;
   uploaded_at: Date;
   employee_forms: {
-    form_type: 'Onboarding' | 'Offboarding';
+    form_type: LifecycleType;
     id: number;
     timestamp: string;
     user_id: number;

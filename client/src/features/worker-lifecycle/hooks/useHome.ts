@@ -1,9 +1,10 @@
 import { useSidebar } from '@/components/ui/sidebar';
+import { LifecycleType } from '@/features/task-management/types/index.types';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 import { workerLifecycleQueries } from '../query-options/queries/worker-lifycycle.queries';
-import { FormType, WorkerListMode } from '../types/index.types';
+import { WorkerListMode } from '../types/index.types';
 
 function useHome() {
   const [search, setSearch] = useState('');
@@ -35,7 +36,7 @@ function useHome() {
 
   const handleNavigate = (
     taskId: number,
-    form_type: FormType,
+    form_type: LifecycleType,
     workerName: string
   ) => {
     navigate({

@@ -1,16 +1,16 @@
 import LoadingAlert from '@/components/alerts/LoadingAlert';
 import ModalOverlay from '@/components/modal/ModalOverlay';
 import MediumWrapper from '@/components/modal/modalSizes/MediumWrapper';
+import { LifecycleType } from '@/features/task-management/types/index.types';
 import { useState } from 'react';
 import useWorkerInfo from '../hooks/useWorkerInfo';
-import { FormType } from '../types/index.types';
 import WorkerInfoHeader from './WorkerInfoHeader';
 import WorkerInfos from './WorkerInfos';
 
 type WorkerInfoModalProps = {
   isOpen: boolean;
   workerId: number;
-  lifecycleType: FormType;
+  lifecycleType: LifecycleType;
   onClose: () => void;
 };
 
