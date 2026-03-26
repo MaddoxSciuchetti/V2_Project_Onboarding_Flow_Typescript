@@ -1,5 +1,4 @@
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import { TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dispatch, SetStateAction } from 'react';
 
@@ -23,14 +22,14 @@ const WorkerHeader = ({
         onChange={(e) => setSearchValue(e.target.value)}
         placeholder={searchPlaceholder}
       />
-      <Button
+      {/* <Button
         onClick={handleAddTask}
         type="button"
         variant={'outline'}
         className="cursor-pointer rounded-xl transition-colors hover:bg-accent hover:text-accent-foreground"
       >
         Add Task
-      </Button>
+      </Button> */}
       <TabsList variant={'default'} className="bg-(--dropdown-surface)">
         <TabsTrigger className="cursor-pointer" value="form">
           Aufgaben
