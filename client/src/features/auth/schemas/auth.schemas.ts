@@ -58,3 +58,38 @@ export type RegisterFormValues = Omit<
   z.infer<typeof registerSchema>,
   'userAgent'
 >;
+
+// ─── Register Org ─────────────────────────────────────────────────────────────
+
+export const registerOrgStep1Schema = registerSchema;
+
+export const registerOrgStep2Schema = z.object({
+  orgName: z
+    .string()
+    .min(1, { message: 'Company name is required' })
+    .max(255, { message: 'Company name must be at most 255 characters' }),
+  orgDescription: z.string().max(1000).optional(),
+  orgEmail: z
+    .string()
+    .email({ message: 'Invalid email address' })
+    .max(255)
+    .optional()
+    .or(z.literal('')),
+  orgPhoneNumber: z.string().max(50).optional(),
+  orgWebsiteUrl: z
+    .string()
+    .url({ message: 'Must be a valid URL' })
+    .optional()
+    .or(z.literal('')),
+  orgCountry: z.string().max(100).optional(),
+  orgIndustry: z.string().max(100).optional(),
+  orgSize: z.string().optional(),
+});
+
+export const registerOrgSchema = registerOrgStep1Schema.and(
+  registerOrgStep2Schema
+);
+
+export type RegisterOrgStep1Values = z.infer<typeof registerOrgStep1Schema>;
+export type RegisterOrgStep2Values = z.infer<typeof registerOrgStep2Schema>;
+export type RegisterOrgFormValues = z.infer<typeof registerOrgSchema>;

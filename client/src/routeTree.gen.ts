@@ -13,6 +13,7 @@ import { Route as WorkerLifycycleRouteImport } from './routes/worker-lifycycle'
 import { Route as TemplateRouteImport } from './routes/template'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as RegisterOrgRouteImport } from './routes/register-org'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as HomeRouteImport } from './routes/home'
@@ -41,6 +42,11 @@ const SignupRoute = SignupRouteImport.update({
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterOrgRoute = RegisterOrgRouteImport.update({
+  id: '/register-org',
+  path: '/register-org',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfileRoute = ProfileRouteImport.update({
@@ -95,6 +101,7 @@ export interface FileRoutesByFullPath {
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
+  '/register-org': typeof RegisterOrgRoute
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/template': typeof TemplateRoute
@@ -110,6 +117,7 @@ export interface FileRoutesByTo {
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
+  '/register-org': typeof RegisterOrgRoute
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/template': typeof TemplateRoute
@@ -126,6 +134,7 @@ export interface FileRoutesById {
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
+  '/register-org': typeof RegisterOrgRoute
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/template': typeof TemplateRoute
@@ -143,6 +152,7 @@ export interface FileRouteTypes {
     | '/home'
     | '/login'
     | '/profile'
+    | '/register-org'
     | '/settings'
     | '/signup'
     | '/template'
@@ -158,6 +168,7 @@ export interface FileRouteTypes {
     | '/home'
     | '/login'
     | '/profile'
+    | '/register-org'
     | '/settings'
     | '/signup'
     | '/template'
@@ -173,6 +184,7 @@ export interface FileRouteTypes {
     | '/home'
     | '/login'
     | '/profile'
+    | '/register-org'
     | '/settings'
     | '/signup'
     | '/template'
@@ -189,6 +201,7 @@ export interface RootRouteChildren {
   HomeRoute: typeof HomeRoute
   LoginRoute: typeof LoginRoute
   ProfileRoute: typeof ProfileRoute
+  RegisterOrgRoute: typeof RegisterOrgRoute
   SettingsRoute: typeof SettingsRoute
   SignupRoute: typeof SignupRoute
   TemplateRoute: typeof TemplateRoute
@@ -227,6 +240,13 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register-org': {
+      id: '/register-org'
+      path: '/register-org'
+      fullPath: '/register-org'
+      preLoaderRoute: typeof RegisterOrgRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/profile': {
@@ -301,6 +321,7 @@ const rootRouteChildren: RootRouteChildren = {
   HomeRoute: HomeRoute,
   LoginRoute: LoginRoute,
   ProfileRoute: ProfileRoute,
+  RegisterOrgRoute: RegisterOrgRoute,
   SettingsRoute: SettingsRoute,
   SignupRoute: SignupRoute,
   TemplateRoute: TemplateRoute,

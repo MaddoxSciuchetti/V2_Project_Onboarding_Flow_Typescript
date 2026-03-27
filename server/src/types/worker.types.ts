@@ -179,3 +179,27 @@ export interface UpdateDataPointInput {
     field: keyof UpdateWorkerInput; // constrained to real Worker fields
     value: string | number | boolean | Date | null;
 }
+
+// ─── Legacy Worker (old schema — German field names) ─────────────────────────
+
+export interface InsertWorker {
+    vorname: string;
+    nachname: string;
+    email: string;
+    geburtsdatum: string;
+    adresse: string;
+    eintrittsdatum: string;
+    position: string;
+    type: string;
+}
+
+export interface InsertWorkerResponse {
+    worker: { id: number; vorname: string; nachname: string };
+    employee_form: number;
+}
+
+export interface WorkerForm {
+    id: number;
+    select_option: string;
+    editcomment: string;
+}

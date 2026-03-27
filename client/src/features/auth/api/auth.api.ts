@@ -8,15 +8,26 @@ import {
   CreateAccountResponse,
   LoginRequest,
   LoginResponse,
+  RegisterOrgResponse,
   ResetPassword,
   Verify,
 } from '../types/auth.types';
+import { RegisterOrgFormValues } from '../schemas/auth.schemas';
 
 export const signup = async (
   data: CreateAccountParams
 ): Promise<CreateAccountResponse> => {
   return API.post<CreateAccountParams, CreateAccountResponse>(
     '/auth/v2/register',
+    data
+  );
+};
+
+export const registerOrg = async (
+  data: RegisterOrgFormValues
+): Promise<RegisterOrgResponse> => {
+  return API.post<RegisterOrgFormValues, RegisterOrgResponse>(
+    '/auth/v2/register/org',
     data
   );
 };

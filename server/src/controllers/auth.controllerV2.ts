@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import {
     emailSchema,
     loginSchema,
+    registerOrgSchema,
     registerSchema,
     resetPasswordSchema,
     verificationCodeSchema,
@@ -12,6 +13,7 @@ import {
     loginUser,
     modifyPassword,
     refreshUserAccessToken,
+    registerOrgAccount,
     sendPasswordResetEmail,
     validationEmailCode,
 } from "../services/auth.serviceV2";
@@ -35,6 +37,19 @@ export const register = catchErrors(async (req, res) => {
     return setAuthCookies({ res, accessToken, refreshToken })
         .status(CREATED)
         .json(user);
+});
+
+export const registerOrg = catchErrors(async (req, res) => {
+    const request = registerOrgSchema.parse({
+        ...req.body,
+        userAgent: req.headers["user-agent"],
+        ipAddress: req.ip,
+    });
+    const { user, organization, accessToken, refreshToken } =
+        await registerOrgAccount(request);
+    return setAuthCookies({ res, accessToken, refreshToken })
+        .status(CREATED)
+        .json({ user, organization });
 });
 
 export const login = catchErrors(async (req, res) => {

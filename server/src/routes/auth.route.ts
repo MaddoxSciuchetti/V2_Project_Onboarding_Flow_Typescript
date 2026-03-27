@@ -14,6 +14,7 @@ const authRoutes = Router();
 
 authRoutes.post("/register", register);
 authRoutes.post("/v2/register", AuthV2.register);
+authRoutes.post("/v2/register/org", AuthV2.registerOrg);
 authRoutes.post("/login", login);
 authRoutes.post("/v2/login", AuthV2.login);
 authRoutes.get("/refresh", refresh);

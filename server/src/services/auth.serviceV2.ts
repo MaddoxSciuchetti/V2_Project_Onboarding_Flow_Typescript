@@ -25,6 +25,7 @@ import {
     verifyToken,
 } from "@/utils/jwt";
 
+import type { RegisterOrgInput } from "@/schemas/auth.schemas";
 import {
     getPasswordResetTemplate,
     getVerifyEmailTemplate,
@@ -150,6 +151,115 @@ export const createAccount = async (data: CreateAccountParams) => {
     });
 
     return { user, accessToken, refreshToken };
+};
+
+// ============================================================
+// REGISTER ORG (multi-step org + user signup)
+// ============================================================
+
+export const registerOrgAccount = async (data: RegisterOrgInput) => {
+    const normalizedEmail = data.email.trim().toLowerCase();
+
+    const existingUser = await prisma.newUser.findUnique({
+        where: { email: normalizedEmail },
+    });
+    appAssert(!existingUser, CONFLICT, "Email already in use");
+
+    const hashedPassword = await hashValue(data.password);
+
+    const result = await prisma.$transaction(async (tx) => {
+        // 1. Create user
+        const user = await tx.newUser.create({
+            data: {
+                email: normalizedEmail,
+                passwordHash: hashedPassword,
+                firstName: data.firstName,
+                lastName: data.lastName,
+            },
+            omit: { passwordHash: true },
+        });
+
+        // 2. Generate unique slug from org name
+        const baseSlug = data.orgName
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-|-$/g, "");
+        const slug = `${baseSlug}-${Math.random().toString(36).slice(2, 8)}`;
+
+        // 3. Create organization
+        const organization = await tx.organization.create({
+            data: {
+                name: data.orgName,
+                slug,
+                createdByUserId: user.id,
+                description: data.orgDescription || null,
+                email: data.orgEmail || null,
+                phoneNumber: data.orgPhoneNumber || null,
+                websiteUrl: data.orgWebsiteUrl || null,
+                country: data.orgCountry || null,
+                industry: data.orgIndustry || null,
+                size: (data.orgSize as any) ?? null,
+            },
+        });
+
+        // 4. Create owner role
+        const ownerRole = await tx.role.create({
+            data: {
+                organizationId: organization.id,
+                createdByUserId: user.id,
+                name: "Owner",
+                isSystem: true,
+            },
+        });
+
+        // 5. Add user as org member
+        await tx.organizationMember.create({
+            data: {
+                userId: user.id,
+                organizationId: organization.id,
+                roleId: ownerRole.id,
+            },
+        });
+
+        return { user, organization };
+    });
+
+    const userId = result.user.id;
+
+    // Send verification email
+    const verificationCode = await prisma.newVerificationCode.create({
+        data: {
+            userId,
+            type: "email_verify",
+            expiresAt: oneYearFromNow(),
+        },
+    });
+    const url = `${FRONTENDURL}/email/verify/${verificationCode.id}`;
+    const { error } = await sendMail({
+        to: result.user.email,
+        ...getVerifyEmailTemplate(url, data.password),
+    });
+    if (error) console.log(error);
+
+    // Create refresh token record
+    const { record } = await createRefreshTokenRecord({
+        userId,
+        userAgent: data.userAgent,
+        ipAddress: data.ipAddress,
+    });
+
+    const refreshToken = signToken(
+        { tokenId: record.id },
+        refreshTokenSignOptions,
+    );
+    const accessToken = signToken({ userId, tokenId: record.id });
+
+    return {
+        user: result.user,
+        organization: result.organization,
+        accessToken,
+        refreshToken,
+    };
 };
 
 // ============================================================
