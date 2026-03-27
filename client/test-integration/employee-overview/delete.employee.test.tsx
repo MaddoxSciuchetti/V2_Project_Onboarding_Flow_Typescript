@@ -23,7 +23,7 @@ describe('Delete a employee', () => {
     const getSpy = vi
       .spyOn(API, 'get')
       .mockImplementation(async (url: string) => {
-        if (url === '/employee/specificEmployeeData') {
+        if (url === '/employee/v2/specificEmployeeData') {
           return employeeResponse;
         }
         return [];
@@ -61,7 +61,7 @@ describe('Delete a employee', () => {
     expect(deleteSpy).toHaveBeenCalledWith(
       `/employee/deleteEmplyoee/${employee.id}`
     );
-    expect(getSpy).toHaveBeenCalledWith('/employee/specificEmployeeData');
+    expect(getSpy).toHaveBeenCalledWith('/employee/v2/specificEmployeeData');
 
     await waitFor(() => {
       expect(screen.queryByText('MaxMustermann')).not.toBeInTheDocument();

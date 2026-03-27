@@ -36,7 +36,7 @@ describe('should create the employee', () => {
     const getSpy = vi
       .spyOn(API, 'get')
       .mockImplementation(async (url: string) => {
-        if (url === '/employee/specificEmployeeData') {
+        if (url === '/employee/v2/specificEmployeeData') {
           return employeeResponse;
         }
         return [];

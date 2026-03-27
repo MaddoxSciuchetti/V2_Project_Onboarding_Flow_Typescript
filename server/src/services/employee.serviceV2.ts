@@ -29,6 +29,97 @@ export const computeIsAbsent = (
 // QUERY ALL EMPLOYEES IN ORG
 // ============================================================
 
+export const queryEmployeeWorkerData = async (orgId: string) => {
+    return await prisma.workerEngagement.findMany({
+        where: { organizationId: orgId },
+        orderBy: { createdAt: "asc" },
+        select: {
+            id: true,
+            type: true,
+            startDate: true,
+            endDate: true,
+            completedAt: true,
+            createdAt: true,
+            updatedAt: true,
+            engagementStatus: {
+                select: { id: true, name: true, color: true },
+            },
+            worker: {
+                select: {
+                    id: true,
+                    firstName: true,
+                    lastName: true,
+                    email: true,
+                    position: true,
+                    status: true,
+                },
+            },
+            responsibleUser: {
+                select: {
+                    id: true,
+                    firstName: true,
+                    lastName: true,
+                    email: true,
+                    avatarUrl: true,
+                    absences: {
+                        where: { endDate: { gte: new Date() } },
+                        orderBy: { endDate: "desc" },
+                        take: 1,
+                        select: {
+                            absenceType: true,
+                            startDate: true,
+                            endDate: true,
+                            substitute: {
+                                select: {
+                                    id: true,
+                                    firstName: true,
+                                    lastName: true,
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+            issues: {
+                select: {
+                    id: true,
+                    title: true,
+                    description: true,
+                    priority: true,
+                    dueDate: true,
+                    createdAt: true,
+                    updatedAt: true,
+                    issueStatus: {
+                        select: { id: true, name: true, color: true },
+                    },
+                    assignee: {
+                        select: {
+                            id: true,
+                            firstName: true,
+                            lastName: true,
+                            avatarUrl: true,
+                        },
+                    },
+                    auditLogs: {
+                        orderBy: { createdAt: "desc" },
+                        take: 1,
+                        select: {
+                            createdAt: true,
+                            actorUser: {
+                                select: {
+                                    id: true,
+                                    firstName: true,
+                                    lastName: true,
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        },
+    });
+};
+
 export const queryEmployee = async (orgId: string) => {
     return await prisma.newUser.findMany({
         where: {

@@ -3,11 +3,27 @@ import {
     computeIsAbsent,
     queryEmployee,
     queryEmployeeById,
+    queryEmployeeWorkerData,
     removeEmployee,
     updateAbsenceData,
 } from "@/services/employee.serviceV2";
 import appAssert from "@/utils/appAssert";
 import catchErrors from "@/utils/catchErrors";
+
+export const getEmployeeWorkerData = catchErrors(async (req, res) => {
+    const orgId = req.orgId;
+    const data = await queryEmployeeWorkerData(orgId);
+
+    const result = data.map((engagement) => ({
+        ...engagement,
+        responsibleUser: {
+            ...engagement.responsibleUser,
+            isAbsent: computeIsAbsent(engagement.responsibleUser.absences),
+        },
+    }));
+
+    return res.status(OK).json(result);
+});
 
 export const getEmployee = catchErrors(async (req, res) => {
     const orgId = req.orgId;

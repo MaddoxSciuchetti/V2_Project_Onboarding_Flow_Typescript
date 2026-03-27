@@ -57,7 +57,7 @@ describe('Send Reminder email', () => {
           return employeeResponse;
         }
 
-        if (url === '/employee/getEmployeeWorkerData') {
+        if (url === '/employee/v2/getEmployeeWorkerData') {
           return employeeWorkerResponse;
         }
 

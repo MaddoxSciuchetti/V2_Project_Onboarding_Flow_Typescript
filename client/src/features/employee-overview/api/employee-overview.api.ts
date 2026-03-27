@@ -1,7 +1,10 @@
 import API from '@/config/apiClient';
 
 import { User } from '@/features/user-profile/types/auth.type';
-import { DescriptionFieldResponse, EmployeeInfoResponse } from '@/types/api.types';
+import {
+  DescriptionFieldResponse,
+  EmployeeInfoResponse,
+} from '@/types/api.types';
 import { EmployeeDataArray, employeeDataSchema } from '../schemas/schema';
 import { AbsenceData } from '../types/index.types';
 
@@ -13,7 +16,7 @@ export const deleteEmployeeHandler = async (id: string): Promise<User> => {
 };
 
 export const specificEmployeeData = async (): Promise<EmployeeDataArray> => {
-  const response = await API.get(`/employee/specificEmployeeData`);
+  const response = await API.get(`/employee/v2/specificEmployeeData`);
   return employeeDataSchema.parse(response);
 };
 
@@ -30,6 +33,8 @@ export const editEmployeeAbsence = async (
   return API.put<AbsenceData, AbsenceData>('/employee/editAbsenceData', data);
 };
 
-export const getEmployeeById = async (id: string): Promise<EmployeeInfoResponse> => {
+export const getEmployeeById = async (
+  id: string
+): Promise<EmployeeInfoResponse> => {
   return API.get(`/employee/getEmployeeById/${id}`);
 };
