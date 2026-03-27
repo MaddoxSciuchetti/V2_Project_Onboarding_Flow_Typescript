@@ -48,6 +48,9 @@ model NewUser {
   createdTemplates       IssueTemplate[]
   createdRoles           Role[]
   createdOrganizations   Organization[]
+  absences        Absence[] @relation("UserAbsences")
+substitutingFor Absence[] @relation("SubstituteAbsences")
+
 
   @@map("new_users")
 }
@@ -122,6 +125,8 @@ model Organization {
   statuses        OrganizationStatus[]   @relation("OrgStatuses")
   labels          Label[]
   subscription    Subscription?
+  absences        Absence[]
+
 
   @@map("organizations")
 }
@@ -612,9 +617,38 @@ model Invoice {
   @@map("invoices")
 }
 
+model Absence {
+    id           String      @id @default(cuid())
+    userId       String
+    orgId        String
+    absenceType  AbsenceType
+    startDate    DateTime
+    endDate      DateTime
+    substituteId String?
+
+    user         NewUser      @relation("UserAbsences", fields: [userId], references: [id])
+    substitute   NewUser?     @relation("SubstituteAbsences", fields: [substituteId], references: [id])
+    organization Organization @relation(fields: [orgId], references: [id])
+
+    createdAt    DateTime    @default(now())
+    updatedAt    DateTime    @updatedAt
+
+    @@index([userId])
+    @@index([orgId])
+}
+
+
+
 
 // ENUMS
 
+enum AbsenceType {
+    SICK
+    VACATION
+    PARENTAL_LEAVE
+    UNPAID
+    OTHER
+}
 
 enum UserStatus {
   active
