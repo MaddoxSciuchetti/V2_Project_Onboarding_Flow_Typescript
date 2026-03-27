@@ -25,6 +25,6 @@ authRoutes.get("/v2/email/verify/:code", AuthV2.verifyEmail);
 authRoutes.post("/password/forgot", sendPassword);
 authRoutes.post("/v2/password/forgot", AuthV2.sendPassword);
 authRoutes.post("/password/reset", resetPassword);
-authRoutes.post("/password/reset", AuthV2.resetPassword);
+authRoutes.post("/v2/password/reset", AuthV2.resetPassword);
 
 export default authRoutes;

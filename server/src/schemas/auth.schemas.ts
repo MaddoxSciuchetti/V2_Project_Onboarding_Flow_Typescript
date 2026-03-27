@@ -56,8 +56,8 @@ export const registerSchema = loginSchema
 export const verificationCodeSchema = z
     .string()
     .min(1, { message: VALIDATION_MESSAGES.required("Verification code") })
-    .max(25, {
-        message: VALIDATION_MESSAGES.maxLength("Verification code", 25),
+    .max(40, {
+        message: VALIDATION_MESSAGES.maxLength("Verification code", 40),
     });
 
 export const resetPasswordSchema = z.object({
