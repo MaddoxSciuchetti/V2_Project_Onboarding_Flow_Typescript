@@ -1,26 +1,18 @@
 import { User } from '@/features/user-profile/types/auth.type';
+import { CreateAccountParams } from '../../../../../server/src/services/auth.serviceV2';
 
-export type RegisterRequest = {
-  firstName?: string;
-  lastName?: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  userAgent?: string;
-};
-
-export type RegisterResponse = {
+export type CreateAccountResponse = {
   user: User;
   accessToken: string;
   refreshToken: string;
 };
 
 export type LoginRequest = Omit<
-  RegisterRequest,
+  CreateAccountParams,
   'confirmPassword' | 'firstName' | 'lastName'
 >;
 
-export type LoginResponse = Omit<RegisterResponse, 'user'>;
+export type LoginResponse = Omit<CreateAccountResponse, 'user'>;
 
 export type Verify = {
   code: string;

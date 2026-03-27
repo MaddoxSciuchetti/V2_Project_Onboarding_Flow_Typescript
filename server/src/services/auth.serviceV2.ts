@@ -36,11 +36,12 @@ import { generateRawToken, hashToken } from "@/utils/v2/tokenV2";
 // TYPES
 // ============================================================
 
-export type createAccountParams = {
+export type CreateAccountParams = {
     firstName: string;
     lastName: string;
     email: string;
     password: string;
+    confirmPassword: string;
     userAgent?: string;
     ipAddress?: string;
 };
@@ -90,7 +91,7 @@ const createRefreshTokenRecord = async ({
 // CREATE ACCOUNT
 // ============================================================
 
-export const createAccount = async (data: createAccountParams) => {
+export const createAccount = async (data: CreateAccountParams) => {
     const normalizedEmail = data.email.trim().toLowerCase();
 
     // verify existing user does not exist
