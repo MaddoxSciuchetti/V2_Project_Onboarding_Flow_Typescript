@@ -18,7 +18,7 @@ export type Verify = {
   code: string;
 };
 
-export type TresetPassword = {
+export type ResetPassword = {
   verificationCode: string;
   password: string;
 };

@@ -8,7 +8,7 @@ import {
   CreateAccountResponse,
   LoginRequest,
   LoginResponse,
-  TresetPassword,
+  ResetPassword,
   Verify,
 } from '../types/auth.types';
 
@@ -26,7 +26,7 @@ export const sendPasswordResetEmail = async (
   API.post('/auth/v2/password/forgot', { email });
 
 export const getUser = async (): Promise<User> => {
-  return API.get<User, User>('/user');
+  return API.get<User, User>('/user/v2');
 };
 
 export const login = async (data: LoginRequest): Promise<LoginResponse> => {
@@ -41,6 +41,7 @@ export const verifyEmail = async (
   );
 };
 
+// Currently unused relevant in next update
 export const getSessions = async (): Promise<Session_API> =>
   API.get('/sessions');
 export const deleteSession = async (id: string): Promise<void> =>
@@ -49,5 +50,5 @@ export const deleteSession = async (id: string): Promise<void> =>
 export const resetPassword = async ({
   verificationCode,
   password,
-}: TresetPassword): Promise<TresetPassword> =>
+}: ResetPassword): Promise<ResetPassword> =>
   API.post('/auth/v2/password/reset', { verificationCode, password });

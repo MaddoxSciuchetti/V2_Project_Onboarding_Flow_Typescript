@@ -175,6 +175,7 @@ export const loginUser = async ({
     appAssert(isValid, UNAUTHORIZED, "Invalid email or password");
 
     const userId = user.id;
+    console.log("user found");
 
     // create refresh token record
     const { record } = await createRefreshTokenRecord({
@@ -182,6 +183,8 @@ export const loginUser = async ({
         userAgent,
         ipAddress,
     });
+
+    console.log("user found");
 
     // sign tokens
     const refreshToken = signToken(
@@ -193,8 +196,12 @@ export const loginUser = async ({
         tokenId: record.id,
     });
 
+    console.log("user found");
+
     // strip passwordHash before returning
     const { passwordHash: _, ...safeUser } = user;
+
+    console.log("user found");
 
     return { user: safeUser, accessToken, refreshToken };
 };
