@@ -75,7 +75,6 @@ model RefreshToken {
 model NewVerificationCode {
   id        String               @id @default(uuid())
   userId    String               @map("user_id")
-  codeHash  String               @map("code_hash")
   type      VerificationCodeType
   expiresAt DateTime             @map("expires_at") @db.Timestamptz()
   usedAt    DateTime?            @map("used_at") @db.Timestamptz()
