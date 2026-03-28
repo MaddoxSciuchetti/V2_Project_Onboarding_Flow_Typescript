@@ -7,12 +7,12 @@ import {
   unarchiveWorkerById,
 } from '../../api';
 import { ALL_WORKER_DATA } from '../../consts/query-key.consts';
-import { AddWorker } from '../../schemas/zod.schemas';
-import { DeleteUser, ItemUser } from '../../types/index.types';
+import { CreateWorker } from '../../schemas/zod.schemas';
+import { WorkerRecord } from '../../types/index.types';
 
 export const workerLifecycleMutations = {
   deleteWorker: () => {
-    return mutationOptions<DeleteUser, Error, string>({
+    return mutationOptions<WorkerRecord, Error, string>({
       mutationFn: deleteWorkerById,
       onSuccess: () => {
         queryClient.invalidateQueries({
@@ -24,8 +24,8 @@ export const workerLifecycleMutations = {
   },
 
   addWorker: () => {
-    return mutationOptions<ItemUser, Error, AddWorker>({
-      mutationFn: (data: AddWorker) => addWorker(data),
+    return mutationOptions<WorkerRecord, Error, CreateWorker>({
+      mutationFn: (data: CreateWorker) => addWorker(data),
       onSuccess: () => {
         queryClient.invalidateQueries({
           queryKey: [ALL_WORKER_DATA],
@@ -39,7 +39,7 @@ export const workerLifecycleMutations = {
   },
 
   archiveWorker: () => {
-    return mutationOptions<ItemUser, Error, string>({
+    return mutationOptions<WorkerRecord, Error, string>({
       mutationFn: archiveWorkerById,
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: [ALL_WORKER_DATA] });
@@ -48,7 +48,7 @@ export const workerLifecycleMutations = {
   },
 
   unarchiveWorker: () => {
-    return mutationOptions<ItemUser, Error, string>({
+    return mutationOptions<WorkerRecord, Error, string>({
       mutationFn: unarchiveWorkerById,
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: [ALL_WORKER_DATA] });

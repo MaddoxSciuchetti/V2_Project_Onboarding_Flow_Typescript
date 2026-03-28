@@ -1,8 +1,8 @@
 import FormFields from '@/components/form/FormFields';
 import { LifecycleType } from '@/features/task-management/types/index.types';
 import {
-  AddWorker,
-  addWorkerSchema,
+  CreateWorker,
+  createWorkerSchema,
 } from '@/features/worker-lifecycle/schemas/zod.schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -36,15 +36,15 @@ export const WorkerForm = ({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<AddWorker>({
-    resolver: zodResolver(addWorkerSchema),
+  } = useForm<CreateWorker>({
+    resolver: zodResolver(createWorkerSchema),
     defaultValues: {
       type: type,
     },
     criteriaMode: 'all',
   });
 
-  const submitWorkerForm = async (data: AddWorker) => {
+  const submitWorkerForm = async (data: CreateWorker) => {
     await addWorkerMutation(data);
     toast.success('Mitarbeiter erstellt und Benachrichtigungen versendet');
     toggleModal();
@@ -55,7 +55,7 @@ export const WorkerForm = ({
       type === 'Offboarding'
         ? [
             {
-              name: 'austrittsdatum' as const,
+              name: 'exitDate' as const,
               placeholder: 'Austrittsdatum DD.MM.YYYY',
               required: type === 'Offboarding',
             },

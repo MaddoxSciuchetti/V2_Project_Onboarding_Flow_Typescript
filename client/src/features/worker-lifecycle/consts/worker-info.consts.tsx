@@ -1,11 +1,11 @@
 import { DescriptionFieldResponse } from '@/types/api.types';
-import { addWorkerBaseSchema } from '../schemas/zod.schemas';
+import { workerBaseSchema } from '../schemas/zod.schemas';
 
 export type WorkerInfoItem = {
   label: string;
   value: string | number;
   className?: string;
-  schemaKey?: keyof typeof addWorkerBaseSchema.shape | 'austrittsdatum';
+  schemaKey?: keyof typeof workerBaseSchema.shape | 'exitDate';
   form: boolean;
 };
 
@@ -16,14 +16,14 @@ export const workerInfos = (
     label: 'Vorname',
     className: 'text-muted-foreground',
     value: workerInfo.worker.vorname,
-    schemaKey: 'vorname',
+    schemaKey: 'firstName',
     form: true,
   },
   {
     label: 'Nachname',
     className: 'text-muted-foreground truncate',
     value: workerInfo.worker.nachname,
-    schemaKey: 'nachname',
+    schemaKey: 'lastName',
     form: true,
   },
   {
@@ -37,21 +37,21 @@ export const workerInfos = (
     label: 'Geburtsdatum',
     className: 'text-muted-foreground',
     value: workerInfo.worker.geburtsdatum || '',
-    schemaKey: 'geburtsdatum',
+    schemaKey: 'birthday',
     form: true,
   },
   {
     label: 'Adresse',
     className: 'text-muted-foreground',
     value: workerInfo.worker.adresse || '',
-    schemaKey: 'adresse',
+    schemaKey: 'street',
     form: true,
   },
   {
     label: 'Eintrittsdatum',
     className: 'text-muted-foreground',
     value: workerInfo.worker.eintrittsdatum || '',
-    schemaKey: 'eintrittsdatum',
+    schemaKey: 'entryDate',
     form: true,
   },
   {
@@ -65,7 +65,7 @@ export const workerInfos = (
     label: 'Austrittsdatum',
     className: 'text-muted-foreground',
     value: workerInfo.worker.austrittsdatum || '',
-    schemaKey: 'austrittsdatum',
+    schemaKey: 'exitDate',
     form: true,
   },
   {

@@ -21,35 +21,35 @@ const workerDateSchema = z
   })
   .pipe(z.string().datetime());
 
-export const addWorkerBaseSchema = z.object({
-  vorname: z.string().min(1, 'erforderlich'),
-  nachname: z.string().min(1, 'erforderlich'),
+export const workerBaseSchema = z.object({
+  firstName: z.string().min(1, 'erforderlich'),
+  lastName: z.string().min(1, 'erforderlich'),
   email: z
     .string()
     .min(1, 'erforderlich')
     .email('Ungültige email')
     .toLowerCase(),
-  geburtsdatum: workerDateSchema,
-  adresse: z.string().min(1, 'erforderlich'),
-  eintrittsdatum: workerDateSchema,
+  birthday: workerDateSchema,
+  street: z.string().min(1, 'erforderlich'),
+  entryDate: workerDateSchema,
   position: z.string().min(1, 'Position erforderlich'),
 });
 
-export const OnboardingValidation = addWorkerBaseSchema.extend({
+export const workerOnboardingSchema = workerBaseSchema.extend({
   type: z.literal('Onboarding'),
 });
 
-export const OffboardingValidation = addWorkerBaseSchema.extend({
+export const workerOffboardingSchema = workerBaseSchema.extend({
   type: z.literal('Offboarding'),
-  austrittsdatum: workerDateSchema,
+  exitDate: workerDateSchema,
 });
 
-export const addWorkerSchema = z.discriminatedUnion('type', [
-  OnboardingValidation,
-  OffboardingValidation,
+export const createWorkerSchema = z.discriminatedUnion('type', [
+  workerOnboardingSchema,
+  workerOffboardingSchema,
 ]);
 
-export type AddWorker = z.infer<typeof addWorkerSchema>;
+export type CreateWorker = z.infer<typeof createWorkerSchema>;
 
 export const formDescriptionSchema = z.object({
   form_field_id: z.coerce.number(),

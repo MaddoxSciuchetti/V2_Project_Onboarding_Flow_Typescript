@@ -26,7 +26,7 @@ const WorkerInfos = ({
 }: WorkerInfosProps) => {
   const workers = workerInfos(workerInfo).filter(
     (value) =>
-      !(lifecycleType === 'Onboarding' && value.schemaKey === 'austrittsdatum')
+      !(lifecycleType === 'Onboarding' && value.schemaKey === 'exitDate')
   );
   return (
     <>
