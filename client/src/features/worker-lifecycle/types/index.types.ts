@@ -1,20 +1,41 @@
 import { LifecycleType } from '@/features/task-management/types/index.types';
 
-export type EmployeeForm = {
-  form_type: LifecycleType;
+export type WorkerStatus = 'active' | 'inactive' | 'archived';
+
+export type EngagementType = 'onboarding' | 'offboarding' | 'transfer';
+
+export type WorkerEngagement = {
+  id: string;
+  type: EngagementType;
+  startDate: string | null;
+  endDate: string | null;
+  engagementStatus: {
+    id: string;
+    name: string;
+    color: string | null;
+  };
+  responsibleUser: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+  };
 };
 
-export type WorkerItem = {
-  employee_forms: EmployeeForm[];
-  id: number;
-  nachname: string;
-  vorname: string;
+export type WorkerRecord = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  position: string | null;
+  status: WorkerStatus;
   archivedAt: string | null;
-  archivedBy: string | null;
-  archivedByName: string | null;
+  createdAt: string;
+  updatedAt: string;
+  engagements: WorkerEngagement[];
 };
 
-export type WorkerListMode = 'active' | 'archived';
+export type WorkerRecordMode = 'active' | 'archived';
 
 export type DeleteUser = {
   id: number;

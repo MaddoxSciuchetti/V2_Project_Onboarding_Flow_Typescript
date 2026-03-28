@@ -15,9 +15,11 @@ function param(req: Request, key: string): string {
 
 export async function createWorker(req: Request, res: Response) {
     try {
-        const organizationId = param(req, "organizationId");
+        const organizationId = req.orgId;
+        const createdByUserId = req.userId;
         const result = await workerService.createWorker({
             organizationId,
+            createdByUserId,
             ...req.body,
         });
         return res.status(201).json({ success: true, data: result });
@@ -32,12 +34,11 @@ export async function createWorker(req: Request, res: Response) {
 
 export async function getWorkerData(req: Request, res: Response) {
     try {
-        const organizationId = param(req, "organizationId");
+        const organizationId = req.orgId;
         const { status, search, page, limit, includeArchived } = req.query;
 
         const result = await workerService.getWorkerData({
             organizationId,
-            // Cast to WorkerStatus — Prisma will reject invalid values at runtime
             status: status as any,
             search: search as string | undefined,
             page: page ? parseInt(page as string, 10) : 1,
@@ -57,7 +58,7 @@ export async function getWorkerData(req: Request, res: Response) {
 
 export async function getWorkerById(req: Request, res: Response) {
     try {
-        const organizationId = param(req, "organizationId");
+        const organizationId = req.orgId;
         const workerId = param(req, "workerId");
 
         const worker = await workerService.getWorkerById({
@@ -82,7 +83,7 @@ export async function getWorkerById(req: Request, res: Response) {
 
 export async function updateWorker(req: Request, res: Response) {
     try {
-        const organizationId = param(req, "organizationId");
+        const organizationId = req.orgId;
         const workerId = param(req, "workerId");
 
         const result = await workerService.updateWorker({
@@ -103,9 +104,10 @@ export async function updateWorker(req: Request, res: Response) {
 
 export async function archiveWorker(req: Request, res: Response) {
     try {
-        const organizationId = param(req, "organizationId");
+        const organizationId = req.orgId;
         const workerId = param(req, "workerId");
-        const { archivedByUserId, archiveDate } = req.body;
+        const { archiveDate } = req.body;
+        const archivedByUserId = req.userId;
 
         const result = await workerService.archiveWorker({
             organizationId,
@@ -125,7 +127,7 @@ export async function archiveWorker(req: Request, res: Response) {
 
 export async function unarchiveWorker(req: Request, res: Response) {
     try {
-        const organizationId = param(req, "organizationId");
+        const organizationId = req.orgId;
         const workerId = param(req, "workerId");
 
         const result = await workerService.unarchiveWorker({
@@ -143,7 +145,7 @@ export async function unarchiveWorker(req: Request, res: Response) {
 
 export async function deleteWorker(req: Request, res: Response) {
     try {
-        const organizationId = param(req, "organizationId");
+        const organizationId = req.orgId;
         const workerId = param(req, "workerId");
 
         await workerService.deleteWorker({ organizationId, workerId });
@@ -161,7 +163,7 @@ export async function deleteWorker(req: Request, res: Response) {
 
 export async function updateDataPoint(req: Request, res: Response) {
     try {
-        const organizationId = param(req, "organizationId");
+        const organizationId = req.orgId;
         const workerId = param(req, "workerId");
         const { field, value } = req.body;
 
@@ -184,7 +186,7 @@ export async function updateDataPoint(req: Request, res: Response) {
 
 export async function createEngagement(req: Request, res: Response) {
     try {
-        const organizationId = param(req, "organizationId");
+        const organizationId = req.orgId;
         const workerId = param(req, "workerId");
 
         const result = await workerService.createEngagement({
@@ -202,7 +204,7 @@ export async function createEngagement(req: Request, res: Response) {
 
 export async function updateEngagement(req: Request, res: Response) {
     try {
-        const organizationId = param(req, "organizationId");
+        const organizationId = req.orgId;
         const workerId = param(req, "workerId");
         const engagementId = param(req, "engagementId");
 
@@ -222,7 +224,7 @@ export async function updateEngagement(req: Request, res: Response) {
 
 export async function deleteEngagement(req: Request, res: Response) {
     try {
-        const organizationId = param(req, "organizationId");
+        const organizationId = req.orgId;
         const workerId = param(req, "workerId");
         const engagementId = param(req, "engagementId");
 
@@ -330,17 +332,11 @@ export async function deleteAbsence(req: Request, res: Response) {
 
 export async function uploadWorkerFile(req: Request, res: Response) {
     try {
-        const organizationId = param(req, "organizationId");
+        const organizationId = req.orgId;
         const workerId = param(req, "workerId");
+        const uploadedByUserId = req.userId;
 
-        const {
-            uploadedByUserId,
-            name,
-            fileUrl,
-            fileType,
-            fileSizeBytes,
-            mimeType,
-        } = req.body;
+        const { name, fileUrl, fileType, fileSizeBytes, mimeType } = req.body;
 
         if (!fileUrl) {
             return res
@@ -370,7 +366,7 @@ export async function uploadWorkerFile(req: Request, res: Response) {
 
 export async function deleteWorkerFile(req: Request, res: Response) {
     try {
-        const organizationId = param(req, "organizationId");
+        const organizationId = req.orgId;
         const workerId = param(req, "workerId");
         const documentId = param(req, "fileId"); // route param stays as :fileId for back-compat
 
@@ -393,7 +389,7 @@ export async function deleteWorkerFile(req: Request, res: Response) {
 
 export async function getWorkerHistory(req: Request, res: Response) {
     try {
-        const organizationId = param(req, "organizationId");
+        const organizationId = req.orgId;
         const workerId = param(req, "workerId");
 
         const result = await workerService.getWorkerHistory({

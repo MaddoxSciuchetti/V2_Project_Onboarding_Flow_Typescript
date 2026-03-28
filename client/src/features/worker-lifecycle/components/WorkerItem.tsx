@@ -5,19 +5,19 @@ import useFetchProcessData from '@/features/employee-overview/hooks/useFetchProc
 import { LifecycleType } from '@/features/task-management/types/index.types';
 import { useState } from 'react';
 import useWorkerMutations from '../hooks/useWorkerMutaitons';
-import { WorkerListMode } from '../types/index.types';
+import { WorkerRecordMode } from '../types/index.types';
 import WorkerInfoModal from './WorkerInfoModal';
 import WorkerItemInfo from './WorkerItemInfo';
 
 interface ToDoItem {
-  item_value: number;
+  item_value: string;
   form_type: LifecycleType;
   gotopage: (
-    taskId: number,
+    taskId: string,
     form_type: LifecycleType,
     workerName: string
   ) => void;
-  mode: WorkerListMode;
+  mode: WorkerRecordMode;
   className?: string;
   nachname?: string;
   vorname: string;

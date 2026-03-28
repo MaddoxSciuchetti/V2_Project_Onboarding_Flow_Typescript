@@ -8,14 +8,15 @@ import {
 
 import { LifecycleType } from '@/features/task-management/types/index.types';
 import { getFirstFormType } from '@/features/worker-lifecycle/utils/formtype';
-import { WorkerItem, WorkerListMode } from '../types/index.types';
+import { WorkerRecord, WorkerRecordMode } from '../types/index.types';
 import { Worker_Item } from './WorkerItem';
 
 type LifeCycleTableProps = {
-  filtered: WorkerItem[] | undefined;
-  mode: WorkerListMode;
+  error: Error | null;
+  filtered: WorkerRecord[] | undefined;
+  mode: WorkerRecordMode;
   gotopage: (
-    taskId: number,
+    taskId: string,
     form_type: LifecycleType,
     workerName: string
   ) => void;
@@ -37,13 +38,13 @@ function LifeCycleTable({ filtered, mode, gotopage }: LifeCycleTableProps) {
             </TableHeader>
             <TableBody>
               {filtered?.length ? (
-                filtered.map((task: WorkerItem) => (
+                filtered.map((task: WorkerRecord) => (
                   <Worker_Item
                     key={task.id}
                     item_value={task.id}
                     form_type={getFirstFormType(task)}
-                    vorname={task.vorname}
-                    nachname={task.nachname}
+                    vorname={task.firstName}
+                    nachname={task.lastName}
                     mode={mode}
                     gotopage={gotopage}
                   />

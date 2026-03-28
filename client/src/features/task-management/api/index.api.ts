@@ -15,7 +15,7 @@ import {
 } from '../types/index.types';
 
 export const getWorkerById = async (
-  workerId: number,
+  workerId: string,
   lifecycleType: LifecycleType
 ): Promise<DescriptionFieldResponse> => {
   const response = await API.get<
@@ -73,7 +73,7 @@ export const deleteWorkerFile = async (
   return API.delete(`worker/deleteWorkerFile/${id}`);
 };
 
-export const updateData = async (data: UpdatePayload, workerId: number) => {
+export const updateData = async (data: UpdatePayload, workerId: string) => {
   return await API.put('/worker/singleWorkerDataPoint', { ...data, workerId });
 };
 

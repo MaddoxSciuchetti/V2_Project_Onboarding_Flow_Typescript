@@ -21,7 +21,7 @@ export const specificEmployeeData = async (): Promise<EmployeeDataArray> => {
 };
 
 export const fetchDescriptionData = async (
-  id: number,
+  id: string,
   form_type: string
 ): Promise<DescriptionFieldResponse> => {
   return API.get(`worker/getWorker/${id}?lifecycleType=${form_type}`);

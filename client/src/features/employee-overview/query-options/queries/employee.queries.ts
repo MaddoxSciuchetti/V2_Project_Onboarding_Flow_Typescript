@@ -1,5 +1,7 @@
-import { DescriptionFieldResponse } from '@/types/api.types';
-import { EmployeeInfoResponse } from '@/types/api.types';
+import {
+  DescriptionFieldResponse,
+  EmployeeInfoResponse,
+} from '@/types/api.types';
 import { queryOptions } from '@tanstack/react-query';
 import {
   fetchDescriptionData,
@@ -17,7 +19,7 @@ export const employeeQueries = {
     });
   },
 
-  fetchDescription: (id: number, form_type: string) => {
+  fetchDescription: (id: string, form_type: string) => {
     return queryOptions<DescriptionFieldResponse, Error>({
       queryKey: [PROCESS_DATA, id, form_type],
       queryFn: () => fetchDescriptionData(id, form_type),

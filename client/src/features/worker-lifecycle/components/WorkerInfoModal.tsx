@@ -9,7 +9,7 @@ import WorkerInfos from './WorkerInfos';
 
 type WorkerInfoModalProps = {
   isOpen: boolean;
-  workerId: number;
+  workerId: string;
   lifecycleType: LifecycleType;
   onClose: () => void;
 };

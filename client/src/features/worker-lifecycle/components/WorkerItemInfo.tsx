@@ -6,11 +6,11 @@ import { Dispatch, SetStateAction } from 'react';
 type WorkerItemInfoProps = {
   setIsInfoModalOpen: Dispatch<SetStateAction<boolean>>;
   gotopage: (
-    taskId: number,
+    taskId: string,
     form_type: LifecycleType,
     workerName: string
   ) => void;
-  item_value: number;
+  item_value: string;
   form_type: LifecycleType;
   vorname: string;
   nachname: string | undefined;

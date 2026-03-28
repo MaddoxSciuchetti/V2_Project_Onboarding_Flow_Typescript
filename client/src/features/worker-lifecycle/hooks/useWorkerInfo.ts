@@ -4,7 +4,7 @@ import { workerLifecycleQueries } from '../query-options/queries/worker-lifycycl
 
 function useWorkerInfo(
   isOpen: boolean,
-  workerId: number,
+  workerId: string,
   lifecycleType: LifecycleType
 ) {
   const {

@@ -4,12 +4,12 @@ import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 import { workerLifecycleQueries } from '../query-options/queries/worker-lifycycle.queries';
-import { WorkerListMode } from '../types/index.types';
+import { WorkerRecordMode } from '../types/index.types';
 
 function useHome() {
   const [search, setSearch] = useState('');
   const [modal, setModal] = useState<boolean>(false);
-  const [mode, setMode] = useState<WorkerListMode>('active');
+  const [mode, setMode] = useState<WorkerRecordMode>('active');
   const { toggleSidebar } = useSidebar();
   const navigate = useNavigate({ from: '/' });
 
@@ -18,30 +18,31 @@ function useHome() {
     toggleSidebar();
   };
 
-  const { data, error, isSuccess } = useQuery(
+  const { data, error, isSuccess, isPending, isError } = useQuery(
     workerLifecycleQueries.workerData(mode)
   );
 
   const isEmpty = isSuccess && data?.length === 0;
 
   const filtered = data?.filter((item) => {
-    const matchesSearch = item.vorname
-      .toLowerCase()
-      .includes(search.toLowerCase());
+    const name = `${item.firstName ?? ''} ${item.lastName ?? ''}`;
+    const matchesSearch = name.toLowerCase().includes(search.toLowerCase());
     const matchesMode =
-      mode === 'archived' ? item.archivedAt !== null : item.archivedAt === null;
+      mode === 'archived'
+        ? item.status === 'archived'
+        : item.status !== 'archived';
 
     return matchesSearch && matchesMode;
   });
 
   const handleNavigate = (
-    taskId: number,
+    taskId: string,
     form_type: LifecycleType,
     workerName: string
   ) => {
     navigate({
       to: '/user/$Id',
-      params: { Id: String(taskId) },
+      params: { Id: taskId },
       search: {
         lifecycleType: form_type,
         workerName,
@@ -60,6 +61,8 @@ function useHome() {
     setSearch,
     search,
     error,
+    isError,
+    isPending,
     toggleModal,
   };
 }

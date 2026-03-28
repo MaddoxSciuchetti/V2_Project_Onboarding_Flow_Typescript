@@ -23,7 +23,6 @@ function WorkerLifeCycle() {
 
   if (isLoading) return <LoadingAlert />;
   if (isError || !user) return <ErrorAlert />;
-  if (error) return <ErrorAlert message={error.message} />;
 
   return (
     <div className="mx-auto flex h-full w-5xl flex-col overflow-auto rounded-2xl bg-card p-6 md:max-w-8xl">
@@ -36,6 +35,7 @@ function WorkerLifeCycle() {
         />
         <ActiveArchiveHeader mode={mode} setMode={setMode} />
         <LifeCycleTable
+          error={error}
           filtered={filtered}
           mode={mode}
           gotopage={handleNavigate}

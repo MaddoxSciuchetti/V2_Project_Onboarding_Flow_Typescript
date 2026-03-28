@@ -88,7 +88,7 @@ export const workerMutations = {
     });
   },
 
-  updateDataPoint: (workerId: number) => {
+  updateDataPoint: (workerId: string) => {
     return mutationOptions<void, unknown, UpdatePayload, { previous: unknown }>(
       {
         mutationFn: async (data) => {

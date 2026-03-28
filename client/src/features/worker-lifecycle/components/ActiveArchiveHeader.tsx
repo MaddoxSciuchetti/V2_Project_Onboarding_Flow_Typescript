@@ -1,10 +1,10 @@
 import { Button } from '@/components/ui/button';
 import { Dispatch, SetStateAction } from 'react';
-import { WorkerListMode } from '../types/index.types';
+import { WorkerRecordMode } from '../types/index.types';
 
 type ActiveArchiveHeaderProps = {
-  mode: WorkerListMode;
-  setMode: Dispatch<SetStateAction<WorkerListMode>>;
+  mode: WorkerRecordMode;
+  setMode: Dispatch<SetStateAction<WorkerRecordMode>>;
 };
 
 const ActiveArchiveHeader = ({ mode, setMode }: ActiveArchiveHeaderProps) => {

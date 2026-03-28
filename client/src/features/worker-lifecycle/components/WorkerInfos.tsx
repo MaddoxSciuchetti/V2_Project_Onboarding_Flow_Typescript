@@ -8,7 +8,7 @@ import WorkerInput from './WorkerInput';
 type WorkerInfosProps = {
   workerInfo: DescriptionFieldResponse;
   lifecycleType: LifecycleType;
-  workerId: number;
+  workerId: string;
   isInputActive: boolean | undefined;
   setIsInputActive: Dispatch<SetStateAction<boolean | undefined>>;
   uniqueInput: number | undefined;

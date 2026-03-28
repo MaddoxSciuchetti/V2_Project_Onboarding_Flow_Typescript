@@ -4,16 +4,16 @@ import { DescriptionFieldResponse } from '@/types/api.types';
 import { queryOptions } from '@tanstack/react-query';
 import { getWorkerData } from '../../api';
 import { ALL_WORKER_DATA } from '../../consts/query-key.consts';
-import { WorkerItem, WorkerListMode } from '../../types/index.types';
+import { WorkerRecord, WorkerRecordMode } from '../../types/index.types';
 
 export const workerLifecycleQueries = {
-  workerData: (mode: WorkerListMode = 'active') => {
-    return queryOptions<WorkerItem[]>({
+  workerData: (mode: WorkerRecordMode = 'active') => {
+    return queryOptions<WorkerRecord[]>({
       queryKey: [ALL_WORKER_DATA, mode],
       queryFn: () => getWorkerData(mode),
     });
   },
-  workerById: (workerId: number, lifecycleType: LifecycleType) => {
+  workerById: (workerId: string, lifecycleType: LifecycleType) => {
     return queryOptions<DescriptionFieldResponse>({
       queryKey: [ALL_WORKER_DATA, 'detail', workerId, lifecycleType],
       queryFn: () => getWorkerById(workerId, lifecycleType),

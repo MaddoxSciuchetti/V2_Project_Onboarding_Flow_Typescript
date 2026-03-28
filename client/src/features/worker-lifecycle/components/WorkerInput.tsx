@@ -8,7 +8,7 @@ import NonActiveField from './NonActiveField';
 type WorkerInputProps = {
   workerInfo: WorkerInfoItem;
   idx: number;
-  workerId: number;
+  workerId: string;
   isInputActive: boolean | undefined;
   setIsInputActive: Dispatch<SetStateAction<boolean | undefined>>;
   uniqueInput: number | undefined;
