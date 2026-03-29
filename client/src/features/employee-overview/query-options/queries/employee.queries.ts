@@ -9,11 +9,11 @@ import {
   specificEmployeeData,
 } from '../../api/employee-overview.api';
 import { EMPLOYEE_SPECIFICS, PROCESS_DATA } from '../../consts/query-keys';
-import { EmployeeDataArray } from '../../schemas/schema';
+import { OrgUsersArray } from '../../schemas/schema';
 
 export const employeeQueries = {
   getEmployees: () => {
-    return queryOptions<EmployeeDataArray, Error>({
+    return queryOptions<OrgUsersArray, Error>({
       queryKey: [EMPLOYEE_SPECIFICS],
       queryFn: specificEmployeeData,
     });

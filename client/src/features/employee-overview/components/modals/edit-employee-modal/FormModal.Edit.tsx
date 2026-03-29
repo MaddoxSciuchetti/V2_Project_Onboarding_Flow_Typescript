@@ -3,14 +3,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { absenceReason } from '@/features/employee-overview/consts/SelectInput';
 import useEditEmployee from '@/features/employee-overview/hooks/useEditEmployee';
-import { EmployeeDataArray } from '@/features/employee-overview/schemas/schema';
+import { OrgUsersArray } from '@/features/employee-overview/schemas/schema';
 import { useMemo } from 'react';
 import FormFields from '../../../../../components/form/FormFields';
 
 type FormModalEditProps = {
   id: string | undefined;
   fullname: string;
-  EmployeeData: EmployeeDataArray | undefined;
+  EmployeeData: OrgUsersArray | undefined;
   toggleEmployeeModal: () => void;
 };
 

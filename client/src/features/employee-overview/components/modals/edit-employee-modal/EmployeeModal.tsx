@@ -1,4 +1,4 @@
-import useGetEmployees from '@/features/employee-overview/hooks/useGetEmployees';
+import useGetOrgUsers from '@/features/employee-overview/hooks/useGetEmployees';
 import SmallWrapper from '../../../../../components/modal/modalSizes/SmallWrapper';
 import FormModalEdit from './FormModal.Edit';
 
@@ -13,7 +13,7 @@ function ModalEditMitarbeiter({
   toggleEmployeeModal,
   id,
 }: ModalEditMitarbeiterProps) {
-  const { EmployeeData } = useGetEmployees();
+  const { EmployeeData } = useGetOrgUsers();
 
   return (
     <SmallWrapper className="items-stretch justify-start overflow-hidden">

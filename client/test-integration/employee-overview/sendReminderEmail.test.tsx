@@ -1,6 +1,6 @@
 import API from '@/config/apiClient';
 import queryClient from '@/config/query.client';
-import EmployeeOverview from '@/features/employee-overview/components/EmployeeOverview';
+import OrgUsersOverview from '@/features/employee-overview/components/OrgUsersOverview';
 import { EmployeeModalProvider } from '@/features/employee-overview/context/ModalProvider';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, within } from '@testing-library/react';
@@ -76,7 +76,7 @@ describe('Send Reminder email', () => {
     render(
       <QueryClientProvider client={queryClient}>
         <EmployeeModalProvider>
-          <EmployeeOverview />
+          <OrgUsersOverview />
         </EmployeeModalProvider>
       </QueryClientProvider>
     );

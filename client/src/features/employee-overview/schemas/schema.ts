@@ -29,7 +29,7 @@ export const organizationMemberSchema = z.object({
   }),
 });
 
-export const employeeDataSchema = z.array(
+export const OrgUsersSchema = z.array(
   z.object({
     id: z.string(),
     firstName: z.string(),
@@ -168,8 +168,8 @@ export const createWorkerSchema = z
 export type CreateWorker = z.infer<typeof createWorkerSchema>;
 
 // employee list
-export type EmployeeDataArray = z.infer<typeof employeeDataSchema>;
-export type EmployeeDataObject = z.infer<typeof employeeDataSchema>[number];
+export type OrgUsersArray = z.infer<typeof OrgUsersSchema>;
+export type OrgUsersObject = z.infer<typeof OrgUsersSchema>[number];
 
 // employee worker data
 export type EmployeeWorkerArray = z.infer<typeof employeeWorkerSchema>;

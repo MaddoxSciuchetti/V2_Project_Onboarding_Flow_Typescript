@@ -5,7 +5,7 @@ import {
   DescriptionFieldResponse,
   EmployeeInfoResponse,
 } from '@/types/api.types';
-import { EmployeeDataArray, employeeDataSchema } from '../schemas/schema';
+import { OrgUsersArray, OrgUsersSchema } from '../schemas/schema';
 import { AbsenceData } from '../types/index.types';
 
 export const deleteEmployeeHandler = async (id: string): Promise<User> => {
@@ -15,9 +15,9 @@ export const deleteEmployeeHandler = async (id: string): Promise<User> => {
   return response;
 };
 
-export const specificEmployeeData = async (): Promise<EmployeeDataArray> => {
+export const specificEmployeeData = async (): Promise<OrgUsersArray> => {
   const response = await API.get(`/employee/v2/specificEmployeeData`);
-  return employeeDataSchema.parse(response);
+  return OrgUsersSchema.parse(response);
 };
 
 export const fetchDescriptionData = async (

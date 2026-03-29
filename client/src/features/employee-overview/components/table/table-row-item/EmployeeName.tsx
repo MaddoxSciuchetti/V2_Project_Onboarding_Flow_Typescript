@@ -1,7 +1,7 @@
-import { EmployeeDataObject } from '@/features/employee-overview/schemas/schema';
+import { OrgUsersObject } from '@/features/employee-overview/schemas/schema';
 
 type EmployeeNameProps = {
-  employee: EmployeeDataObject;
+  employee: OrgUsersObject;
 };
 
 const EmployeeName = ({ employee }: EmployeeNameProps) => {

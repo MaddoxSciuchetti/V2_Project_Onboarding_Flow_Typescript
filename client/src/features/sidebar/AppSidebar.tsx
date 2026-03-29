@@ -12,13 +12,13 @@ import { Link, useLocation } from '@tanstack/react-router';
 
 import ErrorAlert from '@/components/alerts/ErrorAlert';
 import { Button } from '@/components/ui/button';
+import { LAYOUTITEMS } from '@/constants/layout.consts';
 import UserMenu from './UserMenu';
 import { SidebarSkeleton } from './components/SidebarSkeleton';
 import useHasPermission from './hooks/useHasPermission';
 
 export function AppSidebar({ openModal }: { openModal: () => void }) {
-  const { user, isLoading, isError, fullName, accessibleItems } =
-    useHasPermission();
+  const { user, isLoading, isError, fullName } = useHasPermission();
   const { pathname } = useLocation();
 
   if (isLoading) return <SidebarSkeleton />;
@@ -44,7 +44,7 @@ export function AppSidebar({ openModal }: { openModal: () => void }) {
           <SidebarGroup>
             <SidebarGroupContent>
               <SidebarMenu className="">
-                {accessibleItems.map((item, index) => {
+                {LAYOUTITEMS.map((item, index) => {
                   const isActive =
                     pathname === item.to || pathname.startsWith(`${item.to}/`);
 

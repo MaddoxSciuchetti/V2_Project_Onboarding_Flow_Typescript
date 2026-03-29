@@ -1,6 +1,6 @@
 import { Table } from '@/components/ui/table';
 import useDeleteEmployee from '../hooks/useDeleteEmployee';
-import useGetEmployees from '../hooks/useGetEmployees';
+import useGetOrgUsers from '../hooks/useGetEmployees';
 
 import LoadingAlert from '@/components/alerts/LoadingAlert';
 import SearchHeaderResuable from '@/components/layout/headers/SearchHeaderResuable';
@@ -14,14 +14,14 @@ import ViewEmployeeModal from './modals/view-employeedata-modal/ViewEmployeeModa
 import EmployeeTableHeader from './table/EmployeeTableHeader';
 import EmployeeTableBody from './table/TableBody';
 
-function EmployeeOverview() {
-  const { EmployeeData, isLoading } = useGetEmployees();
+function OrgUsersOverview() {
+  const { OrgUsers, isLoading } = useGetOrgUsers();
   const { modalState, openCreateEmployee, closeEmployee } = useEmployeeModal();
   const { handleDeleteEmployee, isPending } = useDeleteEmployee();
   const [search, setSearch] = useState('');
 
-  const filteredEmployeesByFirstName = (EmployeeData ?? []).filter((employee) =>
-    employee.vorname.toLowerCase().includes(search.toLowerCase())
+  const OrgUsersByFirstName = (OrgUsers ?? []).filter((user) =>
+    user.firstName.toLowerCase().includes(search.toLowerCase())
   );
 
   const renderModal = () => {
@@ -73,7 +73,7 @@ function EmployeeOverview() {
         <Table className="text-left mt-5 border-seperate border-spacing-y-2">
           <EmployeeTableHeader />
           <EmployeeTableBody
-            filteredEmployeesByFirstName={filteredEmployeesByFirstName}
+            filteredEmployeesByFirstName={OrgUsersByFirstName}
             handleDeleteEmployee={handleDeleteEmployee}
           />
         </Table>
@@ -83,4 +83,4 @@ function EmployeeOverview() {
   );
 }
 
-export default EmployeeOverview;
+export default OrgUsersOverview;

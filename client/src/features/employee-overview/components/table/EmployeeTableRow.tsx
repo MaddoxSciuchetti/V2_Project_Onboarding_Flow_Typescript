@@ -6,14 +6,14 @@ import { UseMutateFunction } from '@tanstack/react-query';
 import { Info } from 'lucide-react';
 import { useState } from 'react';
 import { useEmployeeModal } from '../../hooks/useEmployeeModal';
-import { EmployeeDataArray } from '../../schemas/schema';
+import { OrgUsersArray } from '../../schemas/schema';
 import EmployeeName from './table-row-item/EmployeeName';
 import EmployeeOpenTasks from './table-row-item/EmployeeOpenTasks';
 import EmployeeStatus from './table-row-item/EmployeeStatus';
 import EmployeeSubstitute from './table-row-item/EmployeeSubstitute';
 
 type EmployeeRowProps = {
-  employee: EmployeeDataArray[number];
+  employee: OrgUsersArray[number];
   handleDeleteEmployee: UseMutateFunction<User, Error, string, unknown>;
   openTaskCountsByEmployee: Map<string, number>;
   openEditEmployee: (id: string, name: string) => void;
