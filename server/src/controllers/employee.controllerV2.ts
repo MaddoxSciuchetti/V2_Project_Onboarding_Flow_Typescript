@@ -27,7 +27,6 @@ export const getEmployeeWorkerData = catchErrors(async (req, res) => {
 
 export const getEmployee = catchErrors(async (req, res) => {
     const orgId = req.orgId;
-
     const employees = await queryEmployee(orgId);
 
     const result = employees.map((emp) => ({

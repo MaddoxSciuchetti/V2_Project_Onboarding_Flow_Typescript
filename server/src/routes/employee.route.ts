@@ -21,11 +21,7 @@ employeeRoutes.get(
 );
 
 employeeRoutes.get("/specificEmployeeData", checkChef, getEmployee);
-employeeRoutes.get(
-    "/v2/specificEmployeeData",
-    checkChef,
-    EmployeeV2.getEmployee,
-);
+employeeRoutes.get("/v2/specificEmployeeData", EmployeeV2.getEmployee);
 employeeRoutes.get("/getEmployeeBy Id/:id", checkChef, getEmployeeById);
 employeeRoutes.get(
     "/v2/getEmployeeById/:id",

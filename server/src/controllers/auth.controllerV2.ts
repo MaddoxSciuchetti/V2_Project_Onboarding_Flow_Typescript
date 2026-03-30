@@ -40,13 +40,18 @@ export const register = catchErrors(async (req, res) => {
 });
 
 export const registerOrg = catchErrors(async (req, res) => {
+    console.log("HELLO TEST");
     const request = registerOrgSchema.parse({
         ...req.body,
         userAgent: req.headers["user-agent"],
         ipAddress: req.ip,
     });
+    console.log("REQ ID");
+    console.log(request);
     const { user, organization, accessToken, refreshToken } =
         await registerOrgAccount(request);
+    console.log("ORG ID");
+    console.log(organization.id);
     return setAuthCookies({ res, accessToken, refreshToken })
         .status(CREATED)
         .json({ user, organization });
