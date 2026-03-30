@@ -30,8 +30,8 @@ const TaskIndividual = ({
                 className={cn(
                   'text-left px-4 py-3 rounded-lg transition-all flex items-center gap-4 group w-full',
                   isSelected
-                    ? 'bg-(--dropdown-surface) text-foreground'
-                    : 'hover:bg-(--hover-bg)'
+                    ? 'bg-[var(--dropdown-surface)] text-foreground'
+                    : 'hover:bg-[var(--hover-bg)]'
                 )}
               >
                 <TaskStatusBar

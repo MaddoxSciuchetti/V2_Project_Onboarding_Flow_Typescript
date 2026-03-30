@@ -60,7 +60,7 @@ describe('Employee absence status integration', () => {
     );
 
     const presentText = await screen.findByText('Anwesend');
-    expect(presentText).toHaveClass('text-(--chart-2)');
+    expect(presentText).toHaveClass('text-[var(--chart-2)]');
 
     const row = screen.getByText('MaxMustermann').closest('tr');
     expect(row).not.toBeNull();
@@ -96,7 +96,7 @@ describe('Employee absence status integration', () => {
     );
 
     const absentText = await screen.findByText('Abwesend vom');
-    expect(absentText).toHaveClass('text-(--chart-5)');
+    expect(absentText).toHaveClass('text-[var(--chart-5)]');
 
     const updatedRow = screen.getByText('MaxMustermann').closest('tr');
     expect(updatedRow).not.toBeNull();

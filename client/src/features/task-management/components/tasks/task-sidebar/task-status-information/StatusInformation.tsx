@@ -49,7 +49,7 @@ function StatusInformation({
 
   const statusClassName =
     STATUS_MAP[selectedStatus]?.className ??
-    'bg-(--status-error-bg) text-(--status-error-foreground)';
+    'bg-[var(--status-error-bg)] text-[var(--status-error-foreground)]';
 
   return (
     <form

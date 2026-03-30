@@ -9,6 +9,7 @@ type V2Issue = {
   id: string;
   title: string;
   description?: string | null;
+  templateItemId?: string | null;
   assignee?: { id: string; firstName: string; lastName: string } | null;
   issueStatus?: { name: string } | null;
 };
@@ -65,6 +66,7 @@ export function workerDetailToDescriptionFieldResponse(
       is_substitute: false,
       status: mapIssueStatus(issue.issueStatus?.name),
       edit: '',
+      templateItemId: issue.templateItemId ?? null,
     };
   });
 

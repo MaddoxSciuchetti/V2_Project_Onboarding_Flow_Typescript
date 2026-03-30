@@ -81,7 +81,7 @@ export const WorkerForm = ({
         className=" gap-4  flex flex-col"
       >
         {isError && (
-          <div className="mb-3 text-(--destructive)">
+          <div className="mb-3 text-[var(--destructive)]">
             {error?.message || 'An error occurred'}
           </div>
         )}

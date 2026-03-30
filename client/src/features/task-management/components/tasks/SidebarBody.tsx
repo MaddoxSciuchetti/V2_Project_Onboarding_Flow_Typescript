@@ -28,7 +28,11 @@ const SidebarBody = ({
           />
         </div>
         <div className="px-6 pb-5">
-          <HistoryContent workerId={workerId} id_original={selectedTask.id} />
+          <HistoryContent
+            workerId={workerId}
+            id_original={selectedTask.id}
+            omitCreationAudit={!!selectedTask.templateItemId}
+          />
         </div>
       </div>
     </>

@@ -39,7 +39,7 @@ const SearchHeaderResuable = <T extends string | number>({
           action?.();
           openModal?.();
         }}
-        className="cursor-pointer rounded-xl hover:bg-accent hover:text-accent-foreground transition-colors hover:bg-(--hover-bg) hover:text-(--hover-foreground)"
+        className="cursor-pointer rounded-xl hover:bg-accent hover:text-accent-foreground transition-colors hover:bg-[var(--hover-bg)] hover:text-[var(--hover-foreground)]"
       >
         {description}
       </Button>

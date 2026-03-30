@@ -24,8 +24,8 @@ const TaskStatusBar = ({
         className={cn(
           'text-sm w-5 shrink-0',
           isSelected
-            ? 'text-(--foreground) opacity-60'
-            : 'text-(--muted-foreground)'
+            ? 'text-[var(--foreground)] opacity-60'
+            : 'text-[var(--muted-foreground)]'
         )}
       >
         {String(index + 1).padStart(2, '0')}
@@ -42,8 +42,8 @@ const TaskStatusBar = ({
         className={cn(
           'flex-1 text-sm truncate font-semibold',
           isSelected
-            ? 'text-(--foreground) font-semibold'
-            : 'text-(--foreground)'
+            ? 'text-[var(--foreground)] font-semibold'
+            : 'text-[var(--foreground)]'
         )}
       >
         {task.description}
@@ -51,19 +51,19 @@ const TaskStatusBar = ({
       <div className="flex shrink-0 items-center gap-2">
         <span
           className={cn(
-            'text-sm bg-(--muted) px-2 py-1 rounded-full',
+            'text-sm bg-[var(--muted)] px-2 py-1 rounded-full',
             task.is_substitute
-              ? 'text-(--muted-foreground) opacity-50'
+              ? 'text-[var(--muted-foreground)] opacity-50'
               : isSelected
-                ? 'text-(--foreground) opacity-70'
-                : 'text-(--muted-foreground)'
+                ? 'text-[var(--foreground)] opacity-70'
+                : 'text-[var(--muted-foreground)]'
           )}
         >
           {task.officialOwner}
         </span>
 
         {task.is_substitute && (
-          <span className="text-sm bg-(--muted) px-2 py-1 rounded-full font-semibold text-(--foreground)">
+          <span className="text-sm bg-[var(--muted)] px-2 py-1 rounded-full font-semibold text-[var(--foreground)]">
             {task.substituteOwner}
           </span>
         )}

@@ -197,7 +197,7 @@ function Step2() {
         <h2 className="text-lg font-semibold text-foreground">Your company</h2>
       </div>
       {isError && (
-        <div className="mb-3 text-sm text-(--destructive)">
+        <div className="mb-3 text-sm text-[var(--destructive)]">
           {(error instanceof Error ? error.message : null) ||
             'An error occurred'}
         </div>

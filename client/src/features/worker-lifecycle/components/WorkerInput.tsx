@@ -54,7 +54,7 @@ const WorkerInput = ({
         />
       )}
       {errorMessage && (
-        <span className="mt-1 block text-(--destructive)">{errorMessage}</span>
+        <span className="mt-1 block text-[var(--destructive)]">{errorMessage}</span>
       )}
     </div>
   );

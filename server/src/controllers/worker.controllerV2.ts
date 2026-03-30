@@ -318,6 +318,26 @@ export async function deleteIssue(req: Request, res: Response) {
     }
 }
 
+export async function applyIssueTemplate(req: Request, res: Response) {
+    try {
+        const organizationId = req.orgId;
+        const workerId = param(req, "workerId");
+        const templateId = param(req, "templateId");
+        const { workerEngagementId } = req.body;
+        const result = await workerService.applyIssueTemplate({
+            workerId,
+            organizationId,
+            templateId,
+            workerEngagementId,
+            actorUserId: req.userId!,
+        });
+        return res.status(200).json({ success: true, data: result });
+    } catch (error: any) {
+        console.error("applyIssueTemplate error:", error);
+        return res.status(500).json({ success: false, message: error.message });
+    }
+}
+
 // ─── Absences ─────────────────────────────────────────────────────────────────
 // Absence belongs to NewUser (userId) + Organization (orgId) — NOT Worker
 // Body for create: { userId, orgId, absenceType, startDate, endDate, substituteId? }

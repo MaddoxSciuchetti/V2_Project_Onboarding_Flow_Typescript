@@ -6,10 +6,17 @@ import { STATUS_MAP } from '../../../../utils/selectOptionTernary';
 type HistoryContentProps = {
   workerId: string;
   id_original: string | number;
+  omitCreationAudit?: boolean;
 };
 
-const HistoryContent = ({ workerId, id_original }: HistoryContentProps) => {
-  const { historyData } = useTaskHistory(workerId, id_original);
+const HistoryContent = ({
+  workerId,
+  id_original,
+  omitCreationAudit,
+}: HistoryContentProps) => {
+  const { historyData } = useTaskHistory(workerId, id_original, {
+    omitCreationAudit,
+  });
 
   return (
     <div className="pb-4">
@@ -19,14 +26,14 @@ const HistoryContent = ({ workerId, id_original }: HistoryContentProps) => {
         </p>
       ) : (
         <div className="relative pl-6">
-          <div className="absolute left-[7px] top-2 bottom-2 w-px bg-(--border)" />
+          <div className="absolute left-[7px] top-2 bottom-2 w-px bg-[var(--border)]" />
 
           <div className="space-y-4">
             {historyData?.map((entry) => {
               const status = STATUS_MAP[entry.status ?? ''] ?? {
                 label: 'Kein Status',
                 className:
-                  'bg-(--status-error-bg) text-(--status-error-foreground)',
+                  'bg-[var(--status-error-bg)] text-[var(--status-error-foreground)]',
               };
 
               return (
@@ -35,7 +42,7 @@ const HistoryContent = ({ workerId, id_original }: HistoryContentProps) => {
                     <StatusIcon status={entry.status ?? 'offen'} />
                   </div>
 
-                  <div className="bg-(--dropdown-surface) rounded-lg p-3">
+                  <div className="bg-[var(--dropdown-surface)] rounded-lg p-3">
                     <div className="mb-2 flex items-center gap-2">
                       {entry.auth_user?.cloud_url && (
                         <img

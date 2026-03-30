@@ -82,7 +82,7 @@ describe('Send Reminder email', () => {
     );
 
     const presentText = await screen.findByText('Anwesend');
-    expect(presentText).toHaveClass('text-(--chart-2)');
+    expect(presentText).toHaveClass('text-[var(--chart-2)]');
     const row = (await screen.findByText('MaxMustermann')).closest('tr');
     expect(row).not.toBeNull();
 

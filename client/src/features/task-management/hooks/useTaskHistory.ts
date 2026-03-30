@@ -6,7 +6,16 @@ export function isV2IssueId(id: string | number): boolean {
   return typeof id === 'string' && id.includes('-');
 }
 
-export function useTaskHistory(workerId: string, issueId: string | number) {
+type UseTaskHistoryOptions = {
+  /** Hide the automatic `issue.created` row (template bulk-create noise). */
+  omitCreationAudit?: boolean;
+};
+
+export function useTaskHistory(
+  workerId: string,
+  issueId: string | number,
+  options?: UseTaskHistoryOptions
+) {
   const v2 = isV2IssueId(issueId);
 
   const legacy = useQuery({
@@ -25,8 +34,12 @@ export function useTaskHistory(workerId: string, issueId: string | number) {
   });
 
   if (v2) {
+    let rows = audit.data ?? [];
+    if (options?.omitCreationAudit) {
+      rows = rows.filter((r) => r.action !== 'issue.created');
+    }
     return {
-      historyData: mapIssueAuditRowsToHistory(audit.data ?? []),
+      historyData: mapIssueAuditRowsToHistory(rows),
       isLoading: audit.isPending,
     };
   }

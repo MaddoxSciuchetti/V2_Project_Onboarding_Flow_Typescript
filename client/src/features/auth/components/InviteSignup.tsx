@@ -106,7 +106,7 @@ export function InviteSignup({ token }: Props) {
       </div>
 
       {isAcceptError && (
-        <div className="mb-3 text-(--destructive) text-sm">
+        <div className="mb-3 text-[var(--destructive)] text-sm">
           {(acceptError as Error)?.message || 'An error occurred'}
         </div>
       )}

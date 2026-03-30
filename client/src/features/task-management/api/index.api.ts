@@ -111,6 +111,17 @@ export const createWorkerIssue = async (
   return API.post(`worker/${workerId}/issues`, body);
 };
 
+export const applyIssueTemplateToWorker = async (
+  workerId: string,
+  templateId: string,
+  workerEngagementId: string
+) => {
+  return (await API.post(
+    `worker/${workerId}/templates/${templateId}/apply`,
+    { workerEngagementId }
+  )) as { success: boolean; data: { count: number } };
+};
+
 export type UpdateWorkerIssueBody = {
   workerEngagementId: string;
   title?: string;

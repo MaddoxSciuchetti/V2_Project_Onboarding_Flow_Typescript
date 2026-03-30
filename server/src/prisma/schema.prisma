@@ -480,7 +480,7 @@ model IssueLabel {
   issue     Issue  @relation(fields: [issueId], references: [id], onDelete: Cascade)
   label     Label  @relation(fields: [labelId], references: [id], onDelete: Cascade)
 
-  @@id([issueId, labelId])
+  @@id([issueId, labelId]) 
   @@map("issue_labels")
 }
 

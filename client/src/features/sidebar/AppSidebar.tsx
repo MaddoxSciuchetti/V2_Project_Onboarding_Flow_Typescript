@@ -59,15 +59,15 @@ export function AppSidebar({ openModal }: { openModal: () => void }) {
                           to={item.to}
                           className={
                             isActive
-                              ? 'bg-(--muted) text-(--foreground) hover:bg-(--muted)'
-                              : 'hover:bg-(--hover-bg) hover:text-(--hover-foreground)'
+                              ? 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--muted)]'
+                              : 'hover:bg-[var(--hover-bg)] hover:text-[var(--hover-foreground)]'
                           }
                         >
                           <item.icon />
                           <span
                             className={
                               isActive
-                                ? 'text-(--foreground) text-md font-medium'
+                                ? 'text-[var(--foreground)] text-md font-medium'
                                 : 'text-muted-foreground text-md'
                             }
                           >
@@ -85,7 +85,7 @@ export function AppSidebar({ openModal }: { openModal: () => void }) {
         <Button
           onClick={() => openModal()}
           variant={'outline'}
-          className="mx-1 mb-1 cursor-pointer rounded-xl bg-muted transition-colors hover:bg-(--hover-bg) hover:text-(--hover-foreground)"
+          className="mx-1 mb-1 cursor-pointer rounded-xl bg-muted transition-colors hover:bg-[var(--hover-bg)] hover:text-[var(--hover-foreground)]"
         >
           Was würdest du ändern?{' '}
         </Button>

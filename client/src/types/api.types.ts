@@ -67,6 +67,8 @@ export type DescriptionField = {
   is_substitute: boolean;
   status: TaskStatus;
   edit: string;
+  /** Set when the issue was instantiated from an issue template (pseudo item). */
+  templateItemId?: string | null;
 };
 
 export type DescriptionFieldResponse = {

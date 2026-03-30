@@ -5,6 +5,7 @@ import { ALL_WORKER_DATA } from '@/features/worker-lifecycle/consts/query-key.co
 import { FileResponse, SuccessResponse } from '@/types/api.types';
 import { mutationOptions } from '@tanstack/react-query';
 import {
+  applyIssueTemplateToWorker,
   createWorkerIssue,
   createWorkerTask,
   deleteWorkerFile,
@@ -157,6 +158,28 @@ export const workerMutations = {
         });
         await queryClient.invalidateQueries({
           queryKey: [ISSUE_AUDIT, workerId, issueId],
+        });
+      },
+    });
+  },
+
+  applyIssueTemplate: (workerId: string) => {
+    return mutationOptions<
+      { count: number },
+      Error,
+      { templateId: string; workerEngagementId: string }
+    >({
+      mutationFn: async ({ templateId, workerEngagementId }) => {
+        const res = await applyIssueTemplateToWorker(
+          workerId,
+          templateId,
+          workerEngagementId
+        );
+        return res.data;
+      },
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({
+          queryKey: [WORKERBYID, workerId],
         });
       },
     });

@@ -17,7 +17,13 @@ import type {
 } from "@/types/worker.types";
 import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { Prisma, WorkerStatus } from "@prisma/client";
+import {
+    Prisma,
+    WorkerStatus,
+    type DefaultIssueStatus,
+    type DefaultPriority,
+    type IssuePriority,
+} from "@prisma/client";
 const s3 = new S3Client({ region: process.env.AWS_REGION });
 const PRESIGN_EXPIRES = 3600;
 
@@ -621,6 +627,91 @@ export async function getIssueAuditLogs(params: {
             },
         },
     });
+}
+
+function templatePriorityToIssuePriority(
+    p: DefaultPriority | null,
+): IssuePriority {
+    if (!p) return "no_priority";
+    return p as IssuePriority;
+}
+
+function resolveTemplateItemStatusId(
+    defaultStatus: DefaultIssueStatus,
+    defaultOpenId: string,
+    inArbeitId: string,
+): string {
+    return defaultStatus === "todo" ? inArbeitId : defaultOpenId;
+}
+
+export async function applyIssueTemplate(params: {
+    workerId: string;
+    organizationId: string;
+    workerEngagementId: string;
+    templateId: string;
+    actorUserId: string;
+}) {
+    const {
+        workerId,
+        organizationId,
+        workerEngagementId,
+        templateId,
+        actorUserId,
+    } = params;
+
+    await assertOwnership(workerId, organizationId);
+
+    const engagement = await prisma.workerEngagement.findFirst({
+        where: {
+            id: workerEngagementId,
+            workerId,
+            organizationId,
+        },
+    });
+    if (!engagement) throw new Error("Worker engagement not found");
+
+    const template = await prisma.issueTemplate.findFirst({
+        where: { id: templateId, organizationId },
+        include: {
+            items: { orderBy: { orderIndex: "asc" } },
+        },
+    });
+    if (!template) throw new Error("Template not found");
+    if (template.type !== engagement.type) {
+        throw new Error("Template type does not match engagement type");
+    }
+
+    const statuses = await prisma.organizationStatus.findMany({
+        where: { organizationId, entityType: "issue" },
+        orderBy: { orderIndex: "asc" },
+    });
+    const byName = (n: string) => statuses.find((s) => s.name === n)?.id;
+    const defaultOpenId =
+        statuses.find((s) => s.isDefault)?.id ??
+        byName("Offen") ??
+        statuses[0]?.id;
+    if (!defaultOpenId) throw new Error("No issue statuses configured");
+    const inArbeitId = byName("In Arbeit") ?? defaultOpenId;
+
+    const created: Awaited<ReturnType<typeof createIssue>>[] = [];
+    for (const item of template.items) {
+        const issue = await createIssue({
+            workerEngagementId,
+            createdByUserId: actorUserId,
+            statusId: resolveTemplateItemStatusId(
+                item.defaultStatus,
+                defaultOpenId,
+                inArbeitId,
+            ),
+            title: item.title,
+            description: item.description ?? undefined,
+            priority: templatePriorityToIssuePriority(item.defaultPriority),
+            templateItemId: item.id,
+        });
+        created.push(issue);
+    }
+
+    return { count: created.length, issues: created };
 }
 
 export async function deleteIssue(params: {

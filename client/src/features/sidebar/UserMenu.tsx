@@ -73,7 +73,7 @@ const UserMenu = () => {
             align="end"
             sideOffset={8}
             collisionPadding={16}
-            className="w-40 rounded-xl border border-border bg-(--dropdown-surface) p-1.5 text-popover-foreground shadow-md [&>[data-slot=dropdown-menu-item]:last-child]:mt-1.5 [&>[data-slot=dropdown-menu-item]:last-child]:border-t [&>[data-slot=dropdown-menu-item]:last-child]:border-border [&>[data-slot=dropdown-menu-item]:last-child]:pt-2"
+            className="w-40 rounded-xl border border-border bg-[var(--dropdown-surface)] p-1.5 text-popover-foreground shadow-md [&>[data-slot=dropdown-menu-item]:last-child]:mt-1.5 [&>[data-slot=dropdown-menu-item]:last-child]:border-t [&>[data-slot=dropdown-menu-item]:last-child]:border-border [&>[data-slot=dropdown-menu-item]:last-child]:pt-2"
           >
             <DropdownMenuItem
               className="cursor-pointer rounded-lg text-sm font-medium focus:bg-accent focus:text-accent-foreground "

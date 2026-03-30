@@ -144,7 +144,18 @@ export const removeTemplate = async (id: string, orgId: string) => {
 // TEMPLATE ITEM (pseudo issue)
 // ============================================================
 
-export const insertTemplateTask = async (data: InsertTemplateTaskParams) => {
+export const insertTemplateTask = async (
+    data: InsertTemplateTaskParams & { organizationId: string },
+) => {
+    const template = await prisma.issueTemplate.findFirst({
+        where: {
+            id: data.templateId,
+            organizationId: data.organizationId,
+        },
+        select: { id: true },
+    });
+    if (!template) throw new Error("Template not found");
+
     return await prisma.templateItem.create({
         data: {
             issueTemplateId: data.templateId,

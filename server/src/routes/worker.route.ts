@@ -83,6 +83,11 @@ worker.post("/:workerId/issues", workerController.createIssue);
 worker.put("/:workerId/issues/:issueId", workerController.updateIssue);
 worker.delete("/:workerId/issues/:issueId", workerController.deleteIssue);
 
+worker.post(
+    "/:workerId/templates/:templateId/apply",
+    workerController.applyIssueTemplate,
+);
+
 // Absences
 worker.post("/:workerId/absences", workerController.createAbsence);
 worker.put("/:workerId/absences/:absenceId", workerController.updateAbsence);

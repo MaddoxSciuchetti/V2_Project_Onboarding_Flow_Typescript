@@ -29,13 +29,13 @@ const HomePage = () => {
             >
               <Link
                 to="/signup"
-                className="inline-flex h-11 items-center hover:bg-(--secondary) justify-center  border rounded-md bg-foreground px-8 text-base font-medium text-background transition-colors hover:bg-foreground/90"
+                className="inline-flex h-11 items-center hover:bg-[var(--secondary)] justify-center  border rounded-md bg-foreground px-8 text-base font-medium text-background transition-colors hover:bg-foreground/90"
               >
                 Get Started
               </Link>
               <Link
                 to="/login"
-                className="inline-flex h-11 items-center hover:bg-(--secondary) justify-center rounded-md border border-foreground/25 bg-transparent px-8 text-base font-medium transition-colors hover:bg-foreground/10"
+                className="inline-flex h-11 items-center hover:bg-[var(--secondary)] justify-center rounded-md border border-foreground/25 bg-transparent px-8 text-base font-medium transition-colors hover:bg-foreground/10"
               >
                 Sign In
               </Link>

@@ -43,15 +43,15 @@ export function Worker_Item({
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const calculatePercent = (completedTasks: number, total: number) => {
-    if (total <= 0) return 'text-(--lifecycle-progress-zero-text)';
+    if (total <= 0) return 'text-[var(--lifecycle-progress-zero-text)]';
 
     const percent = (completedTasks / total) * 100;
 
-    if (percent < 20) return 'text-(--lifecycle-progress-zero-text)';
-    if (percent >= 20 && percent < 100) return 'text-(--chart-3)';
-    if (percent === 100) return 'text-(--chart-2)';
+    if (percent < 20) return 'text-[var(--lifecycle-progress-zero-text)]';
+    if (percent >= 20 && percent < 100) return 'text-[var(--chart-3)]';
+    if (percent === 100) return 'text-[var(--chart-2)]';
 
-    return 'text-(--lifecycle-progress-zero-text)';
+    return 'text-[var(--lifecycle-progress-zero-text)]';
   };
 
   const completedCount = completedTasksCount ?? 0;
@@ -73,8 +73,8 @@ export function Worker_Item({
       <td
         className={
           form_type === 'onboarding'
-            ? 'text-sm underline text-(--lifecycle-onboarding-text) justify-center items-center py-5'
-            : 'text-sm underline text-(--lifecycle-offboarding-text) justify-center items-center py-5'
+            ? 'text-sm underline text-[var(--lifecycle-onboarding-text)] justify-center items-center py-5'
+            : 'text-sm underline text-[var(--lifecycle-offboarding-text)] justify-center items-center py-5'
         }
         lang="en"
       >

@@ -20,7 +20,7 @@ const TaskSidebar = ({
   return (
     <aside
       className={cn(
-        'fixed right-0 top-0 h-screen border-l border-border bg-(--card) overflow-hidden transition-all duration-300 ease-out z-50',
+        'fixed right-0 top-0 h-screen border-l border-border bg-[var(--card)] overflow-hidden transition-all duration-300 ease-out z-50',
         selectedTask ? 'w-110' : 'w-0'
       )}
     >

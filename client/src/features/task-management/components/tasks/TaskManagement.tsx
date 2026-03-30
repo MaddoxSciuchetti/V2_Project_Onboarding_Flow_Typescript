@@ -11,6 +11,7 @@ import WorkerFileUploads from '../files/WorkerFileUploads';
 import FilterByUser from '../header/filters/Filter.ByUser';
 import WorkerHeader from '../header/WorkerHeader';
 import AddWorkerTaskModal from './AddWorkerTaskModal';
+import ApplyFromTemplateModal from './ApplyFromTemplateModal';
 import CreateIssueShortcutModal from './CreateIssueShortcutModal';
 import TaskSidebar from './task-sidebar/TaskSidebar';
 import TaskIndividual from './TaskIndividual';
@@ -25,10 +26,11 @@ const TaskManagement = ({ workerId, lifecycleType }: TaskManagementProps) => {
   const [fileDescriptionSearch, setFileDescriptionSearch] = useState('');
   const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false);
   const [createIssueOpen, setCreateIssueOpen] = useState(false);
+  const [applyTemplateOpen, setApplyTemplateOpen] = useState(false);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (createIssueOpen || isAddTaskModalOpen) return;
+      if (createIssueOpen || isAddTaskModalOpen || applyTemplateOpen) return;
       if (!e.metaKey || e.key.toLowerCase() !== 'c' || e.repeat) return;
       const t = e.target;
       if (t instanceof HTMLInputElement || t instanceof HTMLTextAreaElement)
@@ -39,7 +41,7 @@ const TaskManagement = ({ workerId, lifecycleType }: TaskManagementProps) => {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [createIssueOpen, isAddTaskModalOpen]);
+  }, [createIssueOpen, isAddTaskModalOpen, applyTemplateOpen]);
 
   const { data, isLoading } = useTaskData(workerId, lifecycleType);
   const {
@@ -86,6 +88,8 @@ const TaskManagement = ({ workerId, lifecycleType }: TaskManagementProps) => {
             setSearchValue={setSearchValue}
             searchPlaceholder={searchPlaceholder}
             handleAddTask={() => setIsAddTaskModalOpen(true)}
+            showApplyFromTemplate={activeTab === 'form'}
+            onApplyFromTemplate={() => setApplyTemplateOpen(true)}
           />
           <TabsContent value="form">
             <FilterByUser
@@ -128,6 +132,17 @@ const TaskManagement = ({ workerId, lifecycleType }: TaskManagementProps) => {
               workerId={workerId}
               lifecycleType={lifecycleType}
               onClose={() => setCreateIssueOpen(false)}
+            />
+          </ModalOverlay>
+        )}
+
+        {applyTemplateOpen && (
+          <ModalOverlay handleToggle={() => setApplyTemplateOpen(false)}>
+            <ApplyFromTemplateModal
+              workerId={workerId}
+              workerEngagementId={String(data.form.id)}
+              lifecycleType={lifecycleType}
+              onClose={() => setApplyTemplateOpen(false)}
             />
           </ModalOverlay>
         )}

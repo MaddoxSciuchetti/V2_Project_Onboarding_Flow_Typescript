@@ -65,7 +65,7 @@ export function OrgInviteSection() {
       )}
 
       {isError && (
-        <p className="mb-4 text-sm text-(--destructive)">
+        <p className="mb-4 text-sm text-[var(--destructive)]">
           {(error as Error)?.message || 'Failed to send invite.'}
         </p>
       )}
