@@ -28,7 +28,7 @@ export const EmployeeRow = ({
 }: EmployeeRowProps) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const closeDeleteModalHandler = () => setIsDeleteModalOpen(false);
-  const { openEmployeeInfo } = useOrgUsersModal();
+  const { openEmployeeInfo, openViewEmployee } = useOrgUsersModal();
 
   return (
     <tr className="group py-5 transition-colors">
@@ -40,6 +40,18 @@ export const EmployeeRow = ({
             onClick={() => openEmployeeInfo(employee.id)}
           >
             <Info />
+          </Button>
+          <Button
+            type="button"
+            size="sm"
+            variant="outline"
+            className="cursor-pointer pointer-events-none opacity-0 transition-opacity duration-150 group-hover:pointer-events-auto group-hover:opacity-100"
+            onClick={(e) => {
+              e.stopPropagation();
+              openViewEmployee(employee.id);
+            }}
+          >
+            Aufgaben
           </Button>
           <Button
             type="button"

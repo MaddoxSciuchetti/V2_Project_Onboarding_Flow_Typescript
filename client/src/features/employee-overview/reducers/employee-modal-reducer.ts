@@ -13,6 +13,8 @@ export function modalReducer(
       };
     case 'OPEN_INFO':
       return { kind: 'info', employeeId: action.employeeId };
+    case 'OPEN_VIEW':
+      return { kind: 'view', selectedOwner: action.selectedOwner };
     case 'CLOSE':
       return { kind: 'closed' };
     default:

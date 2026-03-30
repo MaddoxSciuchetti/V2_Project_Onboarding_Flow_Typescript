@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { useOrgUsersModal } from '../hooks/useOrgUsersModal';
 import EditOrgUser from './modals/edit-employee-modal/EmployeeModal';
 import UserInfo from './modals/employee-info-modal/EmployeeInfoModal';
+import ViewEmployeeModal from './modals/view-employeedata-modal/ViewEmployeeModal';
 import EmployeeTableHeader from './table/EmployeeTableHeader';
 import EmployeeTableBody from './table/TableBody';
 
@@ -39,6 +40,13 @@ function OrgUsersOverview() {
         return (
           <ModalOverlay handleToggle={closeEmployee}>
             <UserInfo employeeId={modalState.employeeId} />
+          </ModalOverlay>
+        );
+
+      case 'view':
+        return (
+          <ModalOverlay handleToggle={closeEmployee}>
+            <ViewEmployeeModal selectedOwner={modalState.selectedOwner} />
           </ModalOverlay>
         );
     }

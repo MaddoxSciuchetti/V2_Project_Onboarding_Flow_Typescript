@@ -7,6 +7,7 @@ export type EmployeeModalContextType = {
   modalState: ModalState;
   openEditEmployee: (employeeId: string, fullname: string) => void;
   openEmployeeInfo: (employeeId: string) => void;
+  openViewEmployee: (selectedOwner: string) => void;
   closeEmployee: () => void;
 };
 
@@ -21,6 +22,10 @@ export function EmployeeModalProvider({ children }: { children: ReactNode }) {
     dispatch({ type: 'OPEN_INFO', employeeId });
   };
 
+  const openViewEmployee = (selectedOwner: string) => {
+    dispatch({ type: 'OPEN_VIEW', selectedOwner });
+  };
+
   const closeEmployee = () => {
     dispatch({ type: 'CLOSE' });
   };
@@ -31,6 +36,7 @@ export function EmployeeModalProvider({ children }: { children: ReactNode }) {
         modalState,
         openEditEmployee,
         openEmployeeInfo,
+        openViewEmployee,
         closeEmployee,
       }}
     >
