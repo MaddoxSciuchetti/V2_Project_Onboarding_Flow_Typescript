@@ -41,11 +41,6 @@ export const deleteWorkerById = async (
 };
 
 export const addWorker = async (data: CreateWorker): Promise<WorkerRecord> => {
-  const response = await API.post<WorkerRecord, WorkerRecord>(
-    '/worker/addWorker',
-    {
-      data,
-    }
-  );
+  const response = await API.post<WorkerRecord, WorkerRecord>('/worker', data);
   return response;
 };

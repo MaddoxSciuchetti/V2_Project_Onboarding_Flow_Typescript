@@ -62,10 +62,14 @@ export async function createWorker(params: CreateWorkerInput) {
         // Engagement
         engagementType,
         responsibleUserId,
-        engagementStatusId,
         startDate,
         endDate,
     } = params;
+
+    const { id: statusId } = await prisma.organizationStatus.findFirstOrThrow({
+        where: { organizationId, entityType: "engagement", isDefault: true },
+        select: { id: true },
+    });
 
     return prisma.$transaction(async (tx) => {
         const worker = await tx.worker.create({
@@ -94,7 +98,7 @@ export async function createWorker(params: CreateWorkerInput) {
                 workerId: worker.id,
                 organizationId,
                 responsibleUserId,
-                statusId: engagementStatusId,
+                statusId: statusId,
                 type: engagementType,
                 startDate,
                 endDate,

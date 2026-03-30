@@ -1,6 +1,7 @@
-import { addWorkerBaseSchema } from '@/features/worker-lifecycle/schemas/zod.schemas';
+
 import z from 'zod';
 import { TAuth_User } from '../hooks/useGetWorkerHistory';
+import { createWorkerSchema } from '@/features/worker-lifecycle/schemas/zod.schemas';
 import { formSchema } from '../schemas/index.schema';
 import { TaskStatus } from '../utils/selectOptionTernary';
 
@@ -31,12 +32,12 @@ export type File_Request = {
 };
 
 export type UpdatePayload = Partial<
-  z.infer<typeof addWorkerBaseSchema> & {
+  z.infer<typeof createWorkerSchema> & {
     austrittsdatum: string;
   }
 >;
 
-export type LifecycleType = 'Onboarding' | 'Offboarding';
+export type LifecycleType = 'onboarding' | 'offboarding';
 
 export type CreateWorkerTaskPayload = {
   description: string;

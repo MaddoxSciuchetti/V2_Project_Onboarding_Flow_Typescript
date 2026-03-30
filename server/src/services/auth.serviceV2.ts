@@ -221,6 +221,70 @@ export const registerOrgAccount = async (data: RegisterOrgInput) => {
             },
         });
 
+        // 6. Seed default statuses for engagement and issue entity types
+        await tx.organizationStatus.createMany({
+            data: [
+                // Engagement statuses
+                {
+                    organizationId: organization.id,
+                    entityType: "engagement",
+                    name: "Ausstehend",
+                    isDefault: true,
+                    orderIndex: 0,
+                },
+                {
+                    organizationId: organization.id,
+                    entityType: "engagement",
+                    name: "In Bearbeitung",
+                    isDefault: false,
+                    orderIndex: 1,
+                },
+                {
+                    organizationId: organization.id,
+                    entityType: "engagement",
+                    name: "Abgeschlossen",
+                    isDefault: false,
+                    orderIndex: 2,
+                },
+                {
+                    organizationId: organization.id,
+                    entityType: "engagement",
+                    name: "Abgebrochen",
+                    isDefault: false,
+                    orderIndex: 3,
+                },
+                // Issue statuses
+                {
+                    organizationId: organization.id,
+                    entityType: "issue",
+                    name: "Offen",
+                    isDefault: true,
+                    orderIndex: 0,
+                },
+                {
+                    organizationId: organization.id,
+                    entityType: "issue",
+                    name: "In Arbeit",
+                    isDefault: false,
+                    orderIndex: 1,
+                },
+                {
+                    organizationId: organization.id,
+                    entityType: "issue",
+                    name: "Erledigt",
+                    isDefault: false,
+                    orderIndex: 2,
+                },
+                {
+                    organizationId: organization.id,
+                    entityType: "issue",
+                    name: "Abgebrochen",
+                    isDefault: false,
+                    orderIndex: 3,
+                },
+            ],
+        });
+
         return { user, organization };
     });
 

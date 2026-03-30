@@ -7,8 +7,8 @@ import {
 const engagementTypeToLifecycleType = (
   type: EngagementType | undefined
 ): LifecycleType => {
-  if (type === 'offboarding') return 'Offboarding';
-  return 'Onboarding';
+  if (type === 'offboarding') return 'offboarding';
+  return 'onboarding';
 };
 
 export const getFirstFormType = (item: WorkerRecord): LifecycleType => {

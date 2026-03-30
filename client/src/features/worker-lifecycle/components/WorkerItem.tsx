@@ -72,13 +72,13 @@ export function Worker_Item({
       </td>
       <td
         className={
-          form_type === 'Onboarding'
+          form_type === 'onboarding'
             ? 'text-sm underline text-(--lifecycle-onboarding-text) justify-center items-center py-5'
             : 'text-sm underline text-(--lifecycle-offboarding-text) justify-center items-center py-5'
         }
         lang="en"
       >
-        {form_type}
+        {form_type === 'offboarding' ? 'Offboarding' : 'Onboarding'}
       </td>
 
       <th className="">

@@ -1,4 +1,6 @@
 import FormFields from '@/components/form/FormFields';
+import FormSelectOptions from '@/components/form/FormSelectOptions';
+import useGetOrgUsers from '@/features/employee-overview/hooks/useGetEmployees';
 import { LifecycleType } from '@/features/task-management/types/index.types';
 import {
   CreateWorker,
@@ -32,14 +34,22 @@ export const WorkerForm = ({
     isPending,
   } = useMutation(workerLifecycleMutations.addWorker());
 
+  const { OrgUsers } = useGetOrgUsers();
+
+  const orgUsersSelectData = (OrgUsers ?? []).map((user) => ({
+    value: user.id,
+    label: `${user.firstName} ${user.lastName}`,
+  }));
+
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<CreateWorker>({
     resolver: zodResolver(createWorkerSchema),
     defaultValues: {
-      type: type,
+      engagementType: type,
     },
     criteriaMode: 'all',
   });
@@ -52,12 +62,12 @@ export const WorkerForm = ({
 
   const useMemoizedInputs = useMemo(() => {
     const offboardingInputs =
-      type === 'Offboarding'
+      type === 'offboarding'
         ? [
             {
               name: 'exitDate' as const,
               placeholder: 'Austrittsdatum DD.MM.YYYY',
-              required: type === 'Offboarding',
+              required: type === 'offboarding',
             },
           ]
         : [];
@@ -83,7 +93,9 @@ export const WorkerForm = ({
         >
           Zurück{' '}
         </Button>
-        <h1 className="text-left">Eingabe {type}</h1>
+        <h1 className="text-left">
+          Eingabe {type === 'offboarding' ? 'Offboarding' : 'Onboarding'}
+        </h1>
         <div className="grid grid-cols-2 gap-3 pb-10 ">
           {useMemoizedInputs.map((input) => (
             <div key={input.name}>
@@ -95,9 +107,14 @@ export const WorkerForm = ({
               />
             </div>
           ))}
-
-          {/* <Input type="hidden" {...register('type')} value={type} /> */}
         </div>
+        <FormSelectOptions
+          control={control}
+          errors={errors}
+          name="responsibleUserId"
+          placeholder="Verantwortliche Person wählen"
+          data={orgUsersSelectData}
+        />
         <Button
           variant={'outline'}
           type="submit"

@@ -13,18 +13,19 @@ export const baseWorkerSchema = z.object({
   street: z.string().min(1, 'erforderlich'),
   entryDate: DateValidation,
   position: z.string().min(1, 'Position erforderlich'),
+  responsibleUserId: z.string().min(1, 'Verantwortliche Person erforderlich'),
 });
 
 export const onboardingWorkerSchema = baseWorkerSchema.extend({
-  type: z.literal('Onboarding'),
+  engagementType: z.literal('onboarding'),
 });
 
 export const offboardingWorkerSchema = baseWorkerSchema.extend({
-  type: z.literal('Offboarding'),
+  engagementType: z.literal('offboarding'),
   exitDate: DateValidation,
 });
 
-export const createWorkerSchema = z.discriminatedUnion('type', [
+export const createWorkerSchema = z.discriminatedUnion('engagementType', [
   onboardingWorkerSchema,
   offboardingWorkerSchema,
 ]);

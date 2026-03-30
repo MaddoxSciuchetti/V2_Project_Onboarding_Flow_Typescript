@@ -24,7 +24,7 @@ import * as workerController from "../controllers/worker.controllerV2";
 
 const worker = express.Router();
 
-//worker crud operations
+//worker crud operations old
 worker.post("/addWorker", catchErrors(createWorker));
 worker.get("/getWorkerData", getWorkerData);
 worker.put("/archiveWorker/:id", archiveWorkerById);

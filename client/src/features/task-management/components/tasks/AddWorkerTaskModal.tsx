@@ -20,7 +20,7 @@ const AddWorkerTaskModal = ({
   onClose,
 }: AddWorkerTaskModalProps) => {
   const templateType =
-    lifecycleType === 'Offboarding' ? 'OFFBOARDING' : 'ONBOARDING';
+    lifecycleType === 'offboarding' ? 'OFFBOARDING' : 'ONBOARDING';
 
   const { mutate: createWorkerTaskMutation } = useMutation(
     workerMutations.createWorkerTask(workerId)

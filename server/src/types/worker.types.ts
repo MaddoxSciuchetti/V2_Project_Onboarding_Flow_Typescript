@@ -38,7 +38,6 @@ export interface CreateWorkerInput {
     // Initial WorkerEngagement (required)
     engagementType: EngagementType;
     responsibleUserId: string; // required on WorkerEngagement
-    engagementStatusId: string; // FK → OrganizationStatus (required)
     startDate?: Date;
     endDate?: Date;
 }
