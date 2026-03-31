@@ -1,11 +1,12 @@
 import { CompactSelect } from '@/components/selects/CompactSelect';
 import { Button } from '@/components/ui/button';
-import useAuth from '@/features/user-profile/hooks/useAuth';
 import useGetOrgUsers from '@/features/employee-overview/hooks/useGetEmployees';
 import { orgStatusQueries } from '@/features/org-settings/query-options/queries/orgStatus.queries';
+import useAuth from '@/features/user-profile/hooks/useAuth';
 import { workerLifecycleMutations } from '@/features/worker-lifecycle/query-options/mutations/worker-lifycycle.mutations';
 import type { WorkerEngagement } from '@/features/worker-lifecycle/types/index.types';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import useEngagementControls from '../../hooks/useEngagementControls';
 
 type WorkerEngagementControlsProps = {
   workerId: string;
@@ -25,7 +26,6 @@ export function WorkerEngagementControls({
   const { data: projectStatuses = [], isLoading: statusesLoading } = useQuery(
     orgStatusQueries.list('engagement')
   );
-
   const { mutate, isPending } = useMutation(
     workerLifecycleMutations.updateEngagement(workerId)
   );
@@ -35,16 +35,10 @@ export function WorkerEngagementControls({
       <span className="text-xs text-muted-foreground">Kein Engagement</span>
     );
   }
-
-  const userOptions = (OrgUsers ?? []).map((u) => ({
-    value: u.id,
-    label: `${u.firstName} ${u.lastName}`.trim() || u.email,
-  }));
-
-  const statusOptions = projectStatuses.map((s) => ({
-    value: s.id,
-    label: s.name,
-  }));
+  const { userOptions, statusOptions } = useEngagementControls(
+    OrgUsers ?? [],
+    projectStatuses
+  );
 
   const patch = (body: { responsibleUserId?: string; statusId?: string }) => {
     mutate({ engagementId: engagement.id, body });

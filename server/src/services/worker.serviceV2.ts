@@ -357,11 +357,7 @@ export async function deleteWorker(params: DeleteWorkerInput) {
 // ─── Update Data Point ──────────────────────────────────────────────────────────
 // Patches one Worker column, or `responsibleUserId` on the latest engagement.
 
-const WORKER_DATE_FIELDS = new Set([
-    "birthday",
-    "entryDate",
-    "exitDate",
-]);
+const WORKER_DATE_FIELDS = new Set(["birthday", "entryDate", "exitDate"]);
 
 function coerceWorkerDataPointValue(
     field: string,

@@ -114,9 +114,7 @@ export const workerLifecycleMutations = {
 
         client.setQueryData<WorkerRecord[]>(listKey, (old) =>
           old?.map((w) =>
-            w.id === workerId
-              ? { ...w, engagements: w.engagements.map(p) }
-              : w
+            w.id === workerId ? { ...w, engagements: w.engagements.map(p) } : w
           )
         );
 

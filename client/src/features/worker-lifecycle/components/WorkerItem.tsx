@@ -45,6 +45,7 @@ export function Worker_Item({ worker, mode, gotopage }: WorkerItemProps) {
   return (
     <tr className="group rounded-2xl transition-colors">
       <td className="align-middle px-2 py-4 text-center text-sm">
+        {/* Responsibile for Info and Ansehen Button */}
         <WorkerItemInfo
           setIsInfoModalOpen={setIsInfoModalOpen}
           gotopage={gotopage}
