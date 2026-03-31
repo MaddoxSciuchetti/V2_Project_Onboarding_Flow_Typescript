@@ -1,66 +1,45 @@
 import LoadingAlert from '@/components/alerts/LoadingAlert';
 import TrashWithModal from '@/components/DropDownWithModal';
-import SmallWrapper from '@/components/modal/modalSizes/SmallWrapper';
 import ModalOverlay from '@/components/modal/ModalOverlay';
+import SmallWrapper from '@/components/modal/modalSizes/SmallWrapper';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { useMutation, useQuery } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
-import { useState } from 'react';
-import { templateV2Mutations } from '../query-options/mutations/templateV2.mutations';
-import { templateV2Queries } from '../query-options/queries/templateV2.queries';
+import useTemplateIssues from '../hooks/useTemplateIssues';
 
 type TemplateDetailPageProps = {
   templateId: string;
 };
 
 const TemplateDetailPage = ({ templateId }: TemplateDetailPageProps) => {
-  const { data, isPending, isError } = useQuery(
-    templateV2Queries.detail(templateId)
-  );
-  const [addOpen, setAddOpen] = useState(false);
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+  const {
+    data,
+    isPending,
+    isError,
+    deleteItem,
+    isCreating,
+    addOpen,
+    setAddOpen,
+    title,
+    setTitle,
+    description,
+    setDescription,
+    handleAddItem,
+  } = useTemplateIssues(templateId);
 
-  const { mutate: createItem, isPending: isCreating } = useMutation(
-    templateV2Mutations.createItem(templateId)
-  );
-  const { mutate: deleteItem } = useMutation(
-    templateV2Mutations.deleteItem(templateId)
-  );
-
-  const templateItems = data?.items ?? [];
-  const templateItemsByOrder = [...templateItems].sort(
+  const templateItemsByOrder = [...(data?.items ?? [])].sort(
     (left, right) => left.orderIndex - right.orderIndex
   );
-
-  const handleAddItem = (e: React.FormEvent) => {
-    e.preventDefault();
-    const trimmedTitle = title.trim();
-    if (!trimmedTitle) return;
-    createItem(
-      {
-        title: trimmedTitle,
-        description: description.trim() || undefined,
-        orderIndex: templateItems.length,
-      },
-      {
-        onSuccess: () => {
-          setTitle('');
-          setDescription('');
-          setAddOpen(false);
-        },
-      }
-    );
-  };
 
   if (isPending) return <LoadingAlert />;
   if (isError || !data) {
     return (
       <div className="mx-auto flex w-5xl flex-col gap-4 p-6 md:max-w-8xl">
-        <p className="text-sm text-destructive">Vorlage konnte nicht geladen werden.</p>
+        <p className="text-sm text-destructive">
+          Vorlage konnte nicht geladen werden.
+        </p>
         <Button variant="outline" asChild>
           <Link to="/org-settings" search={{ currentTab: 'templates' }}>
             Zurück
