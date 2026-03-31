@@ -5,7 +5,7 @@ type TemplateV2ListProps = {
   issueTemplates: IssueTemplateListItem[];
 };
 
-function descriptionSnippet(description: string | null, maxLength = 120) {
+function descriptionSnippet(description: string | null, maxLength = 110) {
   if (!description) return '';
   const trimmed = description.trim();
   if (trimmed.length <= maxLength) return trimmed;
@@ -14,40 +14,38 @@ function descriptionSnippet(description: string | null, maxLength = 120) {
 
 const TemplateV2List = ({ issueTemplates }: TemplateV2ListProps) => {
   return (
-    <div className="rounded-lg min-h-150 max-h-150 overflow-hidden">
-      <ul className="divide-y divide-border mt-3 max-h-150 overflow-y-auto rounded-2xl border">
-        {issueTemplates.length === 0 ? (
-          <li className="px-4 py-8 text-center text-sm text-muted-foreground">
-            Keine Vorlagen gefunden.
-          </li>
-        ) : (
-          issueTemplates.map((issueTemplate) => (
-            <li key={issueTemplate.id} className="border-b last:border-b-0">
-              <Link
-                to="/template/$templateId"
-                params={{ templateId: issueTemplate.id }}
-                className="group flex cursor-pointer items-start justify-between gap-4 px-4 py-3 transition-colors hover:bg-[var(--secondary)]"
-              >
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-medium text-foreground">
-                    {issueTemplate.name}
+    <ul className="mt-2 divide-y divide-border rounded-xl border border-border">
+      {issueTemplates.length === 0 ? (
+        <li className="px-4 py-6 text-center text-sm text-muted-foreground">
+          Keine Vorlagen gefunden.
+        </li>
+      ) : (
+        issueTemplates.map((issueTemplate) => (
+          <li key={issueTemplate.id}>
+            <Link
+              to="/template/$templateId"
+              params={{ templateId: issueTemplate.id }}
+              className="group flex cursor-pointer items-start justify-between gap-3 px-4 py-2.5 transition-colors hover:bg-[var(--secondary)]"
+            >
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-medium text-foreground">
+                  {issueTemplate.name}
+                </p>
+                {issueTemplate.description ? (
+                  <p className="mt-1 line-clamp-2 text-xs leading-snug text-muted-foreground">
+                    {descriptionSnippet(issueTemplate.description)}
                   </p>
-                  {issueTemplate.description ? (
-                    <p className="mt-0.5 line-clamp-2 text-xs text-muted-foreground">
-                      {descriptionSnippet(issueTemplate.description)}
-                    </p>
-                  ) : null}
-                </div>
-                <span className="shrink-0 rounded-full bg-[var(--muted)] px-2.5 py-1 text-xs font-medium text-muted-foreground">
-                  {issueTemplate._count.items}{' '}
-                  {issueTemplate._count.items === 1 ? 'Punkt' : 'Punkte'}
-                </span>
-              </Link>
-            </li>
-          ))
-        )}
-      </ul>
-    </div>
+                ) : null}
+              </div>
+              <span className="shrink-0 rounded-md bg-[var(--muted)] px-2 py-0.5 text-xs font-medium tabular-nums text-muted-foreground">
+                {issueTemplate._count.items}{' '}
+                {issueTemplate._count.items === 1 ? 'Punkt' : 'Punkte'}
+              </span>
+            </Link>
+          </li>
+        ))
+      )}
+    </ul>
   );
 };
 

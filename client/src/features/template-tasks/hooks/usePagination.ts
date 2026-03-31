@@ -3,7 +3,7 @@ import { IssueTemplateListItem } from '../api/templateV2.api';
 
 function usePagination(data: readonly IssueTemplateListItem[]) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(10);
+  const [postsPerPage] = useState(7);
   const [search, setSearch] = useState('');
   const normalizedSearch = search.trim().toLowerCase();
   useEffect(() => {

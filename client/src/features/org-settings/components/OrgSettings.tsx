@@ -2,6 +2,7 @@ import OrgUsersOverview from '@/features/employee-overview/components/OrgUsersOv
 import { EmployeeModalProvider } from '@/features/employee-overview/context/ModalProvider';
 
 import TemplateTasks from '@/features/template-tasks/components/TemplateTask';
+import { cn } from '@/lib/trycatch';
 import { OrgSettingsTabId } from '../types/org-settings.types';
 import { EntityStatusSettings } from './EntityStatusSettings';
 import { OrgInviteSection } from './OrgInviteSection';
@@ -16,7 +17,14 @@ const OrgSettings = ({ currentTab }: OrgSettingsProps) => {
       <h1 className="text-3xl font-bold text-foreground">
         Unternehmens Einstellungen
       </h1>
-      <div className="min-h-0 min-w-0  flex-1 overflow-auto ">
+      <div
+        className={cn(
+          'min-h-0 min-w-0 flex-1',
+          currentTab === 'templates'
+            ? 'flex flex-col overflow-hidden'
+            : 'overflow-auto'
+        )}
+      >
         {currentTab === 'employees' && (
           <EmployeeModalProvider>
             <div className="flex flex-col gap-8">

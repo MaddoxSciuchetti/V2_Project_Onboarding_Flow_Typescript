@@ -31,26 +31,33 @@ function TemplateTasks() {
     <div
       role="region"
       aria-label="Vorlagen Verwaltung"
-      className="mx-auto flex h-full w-5xl flex-col overflow-auto rounded-2xl bg-card p-6 md:max-w-8xl"
+      className="mx-auto flex h-full min-h-0 w-full max-w-8xl flex-1 flex-col gap-4 rounded-xl bg-card p-5"
     >
-      <SearchHeaderResuable
-        search={search}
-        setSearch={setSearch}
-        description="Vorlage anlegen"
-        openModal={() => setCreateOpen(true)}
-      />
-      <TemplateV2List issueTemplates={paginatedTemplates} />
-      <div className="mt-2 flex items-center justify-between">
-        <Pagination
-          postsPerPage={postsPerPage}
-          totalPosts={templatesMatchingSearch.length}
-          setCurrentPage={setCurrentPage}
-          currentPage={currentPage}
+      <div className="shrink-0">
+        <SearchHeaderResuable
+          compact
+          search={search}
+          setSearch={setSearch}
+          description="Vorlage anlegen"
+          openModal={() => setCreateOpen(true)}
         />
-        <p className="font-light text-xs text-[var(--muted-foreground)]">
-          {templatesMatchingSearch.length} Vorlage
-          {templatesMatchingSearch.length === 1 ? '' : 'n'}
-        </p>
+      </div>
+      <div className="min-h-0 flex-1 overflow-y-auto">
+        <TemplateV2List issueTemplates={paginatedTemplates} />
+      </div>
+      <div className="shrink-0 border-t border-border bg-card pt-4">
+        <div className="flex items-center justify-between">
+          <Pagination
+            postsPerPage={postsPerPage}
+            totalPosts={templatesMatchingSearch.length}
+            setCurrentPage={setCurrentPage}
+            currentPage={currentPage}
+          />
+          <p className="font-light text-xs text-[var(--muted-foreground)]">
+            {templatesMatchingSearch.length} Vorlage
+            {templatesMatchingSearch.length === 1 ? '' : 'n'}
+          </p>
+        </div>
       </div>
       {createOpen && (
         <ModalOverlay handleToggle={() => setCreateOpen(false)}>
