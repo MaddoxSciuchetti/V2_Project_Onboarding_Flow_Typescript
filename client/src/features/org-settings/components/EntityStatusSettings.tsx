@@ -7,11 +7,11 @@ import {
 } from '@/features/org-settings/api/orgStatus.api';
 import { orgStatusQueries } from '@/features/org-settings/query-options/queries/orgStatus.queries';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { Pencil, Plus, Trash2 } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import { orgStatusMutations } from '../query-options/mutations/orgStatus.mutations';
-import { usageLine } from '../utils/usageLine';
 import StatusModal from './StatusModal';
+import { StatusRowItem } from './StatusRowItem';
 
 type EntityStatusSettingsProps = {
   entityType: OrgStatusEntityType;
@@ -61,50 +61,15 @@ export function EntityStatusSettings({
             const canDelete =
               statuses.length > 1 && row.usageCount === 0 && !isRemoving;
             return (
-              <li
+              <StatusRowItem
                 key={row.id}
-                className="flex items-center gap-3 px-4 py-3.5"
-              >
-                <div className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-border bg-muted" />
-                <div className="min-w-0 flex-1">
-                  <p className="font-medium text-foreground">{row.name}</p>
-                  {row.usageCount > 0 ? (
-                    <p className="text-xs text-(--destructive)">
-                      {usageLine(entityType, row.usageCount)}
-                    </p>
-                  ) : null}
-                </div>
-                <div className="flex shrink-0 gap-1">
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    className="size-9 rounded-lg"
-                    onClick={() => setModal(row)}
-                    aria-label="Bearbeiten"
-                  >
-                    <Pencil className="size-4" />
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    className="size-9 rounded-lg text-destructive hover:text-destructive"
-                    disabled={!canDelete}
-                    title={
-                      statuses.length <= 1
-                        ? 'Der letzte Status kann nicht gelöscht werden'
-                        : row.usageCount > 0
-                          ? 'Zuerst alle Zuordnungen entfernen'
-                          : 'Löschen'
-                    }
-                    onClick={() => remove(row.id)}
-                    aria-label="Löschen"
-                  >
-                    <Trash2 className="size-4" />
-                  </Button>
-                </div>
-              </li>
+                row={row}
+                entityType={entityType}
+                setModal={setModal}
+                canDelete={canDelete}
+                statuses={statuses}
+                remove={remove}
+              />
             );
           })}
         </ul>
@@ -114,7 +79,7 @@ export function EntityStatusSettings({
         <ModalOverlay handleToggle={() => setModal(null)}>
           <StatusModal
             entityType={entityType}
-            initial={modal === 'add' ? null : modal}
+            modalType={modal === "add" ? null : modal }
             onClose={() => setModal(null)}
           />
         </ModalOverlay>

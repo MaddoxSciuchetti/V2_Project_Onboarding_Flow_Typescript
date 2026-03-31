@@ -37,6 +37,7 @@ export const orgStatusMutations = {
             queryClient.invalidateQueries({ queryKey: [WORKERBYID] });
             queryClient.invalidateQueries({ queryKey: [WORKER_ISSUE_STATUSES] });
             toast.success('Status gespeichert');
+
         },
         onError: (error) => {
             toast.error(error.message);
