@@ -1,6 +1,7 @@
 import { createWorkerFile } from '@/apis/index.apis';
 import queryClient from '@/config/query.client';
 import { User } from '@/features/user-profile/types/auth.type';
+import { PROCESS_DATA } from '@/features/employee-overview/consts/query-keys';
 import { ALL_WORKER_DATA } from '@/features/worker-lifecycle/consts/query-key.consts';
 import { FileResponse, SuccessResponse } from '@/types/api.types';
 import { mutationOptions } from '@tanstack/react-query';
@@ -9,11 +10,11 @@ import {
   createWorkerIssue,
   createWorkerTask,
   deleteWorkerFile,
-  type CreateWorkerIssuePayload,
   updateData,
   updateWorkerData,
   updateWorkerHistory,
   updateWorkerIssue,
+  type CreateWorkerIssuePayload,
   type UpdateWorkerIssueBody,
 } from '../../api/index.api';
 import {
@@ -142,6 +143,9 @@ export const workerMutations = {
         await queryClient.invalidateQueries({
           queryKey: [WORKERBYID, workerId],
         });
+        await queryClient.invalidateQueries({
+          queryKey: [PROCESS_DATA, workerId],
+        });
       },
     });
   },
@@ -161,6 +165,9 @@ export const workerMutations = {
         });
         await queryClient.invalidateQueries({
           queryKey: [ISSUE_AUDIT, workerId, issueId],
+        });
+        await queryClient.invalidateQueries({
+          queryKey: [PROCESS_DATA, workerId],
         });
       },
     });

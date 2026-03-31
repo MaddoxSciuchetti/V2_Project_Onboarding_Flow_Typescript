@@ -14,10 +14,10 @@ export type OrgStatusRow = {
 export async function fetchOrgStatuses(
   entityType: OrgStatusEntityType
 ): Promise<OrgStatusRow[]> {
-  const res = (await API.get('/org/statuses', {
+  const response = (await API.get('/org/statuses', {
     params: { entityType },
   })) as { statuses: OrgStatusRow[] };
-  return res.statuses;
+  return response.statuses;
 }
 
 export function createOrgStatus(payload: {

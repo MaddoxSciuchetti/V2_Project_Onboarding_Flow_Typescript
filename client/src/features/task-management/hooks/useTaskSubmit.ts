@@ -1,17 +1,9 @@
 import useAuth from '@/features/user-profile/hooks/useAuth';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { workerMutations } from '../query-options/mutations/worker.mutations';
-import { workerQueries } from '../query-options/queries/worker.queries';
 import { InsertHistoryData, LifecycleType } from '../types/index.types';
-import { TaskStatus } from '../utils/selectOptionTernary';
 import { isV2IssueId } from './useTaskHistory';
-
-const ORG_STATUS_NAME: Record<TaskStatus, string> = {
-  offen: 'Offen',
-  in_bearbeitung: 'In Arbeit',
-  erledigt: 'Erledigt',
-};
 
 function useTaskSubmit(
   workerId: string,
@@ -23,10 +15,6 @@ function useTaskSubmit(
   >(null);
   const closeSidebar = () => setSelectedTaskId(null);
   const { user } = useAuth();
-
-  const { data: statuses = [] } = useQuery(
-    workerQueries.issueStatuses(workerId)
-  );
 
   const { mutateAsync: updateTaskHistory } = useMutation(
     workerMutations.updateTaskHistory()
@@ -45,9 +33,7 @@ function useTaskSubmit(
 
     const issueId = String(formValues.id);
     if (isV2IssueId(issueId)) {
-      const taskStatus = formValues.select_option as TaskStatus;
-      const statusName = ORG_STATUS_NAME[taskStatus];
-      const statusId = statuses.find((s) => s.name === statusName)?.id;
+      const statusId = formValues.select_option;
       if (!statusId) return;
       await patchWorkerIssue({
         issueId,

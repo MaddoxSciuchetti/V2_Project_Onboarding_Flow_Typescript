@@ -66,6 +66,10 @@ export type DescriptionField = {
   owner_id: string;
   is_substitute: boolean;
   status: TaskStatus;
+  /** Organization issue status id (V2 API). */
+  statusId?: string;
+  /** Display name from API (`issue.issueStatus.name`); avoids legacy German mapping. */
+  issueStatusName?: string | null;
   edit: string;
   /** Set when the issue was instantiated from an issue template (pseudo item). */
   templateItemId?: string | null;

@@ -49,24 +49,23 @@ export function OrgInviteSection() {
   };
 
   return (
-    <div className="rounded-lg border border-border bg-card p-6">
+    <div className="rounded-lg  bg-card ">
       <h2 className="text-lg font-semibold text-foreground mb-1">
-        Invite Team Member
+        Mitarbeiter einladen
       </h2>
       <p className="text-sm text-muted-foreground mb-4">
-        Send an invitation link to a new member. The link will expire in 48
-        hours.
+        Send einen Einladungslink zu einem neuen Mitarbeiter, der sich dann registrieren kann.
       </p>
 
       {isSuccess && (
         <p className="mb-4 text-sm text-green-600 dark:text-green-400">
-          Invitation sent successfully.
+          Einladung erfolgreich gesendet.
         </p>
       )}
 
       {isError && (
         <p className="mb-4 text-sm text-[var(--destructive)]">
-          {(error as Error)?.message || 'Failed to send invite.'}
+          {(error as Error)?.message || 'Fehler beim Senden der Einladung.'}
         </p>
       )}
 
@@ -78,12 +77,12 @@ export function OrgInviteSection() {
             name="email"
             id="invite-email"
             type="email"
-            placeholder="colleague@company.com"
+            placeholder="email@example.com"
             className="border-input bg-background text-foreground"
           />
         </div>
         <Button type="submit" variant="outline" disabled={isPending}>
-          {isPending ? <Spinner className="w-4" /> : 'Send Invite'}
+          {isPending ? <Spinner className="w-4" /> : 'Einladung senden'}
         </Button>
       </form>
     </div>

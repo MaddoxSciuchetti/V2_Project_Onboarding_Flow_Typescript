@@ -64,12 +64,12 @@ const TaskManagement = ({ workerId, lifecycleType }: TaskManagementProps) => {
             }
           }}
         >
-          <button onClick={() => setCreateIssueOpen(true)}>Create Issue</button>
           <WorkerHeader
             searchValue={searchValue}
             setSearchValue={setSearchValue}
             searchPlaceholder={searchPlaceholder}
             handleAddTask={() => setIsAddTaskModalOpen(true)}
+            onCreateIssue={() => setCreateIssueOpen(true)}
             showApplyFromTemplate={activeTab === 'form'}
             onApplyFromTemplate={() => setApplyTemplateOpen(true)}
           />
@@ -79,6 +79,7 @@ const TaskManagement = ({ workerId, lifecycleType }: TaskManagementProps) => {
               handleMeFilter={handleMeFilter}
             />
             <TaskIndividual
+              workerId={workerId}
               tasks={displayData}
               selectedTaskId={selectedTaskId}
               handleSelectTask={setSelectedTaskId}

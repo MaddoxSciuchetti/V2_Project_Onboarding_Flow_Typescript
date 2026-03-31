@@ -11,7 +11,7 @@ type V2Issue = {
   description?: string | null;
   templateItemId?: string | null;
   assignee?: { id: string; firstName: string; lastName: string } | null;
-  issueStatus?: { name: string } | null;
+  issueStatus?: { id: string; name: string } | null;
 };
 
 function engagementToLifecycle(
@@ -65,6 +65,8 @@ export function workerDetailToDescriptionFieldResponse(
       owner_id: issue.assignee?.id ?? '',
       is_substitute: false,
       status: mapIssueStatus(issue.issueStatus?.name),
+      statusId: issue.issueStatus?.id,
+      issueStatusName: issue.issueStatus?.name ?? null,
       edit: '',
       templateItemId: issue.templateItemId ?? null,
     };

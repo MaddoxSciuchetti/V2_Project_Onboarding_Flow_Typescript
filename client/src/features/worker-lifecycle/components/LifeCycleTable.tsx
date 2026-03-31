@@ -7,7 +7,6 @@ import {
 } from '@/components/ui/table';
 
 import { LifecycleType } from '@/features/task-management/types/index.types';
-import { getFirstFormType } from '@/features/worker-lifecycle/utils/formtype';
 import { WorkerRecord, WorkerRecordMode } from '../types/index.types';
 import { Worker_Item } from './WorkerItem';
 
@@ -25,26 +24,26 @@ type LifeCycleTableProps = {
 function LifeCycleTable({ filtered, mode, gotopage }: LifeCycleTableProps) {
   return (
     <>
-      <div className="rounded-2xl overflow-x-auto w-full h-full  overflow-auto">
-        <div className="text-left w-full flex flex-col ">
-          <Table className="text-left mt-5">
-            <TableHeader className="text-left">
-              <TableRow className="text-left text-lg">
-                <TableHead className="text-left">Handwerker</TableHead>
-                <TableHead>Phase</TableHead>
-                <TableHead>Fortschritt</TableHead>
-                <TableHead>Aktionen</TableHead>
+      <div className="h-full w-full overflow-auto overflow-x-auto rounded-2xl">
+        <div className="flex w-full flex-col">
+          <Table className="mt-5">
+            <TableHeader>
+              <TableRow className="text-lg">
+                <TableHead className="text-center">Handwerker</TableHead>
+                <TableHead className="min-w-[12rem] text-center">
+                  Team & Projekt
+                </TableHead>
+                <TableHead className="text-center">Phase</TableHead>
+                <TableHead className="text-center">Fortschritt</TableHead>
+                <TableHead className="text-center">Aktionen</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {filtered?.length ? (
-                filtered.map((task: WorkerRecord) => (
+                filtered.map((worker: WorkerRecord) => (
                   <Worker_Item
-                    key={task.id}
-                    item_value={task.id}
-                    form_type={getFirstFormType(task)}
-                    vorname={task.firstName}
-                    nachname={task.lastName}
+                    key={worker.id}
+                    worker={worker}
                     mode={mode}
                     gotopage={gotopage}
                   />
@@ -52,7 +51,7 @@ function LifeCycleTable({ filtered, mode, gotopage }: LifeCycleTableProps) {
               ) : (
                 <TableRow>
                   <td
-                    colSpan={4}
+                    colSpan={5}
                     className="py-10 text-center text-sm text-muted-foreground"
                   >
                     {mode === 'archived'

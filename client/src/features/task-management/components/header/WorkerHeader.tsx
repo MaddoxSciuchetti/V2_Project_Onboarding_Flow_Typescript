@@ -8,6 +8,7 @@ type WorkerHeaderProps = {
   setSearchValue: Dispatch<SetStateAction<string>>;
   searchPlaceholder?: string;
   handleAddTask: () => void;
+  onCreateIssue?: () => void;
   showApplyFromTemplate?: boolean;
   onApplyFromTemplate?: () => void;
 };
@@ -16,6 +17,8 @@ const WorkerHeader = ({
   searchValue,
   setSearchValue,
   searchPlaceholder = 'Search',
+  handleAddTask,
+  onCreateIssue,
   showApplyFromTemplate,
   onApplyFromTemplate,
 }: WorkerHeaderProps) => {
@@ -27,7 +30,25 @@ const WorkerHeader = ({
         placeholder={searchPlaceholder}
         className="min-w-[12rem] flex-1"
       />
-      <div className="flex shrink-0 items-center gap-2">
+      <div className="flex shrink-0 flex-wrap items-center gap-2">
+        {onCreateIssue ? (
+          <Button
+            type="button"
+            variant="outline"
+            className="cursor-pointer rounded-xl transition-colors hover:bg-accent hover:text-accent-foreground"
+            onClick={onCreateIssue}
+          >
+            Issue anlegen
+          </Button>
+        ) : null}
+        <Button
+          type="button"
+          variant="default"
+          className="cursor-pointer rounded-xl"
+          onClick={handleAddTask}
+        >
+          Aufgabe hinzufügen
+        </Button>
         {showApplyFromTemplate && onApplyFromTemplate ? (
           <Button
             type="button"

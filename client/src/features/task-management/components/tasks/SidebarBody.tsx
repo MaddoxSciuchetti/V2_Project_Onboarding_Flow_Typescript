@@ -20,9 +20,11 @@ const SidebarBody = ({
         <div className="px-6 py-5">
           <StatusInformation
             key={selectedTask.id}
+            workerId={workerId}
             id={selectedTask.id}
             editcomment={selectedTask.edit}
-            select_option={selectedTask.status}
+            taskStatus={selectedTask.status}
+            statusId={selectedTask.statusId}
             form_field_id={selectedTask.form_field_id}
             handleSubmit={handleSubmit}
           />

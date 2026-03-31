@@ -9,8 +9,6 @@ function useGetOrgUsers() {
     isError,
     isLoading,
   } = useQuery<OrgUsersArray>(employeeQueries.getEmployees());
-  console.log('Org Users');
-  console.log(OrgUsers);
   return {
     OrgUsers,
     error,

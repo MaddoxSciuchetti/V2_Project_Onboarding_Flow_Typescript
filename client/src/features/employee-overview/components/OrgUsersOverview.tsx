@@ -55,8 +55,11 @@ function OrgUsersOverview() {
   if (isLoading || isPending) return <LoadingAlert />;
 
   return (
-    <div className="mx-auto flex h-full w-5xl flex-col overflow-auto rounded-2xl bg-card p-6 md:max-w-8xl">
+    <div className="mx-auto flex h-full w-5xl flex-col overflow-auto rounded-2xl bg-card  w-full">
       <div className="h-full w-full flex flex-col">
+      <h2 className="text-lg font-semibold text-foreground mb-2">
+        Aktuelle Mitarbeiter
+      </h2>
         <EmployeeSearchHeader search={search} setSearch={setSearch} />
         <Table className="text-left mt-5 border-seperate border-spacing-y-2">
           <EmployeeTableHeader />
