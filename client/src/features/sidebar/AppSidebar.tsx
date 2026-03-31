@@ -4,15 +4,13 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { Link, useLocation } from '@tanstack/react-router';
+import { useLocation } from '@tanstack/react-router';
 
 import ErrorAlert from '@/components/alerts/ErrorAlert';
 import { Button } from '@/components/ui/button';
 import { LAYOUTITEMS } from '@/constants/layout.consts';
+import SideBarMenu from '../org-settings/components/SideBarMenu';
 import UserMenu from './UserMenu';
 import { SidebarSkeleton } from './components/SidebarSkeleton';
 import useHasPermission from './hooks/useHasPermission';
@@ -43,47 +41,21 @@ export function AppSidebar({ openModal }: { openModal: () => void }) {
         <SidebarContent>
           <SidebarGroup>
             <SidebarGroupContent>
-              <SidebarMenu className="">
-                {LAYOUTITEMS.map((item, index) => {
-                  const isActive =
-                    pathname === item.to || pathname.startsWith(`${item.to}/`);
-
-                  return (
-                    <SidebarMenuItem className="" key={index}>
-                      <SidebarMenuButton
-                        variant={'outline'}
-                        asChild
-                        className="mt-2 rounded-xl py-5 transition-colors"
-                      >
-                        <Link
-                          to={item.to}
-                          search={
-                            item.to === '/org-settings'
-                              ? { currentTab: 'employees' }
-                              : undefined
-                          }
-                          className={
-                            isActive
-                              ? 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--muted)]'
-                              : 'hover:bg-[var(--hover-bg)] hover:text-[var(--hover-foreground)]'
-                          }
-                        >
-                          <item.icon />
-                          <span
-                            className={
-                              isActive
-                                ? 'text-[var(--foreground)] text-md font-medium'
-                                : 'text-muted-foreground text-md'
-                            }
-                          >
-                            {item.title}
-                          </span>
-                        </Link>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  );
-                })}
-              </SidebarMenu>
+              <SideBarMenu
+                items={LAYOUTITEMS.map((item) => ({
+                  id: item.to,
+                  label: item.title,
+                  icon: item.icon,
+                  to: item.to,
+                  search:
+                    item.to === '/org-settings'
+                      ? { currentTab: 'employees' }
+                      : undefined,
+                }))}
+                isItemActive={(item) =>
+                  pathname === item.id || pathname.startsWith(`${item.id}/`)
+                }
+              />
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>

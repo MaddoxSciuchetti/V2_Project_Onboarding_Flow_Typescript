@@ -5,9 +5,6 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { LAYOUTITEMS } from '@/constants/layout.consts';
 import {
@@ -17,6 +14,7 @@ import {
 import { cn } from '@/lib/utils';
 import { Link, useRouterState } from '@tanstack/react-router';
 import { ArrowLeft } from 'lucide-react';
+import SideBarMenu from './SideBarMenu';
 
 const backTarget =
   LAYOUTITEMS.find((item) => item.to !== '/org-settings')?.to ??
@@ -41,7 +39,7 @@ export function SettingsSidebar() {
       <SidebarContent>
         <div className="border-b border-border px-1 pb-4">
           <Button
-            size={"sm"}
+            size={'sm'}
             variant="outline"
             asChild
             className="h-auto w-full justify-start gap-2 rounded-xl py-1 text-left font-medium hover:(--muted-foreground)"
@@ -63,42 +61,16 @@ export function SettingsSidebar() {
               {group.heading}
             </SidebarGroupLabel>
             <SidebarGroupContent>
-              <SidebarMenu>
-                {group.items.map((item) => {
-                  const isActive = activeTab === item.id;
-                  const Icon = item.icon;
-                  return (
-                    <SidebarMenuItem key={item.id}>
-                      <SidebarMenuButton
-                        variant="outline"
-                        asChild
-                        className="mt-2 rounded-xl py-5 transition-colors"
-                      >
-                        <Link
-                          to="/org-settings"
-                          search={{ currentTab: item.id }}
-                          className={
-                            isActive  
-                              ? 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--muted)]'
-                              : 'hover:bg-[var(--hover-bg)] hover:text-[var(--hover-foreground)]'
-                          }
-                        >
-                          <Icon className="size-[1.15rem] shrink-0" />
-                          <span
-                            className={
-                              isActive
-                                ? 'text-[var(--foreground)] text-md font-medium'
-                                : 'text-muted-foreground text-md'
-                            }
-                          >
-                            {item.label}
-                          </span>
-                        </Link>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  );
-                })}
-              </SidebarMenu>
+              <SideBarMenu
+                items={group.items.map((item) => ({
+                  id: item.id,
+                  label: item.label,
+                  icon: item.icon,
+                  to: '/org-settings',
+                  search: { currentTab: item.id },
+                }))}
+                isItemActive={(item) => activeTab === item.id}
+              />
             </SidebarGroupContent>
           </SidebarGroup>
         ))}
