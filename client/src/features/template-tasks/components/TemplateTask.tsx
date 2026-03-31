@@ -43,7 +43,7 @@ function TemplateTasks() {
         />
       </div>
       <div className="min-h-0 flex-1 overflow-y-auto">
-        <TemplateV2List issueTemplates={paginatedTemplates} />
+        <TemplateV2List paginatedTemplates={paginatedTemplates} />
       </div>
       <div className="shrink-0 border-t border-border bg-card pt-4">
         <div className="flex items-center justify-between">

@@ -3,37 +3,23 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { useMutation } from '@tanstack/react-query';
-import { useState } from 'react';
-import { templateV2Mutations } from '../query-options/mutations/templateV2.mutations';
-import type { TemplateTab } from '../utils/engagementTypeFromTab';
-import { engagementTypeFromTab } from '../utils/engagementTypeFromTab';
+import useAddNewTemplate from '../hooks/useAddNewTemplate';
 
 type CreateTemplateModalV2Props = {
   onClose: () => void;
 };
 
 const CreateTemplateModalV2 = ({ onClose }: CreateTemplateModalV2Props) => {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [phaseTab, setPhaseTab] = useState<TemplateTab>('ONBOARDING');
-
-  const { mutate, isPending } = useMutation(templateV2Mutations.createTemplate());
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const trimmed = name.trim();
-    if (!trimmed) return;
-    mutate(
-      {
-        name: trimmed,
-        description: description.trim() || undefined,
-        type: engagementTypeFromTab(phaseTab),
-      },
-      { onSuccess: onClose }
-    );
-  };
-
+  const {
+    name,
+    setName,
+    description,
+    setDescription,
+    phaseTab,
+    setPhaseTab,
+    handleSubmit,
+    isPending,
+  } = useAddNewTemplate(onClose);
   return (
     <SmallWrapper className="min-h-72 max-h-[min(90vh,32rem)]">
       <form

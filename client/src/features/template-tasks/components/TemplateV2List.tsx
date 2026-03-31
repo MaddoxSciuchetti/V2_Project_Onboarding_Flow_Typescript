@@ -1,8 +1,8 @@
-import type { IssueTemplateListItem } from '../api/templateV2.api';
 import { Link } from '@tanstack/react-router';
+import type { IssueTemplateListItem } from '../api/templateV2.api';
 
 type TemplateV2ListProps = {
-  issueTemplates: IssueTemplateListItem[];
+  paginatedTemplates: IssueTemplateListItem[];
 };
 
 function descriptionSnippet(description: string | null, maxLength = 110) {
@@ -12,15 +12,15 @@ function descriptionSnippet(description: string | null, maxLength = 110) {
   return `${trimmed.slice(0, maxLength)}…`;
 }
 
-const TemplateV2List = ({ issueTemplates }: TemplateV2ListProps) => {
+const TemplateV2List = ({ paginatedTemplates }: TemplateV2ListProps) => {
   return (
     <ul className="mt-2 divide-y divide-border rounded-xl border border-border">
-      {issueTemplates.length === 0 ? (
+      {paginatedTemplates.length === 0 ? (
         <li className="px-4 py-6 text-center text-sm text-muted-foreground">
           Keine Vorlagen gefunden.
         </li>
       ) : (
-        issueTemplates.map((issueTemplate) => (
+        paginatedTemplates.map((issueTemplate) => (
           <li key={issueTemplate.id}>
             <Link
               to="/template/$templateId"
