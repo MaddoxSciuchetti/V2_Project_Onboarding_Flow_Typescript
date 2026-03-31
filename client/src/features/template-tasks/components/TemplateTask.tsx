@@ -1,48 +1,27 @@
 import LoadingAlert from '@/components/alerts/LoadingAlert';
 import SearchHeaderResuable from '@/components/layout/headers/SearchHeaderResuable';
 import ModalOverlay from '@/components/modal/ModalOverlay';
-import Pagination from './Pagination';
 import { useQuery } from '@tanstack/react-query';
-import { useEffect, useMemo, useState } from 'react';
-import type { IssueTemplateListItem } from '../api/templateV2.api';
+import { useState } from 'react';
+import usePagination from '../hooks/usePagination';
 import { templateV2Queries } from '../query-options/queries/templateV2.queries';
 import CreateTemplateModalV2 from './CreateTemplateModalV2';
+import Pagination from './Pagination';
 import TemplateV2List from './TemplateV2List';
 
 function TemplateTasks() {
   const { data = [], isPending } = useQuery(templateV2Queries.list());
-  const [search, setSearch] = useState('');
+
   const [createOpen, setCreateOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(10);
-
-  const normalizedSearch = search.trim().toLowerCase();
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [normalizedSearch]);
-
-  const templatesMatchingSearch = useMemo(() => {
-    const matchesSearchQuery = (issueTemplate: IssueTemplateListItem) => {
-      if (!normalizedSearch) return true;
-      const nameLower = issueTemplate.name.toLowerCase();
-      const descriptionLower = (issueTemplate.description ?? '').toLowerCase();
-      return (
-        nameLower.includes(normalizedSearch) ||
-        descriptionLower.includes(normalizedSearch)
-      );
-    };
-    return data.filter(matchesSearchQuery);
-  }, [data, normalizedSearch]);
-
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-
-  const paginatedTemplates = useMemo(
-    () =>
-      templatesMatchingSearch.slice(indexOfFirstPost, indexOfLastPost),
-    [templatesMatchingSearch, indexOfFirstPost, indexOfLastPost]
-  );
+  const {
+    currentPage,
+    setCurrentPage,
+    search,
+    setSearch,
+    paginatedTemplates,
+    postsPerPage,
+    templatesMatchingSearch,
+  } = usePagination(data);
 
   if (isPending) {
     return <LoadingAlert />;

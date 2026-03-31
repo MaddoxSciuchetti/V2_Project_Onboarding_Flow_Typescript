@@ -7,10 +7,8 @@ import {
   SidebarGroupLabel,
 } from '@/components/ui/sidebar';
 import { LAYOUTITEMS } from '@/constants/layout.consts';
-import {
-  ORG_SETTINGS_NAV_GROUPS,
-  parseOrgSettingsTabId,
-} from '@/features/org-settings/consts/org-settings-tabs';
+import { ORG_SETTINGS_NAV_GROUPS } from '@/features/org-settings/consts/org-settings-tabs';
+import { parseOrgSettingsTabId } from '@/features/org-settings/utils/parseTab';
 import { cn } from '@/lib/utils';
 import { Link, useRouterState } from '@tanstack/react-router';
 import { ArrowLeft } from 'lucide-react';

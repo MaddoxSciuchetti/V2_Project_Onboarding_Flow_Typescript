@@ -1,7 +1,8 @@
 import OrgUsersOverview from '@/features/employee-overview/components/OrgUsersOverview';
 import { EmployeeModalProvider } from '@/features/employee-overview/context/ModalProvider';
-import type { OrgSettingsTabId } from '@/features/org-settings/consts/org-settings-tabs';
+
 import TemplateTasks from '@/features/template-tasks/components/TemplateTask';
+import { OrgSettingsTabId } from '../types/org-settings.types';
 import { EntityStatusSettings } from './EntityStatusSettings';
 import { OrgInviteSection } from './OrgInviteSection';
 
@@ -12,9 +13,9 @@ type OrgSettingsProps = {
 const OrgSettings = ({ currentTab }: OrgSettingsProps) => {
   return (
     <div className="mx-auto flex h-[calc(100dvh-6rem)] max-w-[min(100%,90rem)] flex-col gap-4 px-4 py-6">
-        <h1 className="text-3xl font-bold text-foreground">
-          Unternehmens Einstellungen
-        </h1>
+      <h1 className="text-3xl font-bold text-foreground">
+        Unternehmens Einstellungen
+      </h1>
       <div className="min-h-0 min-w-0  flex-1 overflow-auto ">
         {currentTab === 'employees' && (
           <EmployeeModalProvider>
