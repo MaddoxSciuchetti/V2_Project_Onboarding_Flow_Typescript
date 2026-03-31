@@ -5,7 +5,7 @@ import useFetchProcessData from '@/features/employee-overview/hooks/useFetchProc
 import { LifecycleType } from '@/features/task-management/types/index.types';
 import useWorkerItemData from '../hooks/useWorkerItemData';
 import useWorkerMutations from '../hooks/useWorkerMutaitons';
-import { WorkerRecord, WorkerRecordMode } from '../types/index.types';
+import { EngagementStatus, WorkerRecord } from '../types/index.types';
 import { getFirstFormType } from '../utils/formtype';
 import WorkerInfoModal from './WorkerInfoModal';
 import WorkerItemInfo from './WorkerItemInfo';
@@ -13,7 +13,7 @@ import { WorkerEngagementControls } from './worker-row/WorkerEngagementControls'
 
 type WorkerItemProps = {
   worker: WorkerRecord;
-  mode: WorkerRecordMode;
+  engagementStatus: EngagementStatus;
   gotopage: (
     taskId: string,
     form_type: LifecycleType,
@@ -21,7 +21,11 @@ type WorkerItemProps = {
   ) => void;
 };
 
-export function Worker_Item({ worker, mode, gotopage }: WorkerItemProps) {
+export function Worker_Item({
+  worker,
+  engagementStatus,
+  gotopage,
+}: WorkerItemProps) {
   const form_type = getFirstFormType(worker);
   const {
     isLoading: processLoading,
@@ -55,11 +59,13 @@ export function Worker_Item({ worker, mode, gotopage }: WorkerItemProps) {
         />
       </td>
       <td className="min-w-[12rem] max-w-[24rem] align-middle px-2 py-4 text-center">
+        {/* Controlls who is the team lead and what the current status is */}
         <WorkerEngagementControls
           workerId={worker.id}
           engagement={worker.engagements[0]}
         />
       </td>
+      {/* Controlls type onboardinf or offboarding */}
       <td
         className={
           form_type === 'onboarding'
@@ -71,11 +77,13 @@ export function Worker_Item({ worker, mode, gotopage }: WorkerItemProps) {
         {form_type === 'offboarding' ? 'Offboarding' : 'Onboarding'}
       </td>
 
+      {/* Controlls the number of completed tasks */}
       <td className="px-2 py-4 text-center align-middle tabular-nums">
         <span className={color}>{processLoading ? '...' : completedCount}</span>
         <span className="font-medium text-foreground">/{totalCount}</span>
       </td>
 
+      {/* Controlls the actions like archive, delete, info */}
       <td className="px-2 py-4 text-center align-middle">
         <div className="flex justify-center">
           <DropdownActionTrigger
@@ -84,9 +92,12 @@ export function Worker_Item({ worker, mode, gotopage }: WorkerItemProps) {
             triggerIcon="more"
             actions={[
               {
-                label: mode === 'active' ? 'Archivieren' : 'Wiederherstellen',
+                label:
+                  engagementStatus === 'active'
+                    ? 'Archivieren'
+                    : 'Wiederherstellen',
                 action: () =>
-                  mode === 'active'
+                  engagementStatus === 'active'
                     ? archiveWorkerMutation(worker.id)
                     : unarchiveWorkerMutation(worker.id),
                 variant: 'default',

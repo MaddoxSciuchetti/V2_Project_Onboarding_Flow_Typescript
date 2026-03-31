@@ -7,13 +7,13 @@ import {
 } from '@/components/ui/table';
 
 import { LifecycleType } from '@/features/task-management/types/index.types';
-import { WorkerRecord, WorkerRecordMode } from '../types/index.types';
+import { EngagementStatus, WorkerRecord } from '../types/index.types';
 import { Worker_Item } from './WorkerItem';
 
 type LifeCycleTableProps = {
   error: Error | null;
   filtered: WorkerRecord[] | undefined;
-  mode: WorkerRecordMode;
+  engagementStatus: EngagementStatus;
   gotopage: (
     taskId: string,
     form_type: LifecycleType,
@@ -21,7 +21,11 @@ type LifeCycleTableProps = {
   ) => void;
 };
 
-function LifeCycleTable({ filtered, mode, gotopage }: LifeCycleTableProps) {
+function LifeCycleTable({
+  filtered,
+  engagementStatus,
+  gotopage,
+}: LifeCycleTableProps) {
   return (
     <>
       <div className="h-full w-full overflow-auto overflow-x-auto rounded-2xl">
@@ -44,7 +48,7 @@ function LifeCycleTable({ filtered, mode, gotopage }: LifeCycleTableProps) {
                   <Worker_Item
                     key={worker.id}
                     worker={worker}
-                    mode={mode}
+                    engagementStatus={engagementStatus}
                     gotopage={gotopage}
                   />
                 ))
@@ -54,7 +58,7 @@ function LifeCycleTable({ filtered, mode, gotopage }: LifeCycleTableProps) {
                     colSpan={5}
                     className="py-10 text-center text-sm text-muted-foreground"
                   >
-                    {mode === 'archived'
+                    {engagementStatus === 'archived'
                       ? 'Es gibt aktuell keine archivierten Handwerker.'
                       : 'Keine Handwerker gefunden.'}
                   </td>

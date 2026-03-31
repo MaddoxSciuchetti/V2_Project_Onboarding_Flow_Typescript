@@ -4,12 +4,13 @@ import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 import { workerLifecycleQueries } from '../query-options/queries/worker-lifycycle.queries';
-import { WorkerRecordMode } from '../types/index.types';
+import { EngagementStatus } from '../types/index.types';
 
 function useHome() {
   const [search, setSearch] = useState('');
   const [modal, setModal] = useState<boolean>(false);
-  const [mode, setMode] = useState<WorkerRecordMode>('active');
+  const [engagementStatus, setEngagementStatus] =
+    useState<EngagementStatus>('active');
   const { toggleSidebar } = useSidebar();
   const navigate = useNavigate();
 
@@ -28,7 +29,7 @@ function useHome() {
     const name = `${item.firstName ?? ''} ${item.lastName ?? ''}`;
     const matchesSearch = name.toLowerCase().includes(search.toLowerCase());
     const matchesMode =
-      mode === 'archived'
+      engagementStatus === 'archived'
         ? item.status === 'archived'
         : item.status !== 'archived';
 
@@ -56,8 +57,8 @@ function useHome() {
     filtered,
     handleNavigate,
     modal,
-    mode,
-    setMode,
+    engagementStatus,
+    setEngagementStatus,
     setSearch,
     search,
     error,

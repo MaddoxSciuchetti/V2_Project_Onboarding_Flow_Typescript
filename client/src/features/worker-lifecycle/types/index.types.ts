@@ -59,7 +59,7 @@ export type WorkerDetailResponse = {
   };
 };
 
-export type WorkerRecordMode = 'active' | 'archived';
+export type EngagementStatus = 'active' | 'archived';
 
 export type WorkerOverviewField = {
   id: number;

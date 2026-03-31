@@ -14,10 +14,10 @@ function WorkerLifeCycle() {
     filtered,
     handleNavigate,
     modal,
-    mode,
+    engagementStatus,
     search,
     setSearch,
-    setMode,
+    setEngagementStatus,
     toggleModal,
   } = useHome();
 
@@ -33,11 +33,14 @@ function WorkerLifeCycle() {
           setSearch={setSearch}
           description="Handwerker hinzufügen"
         />
-        <ActiveArchiveHeader mode={mode} setMode={setMode} />
+        <ActiveArchiveHeader
+          engagementStatus={engagementStatus}
+          setEngagementStatus={setEngagementStatus}
+        />
         <LifeCycleTable
           error={error}
           filtered={filtered}
-          mode={mode}
+          engagementStatus={engagementStatus}
           gotopage={handleNavigate}
         />
         <LifeCycleModal modal={modal} toggleModal={toggleModal} />
