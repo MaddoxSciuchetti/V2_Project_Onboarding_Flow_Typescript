@@ -8,6 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Link } from '@tanstack/react-router';
 import useTemplateIssues from '../hooks/useTemplateIssues';
 import TemplateItem from './TemplateItem';
+import TemplateItemHeader from './TemplateItemHeader';
 
 type TemplateDetailPageProps = {
   templateId: string;
@@ -55,25 +56,7 @@ const TemplateDetailPage = ({ templateId }: TemplateDetailPageProps) => {
       aria-label="Vorlage bearbeiten"
       className="mx-auto flex h-full w-5xl flex-col overflow-auto rounded-2xl bg-card p-6 md:max-w-8xl"
     >
-      <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
-        <div className="min-w-0">
-          <Button variant="ghost" size="sm" className="mb-2 -ml-2" asChild>
-            <Link to="/org-settings" search={{ currentTab: 'templates' }}>
-              ← Zurück zu Vorlagen
-            </Link>
-          </Button>
-          <h1 className="text-xl font-semibold text-foreground">{data.name}</h1>
-          {data.description ? (
-            <p className="mt-1 text-sm text-muted-foreground whitespace-pre-wrap">
-              {data.description}
-            </p>
-          ) : null}
-        </div>
-        <Button type="button" onClick={() => setAddOpen(true)}>
-          Punkt hinzufügen
-        </Button>
-      </div>
-
+      <TemplateItemHeader setAddOpen={setAddOpen} data={data} />
       <TemplateItem
         templateItemsByOrder={templateItemsByOrder}
         deleteItem={deleteItem}
