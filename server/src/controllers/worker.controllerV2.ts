@@ -61,10 +61,10 @@ export async function getWorkerById(req: Request, res: Response) {
         const organizationId = req.orgId;
         const workerId = param(req, "workerId");
 
-        const worker = await workerService.getWorkerById({
-            organizationId,
+        const worker = await workerService.getWorkerById(
             workerId,
-        });
+            organizationId,
+        );
         if (!worker) {
             return res
                 .status(404)

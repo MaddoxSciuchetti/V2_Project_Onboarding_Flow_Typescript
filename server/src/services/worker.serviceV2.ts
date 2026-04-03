@@ -194,12 +194,7 @@ export async function getWorkerData(params: GetWorkersInput) {
 
 // ─── Get Worker By ID ──────────────────────────────────────────────────────────
 
-export async function getWorkerById(params: {
-    workerId: string;
-    organizationId: string;
-}) {
-    const { workerId, organizationId } = params;
-
+export async function getWorkerById(workerId: string, organizationId: string) {
     const worker = await prisma.worker.findFirst({
         where: { id: workerId, organizationId },
         include: {

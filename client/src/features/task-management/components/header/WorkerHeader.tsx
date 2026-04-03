@@ -7,7 +7,6 @@ type WorkerHeaderProps = {
   searchValue: string;
   setSearchValue: Dispatch<SetStateAction<string>>;
   searchPlaceholder?: string;
-  handleAddTask: () => void;
   onCreateIssue?: () => void;
   showApplyFromTemplate?: boolean;
   onApplyFromTemplate?: () => void;
@@ -17,7 +16,6 @@ const WorkerHeader = ({
   searchValue,
   setSearchValue,
   searchPlaceholder = 'Search',
-  handleAddTask,
   onCreateIssue,
   showApplyFromTemplate,
   onApplyFromTemplate,
@@ -41,14 +39,6 @@ const WorkerHeader = ({
             Issue anlegen
           </Button>
         ) : null}
-        <Button
-          type="button"
-          variant="default"
-          className="cursor-pointer rounded-xl"
-          onClick={handleAddTask}
-        >
-          Aufgabe hinzufügen
-        </Button>
         {showApplyFromTemplate && onApplyFromTemplate ? (
           <Button
             type="button"
@@ -60,13 +50,13 @@ const WorkerHeader = ({
           </Button>
         ) : null}
         <TabsList variant={'default'} className="bg-[var(--dropdown-surface)]">
-        <TabsTrigger className="cursor-pointer" value="form">
-          Aufgaben
-        </TabsTrigger>
-        <TabsTrigger className="cursor-pointer" value="files">
-          Dateien
-        </TabsTrigger>
-      </TabsList>
+          <TabsTrigger className="cursor-pointer" value="form">
+            Aufgaben
+          </TabsTrigger>
+          <TabsTrigger className="cursor-pointer" value="files">
+            Dateien
+          </TabsTrigger>
+        </TabsList>
       </div>
     </div>
   );

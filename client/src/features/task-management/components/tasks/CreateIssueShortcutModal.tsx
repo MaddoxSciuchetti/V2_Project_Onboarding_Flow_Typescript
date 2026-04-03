@@ -8,12 +8,11 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { employeeQueries } from '@/features/employee-overview/query-options/queries/employee.queries';
 import useAuth from '@/features/user-profile/hooks/useAuth';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import useIssueMutations from '../../hooks/useIssueMutations';
+import useIssues from '../../hooks/useIssues';
 import { workerMutations } from '../../query-options/mutations/worker.mutations';
-import { workerQueries } from '../../query-options/queries/worker.queries';
 import { LifecycleType } from '../../types/index.types';
 import { findEngagementForLifecycle } from '../../utils/workerDetailToTaskView';
 
@@ -39,26 +38,23 @@ export default function CreateIssueShortcutModal({
   onClose,
 }: CreateIssueShortcutModalProps) {
   const { user } = useAuth();
-  const [title, setTitle] = useState('');
-  const [statusId, setStatusId] = useState('');
-  const [priority, setPriority] = useState<PriorityValue>('no_priority');
-  const [assigneeUserId, setAssigneeUserId] = useState('');
 
-  const { data: workerRes } = useQuery(workerQueries.workerDetail(workerId));
-  const { data: statuses = [] } = useQuery(
-    workerQueries.issueStatuses(workerId)
-  );
-  const { data: employees = [] } = useQuery(employeeQueries.getEmployees());
+  const { workerRes, statuses, employees } = useIssueMutations(workerId);
 
   const engagement =
     workerRes?.data &&
     findEngagementForLifecycle(workerRes.data, lifecycleType);
 
-  useEffect(() => {
-    if (!statuses.length || statusId) return;
-    const def = statuses.find((s) => s.name === 'Offen') ?? statuses[0];
-    if (def) setStatusId(def.id);
-  }, [statuses, statusId]);
+  const {
+    title,
+    statusId,
+    priority,
+    assigneeUserId,
+    setTitle,
+    setPriority,
+    setStatusId,
+    setAssigneeUserId,
+  } = useIssues(statuses ?? []);
 
   const { mutate, isPending } = useMutation(
     workerMutations.createWorkerIssue(workerId)

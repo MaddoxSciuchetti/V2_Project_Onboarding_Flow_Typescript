@@ -10,7 +10,6 @@ import { LifecycleType } from '../../types/index.types';
 import WorkerFileUploads from '../files/WorkerFileUploads';
 import FilterByUser from '../header/filters/Filter.ByUser';
 import WorkerHeader from '../header/WorkerHeader';
-import AddWorkerTaskModal from './AddWorkerTaskModal';
 import ApplyFromTemplateModal from './ApplyFromTemplateModal';
 import CreateIssueShortcutModal from './CreateIssueShortcutModal';
 import TaskSidebar from './task-sidebar/TaskSidebar';
@@ -22,8 +21,16 @@ type TaskManagementProps = {
 };
 
 const TaskManagement = ({ workerId, lifecycleType }: TaskManagementProps) => {
-
-  const { activeTab, setActiveTab, fileDescriptionSearch, setFileDescriptionSearch, isAddTaskModalOpen, setIsAddTaskModalOpen, createIssueOpen, setCreateIssueOpen, applyTemplateOpen, setApplyTemplateOpen } = useTasks();
+  const {
+    activeTab,
+    setActiveTab,
+    fileDescriptionSearch,
+    setFileDescriptionSearch,
+    createIssueOpen,
+    setCreateIssueOpen,
+    applyTemplateOpen,
+    setApplyTemplateOpen,
+  } = useTasks();
   const { data, isLoading } = useTaskData(workerId, lifecycleType);
   const {
     descriptionSearch,
@@ -68,7 +75,6 @@ const TaskManagement = ({ workerId, lifecycleType }: TaskManagementProps) => {
             searchValue={searchValue}
             setSearchValue={setSearchValue}
             searchPlaceholder={searchPlaceholder}
-            handleAddTask={() => setIsAddTaskModalOpen(true)}
             onCreateIssue={() => setCreateIssueOpen(true)}
             showApplyFromTemplate={activeTab === 'form'}
             onApplyFromTemplate={() => setApplyTemplateOpen(true)}
@@ -98,16 +104,6 @@ const TaskManagement = ({ workerId, lifecycleType }: TaskManagementProps) => {
             />
           </TabsContent>
         </Tabs>
-
-        {isAddTaskModalOpen && (
-          <ModalOverlay handleToggle={() => setIsAddTaskModalOpen(false)}>
-            <AddWorkerTaskModal
-              workerId={workerId}
-              lifecycleType={lifecycleType}
-              onClose={() => setIsAddTaskModalOpen(false)}
-            />
-          </ModalOverlay>
-        )}
 
         {createIssueOpen && (
           <ModalOverlay handleToggle={() => setCreateIssueOpen(false)}>

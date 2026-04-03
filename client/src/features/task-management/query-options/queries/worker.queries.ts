@@ -9,8 +9,6 @@ import {
   getWorkerIssueStatuses,
   type IssueStatusOption,
 } from '../../api/index.api';
-import type { IssueAuditRow } from '../../utils/mapIssueAuditToHistory';
-import { workerDetailToDescriptionFieldResponse } from '../../utils/workerDetailToTaskView';
 import {
   FORMHISTORY,
   HISTORYDATA,
@@ -23,6 +21,8 @@ import {
   HistoryData,
   LifecycleType,
 } from '../../types/index.types';
+import type { IssueAuditRow } from '../../utils/mapIssueAuditToHistory';
+import { workerDetailToDescriptionFieldResponse } from '../../utils/workerDetailToTaskView';
 
 export const workerQueries = {
   getFiles: (workerId: string | number) =>

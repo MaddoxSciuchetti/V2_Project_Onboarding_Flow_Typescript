@@ -1,8 +1,10 @@
-import type { EngagementType } from '@/features/worker-lifecycle/types/index.types';
-import type { WorkerDetailResponse } from '@/features/worker-lifecycle/types/index.types';
 import type { LifecycleType } from '@/features/task-management/types/index.types';
 import type { TaskStatus } from '@/features/task-management/utils/selectOptionTernary';
 import { TASK_STATUSES } from '@/features/task-management/utils/selectOptionTernary';
+import type {
+  EngagementType,
+  WorkerDetailResponse,
+} from '@/features/worker-lifecycle/types/index.types';
 import type { DescriptionFieldResponse } from '@/types/api.types';
 
 type V2Issue = {
