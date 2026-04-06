@@ -7,20 +7,17 @@ import {
 } from '@/components/ui/sidebar';
 import { useLocation } from '@tanstack/react-router';
 
-import ErrorAlert from '@/components/alerts/ErrorAlert';
 import { Button } from '@/components/ui/button';
 import { LAYOUTITEMS } from '@/constants/layout.consts';
 import SideBarMenu from '../org-settings/components/SideBarMenu';
 import UserMenu from './UserMenu';
-import { SidebarSkeleton } from './components/SidebarSkeleton';
-import useHasPermission from './hooks/useHasPermission';
 
 export function AppSidebar({ openModal }: { openModal: () => void }) {
-  const { user, isLoading, isError, fullName } = useHasPermission();
+  // const { user, isLoading, isError, fullName } = useHasPermission();
   const { pathname } = useLocation();
 
-  if (isLoading) return <SidebarSkeleton />;
-  if (isError || !user) return <ErrorAlert />;
+  // if (isLoading) return <SidebarSkeleton />;
+  // if (isError || !user) return <ErrorAlert />;
 
   return (
     <>
@@ -30,10 +27,10 @@ export function AppSidebar({ openModal }: { openModal: () => void }) {
             <UserMenu />
             <div className="min-w-0">
               <p className="truncate text-lg leading-none text-foreground font-medium">
-                {fullName || 'Unbekannter Nutzer'}
+                {/* {fullName || 'Unbekannter Nutzer'} */}
               </p>
               <p className="mt-1 font-light truncate text-xs text-muted-foreground">
-                {user.email}
+                {/* {user.email} */}
               </p>
             </div>
           </div>

@@ -62,7 +62,7 @@ export function Avatar({
 type State = 'Default' | 'Hover';
 type Transparent = 'Default' | 'Transparent';
 
-interface SlotProps {
+interface SlotProps extends React.HTMLAttributes<HTMLDivElement> {
   state?: State;
   transparent?: Transparent;
   className?: string;
@@ -89,6 +89,7 @@ export function Slot({
   src,
   alt,
   initials,
+  ...props
 }: SlotProps) {
   return (
     <div
@@ -98,6 +99,7 @@ export function Slot({
         transparency[transparent],
         className
       )}
+      {...props}
     >
       <div>
         {src ? (

@@ -37,7 +37,7 @@ function Layout() {
         <SettingsSidebar />
       ) : (
         <>
-          <Sidebar />
+          <Sidebar openModal={handleOpenModal} />
           {/* <AppSidebar openModal={handleOpenModal} /> */}
         </>
       )}
