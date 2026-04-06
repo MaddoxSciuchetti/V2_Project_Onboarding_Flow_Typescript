@@ -25,13 +25,7 @@ function AppSidebar({ openModal }: { openModal: () => void }) {
                 ? { currentTab: 'employees' }
                 : undefined,
           }))}
-          isItemActive={(item) =>
-            pathname === item.id || pathname.startsWith(`${item.id}/`)
-          }
         />
-        {/* <SidebarItem label="Handwerker" icon={UsersIcon} />
-        <SidebarItem label="Aufgaben" icon={TicketIcon} />
-        <SidebarItem label="Unternehmen" icon={BriefcaseIcon} /> */}
       </div>
       <div className="p-2 w-full flex flex-col overflow-x-hidden">
         <SidebarItem

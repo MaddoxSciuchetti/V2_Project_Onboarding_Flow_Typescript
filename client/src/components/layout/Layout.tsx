@@ -1,40 +1,15 @@
 import { SettingsSidebar } from '@/features/org-settings/components/SettingsSidebar';
 import FeatureModal from '@/features/sidebar/feature-modal/FeatureModal';
-import { useThemeProvider } from '@/hooks/useThemeProvider';
-import { Outlet, useRouterState } from '@tanstack/react-router';
-import { useEffect, useState } from 'react';
+import { useLayout } from '@/hooks/useLayout';
+import { Outlet } from '@tanstack/react-router';
 import '../../../globals.css';
 import ModalOverlay from '../modal/ModalOverlay';
 import AppSidebar from '../ui/sidebar/AppSidebar';
-import {
-  SidebarInset,
-  SidebarTrigger,
-  useSidebar,
-} from '../ui/sidebar/Sidebar';
+import { SidebarInset, SidebarTrigger } from '../ui/sidebar/Sidebar';
 import PagePath from './headers/PagePath';
-import { isSettingsLayoutPath } from './utils/header.utils';
 
 function Layout() {
-  const [modal, setModal] = useState<boolean>(false);
-  const { toggleSidebar } = useSidebar();
-  const { theme } = useThemeProvider();
-  const isOrgSettings = useRouterState({
-    select: (s) => isSettingsLayoutPath(s.location.pathname),
-  });
-
-  const handleOpenModal = () => {
-    setModal((prev) => !prev);
-    toggleSidebar();
-  };
-
-  useEffect(() => {
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [theme]);
-
+  const { isOrgSettings, handleOpenModal, modal } = useLayout();
   return (
     <>
       {isOrgSettings ? (

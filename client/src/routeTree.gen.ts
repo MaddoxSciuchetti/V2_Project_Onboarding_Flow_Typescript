@@ -16,7 +16,6 @@ import { Route as RegisterOrgRouteImport } from './routes/register-org'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as OrgSettingsRouteImport } from './routes/org-settings'
 import { Route as LoginRouteImport } from './routes/login'
-import { Route as HomeRouteImport } from './routes/home'
 import { Route as EmployeeOverviewRouteImport } from './routes/employee-overview'
 import { Route as TemplateRouteRouteImport } from './routes/template/route'
 import { Route as IndexRouteImport } from './routes/index'
@@ -60,11 +59,6 @@ const OrgSettingsRoute = OrgSettingsRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HomeRoute = HomeRouteImport.update({
-  id: '/home',
-  path: '/home',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EmployeeOverviewRoute = EmployeeOverviewRouteImport.update({
@@ -117,7 +111,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/template': typeof TemplateRouteRouteWithChildren
   '/employee-overview': typeof EmployeeOverviewRoute
-  '/home': typeof HomeRoute
   '/login': typeof LoginRoute
   '/org-settings': typeof OrgSettingsRoute
   '/profile': typeof ProfileRoute
@@ -135,7 +128,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/employee-overview': typeof EmployeeOverviewRoute
-  '/home': typeof HomeRoute
   '/login': typeof LoginRoute
   '/org-settings': typeof OrgSettingsRoute
   '/profile': typeof ProfileRoute
@@ -155,7 +147,6 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/template': typeof TemplateRouteRouteWithChildren
   '/employee-overview': typeof EmployeeOverviewRoute
-  '/home': typeof HomeRoute
   '/login': typeof LoginRoute
   '/org-settings': typeof OrgSettingsRoute
   '/profile': typeof ProfileRoute
@@ -176,7 +167,6 @@ export interface FileRouteTypes {
     | '/'
     | '/template'
     | '/employee-overview'
-    | '/home'
     | '/login'
     | '/org-settings'
     | '/profile'
@@ -194,7 +184,6 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/employee-overview'
-    | '/home'
     | '/login'
     | '/org-settings'
     | '/profile'
@@ -213,7 +202,6 @@ export interface FileRouteTypes {
     | '/'
     | '/template'
     | '/employee-overview'
-    | '/home'
     | '/login'
     | '/org-settings'
     | '/profile'
@@ -233,7 +221,6 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   TemplateRouteRoute: typeof TemplateRouteRouteWithChildren
   EmployeeOverviewRoute: typeof EmployeeOverviewRoute
-  HomeRoute: typeof HomeRoute
   LoginRoute: typeof LoginRoute
   OrgSettingsRoute: typeof OrgSettingsRoute
   ProfileRoute: typeof ProfileRoute
@@ -296,13 +283,6 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/home': {
-      id: '/home'
-      path: '/home'
-      fullPath: '/home'
-      preLoaderRoute: typeof HomeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/employee-overview': {
@@ -389,7 +369,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   TemplateRouteRoute: TemplateRouteRouteWithChildren,
   EmployeeOverviewRoute: EmployeeOverviewRoute,
-  HomeRoute: HomeRoute,
   LoginRoute: LoginRoute,
   OrgSettingsRoute: OrgSettingsRoute,
   ProfileRoute: ProfileRoute,

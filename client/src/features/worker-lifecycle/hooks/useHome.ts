@@ -1,4 +1,4 @@
-import { useSidebar } from '@/components/ui/sidebar/sidebar';
+import { useSidebar } from '@/components/ui/sidebar/Sidebar';
 import { LifecycleType } from '@/features/task-management/types/index.types';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';

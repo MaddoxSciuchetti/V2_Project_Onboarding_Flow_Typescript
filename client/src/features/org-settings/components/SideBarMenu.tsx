@@ -12,26 +12,19 @@ export type SideBarMenuLinkItem = {
 
 export type SideBarMenuProps<T extends SideBarMenuLinkItem> = {
   items: readonly T[];
-  isItemActive: (item: T) => boolean;
 };
 
 function SideBarMenu<TItem extends SideBarMenuLinkItem>({
   items,
-  isItemActive,
 }: SideBarMenuProps<TItem>) {
   return (
     <>
-      {items.map((item) => {
-        const isActive = isItemActive(item);
+      {items.map((item, index: number) => {
         return (
           <Link
+            key={index}
             to={item.to}
             {...(item.search !== undefined ? { search: item.search } : {})}
-            className={
-              isActive
-                ? 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--muted)]'
-                : 'hover:bg-[var(--hover-bg)] hover:text-[var(--hover-foreground)]'
-            }
           >
             <SidebarItem label={item.label} icon={item.icon} />
           </Link>
