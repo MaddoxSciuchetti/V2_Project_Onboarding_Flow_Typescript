@@ -1,14 +1,19 @@
-import { Inbox, Settings } from 'lucide-react';
+import { BriefcaseIcon, TicketIcon, UsersIcon } from 'lucide-react';
 
 export const LAYOUTITEMS = [
   {
     title: 'Meine Handwerker',
     to: '/worker-lifycycle',
-    icon: Inbox,
+    icon: UsersIcon,
   },
   {
-    title: 'Einstellungen',
+    title: 'Aufgaben',
+    to: '/tasks',
+    icon: TicketIcon,
+  },
+  {
+    title: 'Unternehmen',
     to: '/org-settings',
-    icon: Settings,
+    icon: BriefcaseIcon,
   },
 ];

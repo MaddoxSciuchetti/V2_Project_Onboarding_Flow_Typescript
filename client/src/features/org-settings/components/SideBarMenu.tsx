@@ -1,8 +1,4 @@
-import {
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from '@/components/ui/sidebar';
+import { SidebarItem } from '@/components/ui/selfmade/sidebaritem';
 import { Link } from '@tanstack/react-router';
 import type { LucideIcon } from 'lucide-react';
 
@@ -24,42 +20,24 @@ function SideBarMenu<TItem extends SideBarMenuLinkItem>({
   isItemActive,
 }: SideBarMenuProps<TItem>) {
   return (
-    <SidebarMenu>
+    <>
       {items.map((item) => {
         const isActive = isItemActive(item);
-        const Icon = item.icon;
         return (
-          <SidebarMenuItem key={item.id}>
-            <SidebarMenuButton
-              variant="outline"
-              asChild
-              className="mt-2 rounded-xl py-5 transition-colors"
-            >
-              <Link
-                to={item.to}
-                {...(item.search !== undefined ? { search: item.search } : {})}
-                className={
-                  isActive
-                    ? 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--muted)]'
-                    : 'hover:bg-[var(--hover-bg)] hover:text-[var(--hover-foreground)]'
-                }
-              >
-                <Icon className="size-[1.15rem] shrink-0" />
-                <span
-                  className={
-                    isActive
-                      ? 'text-md font-medium text-[var(--foreground)]'
-                      : 'text-md text-muted-foreground'
-                  }
-                >
-                  {item.label}
-                </span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
+          <Link
+            to={item.to}
+            {...(item.search !== undefined ? { search: item.search } : {})}
+            className={
+              isActive
+                ? 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--muted)]'
+                : 'hover:bg-[var(--hover-bg)] hover:text-[var(--hover-foreground)]'
+            }
+          >
+            <SidebarItem label={item.label} icon={item.icon} />
+          </Link>
         );
       })}
-    </SidebarMenu>
+    </>
   );
 }
 

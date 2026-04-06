@@ -1,23 +1,37 @@
-import {
-  BriefcaseIcon,
-  MessageSquareIcon,
-  TicketIcon,
-  UsersIcon,
-} from 'lucide-react';
+import { LAYOUTITEMS } from '@/constants/layout.consts';
+import SideBarMenu from '@/features/org-settings/components/SideBarMenu';
+import { useLocation } from '@tanstack/react-router';
+import { MessageSquareIcon } from 'lucide-react';
 import '../../../../globals.css';
 import { ProfileDropdown } from '../selfmade/profiledropdown';
 import { SidebarItem } from '../selfmade/sidebaritem';
 import { Sidebar } from './Sidebar';
 function AppSidebar({ openModal }: { openModal: () => void }) {
+  const { pathname } = useLocation();
   return (
     <Sidebar>
       <div className="w-full p-2">
         <ProfileDropdown />
       </div>
       <div className="p-2 w-full flex flex-col text-left items-stretch overflow-x-hidden">
-        <SidebarItem label="Handwerker" icon={UsersIcon} />
+        <SideBarMenu
+          items={LAYOUTITEMS.map((item) => ({
+            id: item.to,
+            label: item.title,
+            icon: item.icon,
+            to: item.to,
+            search:
+              item.to === '/org-settings'
+                ? { currentTab: 'employees' }
+                : undefined,
+          }))}
+          isItemActive={(item) =>
+            pathname === item.id || pathname.startsWith(`${item.id}/`)
+          }
+        />
+        {/* <SidebarItem label="Handwerker" icon={UsersIcon} />
         <SidebarItem label="Aufgaben" icon={TicketIcon} />
-        <SidebarItem label="Unternehmen" icon={BriefcaseIcon} />
+        <SidebarItem label="Unternehmen" icon={BriefcaseIcon} /> */}
       </div>
       <div className="p-2 w-full flex flex-col overflow-x-hidden">
         <SidebarItem
