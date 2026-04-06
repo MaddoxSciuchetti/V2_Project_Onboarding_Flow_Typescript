@@ -4,13 +4,13 @@ import { LucideIcon } from 'lucide-react';
 type State = 'Default' | 'Open';
 const DropdownStates: Record<State, string> = {
   Default: 'bg-transparent',
-  Open: 'bg-transparent border-1 border-interactive-secondary-hover',
+  Open: 'bg-transparent border-1 border-border-default',
 };
 type Size = 'sm' | 'lg';
 
 const sizes: Record<Size, string> = {
   sm: 'h-8',
-  lg: 'h-10 w-50',
+  lg: 'h-9 w-60',
 };
 
 type SelectDropdownProps = {
@@ -27,17 +27,15 @@ export function SelectDropdown({
   return (
     <div
       className={cn(
-        'rounded-md flex items-center w-full',
+        'rounded-lg px-3 flex items-center w-full',
         DropdownStates[state],
         sizes[size]
       )}
     >
-      <p className="text-body-sm flex-grow text-interactive-ghost-border">
-        Maddox
-      </p>
+      <p className="text-body-sm flex-grow text-text-disabled">Maddox</p>
       <Icon
         className={cn(
-          `w-6 h-6 text-interactive-ghost-border transition-transform duration-200`,
+          `w-6 h-6 text-text-disabled transition-transform duration-200`,
           state === 'Open' ? 'rotate-90' : 'rotate-0'
         )}
       />

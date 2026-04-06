@@ -207,6 +207,8 @@
     --r-md: 0.5rem; /* 8px */
     --r-lg: 0.75rem; /* 12px */
     --r-xl: 1rem; /* 16px */
+    --r-2xl: 1.25rem; /* 20px */
+    --r-3xl: 1.5rem; /* 24px */
     --r-full: 9999px;
 
     /* ── Component Sizes ── */
@@ -517,6 +519,8 @@
     --radius-md: var(--r-md);
     --radius-lg: var(--r-lg);
     --radius-xl: var(--r-xl);
+    --radius-2xl: var(--r-2xl);
+    --radius-3xl: var(--r-3xl);
     --radius-full: var(--r-full);
 
     /* ── Spacing ── */

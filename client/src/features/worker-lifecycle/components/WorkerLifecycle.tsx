@@ -1,6 +1,8 @@
 import ErrorAlert from '@/components/alerts/ErrorAlert';
 import LoadingAlert from '@/components/alerts/LoadingAlert';
 import SearchHeaderResuable from '@/components/layout/headers/SearchHeaderResuable';
+import { HandwerkerHeader } from '@/components/ui/selfmade/molecules/handwerkerheader';
+import { HandwerkerItem } from '@/components/ui/selfmade/molecules/handwerkerItem';
 import useAuth from '@/features/user-profile/hooks/useAuth';
 import LifeCycleModal from '@/features/worker-lifecycle/components/LifeCycleModal';
 import LifeCycleTable from '@/features/worker-lifecycle/components/LifeCycleTable';
@@ -37,6 +39,8 @@ function WorkerLifeCycle() {
           engagementStatus={engagementStatus}
           setEngagementStatus={setEngagementStatus}
         />
+        <HandwerkerHeader />
+        <HandwerkerItem />
         <LifeCycleTable
           error={error}
           filtered={filtered}
