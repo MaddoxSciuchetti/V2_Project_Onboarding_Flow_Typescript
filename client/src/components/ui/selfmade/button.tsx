@@ -9,14 +9,14 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-interactive-primary-bg ',
+        default: 'bg-interactive-primary-bg text-interactive-primary-text',
         hover: 'bg-interactive-primary-hover',
         pressed: 'bg-interactive-primary-active',
         focused: 'bg-interactive-primary-focus',
         disabled: 'bg-interactive-primary-disabled',
       },
       size: {
-        default: '',
+        default: 'px-4',
         small: '',
         lg: '',
       },

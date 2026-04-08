@@ -1,11 +1,16 @@
 import ErrorAlert from '@/components/alerts/ErrorAlert';
 import LoadingAlert from '@/components/alerts/LoadingAlert';
 import SearchHeaderResuable from '@/components/layout/headers/SearchHeaderResuable';
+import {
+  ProjectHeader,
+  ProjectItem,
+  ProjectTable,
+  TableHeader,
+} from '@/components/ui/selfmade/table/Table';
 import useAuth from '@/features/user-profile/hooks/useAuth';
 import LifeCycleModal from '@/features/worker-lifecycle/components/LifeCycleModal';
-import LifeCycleTable from '@/features/worker-lifecycle/components/LifeCycleTable';
 import useHome from '@/features/worker-lifecycle/hooks/useHome';
-import ActiveArchiveHeader from './ActiveArchiveHeader';
+import { Check, CheckCheckIcon } from 'lucide-react';
 
 function WorkerLifeCycle() {
   const { user, isLoading, isError } = useAuth();
@@ -26,7 +31,7 @@ function WorkerLifeCycle() {
   if (error) return <ErrorAlert message={error.message} />;
 
   return (
-    <div className="mx-auto flex h-full w-5xl flex-col overflow-auto rounded-2xl bg-card p-6 md:max-w-8xl">
+    <div className="mx-auto flex h-full flex-col overflow-auto rounded-2xl bg-card p-6 md:max-w-8xl">
       <div className="h-full w-full flex flex-col">
         <SearchHeaderResuable
           openModal={toggleModal}
@@ -34,12 +39,30 @@ function WorkerLifeCycle() {
           setSearch={setSearch}
           description="Handwerker hinzufügen"
         />
-        <ActiveArchiveHeader mode={mode} setMode={setMode} />
-        <LifeCycleTable
+        {/* <ActiveArchiveHeader mode={mode} setMode={setMode} /> */}
+        <ProjectTable>
+          <TableHeader
+            label={'Handwerker'}
+            action={toggleModal}
+            actionLabel="Hinzufügen"
+          />
+          <ProjectHeader />
+          <ProjectItem
+            project_name="Franziskus"
+            statusInformation={{
+              status: 'test',
+              priority: 'Low',
+              lead: 'test',
+              date: 'test',
+            }}
+            icons={[Check, CheckCheckIcon]}
+          />
+        </ProjectTable>
+        {/* <LifeCycleTable
           filtered={filtered}
           mode={mode}
           gotopage={handleNavigate}
-        />
+        /> */}
         <LifeCycleModal modal={modal} toggleModal={toggleModal} />
       </div>
     </div>
