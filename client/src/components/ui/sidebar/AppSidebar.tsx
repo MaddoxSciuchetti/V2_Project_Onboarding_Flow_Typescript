@@ -1,11 +1,13 @@
 import { LAYOUTITEMS } from '@/constants/layout.consts';
-import SideBarMenu from '@/features/org-settings/components/SideBarMenu';
+
 import { useLocation } from '@tanstack/react-router';
 import { MessageSquareIcon } from 'lucide-react';
 import '../../../../globals.css';
 import { ProfileDropdown } from '../selfmade/profiledropdown';
 import { SidebarItem } from '../selfmade/sidebaritem';
-import { Sidebar } from './Sidebar';
+import { Sidebar } from './sidebar';
+import SideBarMenu from './sidebar-menu-item';
+
 function AppSidebar({ openModal }: { openModal: () => void }) {
   const { pathname } = useLocation();
   return (
