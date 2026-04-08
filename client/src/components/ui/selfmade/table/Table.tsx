@@ -6,7 +6,7 @@ import { SelectDropdown } from '../selectdropdown';
 
 function ProjectTable({ children }: { children?: React.ReactNode }) {
   return (
-    <div className="flex mt-5 w-full flex-col flex-start border border-interactive-disabled-text bg-surface-page rounded-lg">
+    <div className="flex mt-5 w-full h-full flex-col flex-start border border-interactive-disabled-text bg-surface-page rounded-lg">
       {children}
     </div>
   );
@@ -32,7 +32,10 @@ function TableHeader({ label, action, actionLabel }: TableHeaderProps) {
           state="Default"
           icon={ChevronUpIcon}
           label="Select Option"
-          options={['number1', 'number2', 'number3']}
+          options={[
+            { label: 'Archive', value: 'number1' },
+            { label: 'Option 2', value: 'number2' },
+          ]}
           setValue={setValue}
           value={value}
         />
@@ -80,8 +83,9 @@ function ProjectHeader() {
 
 type ProjectItemsProps<T extends string> = {
   project_name: string;
-  icons: LucideIcon[];
   statusInformation: StatusInformation<T>;
+  icons?: LucideIcon[];
+  img?: string[];
 };
 
 type StatusInformation<T extends string> = {
@@ -93,17 +97,20 @@ type StatusInformation<T extends string> = {
 
 function ProjectItem<T extends string>({
   project_name,
-  icons,
   statusInformation,
+  img,
 }: ProjectItemsProps<T>) {
-  const [Icon1, Icon2] = icons;
+  const [Img1, Img2] = img || [];
   return (
-    <div className="flex group">
-      {Icon1 && (
-        <Icon1 className="opacity-0 group-hover:opacity-100 absolute" />
+    <div className="flex relative group py-3 rounded-2xl hover:bg-neutral-50">
+      {Img2 && (
+        <img
+          src={Img2}
+          className="absolute ml-2 opacity-0 group-hover:opacity-100 w-5 h-5 rounded-full"
+        />
       )}
       <div className="flex grow pl-9">
-        {Icon2 && <Icon2 className="transition-opacity text-yellow-500" />}
+        {Img1 && <img src={Img1} className="w-5 h-5 rounded-full" />}
         <p className="pl-2">{project_name}</p>
       </div>
       <div className="flex">

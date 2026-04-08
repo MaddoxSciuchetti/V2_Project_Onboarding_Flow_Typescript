@@ -14,12 +14,17 @@ const sizes: Record<Size, string> = {
   lg: 'h-9 w-60',
 };
 
+type OptionsObjekt = {
+  label: string;
+  value: string;
+};
+
 type SelectDropdownProps<T extends string> = {
   state: State;
   size: Size;
   icon: LucideIcon;
   label?: string;
-  options: T[];
+  options: OptionsObjekt[];
   setValue: (value: T) => void;
   value: string;
 };
@@ -36,12 +41,11 @@ export function SelectDropdown<T extends string>({
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    document.addEventListener('click', (e) => {
-      const handleClickOutside = () => {
-        if (!ref.current?.contains(e.target as Node)) setIsOpen(false);
-      };
-      return document.removeEventListener('click', handleClickOutside);
-    });
+    const handeClick = (e: MouseEvent) => {
+      if (!ref.current?.contains(e.target as Node)) setIsOpen(false);
+    };
+    document.addEventListener('click', handeClick);
+    return () => document.removeEventListener('click', handeClick);
   }, []);
 
   return (
@@ -62,18 +66,18 @@ export function SelectDropdown<T extends string>({
         )}
       />
       {isOpen && (
-        <div className="absolute p-3 bg-surface-page top-full rounded-2xl border  left-0 w-full">
+        <div className="absolute z-10 p-3 bg-surface-page top-full rounded-2xl border  left-0 w-full">
           {options.map((option, index) => (
             <div
               className="p-3"
               onClick={(e) => {
                 e.stopPropagation();
-                setValue(option);
+                setValue(option.value as T);
                 setIsOpen(false);
               }}
               key={index}
             >
-              {option}
+              {option.label}
             </div>
           ))}
         </div>

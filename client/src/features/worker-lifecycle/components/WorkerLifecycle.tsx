@@ -10,7 +10,8 @@ import {
 import useAuth from '@/features/user-profile/hooks/useAuth';
 import LifeCycleModal from '@/features/worker-lifecycle/components/LifeCycleModal';
 import useHome from '@/features/worker-lifecycle/hooks/useHome';
-import { Check, CheckCheckIcon } from 'lucide-react';
+import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
+import ActiveArchiveHeader from './ActiveArchiveHeader';
 
 function WorkerLifeCycle() {
   const { user, isLoading, isError } = useAuth();
@@ -26,6 +27,8 @@ function WorkerLifeCycle() {
     toggleModal,
   } = useHome();
 
+  useBodyScrollLock();
+
   if (isLoading) return <LoadingAlert />;
   if (isError || !user) return <ErrorAlert />;
   if (error) return <ErrorAlert message={error.message} />;
@@ -39,7 +42,7 @@ function WorkerLifeCycle() {
           setSearch={setSearch}
           description="Handwerker hinzufügen"
         />
-        {/* <ActiveArchiveHeader mode={mode} setMode={setMode} /> */}
+        <ActiveArchiveHeader mode={mode} setMode={setMode} />
         <ProjectTable>
           <TableHeader
             label={'Handwerker'}
@@ -47,16 +50,25 @@ function WorkerLifeCycle() {
             actionLabel="Hinzufügen"
           />
           <ProjectHeader />
-          <ProjectItem
-            project_name="Franziskus"
-            statusInformation={{
-              status: 'test',
-              priority: 'Low',
-              lead: 'test',
-              date: 'test',
-            }}
-            icons={[Check, CheckCheckIcon]}
-          />
+          {filtered?.length ? (
+            filtered.map((task) => (
+              <ProjectItem
+                key={task.id}
+                project_name={`${task.vorname} ${task.nachname}`}
+                statusInformation={{
+                  status: 'test',
+                  priority: 'Low',
+                  lead: 'test',
+                  date: 'test',
+                }}
+                img={['assets/Box.svg', 'assets/BoxSelect.svg']}
+              />
+            ))
+          ) : (
+            <p className="text-center text-label-lg">
+              Keine Handwerker gefunden
+            </p>
+          )}
         </ProjectTable>
         {/* <LifeCycleTable
           filtered={filtered}
