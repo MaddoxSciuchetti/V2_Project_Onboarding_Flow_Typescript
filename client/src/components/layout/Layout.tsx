@@ -32,14 +32,12 @@ function Layout() {
   return (
     <>
       <AppSidebar openModal={handleOpenModal} />
-      <SidebarInset className="flex flex-col h-svh md:w-max-svw">
+      <SidebarInset className="flex flex-col h-svh md:w-max-svw ml-1 mb-1  rounded-xl mt-1">
         <header className="flex h-16 shrink-0 items-center gap-2 px-4">
           <SidebarTrigger className="-ml-1" />
           <PagePath />
         </header>
-        <main
-          className={`bg- flex flex-col lg:items-center grow lg:min-w-96 gap-4 p-4`}
-        >
+        <main className="flex grow flex-col gap-4 bg-background p-4 lg:min-w-96 lg:items-center">
           <div className={`grow w-full min-w-0  h-full overflow-hidden`}>
             <Outlet />
           </div>

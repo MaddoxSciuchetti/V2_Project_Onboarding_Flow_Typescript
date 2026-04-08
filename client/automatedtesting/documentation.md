@@ -2,6 +2,21 @@ Purpose of this document is to keep track of changing tests
 
 Test Driven development for clearer intent
 
--Commit 0a108a1 which adds a new sidebar and a new provider. This changes the entire outcome of how the sidebar looks and how a user interacts with it. Integration and unit tests passes. End to end test fails.
--The solution was to change how the test was written, as no longe the email was being displayed in the sidebar but the first name.
+Changes Implemented
+
+adds a new sidebar and a new provider. This changes the entire outcome of how the sidebar looks and how a user interacts with it. Integration and unit tests passes. End to end test fails.
+
+What It Broke / How Test Behaviour Changed
+
+E2E test did not work anymore.
+
+e.g. The existing test failed because the return value of compareChoices() included a trailing \n character that the expected string did not account for. This caused the equality check to return false even though the logic was correct.
+
+What I Did To Fix It
+
+-The solution was to change how the test was written, as no longer the email was being displayed in the sidebar but the first name. The code need to change to adapt to the new sidebar integration and therefore render the correct firstname instead of the email (Change of outcome and of the functionality). The above changes made all tests pass.
 Effort was low as only the expectation of what is visible had to change
+
+-Commit 0a108a1 - 2991768 which
+
+---
