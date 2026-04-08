@@ -21,3 +21,5 @@ quicker feedback loop, saves manual work, unit tests show you examples of how a 
 frontend testing (end to end, integration, unit tests)
 selenium, puppeteer -> hit certain buttons that than take a screenshot of the result
 interface testing with the dom
+
+Reason example etc
