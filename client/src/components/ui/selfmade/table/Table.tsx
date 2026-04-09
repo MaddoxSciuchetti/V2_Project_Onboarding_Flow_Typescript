@@ -15,7 +15,7 @@ function ProjectTable({ children }: { children?: React.ReactNode }) {
 
 type TableHeaderProps = {
   label: string;
-  action: () => void;
+  action?: () => void;
   actionLabel: string;
 };
 
@@ -43,7 +43,7 @@ function TableHeader({ label, action, actionLabel }: TableHeaderProps) {
         <Button
           className="text-label-sm"
           variant="default"
-          onClick={() => action()}
+          onClick={() => action?.()}
         >
           {actionLabel}
         </Button>
