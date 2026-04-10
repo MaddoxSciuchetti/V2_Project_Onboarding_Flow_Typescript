@@ -44,6 +44,12 @@ export const registerSchema = loginSchema
             .max(255, {
                 message: VALIDATION_MESSAGES.maxLength("Last name", 255),
             }),
+        displayName: z
+            .string()
+            .min(1, { message: VALIDATION_MESSAGES.required("Display name") })
+            .max(255, {
+                message: VALIDATION_MESSAGES.maxLength("Display name", 255),
+            }),
     })
     .refine((data) => data.password === data.confirmPassword, {
         message: VALIDATION_MESSAGES.valuesMustMatch(

@@ -40,6 +40,7 @@ import { generateRawToken, hashToken } from "@/utils/v2/tokenV2";
 export type CreateAccountParams = {
     firstName: string;
     lastName: string;
+    displayName: string;
     email: string;
     password: string;
     confirmPassword: string;
@@ -110,6 +111,7 @@ export const createAccount = async (data: CreateAccountParams) => {
             passwordHash: hashedPassword,
             firstName: data.firstName,
             lastName: data.lastName,
+            displayName: data.displayName,
         },
         omit: { passwordHash: true },
     });
@@ -175,6 +177,7 @@ export const registerOrgAccount = async (data: RegisterOrgInput) => {
                 passwordHash: hashedPassword,
                 firstName: data.firstName,
                 lastName: data.lastName,
+                displayName: data.displayName,
             },
             omit: { passwordHash: true },
         });
