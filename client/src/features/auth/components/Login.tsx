@@ -1,11 +1,12 @@
-import { Button } from '@/components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { login } from '../api/auth.api';
 import { LoginFormValues, loginSchema } from '../schemas/auth.schemas';
+import { LoginAction } from './LoginAction';
 import { InputFields } from './LoginBody';
+import { PasswordForgot } from './PasswordForgot';
 import DoorManCard from './resuable/DoorManCard';
 import DoorManFooter from './resuable/DoorManFooter';
 
@@ -57,32 +58,13 @@ export function LoginComponent() {
           </p>
         )}
         <InputFields errors={errors} register={register} />
-        <div className="mt-4">
-          <Button
-            type="button"
-            onClick={() => navigate({ to: '/password/forgot' })}
-            className="text-foreground underline text-sm hover:text-accent-foreground"
-          >
-            Forgot Password?
-          </Button>
-        </div>
-
-        <div className="mt-6 space-y-3">
-          <Button
-            variant={'outline'}
-            type="submit"
-            className="w-full cursor-pointer"
-            disabled={isPending}
-          >
-            {isPending ? 'Logging in...' : 'Login'}
-          </Button>
-
-          <DoorManFooter
-            description={`Don't have an account? ${''}`}
-            action="Sign up"
-            nav={() => navigate({ to: `/signup` })}
-          />
-        </div>
+        <PasswordForgot />
+        <LoginAction isPending={isPending} />
+        <DoorManFooter
+          description={`Don't have an account? ${''}`}
+          action="Sign up"
+          nav={() => navigate({ to: `/signup` })}
+        />
       </form>
     </DoorManCard>
   );
