@@ -17,6 +17,7 @@ const sizes: Record<Size, string> = {
 type OptionsObjekt = {
   label: string;
   value: string;
+  action?: () => void;
 };
 
 type SelectDropdownProps<T extends string> = {
@@ -66,14 +67,15 @@ export function SelectDropdown<T extends string>({
         )}
       />
       {isOpen && (
-        <div className="absolute z-10 p-3 bg-surface-page top-full rounded-2xl border  left-0 w-full">
+        <div className="absolute z-10 p-2 bg-surface-page top-full rounded-xl border  left-0 w-full">
           {options.map((option, index) => (
             <div
-              className="p-3"
+              className=""
               onClick={(e) => {
                 e.stopPropagation();
                 setValue(option.value as T);
                 setIsOpen(false);
+                option.action ? option.action() : () => {};
               }}
               key={index}
             >

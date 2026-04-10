@@ -20,6 +20,7 @@ type ProjectItemProps = {
 function ProjectItem({ worker, gotopage }: ProjectItemProps) {
   const form_type = getFirstFormType(worker);
   const fullname = `${worker.firstName} ${worker.lastName}`;
+
   return (
     <Items
       className="flex relative items-center"

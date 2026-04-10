@@ -26,3 +26,7 @@ Decided to create my own components -> this let to me having to change the aria 
 ---
 
 I decided to create a completely new table where i also removed how filteres were being applied. This made me need to change my tests again so that they adapt to the new functional requirements
+
+---
+
+Integrate breking changes into the new signup flow. A user can no longer signup with with normal required fields. The user now can only signup when creating a entire new org (this required more changes than intially thought (details regarding the implementation will follow)
