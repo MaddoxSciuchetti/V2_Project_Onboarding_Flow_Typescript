@@ -34,3 +34,9 @@ Example:
 -Ensure that no more than 6 props are being used for a component. If a component has more think about how you would refactor this
 
 -always remove dead code we have git history in case it is needed
+
+-always move a mutation inside a hook together with react hook form.
+
+---
+
+Major functional refactor in the login component. I did this because my login logic changed in terms of that it was not only a user login and signup but a login, a login over a link, a org signup. My tests continiued to pass after this change.
