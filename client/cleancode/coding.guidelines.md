@@ -21,3 +21,13 @@ quicker feedback loop, saves manual work, unit tests show you examples of how a 
 frontend testing (end to end, integration, unit tests)
 selenium, puppeteer -> hit certain buttons that than take a screenshot of the result
 interface testing with the dom
+
+Reason example etc
+
+After feedback:
+
+-Make components resuable. There should not be one element inside it that is specific to the instance when it is being used. Use typescript for this.
+Example:
+
+-Use custom compound components to ensure maximum flexibility
+-Always use a value as a key when mapping over a item. This prevents unessary rerenders (can confuse the dom)

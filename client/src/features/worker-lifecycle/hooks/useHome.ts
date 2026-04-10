@@ -1,4 +1,3 @@
-import { useSidebar } from '@/components/ui/sidebar';
 import { LifecycleType } from '@/features/task-management/types/index.types';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
@@ -10,12 +9,11 @@ function useHome() {
   const [search, setSearch] = useState('');
   const [modal, setModal] = useState<boolean>(false);
   const [mode, setMode] = useState<WorkerListMode>('active');
-  const { toggleSidebar } = useSidebar();
+
   const navigate = useNavigate({ from: '/' });
 
   const toggleModal = () => {
     setModal((prev) => !prev);
-    toggleSidebar();
   };
 
   const { data, error, isSuccess } = useQuery(
