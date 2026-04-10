@@ -6,6 +6,8 @@ import { User } from '@/features/user-profile/types/auth.type';
 import {
   LoginRequest,
   LoginResponse,
+  RegisterOrgRequest,
+  RegisterOrgResponse,
   RegisterRequest,
   RegisterResponse,
   TresetPassword,
@@ -28,6 +30,15 @@ export const signup = async (
   data: RegisterRequest
 ): Promise<RegisterResponse> => {
   return API.post<RegisterRequest, RegisterResponse>('/auth/register', data);
+};
+
+export const signupOrg = async (
+  data: RegisterOrgRequest
+): Promise<RegisterOrgResponse> => {
+  return API.post<RegisterOrgRequest, RegisterOrgResponse>(
+    '/auth/v2/register/org',
+    data
+  );
 };
 
 export const verifyEmail = async (

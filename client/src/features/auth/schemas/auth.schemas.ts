@@ -47,14 +47,58 @@ export const registerSchema = loginSchema
       .string()
       .min(1, { message: 'Last name is required' })
       .max(255, { message: 'Last name must be at most 255 characters' }),
+    displayName: z
+      .string()
+      .trim()
+      .min(1, { message: 'Display name is required' })
+      .max(255, { message: 'Display name must be at most 255 characters' }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: 'Password and confirm password must match',
     path: ['confirmPassword'],
   });
 
+export const registerOrgSchema = registerSchema.extend({
+  orgName: z
+    .string()
+    .min(1, { message: 'Company name is required' })
+    .max(255, { message: 'Company name must be at most 255 characters' }),
+  orgDescription: z
+    .string()
+    .max(1000, { message: 'Description must be at most 1000 characters' })
+    .optional(),
+  orgEmail: z
+    .string()
+    .email({ message: 'Invalid email address' })
+    .max(255, { message: 'Org email must be at most 255 characters' })
+    .optional()
+    .or(z.literal('')),
+  orgPhoneNumber: z
+    .string()
+    .max(50, { message: 'Org phone number must be at most 50 characters' })
+    .optional(),
+  orgWebsiteUrl: z
+    .string()
+    .url({ message: 'Must be a valid URL' })
+    .optional()
+    .or(z.literal('')),
+  orgCountry: z
+    .string()
+    .max(100, { message: 'Country must be at most 100 characters' })
+    .optional(),
+  orgIndustry: z
+    .string()
+    .max(100, { message: 'Industry must be at most 100 characters' })
+    .optional(),
+  orgSize: z.enum(['1-10', '11-50', '51-200', '201-500', '500+']).optional(),
+});
+
 export type LoginFormValues = Omit<z.infer<typeof loginSchema>, 'userAgent'>;
 export type RegisterFormValues = Omit<
   z.infer<typeof registerSchema>,
+  'userAgent'
+>;
+export type RegisterOrgFormValues = Omit<
+  z.infer<typeof registerOrgSchema>,
   'userAgent'
 >;

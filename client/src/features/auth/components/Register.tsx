@@ -1,10 +1,10 @@
 import CenteredDiv from '@/components/alerts/layout-wrapper/CenteredDiv';
-import FormFields from '@/components/form/FormFields';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import { useNavigate } from '@tanstack/react-router';
 import { useOrgSignup } from '../hooks/useOrgSignup';
-import PasswordValidationBar from './password_validation/PasswordValidationBar';
+import { OrgSignupBody } from './OrgSignupBody';
+import { RegisterBody } from './RegisterBody';
 import DoorManCard from './resuable/DoorManCard';
 import DoorManFooter from './resuable/DoorManFooter';
 
@@ -14,6 +14,9 @@ export function SignupForm() {
     register,
     handleSubmit,
     onSubmit,
+    goToStepTwo,
+    goToStepOne,
+    step,
     errors,
     isPending,
     error,
@@ -36,74 +39,40 @@ export function SignupForm() {
         </div>
       )}
       <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-6">
-        <div className="space-y-2">
-          <FormFields
-            errors={errors}
-            register={register}
-            name="email"
-            label="Email Address"
-            labelClassName="text-foreground text-sm font-medium"
-            id="email"
-            type="email"
-            className="border-input bg-background text-foreground"
-          />
-        </div>
-        <div className="flex gap-3">
-          <div className="space-y-2 flex-1">
-            <FormFields
+        {step === 1 ? (
+          <>
+            <RegisterBody
               errors={errors}
               register={register}
-              name="firstName"
-              label="Vorname"
-              labelClassName="text-foreground text-sm font-medium"
-              id="firstName"
-              type="text"
-              className="border-input bg-background text-foreground"
+              passwordValue={passwordValue}
             />
-          </div>
-          <div className="space-y-2 flex-1">
-            <FormFields
-              errors={errors}
-              register={register}
-              name="lastName"
-              id="lastName"
-              type="text"
-              label="Nachname"
-              labelClassName="text-foreground text-sm font-medium"
-              className="border-input bg-background text-foreground"
-            />
-          </div>
-        </div>
-
-        <div className="space-y-2">
-          <FormFields
-            errors={errors}
-            register={register}
-            name="password"
-            label="Password"
-            labelClassName="text-foreground text-sm font-medium"
-            id="password"
-            type="password"
-            className="border-input bg-background text-foreground"
-          />
-          <PasswordValidationBar password={passwordValue} minLength={6} />
-        </div>
-
-        <div className="space-y-2">
-          <FormFields
-            errors={errors}
-            register={register}
-            name="confirmPassword"
-            label="Confirm Password"
-            labelClassName="text-foreground text-sm font-medium"
-            id="confirmPassword"
-            type="password"
-            className="border-input bg-background text-foreground"
-          />
-        </div>
-        <Button type="submit" className="my-2 w-full" variant={'outline'}>
-          Create Account
-        </Button>
+            <Button
+              type="button"
+              className="my-2 w-full"
+              variant={'outline'}
+              onClick={goToStepTwo}
+            >
+              Continue
+            </Button>
+          </>
+        ) : (
+          <>
+            <OrgSignupBody errors={errors} register={register} />
+            <div className="flex gap-2">
+              <Button
+                type="button"
+                className="flex-1"
+                variant={'secondary'}
+                onClick={goToStepOne}
+              >
+                Back
+              </Button>
+              <Button type="submit" className="flex-1" variant={'outline'}>
+                Create Account
+              </Button>
+            </div>
+          </>
+        )}
         <DoorManFooter
           description={`Already have an account? ${''}`}
           action="Signin"
