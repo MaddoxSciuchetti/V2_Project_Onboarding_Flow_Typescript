@@ -1,5 +1,5 @@
 import { cn } from '@/lib/trycatch';
-import React, { ReactNode } from 'react';
+import React, { HTMLAttributes, ReactNode } from 'react';
 import '../../../../../globals.css';
 
 function Table({ children }: { children?: React.ReactNode }) {
@@ -70,19 +70,19 @@ function ItemHeader({
   );
 }
 
-function Items({
-  children,
-  className,
-}: {
+type ItemsProps = {
   children: ReactNode;
   className?: string;
-}) {
+} & HTMLAttributes<HTMLDivElement>;
+
+function Items({ children, className, ...props }: ItemsProps) {
   return (
     <div
       className={cn(
         `flex items-center relative group py-4 rounded-2xl hover:bg-neutral-50`,
         className
       )}
+      {...props}
     >
       {children}
     </div>

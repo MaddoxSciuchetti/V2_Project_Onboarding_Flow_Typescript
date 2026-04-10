@@ -23,14 +23,12 @@ function WorkerLifeCycle() {
   const { user, isLoading, isError } = useAuth();
   const {
     error,
-    filtered,
-    handleNavigate,
+    workers,
     modal,
-    mode,
     search,
     setSearch,
-    setMode,
     toggleModal,
+    handleNavigate,
   } = useHome();
 
   useBodyScrollLock();
@@ -68,14 +66,18 @@ function WorkerLifeCycle() {
               <p className="text-body-sm">Name</p>
             </GrowingItem>
             <CellHolder>
-              <Cell className="text-body-sm">Priority</Cell>
-              <Cell className="text-body-sm">Lead</Cell>
-              <Cell className="text-body-sm">Status</Cell>
+              <Cell className="text-body-sm">Type</Cell>
+              <Cell className="text-body-sm">Verantwortlich</Cell>
               <Cell className="text-body-sm">Zuletzt bearbeitet</Cell>
+              <Cell className="text-body-sm">Status</Cell>
             </CellHolder>
           </ItemHeader>
-          {filtered?.map((value) => (
-            <ProjectItem key={value.id} />
+          {workers?.map((worker) => (
+            <ProjectItem
+              key={worker.id}
+              worker={worker}
+              gotopage={handleNavigate}
+            />
           ))}
         </Table>
 

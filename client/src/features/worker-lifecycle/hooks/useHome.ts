@@ -16,24 +16,14 @@ function useHome() {
     setModal((prev) => !prev);
   };
 
-  const { data, error, isSuccess } = useQuery(
-    workerLifecycleQueries.workerData(mode)
+  const { data: workers, error } = useQuery(
+    workerLifecycleQueries.workerData()
   );
 
-  const isEmpty = isSuccess && data?.length === 0;
-
-  const filtered = data?.filter((item) => {
-    const matchesSearch = item.vorname
-      .toLowerCase()
-      .includes(search.toLowerCase());
-    const matchesMode =
-      mode === 'archived' ? item.archivedAt !== null : item.archivedAt === null;
-
-    return matchesSearch && matchesMode;
-  });
+  console.log(workers);
 
   const handleNavigate = (
-    taskId: number,
+    taskId: string,
     form_type: LifecycleType,
     workerName: string
   ) => {
@@ -49,8 +39,7 @@ function useHome() {
   };
 
   return {
-    isEmpty,
-    filtered,
+    workers,
     handleNavigate,
     modal,
     mode,
