@@ -22,10 +22,6 @@ export function SettingsSidebar({
               label: item.title,
               icon: item.icon,
               to: item.to,
-              search:
-                item.to === '/org-settings'
-                  ? { currentTab: 'employees' }
-                  : undefined,
             }))}
           />
         </div>

@@ -25,12 +25,12 @@ export const LAYOUTITEMS = [
 export const SETTINGSITEMS = [
   {
     title: 'Unternehmen',
-    to: '/org-settings',
+    to: '/settings/company',
     icon: Building,
   },
   {
     title: 'Mitarbeiter',
-    to: '/org-settings',
+    to: '/settings/employees',
     icon: UserRound,
   },
   {

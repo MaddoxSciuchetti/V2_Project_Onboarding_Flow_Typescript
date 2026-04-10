@@ -25,7 +25,7 @@ export function ProfileDropdown({
             value: 'settings',
             action: () => {
               setIsSettingOpen(true);
-              navigate({ to: '/settings' });
+              navigate({ to: '/settings/company' });
             },
           },
         ]}
