@@ -4,7 +4,11 @@ import { ChevronUpIcon } from 'lucide-react';
 import { Avatar } from './avatar';
 import { SelectDropdown } from './selectdropdown';
 
-export function ProfileDropdown() {
+export function ProfileDropdown({
+  setIsSettingOpen,
+}: {
+  setIsSettingOpen: (isSettingOpen: boolean) => void;
+}) {
   const { user } = useAuth();
   const navigate = useNavigate();
   return (
@@ -19,7 +23,10 @@ export function ProfileDropdown() {
           {
             label: 'settings',
             value: 'settings',
-            action: () => navigate({ to: '/settings' }),
+            action: () => {
+              setIsSettingOpen(true);
+              navigate({ to: '/settings' });
+            },
           },
         ]}
         setValue={() => {}}

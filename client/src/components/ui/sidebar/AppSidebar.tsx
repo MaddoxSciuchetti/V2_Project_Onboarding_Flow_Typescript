@@ -7,11 +7,17 @@ import { SidebarItem } from '../selfmade/sidebaritem';
 import { Sidebar } from './sidebar';
 import SideBarMenu from './sidebar-menu-item';
 
-function AppSidebar({ openModal }: { openModal: () => void }) {
+function AppSidebar({
+  openModal,
+  setIsSettingOpen,
+}: {
+  openModal: () => void;
+  setIsSettingOpen: (isSettingOpen: boolean) => void;
+}) {
   return (
     <Sidebar>
       <div className="w-full p-2">
-        <ProfileDropdown />
+        <ProfileDropdown setIsSettingOpen={setIsSettingOpen} />
         <div className="mt-5">
           <SideBarMenu
             items={LAYOUTITEMS.map((item) => ({

@@ -10,11 +10,13 @@ import {
   useSidebar,
 } from '../ui/sidebar/sidebar';
 import PagePath from './headers/PagePath';
+import { SettingsSidebar } from './SettingsSidebar';
 
 function Layout() {
   const [modal, setModal] = useState<boolean>(false);
   const { toggleSidebar } = useSidebar();
   const { theme } = useThemeProvider();
+  const [isSettingOpen, setIsSettingOpen] = useState<boolean>(false);
 
   const handleOpenModal = () => {
     setModal((prev) => !prev);
@@ -31,7 +33,14 @@ function Layout() {
 
   return (
     <>
-      <AppSidebar openModal={handleOpenModal} />
+      {isSettingOpen ? (
+        <SettingsSidebar setIsSettingOpen={setIsSettingOpen} />
+      ) : (
+        <AppSidebar
+          openModal={handleOpenModal}
+          setIsSettingOpen={setIsSettingOpen}
+        />
+      )}
       <SidebarInset className="flex flex-col grow h-svh ml-1 mb-1  rounded-xl mt-1">
         <header className="flex h-16 shrink-0 items-center gap-2 px-4">
           <SidebarTrigger className="-ml-1" />
