@@ -2,9 +2,20 @@ import { cn } from '@/lib/trycatch';
 import React, { HTMLAttributes, ReactNode } from 'react';
 import '../../../../../globals.css';
 
-function Table({ children }: { children?: React.ReactNode }) {
+function Table({
+  children,
+  className,
+}: {
+  children?: React.ReactNode;
+  className?: string;
+}) {
   return (
-    <div className="flex mt-5 w-full h-full flex-col flex-start border border-interactive-disabled-text bg-surface-page rounded-lg">
+    <div
+      className={cn(
+        'flex mt-5 w-full h-full flex-col flex-start border border-interactive-disabled-text bg-surface-page rounded-lg',
+        className
+      )}
+    >
       {children}
     </div>
   );
@@ -16,11 +27,17 @@ function TableDivider() {
 
 type TableHeaderProps = {
   children: ReactNode;
+  className?: string;
 };
 
-function TableHeader({ children }: TableHeaderProps) {
+function TableHeader({ children, className }: TableHeaderProps) {
   return (
-    <div className="px-2 flex w-full items-center gap-10 bg-transparent">
+    <div
+      className={cn(
+        'px-2 flex w-full items-center gap-10 bg-transparent',
+        className
+      )}
+    >
       {children}
     </div>
   );

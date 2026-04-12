@@ -1,4 +1,4 @@
-import Mitarbeiter from '@/features/settings/mitarbeiter/Mitarbeiter';
+import Employees from '@/features/settings/employees/Employees';
 import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/settings/employees')({
@@ -6,5 +6,5 @@ export const Route = createFileRoute('/settings/employees')({
 });
 
 function RouteComponent() {
-  return <Mitarbeiter />;
+  return <Employees />;
 }
