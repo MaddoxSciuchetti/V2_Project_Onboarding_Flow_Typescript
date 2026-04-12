@@ -83,21 +83,30 @@ function ItemHeader({
   className?: string;
 }) {
   return (
-    <div className={cn(`flex  items-centerw-full`, className)}>{children}</div>
+    <div className={cn(`flex items-center w-full`, className)}>{children}</div>
   );
 }
+type ItemState = 'default' | 'hover' | 'active';
+
+const ItemsState: Record<ItemState, string> = {
+  default: 'bg-transparent',
+  hover: 'hover:bg-neutral-50',
+  active: 'bg-neutral-100',
+};
 
 type ItemsProps = {
+  state: ItemState;
   children: ReactNode;
   className?: string;
 } & HTMLAttributes<HTMLDivElement>;
 
-function Items({ children, className, ...props }: ItemsProps) {
+function Items({ state, children, className, ...props }: ItemsProps) {
   return (
     <div
       className={cn(
-        `flex items-center relative group py-4 rounded-2xl hover:bg-neutral-50`,
-        className
+        `flex items-center relative group py-4 rounded-2xl`,
+        className,
+        ItemsState[state]
       )}
       {...props}
     >

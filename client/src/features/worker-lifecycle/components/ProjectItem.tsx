@@ -23,6 +23,7 @@ function ProjectItem({ worker, gotopage }: ProjectItemProps) {
 
   return (
     <Items
+      state="hover"
       className="flex relative items-center"
       onClick={() => gotopage(worker.id, form_type, fullname)}
     >

@@ -2,7 +2,7 @@
 
 @layer base {
   body {
-    background-color: var(--neutral-400);
+    background-color: var(--surface-page);
   }
   /* ─────────────────────────────────────
      ROOT — Light mode
@@ -15,7 +15,8 @@
     --card-foreground: oklch(0.145 0 0);
     --popover: oklch(1 0 0);
     --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
+    /* Brand primary — Figma Tokens/Interactive/primary-bg → neutral-950 */
+    --primary: oklch(0.129 0.042 264.695);
     --primary-foreground: oklch(0.985 0 0);
     --secondary: oklch(0.97 0 0);
     --secondary-foreground: oklch(0.205 0 0);
@@ -27,30 +28,24 @@
     --destructive-foreground: oklch(0.577 0.245 27.325);
     --border: oklch(0.922 0 0);
     --input: oklch(0.922 0 0);
-    --ring: oklch(0.708 0 0);
-    --radius: 0.625rem;
+    /* Figma Tokens/Interactive/focus-ring → neutral-500 */
+    --ring: oklch(0.554 0.046 257.417);
+    /* Base radius — matches Figma Tokens/Radius/md (8) */
+    --radius: 0.5rem;
     --sidebar: oklch(0.985 0 0);
     --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
+    --sidebar-primary: oklch(0.129 0.042 264.695);
     --sidebar-primary-foreground: oklch(0.985 0 0);
     --sidebar-accent: oklch(0.97 0 0);
     --sidebar-accent-foreground: oklch(0.205 0 0);
     --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.708 0 0);
+    --sidebar-ring: oklch(0.554 0.046 257.417);
 
-    /* ── Primitives / Blue ── */
-    --blue-50: #eff6ff;
-    --blue-100: #dbeafe;
-    --blue-200: #bfdbfe;
-    --blue-300: #93c5fd;
-    --blue-400: #60a5fa;
-    --blue-500: #3b82f6;
-    --blue-600: #2563eb;
-    --blue-700: #1d4ed8;
-    --blue-800: #1e40af;
-    --blue-900: #1e3a8a;
-    --blue-950: #172554;
-
+    /*
+     * Primitives / Neutral — Figma: Primitives/Brand/Neutral/neutral-*
+     * Legacy Tailwind `blue-*` utilities are aliased to this scale in @theme (Figma removed
+     * blue primitives; brand chrome uses the same slate ramp as Primitives/Brand/Primary/black-*).
+     */
     /* ── Primitives / Neutral ── */
     --neutral-0: #ffffff;
     --neutral-50: #f8fafc;
@@ -115,26 +110,26 @@
     --text-secondary: var(--neutral-500);
     --text-disabled: var(--neutral-400);
     --text-inverse: var(--neutral-0);
-    --text-brand: var(--blue-600);
+    --text-brand: var(--neutral-950);
     --text-danger: var(--red-700);
     --text-success: var(--green-700);
     --text-warning: var(--amber-700);
 
-    /* ── Tokens / Interactive / Primary ── */
-    --interactive-primary-bg: var(--blue-600);
-    --interactive-primary-hover: var(--blue-700);
-    --interactive-primary-active: var(--blue-800);
+    /* ── Tokens / Interactive / Primary — Figma: Tokens/Interactive/primary-* ── */
+    --interactive-primary-bg: var(--neutral-950);
+    --interactive-primary-hover: var(--neutral-900);
+    --interactive-primary-active: var(--neutral-800);
     --interactive-primary-text: var(--neutral-0);
 
-    /* ── Tokens / Interactive / Secondary ── */
-    --interactive-secondary-bg: var(--blue-50);
-    --interactive-secondary-hover: var(--blue-100);
-    --interactive-secondary-text: var(--blue-700);
+    /* ── Tokens / Interactive / Secondary — Figma: Tokens/Interactive/secondary-* ── */
+    --interactive-secondary-bg: var(--neutral-100);
+    --interactive-secondary-hover: var(--neutral-200);
+    --interactive-secondary-text: var(--neutral-900);
 
-    /* ── Tokens / Interactive / Ghost ── */
-    --interactive-ghost-border: var(--blue-300);
-    --interactive-ghost-text: var(--blue-600);
-    --interactive-ghost-bg-hover: var(--blue-50);
+    /* ── Tokens / Interactive / Ghost — Figma: Tokens/Interactive/ghost-* ── */
+    --interactive-ghost-border: var(--neutral-300);
+    --interactive-ghost-text: var(--neutral-900);
+    --interactive-ghost-bg-hover: var(--neutral-50);
 
     /* ── Tokens / Interactive / Disabled ── */
     --interactive-disabled-bg: var(--neutral-100);
@@ -142,7 +137,7 @@
     --interactive-disabled-border: var(--neutral-200);
 
     /* ── Tokens / Interactive / Focus ── */
-    --interactive-focus-ring: var(--blue-500);
+    --interactive-focus-ring: var(--neutral-500);
 
     /* ── Tokens / Interactive / Danger ── */
     --interactive-danger-bg: var(--red-600);
@@ -154,7 +149,7 @@
     --border-subtle: var(--neutral-100);
     --border-default: var(--neutral-200);
     --border-strong: var(--neutral-400);
-    --border-brand: var(--blue-400);
+    --border-brand: var(--neutral-400);
 
     /* ── Tokens / Feedback / Danger ── */
     --feedback-danger-bg: var(--red-50);
@@ -180,16 +175,15 @@
     --feedback-warning-icon: var(--amber-500);
     --feedback-warning-solid: var(--amber-600);
 
-    /* ── Tokens / Feedback / Info ── */
-    --feedback-info-bg: var(--blue-50);
-    --feedback-info-bg-strong: var(--blue-100);
-    --feedback-info-border: var(--blue-200);
-    --feedback-info-text: var(--blue-700);
-    --feedback-info-icon: var(--blue-500);
-    --feedback-info-solid: var(--blue-600);
+    /* ── Tokens / Feedback / Info — Figma: Tokens/Feedback/info-* (neutral slate) ── */
+    --feedback-info-bg: var(--neutral-50);
+    --feedback-info-bg-strong: var(--neutral-100);
+    --feedback-info-border: var(--neutral-200);
+    --feedback-info-text: var(--neutral-800);
+    --feedback-info-icon: var(--neutral-600);
+    --feedback-info-solid: var(--neutral-700);
 
-    /* ── Tokens / Spacing ── */
-    /* ── Spacing ── */
+    /* ── Spacing — Figma Primitives/Scale/space/* (px → rem) ── */
     --space-1: 0.25rem; /* 4px */
     --space-2: 0.5rem; /* 8px */
     --space-3: 0.75rem; /* 12px */
@@ -246,7 +240,8 @@
     --destructive-foreground: oklch(0.637 0.237 25.331);
     --border: oklch(0.269 0 0);
     --input: oklch(0.269 0 0);
-    --ring: oklch(0.439 0 0);
+    /* Focus ring — aligns with --interactive-focus-ring (neutral-400) */
+    --ring: oklch(0.704 0.04 256.788);
     --sidebar: oklch(0.205 0 0);
     --sidebar-foreground: oklch(0.985 0 0);
     --sidebar-primary: oklch(0.488 0.243 264.376);
@@ -254,7 +249,7 @@
     --sidebar-accent: oklch(0.269 0 0);
     --sidebar-accent-foreground: oklch(0.985 0 0);
     --sidebar-border: oklch(0.269 0 0);
-    --sidebar-ring: oklch(0.439 0 0);
+    --sidebar-ring: oklch(0.704 0.04 256.788);
 
     /* ── Tokens / Surface ── */
     --surface-page: var(--neutral-900);
@@ -267,26 +262,26 @@
     --text-secondary: var(--neutral-400);
     --text-disabled: var(--neutral-600);
     --text-inverse: var(--neutral-900);
-    --text-brand: var(--blue-400);
+    --text-brand: var(--neutral-50);
     --text-danger: var(--red-400);
     --text-success: var(--green-400);
     --text-warning: var(--amber-400);
 
-    /* ── Tokens / Interactive / Primary ── */
-    --interactive-primary-bg: var(--blue-500);
-    --interactive-primary-hover: var(--blue-400);
-    --interactive-primary-active: var(--blue-600);
-    --interactive-primary-text: var(--neutral-0);
+    /* ── Tokens / Interactive / Primary (dark UI) ── */
+    --interactive-primary-bg: var(--neutral-50);
+    --interactive-primary-hover: var(--neutral-100);
+    --interactive-primary-active: var(--neutral-200);
+    --interactive-primary-text: var(--neutral-950);
 
     /* ── Tokens / Interactive / Secondary ── */
-    --interactive-secondary-bg: var(--blue-950);
-    --interactive-secondary-hover: var(--blue-900);
-    --interactive-secondary-text: var(--blue-300);
+    --interactive-secondary-bg: var(--neutral-800);
+    --interactive-secondary-hover: var(--neutral-700);
+    --interactive-secondary-text: var(--neutral-100);
 
     /* ── Tokens / Interactive / Ghost ── */
-    --interactive-ghost-border: var(--blue-700);
-    --interactive-ghost-text: var(--blue-400);
-    --interactive-ghost-bg-hover: var(--blue-950);
+    --interactive-ghost-border: var(--neutral-600);
+    --interactive-ghost-text: var(--neutral-100);
+    --interactive-ghost-bg-hover: var(--neutral-800);
 
     /* ── Tokens / Interactive / Disabled ── */
     --interactive-disabled-bg: var(--neutral-800);
@@ -294,7 +289,7 @@
     --interactive-disabled-border: var(--neutral-700);
 
     /* ── Tokens / Interactive / Focus ── */
-    --interactive-focus-ring: var(--blue-400);
+    --interactive-focus-ring: var(--neutral-400);
 
     /* ── Tokens / Interactive / Danger ── */
     --interactive-danger-bg: var(--red-700);
@@ -306,7 +301,7 @@
     --border-subtle: var(--neutral-800);
     --border-default: var(--neutral-700);
     --border-strong: var(--neutral-600);
-    --border-brand: var(--blue-700);
+    --border-brand: var(--neutral-500);
 
     /* ── Tokens / Feedback / Danger ── */
     --feedback-danger-bg: var(--red-950);
@@ -332,13 +327,13 @@
     --feedback-warning-icon: var(--amber-400);
     --feedback-warning-solid: var(--amber-600);
 
-    /* ── Tokens / Feedback / Info ── */
-    --feedback-info-bg: var(--blue-950);
-    --feedback-info-bg-strong: var(--blue-900);
-    --feedback-info-border: var(--blue-800);
-    --feedback-info-text: var(--blue-400);
-    --feedback-info-icon: var(--blue-400);
-    --feedback-info-solid: var(--blue-500);
+    /* ── Tokens / Feedback / Info (dark UI) ── */
+    --feedback-info-bg: var(--neutral-900);
+    --feedback-info-bg-strong: var(--neutral-800);
+    --feedback-info-border: var(--neutral-700);
+    --feedback-info-text: var(--neutral-200);
+    --feedback-info-icon: var(--neutral-400);
+    --feedback-info-solid: var(--neutral-300);
   }
 
   /* ─────────────────────────────────────
@@ -380,18 +375,20 @@
     --font-sans: 'DM Sans', sans-serif;
     --font-heading: 'Inter Display', sans-serif;
 
-    /* ── Blue primitives ── */
-    --color-blue-50: var(--blue-50);
-    --color-blue-100: var(--blue-100);
-    --color-blue-200: var(--blue-200);
-    --color-blue-300: var(--blue-300);
-    --color-blue-400: var(--blue-400);
-    --color-blue-500: var(--blue-500);
-    --color-blue-600: var(--blue-600);
-    --color-blue-700: var(--blue-700);
-    --color-blue-800: var(--blue-800);
-    --color-blue-900: var(--blue-900);
-    --color-blue-950: var(--blue-950);
+    /*
+     * Legacy `blue-*` color utilities — mapped to neutral scale (Figma brand primary ramp).
+     */
+    --color-blue-50: var(--neutral-50);
+    --color-blue-100: var(--neutral-100);
+    --color-blue-200: var(--neutral-200);
+    --color-blue-300: var(--neutral-300);
+    --color-blue-400: var(--neutral-400);
+    --color-blue-500: var(--neutral-500);
+    --color-blue-600: var(--neutral-600);
+    --color-blue-700: var(--neutral-700);
+    --color-blue-800: var(--neutral-800);
+    --color-blue-900: var(--neutral-900);
+    --color-blue-950: var(--neutral-950);
 
     /* ── Neutral primitives ── */
     --color-neutral-0: var(--neutral-0);
