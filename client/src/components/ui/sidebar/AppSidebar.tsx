@@ -1,10 +1,11 @@
 import { LAYOUTITEMS } from '@/constants/layout.consts';
+import { cn } from '@/lib/trycatch';
 
 import { MessageSquareIcon } from 'lucide-react';
 import '../../../../globals.css';
 import { ProfileDropdown } from '../selfmade/profiledropdown';
 import { SidebarItem } from '../selfmade/sidebaritem';
-import { Sidebar } from './sidebar';
+import { Sidebar, useSidebar } from './sidebar';
 import SideBarMenu from './sidebar-menu-item';
 
 function AppSidebar({
@@ -16,12 +17,22 @@ function AppSidebar({
   setIsSettingOpen: (isSettingOpen: boolean) => void;
   className?: string;
 }) {
+  const { state } = useSidebar();
+  const isCollapsed = state === 'collapsed';
+
   return (
-    <Sidebar className={className}>
+    <Sidebar
+      collapsible="icon"
+      className={cn('flex flex-col justify-between', className)}
+    >
       <div className="w-full p-2">
-        <ProfileDropdown setIsSettingOpen={setIsSettingOpen} />
+        <ProfileDropdown
+          setIsSettingOpen={setIsSettingOpen}
+          collapsed={isCollapsed}
+        />
         <div className="mt-5">
           <SideBarMenu
+            collapsed={isCollapsed}
             items={LAYOUTITEMS.map((item) => ({
               id: item.to,
               label: item.title,
@@ -40,6 +51,7 @@ function AppSidebar({
           onClick={() => openModal()}
           label="Feedback"
           icon={MessageSquareIcon}
+          collapsed={isCollapsed}
         />
       </div>
     </Sidebar>
