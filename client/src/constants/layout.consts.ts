@@ -29,6 +29,11 @@ export const LAYOUTITEMS = [
 
 export const SETTINGSITEMS = [
   {
+    title: 'Profil',
+    to: '/settings/profile',
+    icon: UserRound,
+  },
+  {
     title: 'Unternehmen',
     to: '/settings/company',
     icon: Building,

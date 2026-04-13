@@ -1,6 +1,6 @@
 import z from 'zod';
 
-const emailSchema = z
+export const emailSchema = z
   .string()
   .min(1, { message: 'Email is required' })
   .email({ message: 'Invalid email address' })

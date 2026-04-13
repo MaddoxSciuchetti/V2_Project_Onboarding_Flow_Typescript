@@ -19,6 +19,7 @@ import { Route as HomeRouteImport } from './routes/home'
 import { Route as EmployeeOverviewRouteImport } from './routes/employee-overview'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UserIdRouteImport } from './routes/user/$Id'
+import { Route as SettingsProfileRouteImport } from './routes/settings/profile'
 import { Route as SettingsEmployeesRouteImport } from './routes/settings/employees'
 import { Route as SettingsCompanyRouteImport } from './routes/settings/company'
 import { Route as PasswordResetRouteImport } from './routes/password/reset'
@@ -75,6 +76,11 @@ const UserIdRoute = UserIdRouteImport.update({
   path: '/user/$Id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SettingsProfileRoute = SettingsProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => SettingsRoute,
+} as any)
 const SettingsEmployeesRoute = SettingsEmployeesRouteImport.update({
   id: '/employees',
   path: '/employees',
@@ -115,6 +121,7 @@ export interface FileRoutesByFullPath {
   '/password/reset': typeof PasswordResetRoute
   '/settings/company': typeof SettingsCompanyRoute
   '/settings/employees': typeof SettingsEmployeesRoute
+  '/settings/profile': typeof SettingsProfileRoute
   '/user/$Id': typeof UserIdRoute
   '/email/verify/$code': typeof EmailVerifyCodeRoute
 }
@@ -132,6 +139,7 @@ export interface FileRoutesByTo {
   '/password/reset': typeof PasswordResetRoute
   '/settings/company': typeof SettingsCompanyRoute
   '/settings/employees': typeof SettingsEmployeesRoute
+  '/settings/profile': typeof SettingsProfileRoute
   '/user/$Id': typeof UserIdRoute
   '/email/verify/$code': typeof EmailVerifyCodeRoute
 }
@@ -150,6 +158,7 @@ export interface FileRoutesById {
   '/password/reset': typeof PasswordResetRoute
   '/settings/company': typeof SettingsCompanyRoute
   '/settings/employees': typeof SettingsEmployeesRoute
+  '/settings/profile': typeof SettingsProfileRoute
   '/user/$Id': typeof UserIdRoute
   '/email/verify/$code': typeof EmailVerifyCodeRoute
 }
@@ -169,6 +178,7 @@ export interface FileRouteTypes {
     | '/password/reset'
     | '/settings/company'
     | '/settings/employees'
+    | '/settings/profile'
     | '/user/$Id'
     | '/email/verify/$code'
   fileRoutesByTo: FileRoutesByTo
@@ -186,6 +196,7 @@ export interface FileRouteTypes {
     | '/password/reset'
     | '/settings/company'
     | '/settings/employees'
+    | '/settings/profile'
     | '/user/$Id'
     | '/email/verify/$code'
   id:
@@ -203,6 +214,7 @@ export interface FileRouteTypes {
     | '/password/reset'
     | '/settings/company'
     | '/settings/employees'
+    | '/settings/profile'
     | '/user/$Id'
     | '/email/verify/$code'
   fileRoutesById: FileRoutesById
@@ -295,6 +307,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UserIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/settings/profile': {
+      id: '/settings/profile'
+      path: '/profile'
+      fullPath: '/settings/profile'
+      preLoaderRoute: typeof SettingsProfileRouteImport
+      parentRoute: typeof SettingsRoute
+    }
     '/settings/employees': {
       id: '/settings/employees'
       path: '/employees'
@@ -336,11 +355,13 @@ declare module '@tanstack/react-router' {
 interface SettingsRouteChildren {
   SettingsCompanyRoute: typeof SettingsCompanyRoute
   SettingsEmployeesRoute: typeof SettingsEmployeesRoute
+  SettingsProfileRoute: typeof SettingsProfileRoute
 }
 
 const SettingsRouteChildren: SettingsRouteChildren = {
   SettingsCompanyRoute: SettingsCompanyRoute,
   SettingsEmployeesRoute: SettingsEmployeesRoute,
+  SettingsProfileRoute: SettingsProfileRoute,
 }
 
 const SettingsRouteWithChildren = SettingsRoute._addFileChildren(

@@ -12,7 +12,7 @@ function Table({
   return (
     <div
       className={cn(
-        'flex mt-5 w-full h-full flex-col flex-start border border-interactive-disabled-text bg-surface-page rounded-lg',
+        'flex mt-5 w-full h-full flex-col flex-start border border-interactive-disabled-border bg-surface-page rounded-2xl',
         className
       )}
     >
