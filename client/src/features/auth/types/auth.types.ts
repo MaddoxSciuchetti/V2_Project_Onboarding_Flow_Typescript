@@ -39,7 +39,7 @@ export type RegisterOrgResponse = {
 
 export type LoginRequest = Omit<
   RegisterRequest,
-  'confirmPassword' | 'firstName' | 'lastName'
+  'confirmPassword' | 'firstName' | 'lastName' | 'displayName'
 >;
 
 export type LoginResponse = Omit<RegisterResponse, 'user'>;
@@ -51,4 +51,32 @@ export type Verify = {
 export type TresetPassword = {
   verificationCode: string;
   password: string;
+};
+
+export type CreateInviteRequest = {
+  email: string;
+  roleId?: string;
+};
+
+export type CreateInviteResponse = {
+  message: string;
+  inviteId: string;
+};
+
+export type InviteDetailsResponse = {
+  orgName: string;
+  email: string;
+};
+
+export type AcceptInviteRequest = {
+  displayName: string;
+  firstName: string;
+  lastName: string;
+  password: string;
+  confirmPassword: string;
+};
+
+export type AcceptInviteResponse = {
+  user: User;
+  organizationId: string;
 };
