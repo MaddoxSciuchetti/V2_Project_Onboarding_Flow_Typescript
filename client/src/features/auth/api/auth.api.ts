@@ -25,7 +25,7 @@ export const sendPasswordResetEmail = async (
   API.post('/auth/password/forgot', { email });
 
 export const getUser = async (): Promise<User> => {
-  return API.get<User, User>('/user');
+  return API.get<User, User>('/user/v2');
 };
 
 export const login = async (data: LoginRequest): Promise<LoginResponse> => {
