@@ -1,5 +1,5 @@
 import { FRONTENDURL } from "@/constants/env";
-import { CONFLICT, NOT_FOUND } from "@/constants/http";
+import { CONFLICT, FORBIDDEN, NOT_FOUND } from "@/constants/http";
 import { prisma } from "@/lib/prisma";
 import type {
     AcceptInviteInput,
@@ -41,6 +41,29 @@ export const createInvite = async (
 
     const org = await prisma.organization.findUnique({ where: { id: orgId } });
     appAssert(org, NOT_FOUND, "Organization not found");
+
+    const inviterMembership = await prisma.organizationMember.findFirst({
+        where: {
+            organizationId: orgId,
+            userId: invitedByUserId,
+        },
+        include: {
+            role: {
+                select: { name: true },
+            },
+        },
+    });
+    appAssert(inviterMembership, FORBIDDEN, "Only organization members can invite");
+    appAssert(
+        inviterMembership.role.name === "Owner",
+        FORBIDDEN,
+        "Only organization owners can invite users",
+    );
+
+    const existingUser = await prisma.newUser.findUnique({
+        where: { email: normalizedEmail },
+    });
+    appAssert(!existingUser, CONFLICT, "An account with this email already exists");
 
     const existingMember = await prisma.organizationMember.findFirst({
         where: { organizationId: orgId, user: { email: normalizedEmail } },
@@ -149,6 +172,7 @@ export const acceptInvite = async (
             data: {
                 email: normalizedEmail,
                 passwordHash: hashedPassword,
+                displayName: data.displayName,
                 firstName: data.firstName,
                 lastName: data.lastName,
             },
