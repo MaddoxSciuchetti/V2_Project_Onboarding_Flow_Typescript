@@ -2,7 +2,7 @@
 
 @layer base {
   body {
-    background-color: var(--surface-page);
+    background-color: var(--gray-100);
   }
   /* ─────────────────────────────────────
      ROOT — Light mode

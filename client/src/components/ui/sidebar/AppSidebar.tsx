@@ -10,12 +10,14 @@ import SideBarMenu from './sidebar-menu-item';
 function AppSidebar({
   openModal,
   setIsSettingOpen,
+  className,
 }: {
   openModal: () => void;
   setIsSettingOpen: (isSettingOpen: boolean) => void;
+  className?: string;
 }) {
   return (
-    <Sidebar>
+    <Sidebar className={className}>
       <div className="w-full p-2">
         <ProfileDropdown setIsSettingOpen={setIsSettingOpen} />
         <div className="mt-5">

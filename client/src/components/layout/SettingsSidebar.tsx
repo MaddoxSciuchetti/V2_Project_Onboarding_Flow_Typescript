@@ -6,11 +6,13 @@ import SideBarMenu from '../ui/sidebar/sidebar-menu-item';
 
 export function SettingsSidebar({
   setIsSettingOpen,
+  className,
 }: {
+  className?: string;
   setIsSettingOpen: (isSettingOpen: boolean) => void;
 }) {
   return (
-    <Sidebar>
+    <Sidebar className={className}>
       <div className="w-full p-2">
         <Button onClick={() => setIsSettingOpen(false)}>
           <ArrowLeftIcon className="w-6 h-6" />

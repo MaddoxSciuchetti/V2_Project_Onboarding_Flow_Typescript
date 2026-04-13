@@ -34,20 +34,24 @@ function Layout() {
   return (
     <>
       {isSettingOpen ? (
-        <SettingsSidebar setIsSettingOpen={setIsSettingOpen} />
+        <SettingsSidebar
+          className="rounded-2xl"
+          setIsSettingOpen={setIsSettingOpen}
+        />
       ) : (
         <AppSidebar
+          className="rounded-2xl"
           openModal={handleOpenModal}
           setIsSettingOpen={setIsSettingOpen}
         />
       )}
-      <SidebarInset className="flex flex-col grow h-svh ml-1 mb-1  rounded-xl mt-1">
+      <SidebarInset className="mt-1 mb-1 ml-1 flex h-[calc(100svh-0.5rem)] grow flex-col overflow-hidden rounded-2xl border border-border bg-background">
         <header className="flex h-16 shrink-0 items-center gap-2 px-4">
           <SidebarTrigger className="-ml-1" />
           <PagePath />
         </header>
-        <main className="flex grow flex-col gap-4 bg-background p-4 lg:items-center">
-          <div className={`grow w-full min-w-0  h-full overflow-hidden`}>
+        <main className="flex min-h-0 grow flex-col gap-4 bg-background p-4 lg:items-center">
+          <div className="h-full w-full min-h-0 min-w-0 grow overflow-auto">
             <Outlet />
           </div>
         </main>

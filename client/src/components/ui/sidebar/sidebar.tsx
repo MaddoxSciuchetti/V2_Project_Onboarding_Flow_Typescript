@@ -67,7 +67,6 @@ function CustomSideBarProvider({
   );
 
   const toggleSidebar = useCallback(() => {
-    console.log('toggleSidebar');
     setOpen((open) => !open);
   }, [setOpen]);
 
@@ -113,7 +112,7 @@ function CustomSideBarProvider({
           } as React.CSSProperties
         }
         className={cn(
-          'group/sidebar-wrapper has-data-[variant=inset]:bg-sidebar flex min-h-svh w-full',
+          'group/sidebar-wrapper flex min-h-svh w-full bg-neutral-100 dark:bg-neutral-900',
           className
         )}
         {...props}
@@ -159,7 +158,7 @@ function Sidebar({
       <div
         data-slot="sidebar-gap "
         className={cn(
-          'relative w-48 bg-transparent',
+          'relative w-[12.25rem] bg-transparent',
           'transition-[width] duration-200 ease-linear',
           'group-data-[collapsible=offcanvas]:w-0'
         )}
@@ -168,17 +167,19 @@ function Sidebar({
       <div
         data-slot="sidebar-container"
         className={cn(
-          'fixed inset-y-0 left-0 z-10 h-svh w-48',
+          'fixed inset-y-1 left-1 z-10 h-[calc(100svh-0.5rem)] w-48',
           'transition-[left,width] duration-200 ease-linear',
-          'group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]',
-          className
+          'group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]'
         )}
         {...props}
       >
         <div
           data-sidebar="sidebar"
           data-slot="sidebar-inner"
-          className="justify-between rounded-r-xl flex h-full w-full flex-col mt-1 mb-1  py-6  min-w-48 max-w-35 bg-card"
+          className={cn(
+            'flex h-full w-full min-w-48 max-w-35 flex-col justify-between overflow-hidden rounded-2xl border border-border bg-card py-6',
+            className
+          )}
         >
           {children}
         </div>
@@ -218,7 +219,7 @@ function SidebarInset({ className, ...props }: React.ComponentProps<'main'>) {
     <main
       data-slot="sidebar-inset"
       className={cn(
-        'bg-background relative flex w-full flex-1 flex-col',
+        'relative flex w-full flex-1 flex-col bg-background',
         'md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow-sm md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2',
         className
       )}
