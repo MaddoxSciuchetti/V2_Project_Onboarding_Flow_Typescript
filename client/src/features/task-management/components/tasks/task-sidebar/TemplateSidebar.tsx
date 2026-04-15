@@ -2,7 +2,7 @@ import FormFields from '@/components/form/FormFields';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/selfmade/button';
 import { FormWrapper } from '@/components/ui/selfmade/form-wrapper';
-import type { TemplateEditState } from '@/features/template-tasks/components/TemplateTask';
+import type { TemplateEditState } from '@/features/template-tasks/components/Templates';
 import { useSubmitTemplate } from '@/features/template-tasks/hooks/useSubmitTemplate';
 import { Check, X } from 'lucide-react';
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
@@ -27,7 +27,10 @@ function TemplateSidebar({
   templateEditState,
   templateState,
 }: TemplateSidebarProps) {
-  const { register, handleSubmit, onSubmit, errors } = useSubmitTemplate();
+  const { register, handleSubmit, onSubmit, errors } = useSubmitTemplate(
+    templateState,
+    templateEditState.templateId
+  );
   return (
     <>
       {isOpen ? (

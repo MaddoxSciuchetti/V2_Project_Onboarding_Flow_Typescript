@@ -2,6 +2,7 @@ import { CREATED, NOT_FOUND, OK } from "@/constants/http";
 import {
     insertTemplate,
     insertTemplateTask,
+    modifyTemplate,
     modifyTemplateTask,
     queryTemplateById,
     queryTemplates,
@@ -48,6 +49,19 @@ export const getTemplateById = catchErrors(async (req, res) => {
     const template = await queryTemplateById(id, orgId);
     appAssert(template, NOT_FOUND, "Template not found");
 
+    return res.status(OK).json(template);
+});
+
+export const updateTemplate = catchErrors(async (req, res) => {
+    const id = getParam(req.params.id);
+    const { templateName, templateDescription, type } = req.body;
+    const orgId = req.orgId;
+
+    const template = await modifyTemplate(id, {
+        templateName,
+        templateDescription,
+        type,
+    });
     return res.status(OK).json(template);
 });
 

@@ -18,7 +18,7 @@ export type TemplateEditState = {
   templateType: string | null;
 };
 
-function TemplateTasks() {
+function Templates() {
   const { data: templates, isLoading } = useGetTemplates();
   const [isOpen, setIsOpen] = useState(false);
   const [isEditTemplate, setIsEditTemplate] = useState<TemplateEditState>({
@@ -72,4 +72,4 @@ function TemplateTasks() {
   );
 }
 
-export default TemplateTasks;
+export default Templates;

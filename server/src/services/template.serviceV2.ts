@@ -136,6 +136,26 @@ export const removeTemplate = async (id: string, orgId: string) => {
     });
 };
 
+type ModifyTemplateParams = {
+    templateName: string;
+    templateDescription: string;
+    type?: string;
+};
+
+export const modifyTemplate = async (
+    id: string,
+    data: ModifyTemplateParams,
+) => {
+    return await prisma.issueTemplate.update({
+        where: { id },
+        data: {
+            templateName: data.templateName,
+            templateDescription: data.templateDescription,
+            type: data.type,
+        },
+    });
+};
+
 // ============================================================
 // TEMPLATE ITEM (pseudo issue)
 // ============================================================

@@ -11,7 +11,10 @@ export type TemplateSubmission = {
   type?: string;
 };
 
-export function useSubmitTemplate() {
+export function useSubmitTemplate(
+  templateState: 'create' | 'edit',
+  templateId: string
+) {
   const {
     register,
     handleSubmit,
@@ -35,16 +38,31 @@ export function useSubmitTemplate() {
     templateMutations.createTemplate()
   );
 
+  const { mutate: updateTemplate } = useMutation(templateMutations.update());
+
   const onSubmit = handleSubmit((data) => {
-    console.log(data);
-    createTemplate(data, {
-      onSuccess: () => {
-        toast.success('Template created successfully');
-      },
-      onError: () => {
-        toast.error('Failed to create template');
-      },
-    });
+    if (templateState === 'create') {
+      createTemplate(data, {
+        onSuccess: () => {
+          toast.success('Template created successfully');
+        },
+        onError: () => {
+          toast.error('Failed to create template');
+        },
+      });
+    } else {
+      updateTemplate(
+        { templateId, data },
+        {
+          onSuccess: () => {
+            toast.success('Template updated successfully');
+          },
+          onError: () => {
+            toast.error('Failed to update template');
+          },
+        }
+      );
+    }
   });
 
   return {

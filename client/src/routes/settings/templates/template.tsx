@@ -1,4 +1,4 @@
-import TemplateTasks from '@/features/template-tasks/components/TemplateTask';
+import Templates from '@/features/template-tasks/components/Templates';
 import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/settings/templates/template')({
@@ -6,5 +6,5 @@ export const Route = createFileRoute('/settings/templates/template')({
 });
 
 function RouteComponent() {
-  return <TemplateTasks />;
+  return <Templates />;
 }

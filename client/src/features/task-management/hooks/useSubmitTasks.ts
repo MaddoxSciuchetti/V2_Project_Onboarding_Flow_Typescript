@@ -5,8 +5,12 @@ import { toast } from 'sonner';
 import { DEFAULT_TEMPLATE_PRIORITY } from '../consts/priority-options';
 import type { TemplateTaskFormValues } from '../types/index.types';
 
-export function useSubmitTasks(templateId: string) {
+export function useSubmitTasks(
+  templateId: string,
+  templateTaskState: 'create' | 'edit'
+) {
   const { mutate: createTask } = useMutation(taskMutations.createTask());
+  const { mutate: updateTask } = useMutation(taskMutations.updateTask());
 
   const {
     register,
@@ -23,13 +27,23 @@ export function useSubmitTasks(templateId: string) {
   });
 
   const onSubmit = handleSubmit((data) => {
-    createTask(
-      { templateId, data },
-      {
-        onSuccess: () => toast.success('Aufgabe gespeichert'),
-        onError: () => toast.error('Aufgabe konnte nicht gespeichert werden'),
-      }
-    );
+    if (templateTaskState === 'create') {
+      createTask(
+        { templateId, data },
+        {
+          onSuccess: () => toast.success('Aufgabe gespeichert'),
+          onError: () => toast.error('Aufgabe konnte nicht gespeichert werden'),
+        }
+      );
+    } else {
+      updateTask(
+        { templateId, data },
+        {
+          onSuccess: () => toast.success('Aufgabe gespeichert'),
+          onError: () => toast.error('Aufgabe konnte nicht gespeichert werden'),
+        }
+      );
+    }
   });
 
   return {

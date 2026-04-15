@@ -5,7 +5,6 @@ import type {
 } from '@/features/task-management/types/index.types';
 import { SuccessResponse } from '@/types/api.types';
 import { TemplateSubmission } from '../hooks/useSubmitTemplate';
-import { EditDescriptionData } from '../types/taskForm.types';
 import type { IssueTemplateListItem } from '../types/template.types';
 
 export type DeleteTaskResponse = {
@@ -75,10 +74,30 @@ export const deleteTemplateTask = async (
   >(`/template/task/${id}`);
   return response;
 };
-export const updateTemplateTask = async (data: EditDescriptionData) => {
-  const response = await API.put<EditDescriptionData, EditDescriptionData>(
-    `/template/updateTask/${data.form_field_id}`,
+
+export type UpdateTemplateParams = {
+  data: TemplateSubmission;
+  templateId: string;
+};
+
+export const updateTemplate = async ({
+  data,
+  templateId,
+}: UpdateTemplateParams) => {
+  const response = await API.put<UpdateTemplateParams, TemplateSubmission>(
+    `/template/${templateId}`,
     data
   );
+  return response;
+};
+
+export const updateTemplateTask = async (
+  data: TemplateTaskFormValues,
+  templateId: string
+) => {
+  const response = await API.put<
+    TemplateTaskFormValues,
+    TemplateTaskFormValues
+  >(`/template/task/${templateId}`, data);
   return response;
 };

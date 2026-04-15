@@ -5,7 +5,7 @@ import { PencilIcon, TrashIcon } from 'lucide-react';
 import { Dispatch, SetStateAction } from 'react';
 import { useDeleteTemplate } from '../hooks/useDeleteTemplate';
 import type { IssueTemplateListItem } from '../types/template.types';
-import type { TemplateEditState } from './TemplateTask';
+import type { TemplateEditState } from './Templates';
 
 type TemplateItemProps = {
   templates: IssueTemplateListItem[];

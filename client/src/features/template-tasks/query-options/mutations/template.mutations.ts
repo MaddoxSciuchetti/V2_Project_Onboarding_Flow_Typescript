@@ -4,14 +4,14 @@ import { mutationOptions } from '@tanstack/react-query';
 import {
   createTemplateTaskV2,
   deleteTemplate,
-  updateTemplateTask,
+  updateTemplate,
+  UpdateTemplateParams,
 } from '../../api';
 import {
   DESCRIPTION_ROOT,
   TEMPLATES_LIST_ROOT,
 } from '../../consts/query-key.consts';
 import { TemplateSubmission } from '../../hooks/useSubmitTemplate';
-import { EditDescriptionData } from '../../types/taskForm.types';
 
 export const templateMutations = {
   delete: () => {
@@ -23,8 +23,9 @@ export const templateMutations = {
   },
 
   update: () => {
-    return mutationOptions<EditDescriptionData, Error, EditDescriptionData>({
-      mutationFn: updateTemplateTask,
+    return mutationOptions<TemplateSubmission, Error, UpdateTemplateParams>({
+      mutationFn: ({ data, templateId }) =>
+        updateTemplate({ data, templateId }),
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: [DESCRIPTION_ROOT] });
       },

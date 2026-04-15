@@ -27,8 +27,11 @@ export function TaskSidebar({
   templateTaskState,
   editTemplateTask,
 }: TaskSidebarProps) {
-  const { register, handleSubmit, errors, onSubmit, control } =
-    useSubmitTasks(templateId);
+  const { register, handleSubmit, errors, onSubmit, control } = useSubmitTasks(
+    templateId,
+    templateTaskState
+  );
+
   return (
     <SidebarAside isOpen={isOpen}>
       <SidebarPanel>
