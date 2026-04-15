@@ -1,5 +1,6 @@
 import { Cell, GrowingItem, Items } from '@/components/ui/selfmade/table/Table';
 import { cn } from '@/lib/trycatch';
+import { useNavigate } from '@tanstack/react-router';
 import type { IssueTemplateListItem } from '../types/template.types';
 
 type TemplateItemProps = {
@@ -7,6 +8,8 @@ type TemplateItemProps = {
 };
 
 export function TemplateItem({ templates }: TemplateItemProps) {
+  const navigate = useNavigate();
+
   if (templates.length === 0) {
     return null;
   }
@@ -18,9 +21,15 @@ export function TemplateItem({ templates }: TemplateItemProps) {
           key={template.id}
           state="hover"
           className={cn(
-            'w-full min-w-0 items-center justify-between gap-6',
+            'w-full min-w-0 cursor-pointer items-center justify-between gap-6',
             'px-6 py-4'
           )}
+          onClick={() =>
+            navigate({
+              to: '/settings/templates/$id',
+              params: { id: template.id },
+            })
+          }
         >
           <GrowingItem
             className={cn(

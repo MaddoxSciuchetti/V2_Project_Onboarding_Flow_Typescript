@@ -42,7 +42,7 @@ export const SETTINGSITEMS = [
   },
   {
     title: 'Templates',
-    to: '/settings/template',
+    to: '/settings/templates/template',
     icon: FileText,
   },
 ];

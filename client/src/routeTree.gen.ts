@@ -18,13 +18,14 @@ import { Route as HomeRouteImport } from './routes/home'
 import { Route as EmployeeOverviewRouteImport } from './routes/employee-overview'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UserIdRouteImport } from './routes/user/$Id'
-import { Route as SettingsTemplateRouteImport } from './routes/settings/template'
 import { Route as SettingsProfileRouteImport } from './routes/settings/profile'
 import { Route as SettingsIssueStatusesRouteImport } from './routes/settings/issue-statuses'
 import { Route as SettingsEngagementStatusesRouteImport } from './routes/settings/engagement-statuses'
 import { Route as SettingsEmployeesRouteImport } from './routes/settings/employees'
 import { Route as PasswordResetRouteImport } from './routes/password/reset'
 import { Route as PasswordForgotRouteImport } from './routes/password/forgot'
+import { Route as SettingsTemplatesTemplateRouteImport } from './routes/settings/templates/template'
+import { Route as SettingsTemplatesIdRouteImport } from './routes/settings/templates/$id'
 import { Route as EmailVerifyCodeRouteImport } from './routes/email/verify/$code'
 
 const WorkerLifycycleRoute = WorkerLifycycleRouteImport.update({
@@ -72,11 +73,6 @@ const UserIdRoute = UserIdRouteImport.update({
   path: '/user/$Id',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SettingsTemplateRoute = SettingsTemplateRouteImport.update({
-  id: '/template',
-  path: '/template',
-  getParentRoute: () => SettingsRoute,
-} as any)
 const SettingsProfileRoute = SettingsProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -108,6 +104,17 @@ const PasswordForgotRoute = PasswordForgotRouteImport.update({
   path: '/password/forgot',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SettingsTemplatesTemplateRoute =
+  SettingsTemplatesTemplateRouteImport.update({
+    id: '/templates/template',
+    path: '/templates/template',
+    getParentRoute: () => SettingsRoute,
+  } as any)
+const SettingsTemplatesIdRoute = SettingsTemplatesIdRouteImport.update({
+  id: '/templates/$id',
+  path: '/templates/$id',
+  getParentRoute: () => SettingsRoute,
+} as any)
 const EmailVerifyCodeRoute = EmailVerifyCodeRouteImport.update({
   id: '/email/verify/$code',
   path: '/email/verify/$code',
@@ -129,9 +136,10 @@ export interface FileRoutesByFullPath {
   '/settings/engagement-statuses': typeof SettingsEngagementStatusesRoute
   '/settings/issue-statuses': typeof SettingsIssueStatusesRoute
   '/settings/profile': typeof SettingsProfileRoute
-  '/settings/template': typeof SettingsTemplateRoute
   '/user/$Id': typeof UserIdRoute
   '/email/verify/$code': typeof EmailVerifyCodeRoute
+  '/settings/templates/$id': typeof SettingsTemplatesIdRoute
+  '/settings/templates/template': typeof SettingsTemplatesTemplateRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -148,9 +156,10 @@ export interface FileRoutesByTo {
   '/settings/engagement-statuses': typeof SettingsEngagementStatusesRoute
   '/settings/issue-statuses': typeof SettingsIssueStatusesRoute
   '/settings/profile': typeof SettingsProfileRoute
-  '/settings/template': typeof SettingsTemplateRoute
   '/user/$Id': typeof UserIdRoute
   '/email/verify/$code': typeof EmailVerifyCodeRoute
+  '/settings/templates/$id': typeof SettingsTemplatesIdRoute
+  '/settings/templates/template': typeof SettingsTemplatesTemplateRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -168,9 +177,10 @@ export interface FileRoutesById {
   '/settings/engagement-statuses': typeof SettingsEngagementStatusesRoute
   '/settings/issue-statuses': typeof SettingsIssueStatusesRoute
   '/settings/profile': typeof SettingsProfileRoute
-  '/settings/template': typeof SettingsTemplateRoute
   '/user/$Id': typeof UserIdRoute
   '/email/verify/$code': typeof EmailVerifyCodeRoute
+  '/settings/templates/$id': typeof SettingsTemplatesIdRoute
+  '/settings/templates/template': typeof SettingsTemplatesTemplateRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -189,9 +199,10 @@ export interface FileRouteTypes {
     | '/settings/engagement-statuses'
     | '/settings/issue-statuses'
     | '/settings/profile'
-    | '/settings/template'
     | '/user/$Id'
     | '/email/verify/$code'
+    | '/settings/templates/$id'
+    | '/settings/templates/template'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -208,9 +219,10 @@ export interface FileRouteTypes {
     | '/settings/engagement-statuses'
     | '/settings/issue-statuses'
     | '/settings/profile'
-    | '/settings/template'
     | '/user/$Id'
     | '/email/verify/$code'
+    | '/settings/templates/$id'
+    | '/settings/templates/template'
   id:
     | '__root__'
     | '/'
@@ -227,9 +239,10 @@ export interface FileRouteTypes {
     | '/settings/engagement-statuses'
     | '/settings/issue-statuses'
     | '/settings/profile'
-    | '/settings/template'
     | '/user/$Id'
     | '/email/verify/$code'
+    | '/settings/templates/$id'
+    | '/settings/templates/template'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -312,13 +325,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UserIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/settings/template': {
-      id: '/settings/template'
-      path: '/template'
-      fullPath: '/settings/template'
-      preLoaderRoute: typeof SettingsTemplateRouteImport
-      parentRoute: typeof SettingsRoute
-    }
     '/settings/profile': {
       id: '/settings/profile'
       path: '/profile'
@@ -361,6 +367,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PasswordForgotRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/settings/templates/template': {
+      id: '/settings/templates/template'
+      path: '/templates/template'
+      fullPath: '/settings/templates/template'
+      preLoaderRoute: typeof SettingsTemplatesTemplateRouteImport
+      parentRoute: typeof SettingsRoute
+    }
+    '/settings/templates/$id': {
+      id: '/settings/templates/$id'
+      path: '/templates/$id'
+      fullPath: '/settings/templates/$id'
+      preLoaderRoute: typeof SettingsTemplatesIdRouteImport
+      parentRoute: typeof SettingsRoute
+    }
     '/email/verify/$code': {
       id: '/email/verify/$code'
       path: '/email/verify/$code'
@@ -376,7 +396,8 @@ interface SettingsRouteChildren {
   SettingsEngagementStatusesRoute: typeof SettingsEngagementStatusesRoute
   SettingsIssueStatusesRoute: typeof SettingsIssueStatusesRoute
   SettingsProfileRoute: typeof SettingsProfileRoute
-  SettingsTemplateRoute: typeof SettingsTemplateRoute
+  SettingsTemplatesIdRoute: typeof SettingsTemplatesIdRoute
+  SettingsTemplatesTemplateRoute: typeof SettingsTemplatesTemplateRoute
 }
 
 const SettingsRouteChildren: SettingsRouteChildren = {
@@ -384,7 +405,8 @@ const SettingsRouteChildren: SettingsRouteChildren = {
   SettingsEngagementStatusesRoute: SettingsEngagementStatusesRoute,
   SettingsIssueStatusesRoute: SettingsIssueStatusesRoute,
   SettingsProfileRoute: SettingsProfileRoute,
-  SettingsTemplateRoute: SettingsTemplateRoute,
+  SettingsTemplatesIdRoute: SettingsTemplatesIdRoute,
+  SettingsTemplatesTemplateRoute: SettingsTemplatesTemplateRoute,
 }
 
 const SettingsRouteWithChildren = SettingsRoute._addFileChildren(

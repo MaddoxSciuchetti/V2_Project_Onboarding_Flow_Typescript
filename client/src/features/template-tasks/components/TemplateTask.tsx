@@ -12,7 +12,6 @@ import { useEffect, useState } from 'react';
 import z from 'zod';
 import useFetchTask from '../hooks/useFetchTask';
 import { useGetTemplates } from '../hooks/useGetTemplates';
-import { useSubmitTemplate } from '../hooks/useSubmitTemplate';
 import useTemplateModalContext from '../hooks/useTemplateModalContext';
 import AddTemplateModal from './AddTemplateModal';
 import EditTemplateModal from './EditTemplateModal';
@@ -30,7 +29,6 @@ function TemplateTasks() {
     paginatedType,
   } = useFetchTask();
 
-  const { register, handleSubmit, onSubmit, errors } = useSubmitTemplate();
   const { data: templates, isLoading, isError } = useGetTemplates();
 
   const { modalState, closeTask, openCreateTask, openEditTask, tab, setTab } =
