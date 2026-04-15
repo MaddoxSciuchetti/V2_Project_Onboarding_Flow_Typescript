@@ -7,7 +7,10 @@ import {
   deleteTemplateTask,
   updateTemplateTask,
 } from '../../api';
-import { DESCRIPTION_ROOT } from '../../consts/query-key.consts';
+import {
+  DESCRIPTION_ROOT,
+  TEMPLATES_LIST_ROOT,
+} from '../../consts/query-key.consts';
 import { TemplateSubmission } from '../../hooks/useSubmitTemplate';
 import { EditDescriptionData } from '../../types/taskForm.types';
 
@@ -33,7 +36,7 @@ export const templateMutations = {
     return mutationOptions<TemplateSubmission, Error, TemplateSubmission>({
       mutationFn: createTemplateTaskV2,
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: [DESCRIPTION_ROOT] });
+        queryClient.invalidateQueries({ queryKey: [TEMPLATES_LIST_ROOT] });
       },
     });
   },

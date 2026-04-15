@@ -15,12 +15,13 @@ import { useSubmitTemplate } from '../hooks/useSubmitTemplate';
 import useTemplateModalContext from '../hooks/useTemplateModalContext';
 import AddTemplateModal from './AddTemplateModal';
 import EditTemplateModal from './EditTemplateModal';
+import { TemplateItem } from './TemplateItem';
+import { useGetTemplates } from '../hooks/useGetTemplates';
 
 function TemplateTasks() {
   const {
     filteredByType,
     taskLengthByTemplateType,
-    isLoading,
     search,
     setSearch,
     currentPage,
@@ -30,6 +31,7 @@ function TemplateTasks() {
   } = useFetchTask();
 
   const { register, handleSubmit, onSubmit, errors } = useSubmitTemplate();
+  const { data: templates, isLoading, isError } = useGetTemplates();
 
   const { modalState, closeTask, openCreateTask, openEditTask, tab, setTab } =
     useTemplateModalContext();
@@ -77,6 +79,7 @@ function TemplateTasks() {
           <TableDivider />
         </Table>
         <TemplateSidebar isOpen={isOpen} setIsOpen={setIsOpen} />
+        <TemplateItem />
 
         {renderModal()}
       </div>

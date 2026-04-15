@@ -7,6 +7,7 @@ import {
 } from '@/types/api.types';
 import { TemplateSubmission } from '../hooks/useSubmitTemplate';
 import { EditDescriptionData } from '../types/taskForm.types';
+import type { IssueTemplateListItem } from '../types/template.types';
 
 export type DeleteTaskResponse = {
   description: string | null;
@@ -46,6 +47,14 @@ export const createTemplateTaskV2 = async (
     `/template/`,
     data
   );
+  return response;
+};
+
+export const getTemplatesV2 = async (): Promise<IssueTemplateListItem[]> => {
+  const response = await API.get<
+    IssueTemplateListItem[],
+    IssueTemplateListItem[]
+  >('/template');
   return response;
 };
 
