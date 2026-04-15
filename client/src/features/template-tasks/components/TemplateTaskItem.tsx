@@ -1,12 +1,23 @@
 import { Cell, GrowingItem, Items } from '@/components/ui/selfmade/table/Table';
-import { TemplateTaskResponse } from '@/features/task-management/types/index.types';
+import {
+  TemplateTaskFormValues,
+  TemplateTaskResponse,
+} from '@/features/task-management/types/index.types';
 import { cn } from '@/lib/trycatch';
 import { PencilIcon, TrashIcon } from 'lucide-react';
 export type TemplateTaskItemProps = {
   templateTasks: TemplateTaskResponse[];
+  setIsOpen: (isOpen: boolean) => void;
+  setEditTemplateTask: (task: TemplateTaskFormValues) => void;
+  setTemplateTaskState: (state: 'create' | 'edit') => void;
 };
 
-export function TemplateTaskItem({ templateTasks }: TemplateTaskItemProps) {
+export function TemplateTaskItem({
+  templateTasks,
+  setIsOpen,
+  setEditTemplateTask,
+  setTemplateTaskState,
+}: TemplateTaskItemProps) {
   console.log(templateTasks);
   return (
     <div className="flex w-full min-w-0 flex-col divide-y divide-border-subtle">
@@ -40,8 +51,19 @@ export function TemplateTaskItem({ templateTasks }: TemplateTaskItemProps) {
               'text-right typo-body-sm font-normal text-text-primary'
             )}
           >
-            <PencilIcon />
-            <TrashIcon />
+            <PencilIcon
+              onClick={() => {
+                setIsOpen(true);
+                setEditTemplateTask({
+                  taskName: task.taskName,
+                  taskDescription: task.taskDescription,
+                  defaultPriority: task.defaultPriority,
+                  orderIndex: task.orderIndex,
+                });
+                setTemplateTaskState('edit');
+              }}
+            />
+            <TrashIcon onClick={() => {}} />
           </Cell>
         </Items>
       ))}

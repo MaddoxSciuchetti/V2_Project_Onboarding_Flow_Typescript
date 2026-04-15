@@ -7,6 +7,7 @@ import {
 } from '@/components/ui/selfmade/table/Table';
 import { SettingsStatusesHeader } from '@/features/settings/org-statuses/SettingsStatusesHeader';
 import { TaskSidebar } from '@/features/task-management/components/tasks/TaskSidebar';
+import { TemplateTaskFormValues } from '@/features/task-management/types/index.types';
 import { useNavigate } from '@tanstack/react-router';
 import { ArrowLeft } from 'lucide-react';
 import { useState } from 'react';
@@ -25,6 +26,17 @@ export function TemplateTasks({
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const { data: templateTasks, isLoading } = useGetTemplateTasks(templateId);
+  const [editTemplateTask, setEditTemplateTask] =
+    useState<TemplateTaskFormValues>({
+      taskName: '',
+      taskDescription: '',
+      defaultPriority: 'medium',
+      orderIndex: 0,
+    });
+  const [templateTaskState, setTemplateTaskState] = useState<'create' | 'edit'>(
+    'create'
+  );
+
   if (isLoading) {
     return <LoadingAlert />;
   }
@@ -48,15 +60,29 @@ export function TemplateTasks({
         />
         <Table className="w-200">
           <TableHeader className="gap-3 py-2">
-            <Button onClick={() => setIsOpen(true)}>Hinzufügen</Button>
+            <Button
+              onClick={() => {
+                setIsOpen(true);
+                setTemplateTaskState('create');
+              }}
+            >
+              Hinzufügen
+            </Button>
           </TableHeader>
           <TableDivider />
-          <TemplateTaskItem templateTasks={templateTasks ?? []} />
+          <TemplateTaskItem
+            templateTasks={templateTasks ?? []}
+            setIsOpen={setIsOpen}
+            setEditTemplateTask={setEditTemplateTask}
+            setTemplateTaskState={setTemplateTaskState}
+          />
         </Table>
         <TaskSidebar
           isOpen={isOpen}
           setIsOpen={setIsOpen}
           templateId={templateId}
+          templateTaskState={templateTaskState}
+          editTemplateTask={editTemplateTask}
         />
       </div>
     </div>

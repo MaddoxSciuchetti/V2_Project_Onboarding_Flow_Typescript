@@ -58,7 +58,6 @@ function TemplateTasks() {
             templates={templates ?? []}
             setIsEditTemplate={setIsEditTemplate}
             setIsOpen={setIsOpen}
-            templateState={templateState}
             setTemplateState={setTemplateState}
           />
         </Table>

@@ -2,9 +2,7 @@ import { taskMutations } from '@/features/template-tasks/query-options/mutations
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import {
-  DEFAULT_TEMPLATE_PRIORITY,
-} from '../consts/priority-options';
+import { DEFAULT_TEMPLATE_PRIORITY } from '../consts/priority-options';
 import type { TemplateTaskFormValues } from '../types/index.types';
 
 export function useSubmitTasks(templateId: string) {

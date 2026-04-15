@@ -11,7 +11,6 @@ type TemplateItemProps = {
   templates: IssueTemplateListItem[];
   setIsEditTemplate: Dispatch<SetStateAction<TemplateEditState>>;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  templateState: 'create' | 'edit';
   setTemplateState: Dispatch<SetStateAction<'create' | 'edit'>>;
 };
 
@@ -19,7 +18,6 @@ export function TemplateItem({
   templates,
   setIsEditTemplate,
   setIsOpen,
-  templateState,
   setTemplateState,
 }: TemplateItemProps) {
   const navigate = useNavigate();
