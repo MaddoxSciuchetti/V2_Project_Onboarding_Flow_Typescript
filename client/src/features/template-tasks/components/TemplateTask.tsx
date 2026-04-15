@@ -1,5 +1,4 @@
 import LoadingAlert from '@/components/alerts/LoadingAlert';
-import ModalOverlay from '@/components/modal/ModalOverlay';
 import { Button } from '@/components/ui/selfmade/button';
 import {
   Table,
@@ -8,13 +7,9 @@ import {
 } from '@/components/ui/selfmade/table/Table';
 import { SettingsStatusesHeader } from '@/features/settings/org-statuses/SettingsStatusesHeader';
 import TemplateSidebar from '@/features/task-management/components/tasks/task-sidebar/TaskSidebar';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import z from 'zod';
-import useFetchTask from '../hooks/useFetchTask';
 import { useGetTemplates } from '../hooks/useGetTemplates';
-import useTemplateModalContext from '../hooks/useTemplateModalContext';
-import AddTemplateModal from './AddTemplateModal';
-import EditTemplateModal from './EditTemplateModal';
 import { TemplateItem } from './TemplateItem';
 
 export type TemplateEditState = {
@@ -25,21 +20,7 @@ export type TemplateEditState = {
 };
 
 function TemplateTasks() {
-  const {
-    filteredByType,
-    taskLengthByTemplateType,
-    search,
-    setSearch,
-    currentPage,
-    setCurrentPage,
-    postsPerPage,
-    paginatedType,
-  } = useFetchTask();
-
-  const { data: templates, isLoading, isError } = useGetTemplates();
-
-  const { modalState, closeTask, openCreateTask, openEditTask, tab, setTab } =
-    useTemplateModalContext();
+  const { data: templates, isLoading } = useGetTemplates();
 
   const searchSchema = z.object({ search: z.string().min(1) });
   const [isOpen, setIsOpen] = useState(false);
@@ -52,27 +33,6 @@ function TemplateTasks() {
   const [templateState, setTemplateState] = useState<'create' | 'edit'>(
     'create'
   );
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [tab, setCurrentPage]);
-
-  const renderModal = () => {
-    switch (modalState.kind) {
-      case 'open-create':
-        return (
-          <ModalOverlay handleToggle={closeTask}>
-            <AddTemplateModal />
-          </ModalOverlay>
-        );
-      case 'open-edit':
-        return (
-          <ModalOverlay handleToggle={closeTask}>
-            <EditTemplateModal />
-          </ModalOverlay>
-        );
-    }
-  };
   if (isLoading) {
     return <LoadingAlert />;
   }
@@ -111,7 +71,6 @@ function TemplateTasks() {
           templateEditState={isEditTemplate}
           templateState={templateState}
         />
-        {renderModal()}
       </div>
     </div>
   );
