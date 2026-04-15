@@ -65,13 +65,9 @@ function TemplateTasks() {
   }
 
   return (
-    <div
-      role="region"
-      aria-label="Template Aufgaben Verwaltung"
-      className="mx-auto flex h-full min-h-0 w-full max-w-full flex-col overflow-hidden rounded-2xl bg-card p-6 md:max-w-8xl"
-    >
-      <div className="flex min-h-0 flex-1 flex-col">
-        <Table>
+    <div className="mx-auto flex h-full flex-col overflow-auto rounded-2xl bg-card p-6 md:max-w-8xl">
+      <div className="h-full w-full flex flex-col items-center justify-center">
+        <Table className="w-200">
           <TableHeader>
             <Button type="button" onClick={() => setIsOpen(true)}>
               Hinzufügen

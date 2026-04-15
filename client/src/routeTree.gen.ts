@@ -10,7 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WorkerLifycycleRouteImport } from './routes/worker-lifycycle'
-import { Route as TemplateRouteImport } from './routes/template'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as ProfileRouteImport } from './routes/profile'
@@ -19,6 +18,7 @@ import { Route as HomeRouteImport } from './routes/home'
 import { Route as EmployeeOverviewRouteImport } from './routes/employee-overview'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UserIdRouteImport } from './routes/user/$Id'
+import { Route as SettingsTemplateRouteImport } from './routes/settings/template'
 import { Route as SettingsProfileRouteImport } from './routes/settings/profile'
 import { Route as SettingsIssueStatusesRouteImport } from './routes/settings/issue-statuses'
 import { Route as SettingsEngagementStatusesRouteImport } from './routes/settings/engagement-statuses'
@@ -30,11 +30,6 @@ import { Route as EmailVerifyCodeRouteImport } from './routes/email/verify/$code
 const WorkerLifycycleRoute = WorkerLifycycleRouteImport.update({
   id: '/worker-lifycycle',
   path: '/worker-lifycycle',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TemplateRoute = TemplateRouteImport.update({
-  id: '/template',
-  path: '/template',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SignupRoute = SignupRouteImport.update({
@@ -76,6 +71,11 @@ const UserIdRoute = UserIdRouteImport.update({
   id: '/user/$Id',
   path: '/user/$Id',
   getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsTemplateRoute = SettingsTemplateRouteImport.update({
+  id: '/template',
+  path: '/template',
+  getParentRoute: () => SettingsRoute,
 } as any)
 const SettingsProfileRoute = SettingsProfileRouteImport.update({
   id: '/profile',
@@ -122,7 +122,6 @@ export interface FileRoutesByFullPath {
   '/profile': typeof ProfileRoute
   '/settings': typeof SettingsRouteWithChildren
   '/signup': typeof SignupRoute
-  '/template': typeof TemplateRoute
   '/worker-lifycycle': typeof WorkerLifycycleRoute
   '/password/forgot': typeof PasswordForgotRoute
   '/password/reset': typeof PasswordResetRoute
@@ -130,6 +129,7 @@ export interface FileRoutesByFullPath {
   '/settings/engagement-statuses': typeof SettingsEngagementStatusesRoute
   '/settings/issue-statuses': typeof SettingsIssueStatusesRoute
   '/settings/profile': typeof SettingsProfileRoute
+  '/settings/template': typeof SettingsTemplateRoute
   '/user/$Id': typeof UserIdRoute
   '/email/verify/$code': typeof EmailVerifyCodeRoute
 }
@@ -141,7 +141,6 @@ export interface FileRoutesByTo {
   '/profile': typeof ProfileRoute
   '/settings': typeof SettingsRouteWithChildren
   '/signup': typeof SignupRoute
-  '/template': typeof TemplateRoute
   '/worker-lifycycle': typeof WorkerLifycycleRoute
   '/password/forgot': typeof PasswordForgotRoute
   '/password/reset': typeof PasswordResetRoute
@@ -149,6 +148,7 @@ export interface FileRoutesByTo {
   '/settings/engagement-statuses': typeof SettingsEngagementStatusesRoute
   '/settings/issue-statuses': typeof SettingsIssueStatusesRoute
   '/settings/profile': typeof SettingsProfileRoute
+  '/settings/template': typeof SettingsTemplateRoute
   '/user/$Id': typeof UserIdRoute
   '/email/verify/$code': typeof EmailVerifyCodeRoute
 }
@@ -161,7 +161,6 @@ export interface FileRoutesById {
   '/profile': typeof ProfileRoute
   '/settings': typeof SettingsRouteWithChildren
   '/signup': typeof SignupRoute
-  '/template': typeof TemplateRoute
   '/worker-lifycycle': typeof WorkerLifycycleRoute
   '/password/forgot': typeof PasswordForgotRoute
   '/password/reset': typeof PasswordResetRoute
@@ -169,6 +168,7 @@ export interface FileRoutesById {
   '/settings/engagement-statuses': typeof SettingsEngagementStatusesRoute
   '/settings/issue-statuses': typeof SettingsIssueStatusesRoute
   '/settings/profile': typeof SettingsProfileRoute
+  '/settings/template': typeof SettingsTemplateRoute
   '/user/$Id': typeof UserIdRoute
   '/email/verify/$code': typeof EmailVerifyCodeRoute
 }
@@ -182,7 +182,6 @@ export interface FileRouteTypes {
     | '/profile'
     | '/settings'
     | '/signup'
-    | '/template'
     | '/worker-lifycycle'
     | '/password/forgot'
     | '/password/reset'
@@ -190,6 +189,7 @@ export interface FileRouteTypes {
     | '/settings/engagement-statuses'
     | '/settings/issue-statuses'
     | '/settings/profile'
+    | '/settings/template'
     | '/user/$Id'
     | '/email/verify/$code'
   fileRoutesByTo: FileRoutesByTo
@@ -201,7 +201,6 @@ export interface FileRouteTypes {
     | '/profile'
     | '/settings'
     | '/signup'
-    | '/template'
     | '/worker-lifycycle'
     | '/password/forgot'
     | '/password/reset'
@@ -209,6 +208,7 @@ export interface FileRouteTypes {
     | '/settings/engagement-statuses'
     | '/settings/issue-statuses'
     | '/settings/profile'
+    | '/settings/template'
     | '/user/$Id'
     | '/email/verify/$code'
   id:
@@ -220,7 +220,6 @@ export interface FileRouteTypes {
     | '/profile'
     | '/settings'
     | '/signup'
-    | '/template'
     | '/worker-lifycycle'
     | '/password/forgot'
     | '/password/reset'
@@ -228,6 +227,7 @@ export interface FileRouteTypes {
     | '/settings/engagement-statuses'
     | '/settings/issue-statuses'
     | '/settings/profile'
+    | '/settings/template'
     | '/user/$Id'
     | '/email/verify/$code'
   fileRoutesById: FileRoutesById
@@ -240,7 +240,6 @@ export interface RootRouteChildren {
   ProfileRoute: typeof ProfileRoute
   SettingsRoute: typeof SettingsRouteWithChildren
   SignupRoute: typeof SignupRoute
-  TemplateRoute: typeof TemplateRoute
   WorkerLifycycleRoute: typeof WorkerLifycycleRoute
   PasswordForgotRoute: typeof PasswordForgotRoute
   PasswordResetRoute: typeof PasswordResetRoute
@@ -255,13 +254,6 @@ declare module '@tanstack/react-router' {
       path: '/worker-lifycycle'
       fullPath: '/worker-lifycycle'
       preLoaderRoute: typeof WorkerLifycycleRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/template': {
-      id: '/template'
-      path: '/template'
-      fullPath: '/template'
-      preLoaderRoute: typeof TemplateRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/signup': {
@@ -320,6 +312,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UserIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/settings/template': {
+      id: '/settings/template'
+      path: '/template'
+      fullPath: '/settings/template'
+      preLoaderRoute: typeof SettingsTemplateRouteImport
+      parentRoute: typeof SettingsRoute
+    }
     '/settings/profile': {
       id: '/settings/profile'
       path: '/profile'
@@ -377,6 +376,7 @@ interface SettingsRouteChildren {
   SettingsEngagementStatusesRoute: typeof SettingsEngagementStatusesRoute
   SettingsIssueStatusesRoute: typeof SettingsIssueStatusesRoute
   SettingsProfileRoute: typeof SettingsProfileRoute
+  SettingsTemplateRoute: typeof SettingsTemplateRoute
 }
 
 const SettingsRouteChildren: SettingsRouteChildren = {
@@ -384,6 +384,7 @@ const SettingsRouteChildren: SettingsRouteChildren = {
   SettingsEngagementStatusesRoute: SettingsEngagementStatusesRoute,
   SettingsIssueStatusesRoute: SettingsIssueStatusesRoute,
   SettingsProfileRoute: SettingsProfileRoute,
+  SettingsTemplateRoute: SettingsTemplateRoute,
 }
 
 const SettingsRouteWithChildren = SettingsRoute._addFileChildren(
@@ -398,7 +399,6 @@ const rootRouteChildren: RootRouteChildren = {
   ProfileRoute: ProfileRoute,
   SettingsRoute: SettingsRouteWithChildren,
   SignupRoute: SignupRoute,
-  TemplateRoute: TemplateRoute,
   WorkerLifycycleRoute: WorkerLifycycleRoute,
   PasswordForgotRoute: PasswordForgotRoute,
   PasswordResetRoute: PasswordResetRoute,
