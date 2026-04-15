@@ -21,6 +21,7 @@ import ProjectItem from './ProjectItem';
 
 function WorkerLifeCycle() {
   const { user, isLoading, isError } = useAuth();
+  console.log(user);
   const {
     error,
     workers,
@@ -40,7 +41,7 @@ function WorkerLifeCycle() {
   return (
     <div className="mx-auto flex h-full flex-col overflow-auto rounded-2xl bg-card p-6 md:max-w-8xl">
       <div className="h-full w-full flex flex-col">
-        <GreetingHeader firstname={user.vorname} />
+        <GreetingHeader firstname={user?.firstName || ''} />
         <Table>
           <TableHeader>
             <GrowingItem>Handwerker</GrowingItem>

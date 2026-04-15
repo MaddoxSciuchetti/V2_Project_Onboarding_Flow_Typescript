@@ -54,25 +54,30 @@ function TemplateTasks() {
     <div
       role="region"
       aria-label="Template Aufgaben Verwaltung"
-      className="mx-auto flex h-full w-5xl flex-col overflow-auto rounded-2xl bg-card p-6 md:max-w-8xl"
+      className="mx-auto flex h-full min-h-0 w-full max-w-full flex-col overflow-hidden rounded-2xl bg-card p-6 md:max-w-8xl"
     >
-      <SearchHeaderResuable
-        search={search}
-        setSearch={setSearch}
-        description="Add Task"
-        openModal={openCreateTask}
-      />
-      <TabsHeader tab={tab} setTab={setTab} />
-      <Tasks items={paginatedType[tab]} openEditTask={openEditTask} />
-      <TabsFooter
-        currentPage={currentPage}
-        tab={tab}
-        postsPerPage={postsPerPage}
-        taskLengthByTemplateType={taskLengthByTemplateType}
-        setCurrentPage={setCurrentPage}
-        totalPosts={filteredByType[tab].length}
-      />
-      {renderModal()}
+      <div className="flex min-h-0 flex-1 flex-col">
+        <SearchHeaderResuable
+          search={search}
+          setSearch={setSearch}
+          description="Add Task"
+          openModal={openCreateTask}
+        />
+        <TabsHeader tab={tab} setTab={setTab} />
+
+        <Tasks items={paginatedType[tab]} openEditTask={openEditTask} />
+
+        <TabsFooter
+          currentPage={currentPage}
+          tab={tab}
+          postsPerPage={postsPerPage}
+          taskLengthByTemplateType={taskLengthByTemplateType}
+          setCurrentPage={setCurrentPage}
+          totalPosts={filteredByType[tab].length}
+        />
+
+        {renderModal()}
+      </div>
     </div>
   );
 }

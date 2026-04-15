@@ -6,11 +6,9 @@ export type User = {
   user_permission?: 'CHEF' | 'MITARBEITER';
   createdAt: Date | string;
   updatedAt: Date | string;
-  vorname?: string;
-  nachname?: string;
-  cloud_url?: string;
   firstName?: string;
   lastName?: string;
+  cloud_url?: string;
   displayName?: string;
   avatarUrl?: string;
   presignedUrl?: string;

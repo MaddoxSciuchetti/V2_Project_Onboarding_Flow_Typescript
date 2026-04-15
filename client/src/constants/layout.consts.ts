@@ -10,7 +10,6 @@ export const LAYOUTITEMS = [
     title: 'Aufgaben',
     to: '/template',
     icon: Ticket,
-    requiredPermission: 'CHEF',
   },
   {
     title: 'Mitarbeiter',
