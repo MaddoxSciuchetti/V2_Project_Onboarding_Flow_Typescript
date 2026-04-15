@@ -17,13 +17,16 @@ export function useSubmitTemplate() {
     handleSubmit,
     formState: { errors },
   } = useForm<TemplateSubmission>({
+    defaultValues: {
+      type: '',
+    },
     resolver: zodResolver(
       z.object({
         templateName: z.string().min(1, { message: 'Name ist erforderlich' }),
         templateDescription: z
           .string()
           .min(1, { message: 'Beschreibung ist erforderlich' }),
-        type: z.string().min(1).optional(),
+        type: z.string().optional(),
       })
     ),
   });
