@@ -1,7 +1,8 @@
 import queryClient from '@/config/query.client';
 import type { TemplateTaskFormValues } from '@/features/task-management/types/index.types';
+import { SuccessResponse } from '@/types/api.types';
 import { mutationOptions } from '@tanstack/react-query';
-import { createTemplateTask } from '../../api';
+import { createTemplateTask, deleteTemplateTask } from '../../api';
 import { DESCRIPTION_ROOT } from '../../consts/query-key.consts';
 
 export type CreateTemplateTaskParams = {
@@ -18,6 +19,15 @@ export const taskMutations = {
     >({
       mutationFn: ({ templateId, data }) =>
         createTemplateTask(data, templateId),
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: [DESCRIPTION_ROOT] });
+      },
+    });
+  },
+
+  deleteTask: () => {
+    return mutationOptions<SuccessResponse<string>, Error, string>({
+      mutationFn: (id: string) => deleteTemplateTask(id),
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: [DESCRIPTION_ROOT] });
       },

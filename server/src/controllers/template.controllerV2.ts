@@ -113,6 +113,7 @@ export const updateTemplateTask = catchErrors(async (req, res) => {
 
 export const deleteTemplateTask = catchErrors(async (req, res) => {
     const id = getParam(req.params.id);
+    const orgId = req.orgId;
 
     await removeTemplateTask(id);
 

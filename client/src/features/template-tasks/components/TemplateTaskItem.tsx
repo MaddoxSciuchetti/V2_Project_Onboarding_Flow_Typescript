@@ -5,6 +5,7 @@ import {
 } from '@/features/task-management/types/index.types';
 import { cn } from '@/lib/trycatch';
 import { PencilIcon, TrashIcon } from 'lucide-react';
+import { useDeleteTemplateTask } from '../hooks/useDeleteTemplateTask';
 export type TemplateTaskItemProps = {
   templateTasks: TemplateTaskResponse[];
   setIsOpen: (isOpen: boolean) => void;
@@ -19,6 +20,7 @@ export function TemplateTaskItem({
   setTemplateTaskState,
 }: TemplateTaskItemProps) {
   console.log(templateTasks);
+  const { deleteTemplateTask } = useDeleteTemplateTask();
   return (
     <div className="flex w-full min-w-0 flex-col divide-y divide-border-subtle">
       {templateTasks.map((task) => (
@@ -63,7 +65,11 @@ export function TemplateTaskItem({
                 setTemplateTaskState('edit');
               }}
             />
-            <TrashIcon onClick={() => {}} />
+            <TrashIcon
+              onClick={() => {
+                deleteTemplateTask(task.id);
+              }}
+            />
           </Cell>
         </Items>
       ))}

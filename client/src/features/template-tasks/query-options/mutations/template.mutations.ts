@@ -3,7 +3,7 @@ import { SuccessResponse } from '@/types/api.types';
 import { mutationOptions } from '@tanstack/react-query';
 import {
   createTemplateTaskV2,
-  deleteTemplateTask,
+  deleteTemplate,
   updateTemplateTask,
 } from '../../api';
 import {
@@ -16,7 +16,7 @@ import { EditDescriptionData } from '../../types/taskForm.types';
 export const templateMutations = {
   delete: () => {
     return mutationOptions<SuccessResponse<string>, Error, string>({
-      mutationFn: (id: string) => deleteTemplateTask(id),
+      mutationFn: (id: string) => deleteTemplate(id),
       onSuccess: () =>
         queryClient.invalidateQueries({ queryKey: [TEMPLATES_LIST_ROOT] }),
     });

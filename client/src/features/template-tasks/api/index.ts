@@ -17,7 +17,7 @@ export type DeleteTaskResponse = {
   owner: string;
 };
 
-export const deleteTemplateTask = async (
+export const deleteTemplate = async (
   id: string
 ): Promise<SuccessResponse<string>> => {
   const response = await API.delete<
@@ -66,6 +66,15 @@ export const getTemplateTask = async (
   return response;
 };
 
+export const deleteTemplateTask = async (
+  id: string
+): Promise<SuccessResponse<string>> => {
+  const response = await API.delete<
+    SuccessResponse<string>,
+    SuccessResponse<string>
+  >(`/template/task/${id}`);
+  return response;
+};
 export const updateTemplateTask = async (data: EditDescriptionData) => {
   const response = await API.put<EditDescriptionData, EditDescriptionData>(
     `/template/updateTask/${data.form_field_id}`,
