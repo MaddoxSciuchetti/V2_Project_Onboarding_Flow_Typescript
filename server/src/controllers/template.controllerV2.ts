@@ -65,14 +65,19 @@ export const deleteTemplate = catchErrors(async (req, res) => {
 export const createTemplateTask = catchErrors(async (req, res) => {
     const templateId = getParam(req.params.templateId);
     const orgId = req.orgId;
-    const { title, description, defaultPriority, defaultStatus, orderIndex } =
-        req.body;
-
+    const {
+        taskName,
+        taskDescription,
+        defaultPriority,
+        defaultStatus,
+        orderIndex,
+    } = req.body;
+    console.log(templateId);
     const task = await insertTemplateTask({
         templateId,
         organizationId: orgId,
-        title,
-        description,
+        taskName,
+        taskDescription,
         defaultPriority,
         defaultStatus,
         orderIndex,

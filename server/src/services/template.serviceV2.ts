@@ -15,7 +15,8 @@ export type InsertTemplateParams = {
 
 export type InsertTemplateTaskParams = {
     templateId: string;
-    title: string;
+    taskName: string;
+    taskDescription?: string;
     description?: string;
     defaultPriority?: DefaultPriority;
     defaultStatus?: DefaultIssueStatus;
@@ -143,6 +144,8 @@ export const removeTemplate = async (id: string, orgId: string) => {
 export const insertTemplateTask = async (
     data: InsertTemplateTaskParams & { organizationId: string },
 ) => {
+    console.log(data.templateId);
+    console.log(data.organizationId);
     const template = await prisma.issueTemplate.findFirst({
         where: {
             id: data.templateId,
@@ -155,8 +158,8 @@ export const insertTemplateTask = async (
     return await prisma.templateItem.create({
         data: {
             issueTemplateId: data.templateId,
-            title: data.title,
-            description: data.description,
+            title: data.taskName,
+            description: data.taskDescription,
             defaultPriority: data.defaultPriority,
             defaultStatus: data.defaultStatus ?? "backlog",
             orderIndex: data.orderIndex ?? 0,
