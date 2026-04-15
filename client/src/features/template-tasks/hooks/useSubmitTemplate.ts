@@ -19,8 +19,10 @@ export function useSubmitTemplate() {
   } = useForm<TemplateSubmission>({
     resolver: zodResolver(
       z.object({
-        templateName: z.string().min(1),
-        templateDescription: z.string().min(1),
+        templateName: z.string().min(1, { message: 'Name ist erforderlich' }),
+        templateDescription: z
+          .string()
+          .min(1, { message: 'Beschreibung ist erforderlich' }),
         type: z.string().min(1).optional(),
       })
     ),

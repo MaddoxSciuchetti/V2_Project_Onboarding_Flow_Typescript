@@ -1,7 +1,3 @@
-/**
- * GET /template — aligns with `queryTemplates` in `template.serviceV2.ts`.
- * Dates are ISO strings over JSON (not Prisma `Date`).
- */
 export type IssueTemplateListItem = {
   id: string;
   templateName: string;
