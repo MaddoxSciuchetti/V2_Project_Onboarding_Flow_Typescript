@@ -16,10 +16,10 @@ import { EditDescriptionData } from '../../types/taskForm.types';
 
 export const templateMutations = {
   delete: () => {
-    return mutationOptions<SuccessResponse<string>, Error, number>({
-      mutationFn: deleteTemplateTask,
+    return mutationOptions<SuccessResponse<string>, Error, string>({
+      mutationFn: (id: string) => deleteTemplateTask(id),
       onSuccess: () =>
-        queryClient.invalidateQueries({ queryKey: [DESCRIPTION_ROOT] }),
+        queryClient.invalidateQueries({ queryKey: [TEMPLATES_LIST_ROOT] }),
     });
   },
 

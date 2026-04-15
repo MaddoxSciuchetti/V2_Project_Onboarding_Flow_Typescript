@@ -19,12 +19,12 @@ export type DeleteTaskResponse = {
 };
 
 export const deleteTemplateTask = async (
-  id: number
+  id: string
 ): Promise<SuccessResponse<string>> => {
   const response = await API.delete<
     SuccessResponse<string>,
     SuccessResponse<string>
-  >(`/template/task/${id}`);
+  >(`/template/${id}`);
   return response;
 };
 

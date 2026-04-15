@@ -1,6 +1,8 @@
 import { Cell, GrowingItem, Items } from '@/components/ui/selfmade/table/Table';
 import { cn } from '@/lib/trycatch';
 import { useNavigate } from '@tanstack/react-router';
+import { PencilIcon, TrashIcon } from 'lucide-react';
+import { useDeleteTemplate } from '../hooks/useDeleteTemplate';
 import type { IssueTemplateListItem } from '../types/template.types';
 
 type TemplateItemProps = {
@@ -9,6 +11,8 @@ type TemplateItemProps = {
 
 export function TemplateItem({ templates }: TemplateItemProps) {
   const navigate = useNavigate();
+
+  const { deleteTemplate } = useDeleteTemplate();
 
   if (templates.length === 0) {
     return null;
@@ -21,7 +25,7 @@ export function TemplateItem({ templates }: TemplateItemProps) {
           key={template.id}
           state="hover"
           className={cn(
-            'w-full min-w-0 cursor-pointer items-center justify-between gap-6',
+            'group w-full min-w-0 cursor-pointer items-center justify-between gap-6',
             'px-6 py-4'
           )}
           onClick={() =>
@@ -48,11 +52,18 @@ export function TemplateItem({ templates }: TemplateItemProps) {
           </GrowingItem>
           <Cell
             className={cn(
-              '!w-auto min-w-0 max-w-[min(100%,14rem)] shrink-0',
+              'opacity-0 group-hover:opacity-100 w-auto flex gap-5 min-w-0 max-w-[min(100%,14rem)] shrink-0',
               'text-right typo-body-sm font-normal text-text-primary'
             )}
           >
-            {template.createdBy.firstName} {template.createdBy.lastName}
+            <PencilIcon className="w-4 h-4" />
+            <TrashIcon
+              className="w-4 h-4"
+              onClick={(e) => {
+                e.stopPropagation();
+                deleteTemplate(template.id);
+              }}
+            />
           </Cell>
         </Items>
       ))}
