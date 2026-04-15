@@ -1,8 +1,17 @@
 import LoadingAlert from '@/components/alerts/LoadingAlert';
 import SearchHeaderResuable from '@/components/layout/headers/SearchHeaderResuable';
 import ModalOverlay from '@/components/modal/ModalOverlay';
-import { useEffect } from 'react';
+import { Button } from '@/components/ui/selfmade/button';
+import {
+  Table,
+  TableDivider,
+  TableHeader,
+} from '@/components/ui/selfmade/table/Table';
+import TemplateSidebar from '@/features/task-management/components/tasks/task-sidebar/TaskSidebar';
+import { useEffect, useState } from 'react';
+import z from 'zod';
 import useFetchTask from '../hooks/useFetchTask';
+import { useSubmitTemplate } from '../hooks/useSubmitTemplate';
 import useTemplateModalContext from '../hooks/useTemplateModalContext';
 import AddTemplateModal from './AddTemplateModal';
 import EditTemplateModal from './EditTemplateModal';
@@ -23,8 +32,13 @@ function TemplateTasks() {
     paginatedType,
   } = useFetchTask();
 
+  const { register, handleSubmit, onSubmit, errors } = useSubmitTemplate();
+
   const { modalState, closeTask, openCreateTask, openEditTask, tab, setTab } =
     useTemplateModalContext();
+
+  const searchSchema = z.object({ search: z.string().min(1) });
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -57,6 +71,15 @@ function TemplateTasks() {
       className="mx-auto flex h-full min-h-0 w-full max-w-full flex-col overflow-hidden rounded-2xl bg-card p-6 md:max-w-8xl"
     >
       <div className="flex min-h-0 flex-1 flex-col">
+        <Table>
+          <TableHeader>
+            <Button type="button" onClick={() => setIsOpen(true)}>
+              Hinzufügen
+            </Button>
+          </TableHeader>
+          <TableDivider />
+        </Table>
+        <TemplateSidebar isOpen={isOpen} setIsOpen={setIsOpen} />
         <SearchHeaderResuable
           search={search}
           setSearch={setSearch}

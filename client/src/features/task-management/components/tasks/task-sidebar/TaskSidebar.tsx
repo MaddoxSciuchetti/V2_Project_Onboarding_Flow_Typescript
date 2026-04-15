@@ -1,41 +1,41 @@
-import { cn } from '@/lib/trycatch';
-import { DescriptionField } from '@/types/api.types';
-import { InsertHistoryData } from '../../../types/index.types';
-import SidebarBody from '../SidebarBody';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/selfmade/button';
+import { Input } from '@/components/ui/selfmade/input';
+import { X } from 'lucide-react';
+import type { Dispatch, ReactNode, SetStateAction } from 'react';
+import { SidebarAside } from './SidebarAside';
+import SidebarContent from './SidebarContent';
+import SidebarFooter from './SidebarFooter';
 import SidebarHeader from './SidebarHeader';
+import { SidebarPanel } from './SidebarPanel';
 
-type TaskSidebarProps = {
-  selectedTask: DescriptionField | null;
-  setSelectedTaskId: (value: number | null) => void;
-  handleSubmit: (values: InsertHistoryData) => Promise<void>;
+type TemplateSidebarProps = {
+  isOpen: boolean;
+  children?: ReactNode;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
 };
 
-const TaskSidebar = ({
-  selectedTask,
-  setSelectedTaskId,
-  handleSubmit,
-}: TaskSidebarProps) => {
+function TemplateSidebar({
+  isOpen,
+  children,
+  setIsOpen,
+}: TemplateSidebarProps) {
   return (
-    <aside
-      className={cn(
-        'fixed right-0 top-0 h-screen border-l border-border bg-(--card) overflow-hidden transition-all duration-300 ease-out z-50',
-        selectedTask ? 'w-110' : 'w-0'
-      )}
-    >
-      {selectedTask && (
-        <div className="w-105 h-full flex flex-col pt-6">
-          <SidebarHeader
-            selectedTask={selectedTask}
-            setSelectedTaskId={setSelectedTaskId}
-          />
-          <SidebarBody
-            selectedTask={selectedTask}
-            handleSubmit={handleSubmit}
-          />
-        </div>
-      )}
-    </aside>
+    <SidebarAside isOpen={isOpen}>
+      <SidebarPanel>
+        <SidebarHeader className="flex items-center justify-end py-3">
+          <Button onClick={() => setIsOpen(false)}>
+            <X className="h-4 w-4" aria-hidden />
+          </Button>
+        </SidebarHeader>
+        <SidebarContent>
+          <Label>Name</Label>
+          <Input />
+        </SidebarContent>
+        <SidebarFooter />
+      </SidebarPanel>
+    </SidebarAside>
   );
-};
+}
 
-export default TaskSidebar;
+export default TemplateSidebar;

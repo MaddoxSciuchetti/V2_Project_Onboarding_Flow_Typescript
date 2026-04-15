@@ -40,3 +40,7 @@ Example:
 ---
 
 Major functional refactor in the login component. I did this because my login logic changed in terms of that it was not only a user login and signup but a login, a login over a link, a org signup. My tests continiued to pass after this change.
+
+---
+
+Do not use the normal button html element. Also do not use complicated state logic when not necessary. This means you can change the state with using the same state setter function e.g. setting it to false than do this instead of creating a new state that closes the other state.

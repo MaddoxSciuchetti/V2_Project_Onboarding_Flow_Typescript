@@ -38,6 +38,16 @@ export const createTemplateTask = async (data: {
   return response;
 };
 
+export const createTemplateTaskV2 = async (data: {
+  search: string;
+}): Promise<SuccessResponse<{ search: string }>> => {
+  const response = await API.post<
+    SuccessResponse<{ search: string }>,
+    SuccessResponse<{ search: string }>
+  >(`/template/createTemplate`, data);
+  return response;
+};
+
 export const getTemplateTask = async (): Promise<DescriptionResponse[]> => {
   const response = await API.get<DescriptionData[], DescriptionResponse[]>(
     '/template/getTask'
