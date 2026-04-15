@@ -1,5 +1,4 @@
 import LoadingAlert from '@/components/alerts/LoadingAlert';
-import SearchHeaderResuable from '@/components/layout/headers/SearchHeaderResuable';
 import ModalOverlay from '@/components/modal/ModalOverlay';
 import { Button } from '@/components/ui/selfmade/button';
 import {
@@ -7,6 +6,7 @@ import {
   TableDivider,
   TableHeader,
 } from '@/components/ui/selfmade/table/Table';
+import { SettingsStatusesHeader } from '@/features/settings/org-statuses/SettingsStatusesHeader';
 import TemplateSidebar from '@/features/task-management/components/tasks/task-sidebar/TaskSidebar';
 import { useEffect, useState } from 'react';
 import z from 'zod';
@@ -15,9 +15,6 @@ import { useSubmitTemplate } from '../hooks/useSubmitTemplate';
 import useTemplateModalContext from '../hooks/useTemplateModalContext';
 import AddTemplateModal from './AddTemplateModal';
 import EditTemplateModal from './EditTemplateModal';
-import TabsFooter from './TabsFooter';
-import TabsHeader from './TabsHeader';
-import Tasks from './Tasks';
 
 function TemplateTasks() {
   const {
@@ -67,8 +64,12 @@ function TemplateTasks() {
   return (
     <div className="mx-auto flex h-full flex-col overflow-auto rounded-2xl bg-card p-6 md:max-w-8xl">
       <div className="h-full w-full flex flex-col items-center justify-center">
+        <SettingsStatusesHeader
+          title="Template Aufgaben"
+          description="Verwalte deine Template Aufgaben"
+        />
         <Table className="w-200">
-          <TableHeader>
+          <TableHeader className="gap-3 py-2">
             <Button type="button" onClick={() => setIsOpen(true)}>
               Hinzufügen
             </Button>
@@ -76,24 +77,6 @@ function TemplateTasks() {
           <TableDivider />
         </Table>
         <TemplateSidebar isOpen={isOpen} setIsOpen={setIsOpen} />
-        <SearchHeaderResuable
-          search={search}
-          setSearch={setSearch}
-          description="Add Task"
-          openModal={openCreateTask}
-        />
-        <TabsHeader tab={tab} setTab={setTab} />
-
-        <Tasks items={paginatedType[tab]} openEditTask={openEditTask} />
-
-        <TabsFooter
-          currentPage={currentPage}
-          tab={tab}
-          postsPerPage={postsPerPage}
-          taskLengthByTemplateType={taskLengthByTemplateType}
-          setCurrentPage={setCurrentPage}
-          totalPosts={filteredByType[tab].length}
-        />
 
         {renderModal()}
       </div>
