@@ -111,14 +111,16 @@ export const getTemplateTasks = catchErrors(async (req, res) => {
 
 export const updateTemplateTask = catchErrors(async (req, res) => {
     const id = getParam(req.params.id);
-    const { title, description, defaultPriority, defaultStatus, orderIndex } =
-        req.body;
-
+    const { taskName, taskDescription, defaultPriority, orderIndex } = req.body;
+    console.log(id);
+    console.log(taskName);
+    console.log(taskDescription);
+    console.log(defaultPriority);
+    console.log(orderIndex);
     const updated = await modifyTemplateTask(id, {
-        title,
-        description,
+        taskName,
+        taskDescription,
         defaultPriority,
-        defaultStatus,
         orderIndex,
     });
 

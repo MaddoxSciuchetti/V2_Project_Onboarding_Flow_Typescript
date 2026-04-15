@@ -28,6 +28,7 @@ export function TemplateTasks({
   const { data: templateTasks, isLoading } = useGetTemplateTasks(templateId);
   const [editTemplateTask, setEditTemplateTask] =
     useState<TemplateTaskFormValues>({
+      taskId: '',
       taskName: '',
       taskDescription: '',
       defaultPriority: 'medium',

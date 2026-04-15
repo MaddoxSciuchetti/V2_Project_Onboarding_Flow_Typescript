@@ -93,11 +93,11 @@ export const updateTemplate = async ({
 
 export const updateTemplateTask = async (
   data: TemplateTaskFormValues,
-  templateId: string
+  taskId: string
 ) => {
   const response = await API.put<
     TemplateTaskFormValues,
     TemplateTaskFormValues
-  >(`/template/task/${templateId}`, data);
+  >(`/template/task/${taskId}`, data);
   return response;
 };

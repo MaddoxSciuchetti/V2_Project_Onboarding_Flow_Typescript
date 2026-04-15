@@ -38,9 +38,7 @@ export function TemplateTaskItem({
               'py-0 pl-0 pr-4'
             )}
           >
-            <p className="typo-body-sm text-text-primary">
-              {task.taskDescription}
-            </p>
+            <p className="typo-body-sm text-text-primary">{task.taskName}</p>
             {task.taskDescription ? (
               <p className="typo-body-xs text-text-secondary line-clamp-3">
                 {task.taskDescription}
@@ -57,6 +55,7 @@ export function TemplateTaskItem({
               onClick={() => {
                 setIsOpen(true);
                 setEditTemplateTask({
+                  taskId: task.id,
                   taskName: task.taskName,
                   taskDescription: task.taskDescription,
                   defaultPriority: task.defaultPriority,

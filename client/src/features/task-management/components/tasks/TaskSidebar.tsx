@@ -28,6 +28,7 @@ export function TaskSidebar({
   editTemplateTask,
 }: TaskSidebarProps) {
   const { register, handleSubmit, errors, onSubmit, control } = useSubmitTasks(
+    editTemplateTask.taskId,
     templateId,
     templateTaskState
   );

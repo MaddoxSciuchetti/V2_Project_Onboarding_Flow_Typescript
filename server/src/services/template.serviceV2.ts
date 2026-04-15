@@ -24,10 +24,9 @@ export type InsertTemplateTaskParams = {
 };
 
 export type ModifyTemplateTaskParams = {
-    title?: string;
-    description?: string;
+    taskName?: string;
+    taskDescription?: string;
     defaultPriority?: DefaultPriority;
-    defaultStatus?: DefaultIssueStatus;
     orderIndex?: number;
 };
 
@@ -229,8 +228,8 @@ export const modifyTemplateTask = async (
     return await prisma.templateItem.update({
         where: { id },
         data: {
-            title: data.title,
-            description: data.description,
+            title: data.taskName,
+            description: data.taskDescription,
             defaultPriority: data.defaultPriority,
             orderIndex: data.orderIndex,
         },

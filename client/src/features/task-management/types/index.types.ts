@@ -53,6 +53,7 @@ export type DefaultPriority = 'low' | 'medium' | 'high' | 'urgent';
 
 /** Form + create body for a template task (sidebar). */
 export type TemplateTaskFormValues = {
+  taskId: string;
   taskName: string;
   taskDescription: string;
   defaultPriority: DefaultPriority;

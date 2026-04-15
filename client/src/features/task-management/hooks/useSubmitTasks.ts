@@ -6,6 +6,7 @@ import { DEFAULT_TEMPLATE_PRIORITY } from '../consts/priority-options';
 import type { TemplateTaskFormValues } from '../types/index.types';
 
 export function useSubmitTasks(
+  taskId: string,
   templateId: string,
   templateTaskState: 'create' | 'edit'
 ) {
@@ -37,7 +38,7 @@ export function useSubmitTasks(
       );
     } else {
       updateTask(
-        { templateId, data },
+        { taskId, data },
         {
           onSuccess: () => toast.success('Aufgabe gespeichert'),
           onError: () => toast.error('Aufgabe konnte nicht gespeichert werden'),

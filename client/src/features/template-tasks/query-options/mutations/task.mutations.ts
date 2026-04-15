@@ -14,6 +14,11 @@ export type CreateTemplateTaskParams = {
   data: TemplateTaskFormValues;
 };
 
+export type UpdateTemplateTaskParams = {
+  taskId: string;
+  data: TemplateTaskFormValues;
+};
+
 export const taskMutations = {
   createTask: () => {
     return mutationOptions<
@@ -42,10 +47,9 @@ export const taskMutations = {
     return mutationOptions<
       TemplateTaskFormValues,
       Error,
-      CreateTemplateTaskParams
+      UpdateTemplateTaskParams
     >({
-      mutationFn: ({ templateId, data }) =>
-        updateTemplateTask(data, templateId),
+      mutationFn: ({ taskId, data }) => updateTemplateTask(data, taskId),
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: [DESCRIPTION_ROOT] });
       },
