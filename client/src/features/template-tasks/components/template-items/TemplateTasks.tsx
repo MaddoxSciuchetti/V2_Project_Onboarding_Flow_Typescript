@@ -1,3 +1,4 @@
+import LoadingAlert from '@/components/alerts/LoadingAlert';
 import { Button } from '@/components/ui/selfmade/button';
 import {
   Table,
@@ -9,6 +10,8 @@ import { TaskSidebar } from '@/features/task-management/components/tasks/TaskSid
 import { useNavigate } from '@tanstack/react-router';
 import { ArrowLeft } from 'lucide-react';
 import { useState } from 'react';
+import { useGetTemplateTasks } from '../../hooks/useGetTemplateTask';
+import { TemplateTaskItem } from '../TemplateTaskItem';
 
 type TemplateTasksProps = {
   templateId: string;
@@ -21,7 +24,10 @@ export function TemplateTasks({
 }: TemplateTasksProps) {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-
+  const { data: templateTasks, isLoading } = useGetTemplateTasks(templateId);
+  if (isLoading) {
+    return <LoadingAlert />;
+  }
   return (
     <div className="mx-auto flex h-full flex-col overflow-auto rounded-2xl bg-card p-6 md:max-w-8xl">
       <div className="h-full w-full flex flex-col items-center justify-center">
@@ -45,6 +51,7 @@ export function TemplateTasks({
             <Button onClick={() => setIsOpen(true)}>Hinzufügen</Button>
           </TableHeader>
           <TableDivider />
+          <TemplateTaskItem templateTasks={templateTasks ?? []} />
         </Table>
         <TaskSidebar
           isOpen={isOpen}

@@ -1,10 +1,9 @@
 import API from '@/config/apiClient';
-import { TaskSubmission } from '@/features/task-management/types/index.types';
-import {
-  DescriptionData,
-  DescriptionResponse,
-  SuccessResponse,
-} from '@/types/api.types';
+import type {
+  TemplateTaskFormValues,
+  TemplateTaskResponse,
+} from '@/features/task-management/types/index.types';
+import { SuccessResponse } from '@/types/api.types';
 import { TemplateSubmission } from '../hooks/useSubmitTemplate';
 import { EditDescriptionData } from '../types/taskForm.types';
 import type { IssueTemplateListItem } from '../types/template.types';
@@ -29,13 +28,13 @@ export const deleteTemplateTask = async (
 };
 
 export const createTemplateTask = async (
-  data: TaskSubmission,
+  data: TemplateTaskFormValues,
   templateId: string
-): Promise<TaskSubmission[]> => {
-  const response = await API.post<TaskSubmission, TaskSubmission[]>(
-    `/template/${templateId}/task`,
-    data
-  );
+): Promise<TemplateTaskResponse[]> => {
+  const response = await API.post<
+    TemplateTaskFormValues,
+    TemplateTaskResponse[]
+  >(`/template/${templateId}/task`, data);
   return response;
 };
 
@@ -57,10 +56,13 @@ export const getTemplatesV2 = async (): Promise<IssueTemplateListItem[]> => {
   return response;
 };
 
-export const getTemplateTask = async (): Promise<DescriptionResponse[]> => {
-  const response = await API.get<DescriptionData[], DescriptionResponse[]>(
-    '/template/getTask'
-  );
+export const getTemplateTask = async (
+  templateId: string
+): Promise<TemplateTaskResponse[]> => {
+  const response = await API.get<
+    TemplateTaskResponse[],
+    TemplateTaskResponse[]
+  >(`/template/${templateId}/tasks`);
   return response;
 };
 

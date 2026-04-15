@@ -118,7 +118,6 @@ export const queryTemplateById = async (id: string, orgId: string) => {
                     title: true,
                     description: true,
                     defaultPriority: true,
-                    defaultStatus: true,
                     orderIndex: true,
                     createdAt: true,
                     updatedAt: true,
@@ -161,7 +160,6 @@ export const insertTemplateTask = async (
             title: data.taskName,
             description: data.taskDescription,
             defaultPriority: data.defaultPriority,
-            defaultStatus: data.defaultStatus ?? "backlog",
             orderIndex: data.orderIndex ?? 0,
         },
         select: {
@@ -169,7 +167,6 @@ export const insertTemplateTask = async (
             title: true,
             description: true,
             defaultPriority: true,
-            defaultStatus: true,
             orderIndex: true,
             createdAt: true,
             updatedAt: true,
@@ -189,7 +186,7 @@ export const queryTemplateTasks = async (templateId: string, orgId: string) => {
 
     if (!template) return null;
 
-    return await prisma.templateItem.findMany({
+    const tasks = await prisma.templateItem.findMany({
         where: { issueTemplateId: templateId },
         orderBy: { orderIndex: "asc" },
         select: {
@@ -197,12 +194,12 @@ export const queryTemplateTasks = async (templateId: string, orgId: string) => {
             title: true,
             description: true,
             defaultPriority: true,
-            defaultStatus: true,
             orderIndex: true,
             createdAt: true,
             updatedAt: true,
         },
     });
+    return { tasks };
 };
 
 export const modifyTemplateTask = async (
@@ -215,7 +212,6 @@ export const modifyTemplateTask = async (
             title: data.title,
             description: data.description,
             defaultPriority: data.defaultPriority,
-            defaultStatus: data.defaultStatus,
             orderIndex: data.orderIndex,
         },
         select: {
@@ -223,7 +219,6 @@ export const modifyTemplateTask = async (
             title: true,
             description: true,
             defaultPriority: true,
-            defaultStatus: true,
             orderIndex: true,
             createdAt: true,
             updatedAt: true,

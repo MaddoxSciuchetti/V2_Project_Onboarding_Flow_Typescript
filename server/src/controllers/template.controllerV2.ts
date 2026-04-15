@@ -65,13 +65,7 @@ export const deleteTemplate = catchErrors(async (req, res) => {
 export const createTemplateTask = catchErrors(async (req, res) => {
     const templateId = getParam(req.params.templateId);
     const orgId = req.orgId;
-    const {
-        taskName,
-        taskDescription,
-        defaultPriority,
-        defaultStatus,
-        orderIndex,
-    } = req.body;
+    const { taskName, taskDescription, defaultPriority, orderIndex } = req.body;
     console.log(templateId);
     const task = await insertTemplateTask({
         templateId,
@@ -79,7 +73,6 @@ export const createTemplateTask = catchErrors(async (req, res) => {
         taskName,
         taskDescription,
         defaultPriority,
-        defaultStatus,
         orderIndex,
     });
 
@@ -90,9 +83,16 @@ export const getTemplateTasks = catchErrors(async (req, res) => {
     const templateId = getParam(req.params.templateId);
     const orgId = req.orgId;
 
-    const tasks = await queryTemplateTasks(templateId, orgId);
+    const result = await queryTemplateTasks(templateId, orgId);
+    appAssert(result, NOT_FOUND, "Template not found");
 
-    return res.status(OK).json(tasks);
+    const { tasks } = result;
+    const response = tasks.map((task) => ({
+        ...task,
+        taskName: task.title,
+        taskDescription: task.description,
+    }));
+    return res.status(OK).json(response);
 });
 
 export const updateTemplateTask = catchErrors(async (req, res) => {

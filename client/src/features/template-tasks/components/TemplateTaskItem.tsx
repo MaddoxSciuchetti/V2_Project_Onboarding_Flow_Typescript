@@ -1,17 +1,18 @@
 import { Cell, GrowingItem, Items } from '@/components/ui/selfmade/table/Table';
-import { TaskSubmission } from '@/features/task-management/types/index.types';
+import { TemplateTaskResponse } from '@/features/task-management/types/index.types';
 import { cn } from '@/lib/trycatch';
 import { PencilIcon, TrashIcon } from 'lucide-react';
 export type TemplateTaskItemProps = {
-  templateTasks: TaskSubmission[];
+  templateTasks: TemplateTaskResponse[];
 };
 
 export function TemplateTaskItem({ templateTasks }: TemplateTaskItemProps) {
+  console.log(templateTasks);
   return (
     <div className="flex w-full min-w-0 flex-col divide-y divide-border-subtle">
       {templateTasks.map((task) => (
         <Items
-          key={task.taskName}
+          key={task.id}
           state="hover"
           className={cn(
             'group w-full min-w-0 cursor-pointer items-center justify-between gap-6',
@@ -24,7 +25,9 @@ export function TemplateTaskItem({ templateTasks }: TemplateTaskItemProps) {
               'py-0 pl-0 pr-4'
             )}
           >
-            <p className="typo-body-sm text-text-primary">{task.taskName}</p>
+            <p className="typo-body-sm text-text-primary">
+              {task.taskDescription}
+            </p>
             {task.taskDescription ? (
               <p className="typo-body-xs text-text-secondary line-clamp-3">
                 {task.taskDescription}

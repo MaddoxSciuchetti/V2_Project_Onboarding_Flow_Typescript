@@ -1,12 +1,12 @@
 import queryClient from '@/config/query.client';
-import type { TaskSubmission } from '@/features/task-management/types/index.types';
+import type { TemplateTaskFormValues } from '@/features/task-management/types/index.types';
 import { mutationOptions } from '@tanstack/react-query';
 import { createTemplateTask } from '../../api';
 import { DESCRIPTION_ROOT } from '../../consts/query-key.consts';
 
 export type CreateTemplateTaskParams = {
   templateId: string;
-  data: TaskSubmission;
+  data: TemplateTaskFormValues;
 };
 
 export const taskMutations = {

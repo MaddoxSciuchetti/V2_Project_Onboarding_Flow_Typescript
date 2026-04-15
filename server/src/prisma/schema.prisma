@@ -424,7 +424,6 @@ model TemplateItem {
   title           String
   description     String?
   defaultPriority DefaultPriority?   @map("default_priority")
-  defaultStatus   DefaultIssueStatus @default(backlog) @map("default_status")
   orderIndex      Int                @default(0) @map("order_index")
   createdAt       DateTime           @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt       DateTime           @updatedAt @map("updated_at") @db.Timestamptz()

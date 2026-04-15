@@ -9,14 +9,23 @@ import SidebarContent from './task-sidebar/SidebarContent';
 import SidebarFooter from './task-sidebar/SidebarFooter';
 import SidebarHeader from './task-sidebar/SidebarHeader';
 import { SidebarPanel } from './task-sidebar/SidebarPanel';
+import FormSelectOptions from '@/components/form/FormSelectOptions';
+import {
+  DEFAULT_TEMPLATE_PRIORITY,
+  TEMPLATE_PRIORITY_OPTIONS,
+} from '../../consts/priority-options';
 
 type TaskSidebarProps = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   templateId: string;
 };
-export function TaskSidebar({ isOpen, setIsOpen, templateId }: TaskSidebarProps) {
-  const { register, handleSubmit, errors, onSubmit } =
+export function TaskSidebar({
+  isOpen,
+  setIsOpen,
+  templateId,
+}: TaskSidebarProps) {
+  const { register, handleSubmit, errors, onSubmit, control } =
     useSubmitTasks(templateId);
   return (
     <SidebarAside isOpen={isOpen}>
@@ -43,22 +52,18 @@ export function TaskSidebar({ isOpen, setIsOpen, templateId }: TaskSidebarProps)
               errors={errors}
               register={register}
               name="taskDescription"
-              label="Name der Aufgabe"
+              label="Beschreibung der Aufgabe"
               labelClassName="typo-body-base"
             />
-            <FormFields
+            <FormSelectOptions
               errors={errors}
-              register={register}
+              control={control}
+              data={TEMPLATE_PRIORITY_OPTIONS}
               name="defaultPriority"
-              label="Name der Aufgabe"
+              label="Standard-Priorität"
               labelClassName="typo-body-base"
-            />
-            <FormFields
-              errors={errors}
-              register={register}
-              name="defaultStatus"
-              label="Name der Aufgabe"
-              labelClassName="typo-body-base"
+              placeholder="Priorität wählen"
+              defaultValue={DEFAULT_TEMPLATE_PRIORITY}
             />
           </SidebarContent>
           <SidebarFooter className="p-6">

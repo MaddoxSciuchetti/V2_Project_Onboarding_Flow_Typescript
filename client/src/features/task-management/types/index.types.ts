@@ -48,9 +48,23 @@ export type InsertHistoryData = z.infer<typeof formSchema>;
 
 export type WorkerTab = 'form' | 'files';
 
-export type TaskSubmission = {
+/** Aligned with Prisma `DefaultPriority`. */
+export type DefaultPriority = 'low' | 'medium' | 'high' | 'urgent';
+
+/** Form + create body for a template task (sidebar). */
+export type TemplateTaskFormValues = {
   taskName: string;
   taskDescription: string;
-  defaultPriority: string;
-  defaultStatus: string;
+  defaultPriority: DefaultPriority;
+  orderIndex: number;
+};
+
+export type TemplateTaskResponse = {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  orderIndex: number;
+  taskName: string;
+  taskDescription: string;
+  defaultPriority: DefaultPriority;
 };
