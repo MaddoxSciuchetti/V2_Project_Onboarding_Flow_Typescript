@@ -1,8 +1,8 @@
 import { getUser } from '@/features/auth/api/auth.api';
-import { DescriptionFieldResponse } from '@/types/api.types';
+import { WorkerDetailResponse } from '@/features/worker-lifecycle/types/index.types';
 import { useState } from 'react';
 
-function useFilteredData(data: DescriptionFieldResponse | undefined) {
+function useFilteredData(data: WorkerDetailResponse) {
   const [descriptionSearch, setDescriptionSearch] = useState<string>('');
   const [currentUser, setCurrentUser] = useState<string | null>(null);
   const [showMyItems, setShowMyItems] = useState(false);

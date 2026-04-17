@@ -8,7 +8,7 @@ export const LAYOUTITEMS = [
   },
   {
     title: 'Aufgaben',
-    to: '/template',
+    to: '/tasks',
     icon: Ticket,
   },
   {

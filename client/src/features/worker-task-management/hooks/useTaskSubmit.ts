@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { workerMutations } from '../query-options/mutations/worker.mutations';
 import { InsertHistoryData } from '../types/index.types';
 
-function useTaskSubmit(id: number) {
+function useTaskSubmit(id: string) {
   const [selectedTaskId, setSelectedTaskId] = useState<number | null>(null);
   const closeSidebar = () => setSelectedTaskId(null);
   const { user } = useAuth();

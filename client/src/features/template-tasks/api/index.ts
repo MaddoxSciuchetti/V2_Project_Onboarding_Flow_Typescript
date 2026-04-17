@@ -1,8 +1,9 @@
 import API from '@/config/apiClient';
-import type {
+
+import {
   TemplateTaskFormValues,
   TemplateTaskResponse,
-} from '@/features/task-management/types/index.types';
+} from '@/features/worker-task-management/types/index.types';
 import { SuccessResponse } from '@/types/api.types';
 import { TemplateSubmission } from '../hooks/useSubmitTemplate';
 import type { IssueTemplateListItem } from '../types/template.types';

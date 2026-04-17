@@ -6,8 +6,8 @@ import {
   TableHeader,
 } from '@/components/ui/selfmade/table/Table';
 import { SettingsStatusesHeader } from '@/features/settings/org-statuses/SettingsStatusesHeader';
-import { TaskSidebar } from '@/features/task-management/components/tasks/TaskSidebar';
-import { TemplateTaskFormValues } from '@/features/task-management/types/index.types';
+import { TaskSidebar } from '@/features/worker-task-management/components/tasks/TaskSidebar';
+import { TemplateTaskFormValues } from '@/features/worker-task-management/types/index.types';
 import { useNavigate } from '@tanstack/react-router';
 import { ArrowLeft } from 'lucide-react';
 import { useState } from 'react';

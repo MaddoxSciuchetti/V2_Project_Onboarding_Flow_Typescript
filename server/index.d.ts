@@ -9,8 +9,7 @@ declare global {
             userId: DebugUser["id"];
             tokenId?: string;
             sessionId?: string;
-            /** Set when the user has an active organization membership. */
-            orgId?: string;
+            orgId: string;
         }
     }
 }

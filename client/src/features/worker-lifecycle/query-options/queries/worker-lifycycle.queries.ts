@@ -1,4 +1,4 @@
-import { getWorkerById } from '@/features/task-management/api/index.api';
+import { getWorkerById } from '@/features/worker-task-management/api/index.api';
 import { queryOptions } from '@tanstack/react-query';
 import { getWorkerData } from '../../api';
 import { ALL_WORKER_DATA } from '../../consts/query-key.consts';

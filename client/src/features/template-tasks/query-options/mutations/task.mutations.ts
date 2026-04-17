@@ -1,5 +1,6 @@
 import queryClient from '@/config/query.client';
-import type { TemplateTaskFormValues } from '@/features/task-management/types/index.types';
+
+import { TemplateTaskFormValues } from '@/features/worker-task-management/types/index.types';
 import { SuccessResponse } from '@/types/api.types';
 import { mutationOptions } from '@tanstack/react-query';
 import {

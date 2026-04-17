@@ -14,6 +14,7 @@ import { indexRoutes } from "./routes/index.route";
 import inviteRoutes from "./routes/invite.route";
 import orgRoutes from "./routes/org.route";
 import sessionRoutes from "./routes/session.route";
+import { taskRoutes } from "./routes/tasks.route";
 import { templateRoutes } from "./routes/template.route";
 import testRoutes from "./routes/test.route";
 import { userRoutes } from "./routes/user.route";
@@ -84,6 +85,8 @@ app.use("/index", authenticate, indexRoutes);
 
 // worker
 app.use("/worker", authenticate, worker);
+
+app.use("/tasks", authenticate, taskRoutes);
 
 app.use("/org", authenticate, orgRoutes);
 app.use("/invites", inviteRoutes);

@@ -11,7 +11,7 @@ import {
 import useFilteredData from '../../hooks/useFilteredData';
 import useTaskData from '../../hooks/useTaskData';
 import useTaskSubmit from '../../hooks/useTaskSubmit';
-import { LifecycleType, WorkerTab } from '../../types/index.types';
+import { WorkerTab } from '../../types/index.types';
 import WorkerFileUploads from '../files/WorkerFileUploads';
 import FilterByUser from '../header/filters/Filter.ByUser';
 import WorkerHeader from '../header/WorkerHeader';
@@ -23,16 +23,16 @@ import TemplateSidebar from './task-sidebar/TemplateSidebar';
 import TaskIndividual from './TaskIndividual';
 
 type TaskManagementProps = {
-  workerId: number;
-  lifecycleType: LifecycleType;
+  workerId: string;
 };
 
-const TaskManagement = ({ workerId, lifecycleType }: TaskManagementProps) => {
+const TaskManagement = ({ workerId }: TaskManagementProps) => {
   const [activeTab, setActiveTab] = useState<WorkerTab>('form');
   const [fileDescriptionSearch, setFileDescriptionSearch] = useState('');
   const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false);
 
-  const { data, isLoading } = useTaskData(workerId, lifecycleType);
+  const { data, isLoading } = useTaskData(workerId);
+
   const {
     descriptionSearch,
     setDescriptionSearch,

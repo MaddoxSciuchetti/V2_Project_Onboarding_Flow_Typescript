@@ -74,7 +74,7 @@ export const workerMutations = {
     });
   },
 
-  updateTaskData: (workerId: number, closeSidebar: () => void) => {
+  updateTaskData: (workerId: string, closeSidebar: () => void) => {
     return mutationOptions<void, Error, InsertHistoryData>({
       mutationFn: async (formValues) => {
         await updateWorkerData(formValues);

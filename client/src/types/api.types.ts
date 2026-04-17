@@ -1,4 +1,4 @@
-import { TaskStatus } from '@/features/task-management/utils/selectOptionTernary';
+import { TaskStatus } from '@/features/worker-task-management/utils/selectOptionTernary';
 
 export type SuccessResponse<T> = {
   success: true;

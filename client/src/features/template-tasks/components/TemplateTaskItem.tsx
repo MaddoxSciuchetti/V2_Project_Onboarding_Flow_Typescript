@@ -1,8 +1,9 @@
 import { Cell, GrowingItem, Items } from '@/components/ui/selfmade/table/Table';
+
 import {
   TemplateTaskFormValues,
   TemplateTaskResponse,
-} from '@/features/task-management/types/index.types';
+} from '@/features/worker-task-management/types/index.types';
 import { cn } from '@/lib/trycatch';
 import { PencilIcon, TrashIcon } from 'lucide-react';
 import { useDeleteTemplateTask } from '../hooks/useDeleteTemplateTask';
