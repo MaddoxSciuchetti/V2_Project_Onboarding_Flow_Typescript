@@ -5,7 +5,6 @@ import {
   CellHolder,
   GrowingItem,
   ItemHeader,
-  Items,
   Table,
   TableDivider,
   TableHeader,
@@ -14,12 +13,12 @@ import useAuth from '@/features/user-profile/hooks/useAuth';
 import GreetingHeader from '@/features/worker-lifecycle/components/GreetingHeader';
 import { useState } from 'react';
 import { useFetchTasks } from '../hooks/useFetchTasks';
+import { TaskItem } from './TaskItem';
 import { Segment, TaskSegmentToggle } from './ui/taskHeader';
 
 function Tasks() {
   const { user } = useAuth();
   const { data, isLoading } = useFetchTasks();
-  const [search, setSearch] = useState('');
   const [segment, setSegment] = useState<Segment>('left');
 
   const tasks = Array.isArray(data) ? data : [];
@@ -48,14 +47,7 @@ function Tasks() {
             </CellHolder>
           </ItemHeader>
           {tasks.map((task) => (
-            <Items state="default" key={task.id}>
-              <GrowingItem className="py-2 pl-10">
-                <p className="typo-body-sm">{task.title}</p>
-              </GrowingItem>
-              <CellHolder>
-                <Cell className="typo-body-sm">{task.description ?? '—'}</Cell>
-              </CellHolder>
-            </Items>
+            <TaskItem key={task.id} task={task} />
           ))}
         </Table>
       </div>
