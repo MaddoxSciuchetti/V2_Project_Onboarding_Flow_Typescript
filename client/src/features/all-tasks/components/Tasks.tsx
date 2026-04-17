@@ -12,6 +12,7 @@ import {
 import useAuth from '@/features/user-profile/hooks/useAuth';
 import GreetingHeader from '@/features/worker-lifecycle/components/GreetingHeader';
 import { useState } from 'react';
+import { useCreateTask } from '../hooks/useCreateTask';
 import { useFetchTasks } from '../hooks/useFetchTasks';
 import { TaskItem } from './TaskItem';
 import { Segment, TaskSegmentToggle } from './ui/taskHeader';
@@ -19,6 +20,7 @@ import { Segment, TaskSegmentToggle } from './ui/taskHeader';
 function Tasks() {
   const { user } = useAuth();
   const { data, isLoading } = useFetchTasks();
+  const { mutate: createTask } = useCreateTask();
   const [segment, setSegment] = useState<Segment>('left');
 
   const tasks = Array.isArray(data) ? data : [];
@@ -33,7 +35,11 @@ function Tasks() {
           <TableHeader>
             <GrowingItem>Alle Aufgaben</GrowingItem>
             <TaskSegmentToggle value={segment} onChange={setSegment} />
-            <Button className="text-sm text-surface-page" type="button">
+            <Button
+              className="text-sm text-surface-page"
+              type="button"
+              onClick={() => createTask({})}
+            >
               Hinzufügen
             </Button>
           </TableHeader>
