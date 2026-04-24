@@ -1,3 +1,15 @@
+export type EngagementResponse = {
+  id: string;
+  type: string;
+  workerId: string;
+  workerFirstName: string;
+  workerLastName: string;
+};
+
+export type ListEngagementsResponse = {
+  engagements: EngagementResponse[];
+};
+
 export type IssueResponse = {
   id: string;
   workerEngagementId: string;

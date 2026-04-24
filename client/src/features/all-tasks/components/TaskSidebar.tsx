@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/selfmade/button';
 import { FormWrapper } from '@/components/ui/selfmade/form-wrapper';
 import { employeeQueries } from '@/features/employee-overview/query-options/queries/employee.queries';
 import { fetchOrgStatuses } from '@/features/settings/org-statuses/org-status.api';
+import { useFetchEngagements } from '../hooks/useFetchEngagements';
 import { SidebarAside } from '@/features/worker-task-management/components/tasks/task-sidebar/SidebarAside';
 import SidebarContent from '@/features/worker-task-management/components/tasks/task-sidebar/SidebarContent';
 import SidebarFooter from '@/features/worker-task-management/components/tasks/task-sidebar/SidebarFooter';
@@ -17,6 +18,7 @@ import { useForm } from 'react-hook-form';
 
 type TaskSidebarForm = {
   title: string;
+  workerEngagementId: string;
   assigneeUserId: string;
   statusId: string;
 };
@@ -33,7 +35,12 @@ export function TaskSidebar({ isOpen, setIsOpen }: TaskSidebarProps) {
     control,
     formState: { errors },
   } = useForm<TaskSidebarForm>({
-    defaultValues: { title: '', assigneeUserId: '', statusId: '' },
+    defaultValues: {
+      title: '',
+      workerEngagementId: '',
+      assigneeUserId: '',
+      statusId: '',
+    },
   });
 
   const { data: employees = [] } = useQuery(employeeQueries.getEmployees());
@@ -42,6 +49,7 @@ export function TaskSidebar({ isOpen, setIsOpen }: TaskSidebarProps) {
     queryFn: () => fetchOrgStatuses('issue'),
     enabled: isOpen,
   });
+  const { data: engagements = [] } = useFetchEngagements();
 
   const ownerOptions = useMemo(
     () =>
@@ -59,6 +67,15 @@ export function TaskSidebar({ isOpen, setIsOpen }: TaskSidebarProps) {
         label: s.name,
       })),
     [statuses]
+  );
+
+  const engagementOptions = useMemo(
+    () =>
+      engagements.map((e) => ({
+        value: e.id,
+        label: `${e.workerFirstName} ${e.workerLastName} — ${e.type}`,
+      })),
+    [engagements]
   );
 
   return (
@@ -89,6 +106,15 @@ export function TaskSidebar({ isOpen, setIsOpen }: TaskSidebarProps) {
                 placeholder="Titel"
               />
               <FormSelectOptions
+                name="workerEngagementId"
+                control={control}
+                data={engagementOptions}
+                placeholder="Engagement"
+                errors={errors}
+                label="Engagement"
+                labelClassName="typo-body-base"
+              />
+              <FormSelectOptions
                 name="assigneeUserId"
                 control={control}
                 data={ownerOptions}
@@ -108,7 +134,7 @@ export function TaskSidebar({ isOpen, setIsOpen }: TaskSidebarProps) {
               />
             </SidebarContent>
             <SidebarFooter className="p-6">
-              <Button type="submit">Speichern</Button>
+              <Button type="submit">Erstellen</Button>
             </SidebarFooter>
           </FormWrapper>
         </SidebarPanel>

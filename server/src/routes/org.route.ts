@@ -1,4 +1,5 @@
 import { createInviteHandler } from "@/controllers/invite.controller";
+import { listOrgEngagementsHandler } from "@/controllers/orgEngagement.controller";
 import {
     createOrgStatusHandler,
     deleteOrgStatusHandler,
@@ -14,5 +15,6 @@ orgRoutes.get("/statuses", listOrgStatusesHandler);
 orgRoutes.post("/statuses", createOrgStatusHandler);
 orgRoutes.patch("/statuses/:id", updateOrgStatusHandler);
 orgRoutes.delete("/statuses/:id", deleteOrgStatusHandler);
+orgRoutes.get("/engagements", listOrgEngagementsHandler);
 
 export default orgRoutes;
