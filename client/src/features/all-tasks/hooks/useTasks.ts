@@ -1,6 +1,8 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import type { Dispatch, SetStateAction } from 'react';
 import { useForm } from 'react-hook-form';
 import { TaskEditState } from '../components/Tasks';
+import { taskFormSchema } from '../schemas/taskForm.schema';
 import { TaskSidebarForm } from '../types/index.types';
 import { useCreateTask } from './useCreateTask';
 import { useUpdateTask } from './useUpdateTask';
@@ -25,6 +27,7 @@ export function useTasks(
       assigneeUserId: taskEditState.assigneeUserId,
       statusId: taskEditState.statusId,
     },
+    resolver: zodResolver(taskFormSchema),
   });
 
   const onSubmit = handleSubmit((data) => {
