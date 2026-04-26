@@ -44,3 +44,5 @@ After changing my entire template task that now is really unorganized (will poss
 25.April:
 
 Implementing payment system. Once this payment system way implemented i ensured that i want to test through e2e, integration and unit. This ensures maximal coverage for this importance function that my code has.
+
+Implementing the

@@ -8,3 +8,5 @@ function formatDateDe(iso: string | null) {
     year: 'numeric',
   }).format(d);
 }
+
+export default formatDateDe;

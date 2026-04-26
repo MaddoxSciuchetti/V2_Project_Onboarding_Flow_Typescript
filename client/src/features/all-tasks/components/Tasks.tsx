@@ -24,6 +24,7 @@ function Tasks() {
   const { mutate: createTask } = useCreateTask();
   const [segment, setSegment] = useState<Segment>('left');
   const [isOpen, setIsOpen] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
 
   const tasks = Array.isArray(data) ? data : [];
 
@@ -32,7 +33,12 @@ function Tasks() {
   return (
     <div className="mx-auto flex h-full flex-col overflow-auto rounded-2xl bg-card p-6 md:max-w-8xl">
       <div className="flex h-full w-full flex-col">
-        <TaskSidebar isOpen={isOpen} setIsOpen={setIsOpen} />
+        <TaskSidebar
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          isEdit={isEdit}
+          setIsEdit={setIsEdit}
+        />
         <GreetingHeader firstname={user?.firstName ?? ''} />
         <Table>
           <TableHeader>
@@ -44,6 +50,7 @@ function Tasks() {
               onClick={() => {
                 setIsOpen(true);
                 createTask({});
+                setIsEdit(false);
               }}
             >
               Hinzufügen
@@ -59,7 +66,7 @@ function Tasks() {
             </CellHolder>
           </ItemHeader>
           {tasks.map((task) => (
-            <TaskItem key={task.id} task={task} />
+            <TaskItem key={task.id} task={task} setIsEdit={setIsEdit} />
           ))}
         </Table>
       </div>

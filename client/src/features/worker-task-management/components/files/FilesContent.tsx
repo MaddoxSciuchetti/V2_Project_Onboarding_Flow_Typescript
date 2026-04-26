@@ -1,11 +1,9 @@
 import { Button } from '@/components/ui/button';
-import { File_Request } from '@/features/task-management/types/index.types';
-import {
-  fileIcon,
-  getFileName,
-} from '@/features/task-management/utils/fileHandling';
+
 import { SuccessResponse } from '@/types/api.types';
 import { UseMutateFunction } from '@tanstack/react-query';
+import { File_Request } from '../../types/index.types';
+import { fileIcon, getFileName } from '../../utils/fileHandling';
 
 type FilesContentProps = {
   fetchFiles: File_Request[] | undefined;

@@ -7,36 +7,43 @@ import {
 } from '@/components/ui/selfmade/table/Table';
 import { Headset } from 'lucide-react';
 import type { IssueResponse } from '../types/index.types';
+import formatDateDe from '../utilts/date.utils';
 import { PriorityIndicator } from '../utilts/priority.utils';
 import { PillBadge } from './ui/PillBadge';
 
 type TaskItemProps = {
   task: IssueResponse;
+  setIsEdit: (isEdit: boolean) => void;
   onEdit?: () => void;
   onRowClick?: () => void;
 };
 
-export function TaskItem({ task, onEdit, onRowClick }: TaskItemProps) {
+export function TaskItem({
+  task,
+  setIsEdit,
+  onEdit,
+  onRowClick,
+}: TaskItemProps) {
   const dateSource = task.dueDate ?? task.createdAt;
 
   return (
     <Items
       state="hover"
       className="relative flex items-center"
-      onClick={onRowClick}
+      onClick={() => setIsEdit(true)}
     >
       <img
         className="group absolute ml-2 h-5 w-5 opacity-0 transition-opacity group-hover:opacity-100"
         src="assets/BoxSelect.svg"
         alt=""
       />
-      <GrowingItem className="min-w-0 flex-1 py-2 pl-10">
-        <div className="flex min-h-[52px] min-w-0 flex-1 items-center gap-2.5">
-          <p className="typo-body-xl shrink-0 whitespace-nowrap text-black">
+      <GrowingItem className="min-w-0 flex-1 py-0 pl-10">
+        <div className="flex min-w-0 flex-1 items-center gap-2.5">
+          <p className="typo-body-base shrink-0 whitespace-nowrap text-black">
             {`--- ${task.id.slice(0, 8)}`}
           </p>
           <PriorityIndicator priority={task.priority} />
-          <p className="typo-body-xl min-w-0 truncate text-black">
+          <p className="typo-body-base min-w-0 truncate text-black">
             {task.title}
           </p>
           <Button
@@ -55,7 +62,7 @@ export function TaskItem({ task, onEdit, onRowClick }: TaskItemProps) {
       <CellHolder>
         <Cell className="flex w-full max-w-none items-center justify-end gap-2 border-0">
           <PillBadge>
-            <Headset className="size-6 shrink-0" aria-hidden />
+            <Headset className="size-4 shrink-0" aria-hidden />
             <span className="whitespace-nowrap">—</span>
           </PillBadge>
           <PillBadge>

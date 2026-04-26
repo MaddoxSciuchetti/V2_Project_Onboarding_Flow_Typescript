@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/selfmade/button';
 import { FormWrapper } from '@/components/ui/selfmade/form-wrapper';
 import { employeeQueries } from '@/features/employee-overview/query-options/queries/employee.queries';
 import { fetchOrgStatuses } from '@/features/settings/org-statuses/org-status.api';
-import { useFetchEngagements } from '../hooks/useFetchEngagements';
 import { SidebarAside } from '@/features/worker-task-management/components/tasks/task-sidebar/SidebarAside';
 import SidebarContent from '@/features/worker-task-management/components/tasks/task-sidebar/SidebarContent';
 import SidebarFooter from '@/features/worker-task-management/components/tasks/task-sidebar/SidebarFooter';
@@ -15,6 +14,7 @@ import { useQuery } from '@tanstack/react-query';
 import { X } from 'lucide-react';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
+import { useFetchEngagements } from '../hooks/useFetchEngagements';
 
 type TaskSidebarForm = {
   title: string;
@@ -26,9 +26,16 @@ type TaskSidebarForm = {
 type TaskSidebarProps = {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isEdit: boolean;
+  setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export function TaskSidebar({ isOpen, setIsOpen }: TaskSidebarProps) {
+export function TaskSidebar({
+  isOpen,
+  setIsOpen,
+  isEdit,
+  setIsEdit,
+}: TaskSidebarProps) {
   const {
     register,
     handleSubmit,

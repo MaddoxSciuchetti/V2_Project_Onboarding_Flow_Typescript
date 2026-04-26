@@ -1,8 +1,9 @@
 import SmallWrapper from '@/components/modal/modalSizes/SmallWrapper';
 import { Button } from '@/components/ui/button';
 import { CardContent } from '@/components/ui/card';
-import useFileSelect from '@/features/task-management/hooks/useFileSelect';
-import useFileUpload from '@/features/task-management/hooks/useFileUpload';
+
+import useFileSelect from '@/features/worker-task-management/hooks/useFileSelect';
+import useFileUpload from '@/features/worker-task-management/hooks/useFileUpload';
 import { FileDropzone } from './Dropzone';
 import { FileList } from './FileList';
 

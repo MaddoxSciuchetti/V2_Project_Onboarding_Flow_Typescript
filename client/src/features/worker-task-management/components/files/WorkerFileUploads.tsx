@@ -1,13 +1,13 @@
 import ModalOverlay from '@/components/modal/ModalOverlay';
-import useDeleteWorkerFile from '@/features/task-management/hooks/useDeleteWorkerFile';
-import useGetWorkerFiles from '@/features/task-management/hooks/useGetWorkerFiles';
-import handleZipExport from '@/features/task-management/utils/handleZipExport';
 import { useToggleModal } from '@/hooks/useToggleModal';
 
 import ErrorAlert from '@/components/alerts/ErrorAlert';
 import LoadingAlert from '@/components/alerts/LoadingAlert';
-import { getFileName } from '@/features/task-management/utils/fileHandling';
 import { useMemo } from 'react';
+import useDeleteWorkerFile from '../../hooks/useDeleteWorkerFile';
+import useGetWorkerFiles from '../../hooks/useGetWorkerFiles';
+import { getFileName } from '../../utils/fileHandling';
+import handleZipExport from '../../utils/handleZipExport';
 import FileUploadForm from './file_upload/FileUploadForm';
 import FileHeader from './FileHeader';
 import FilesContent from './FilesContent';
