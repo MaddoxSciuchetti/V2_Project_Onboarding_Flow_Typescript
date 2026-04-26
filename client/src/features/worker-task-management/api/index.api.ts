@@ -41,14 +41,14 @@ export const updateWorkerData = async (formData: UpdateWorkerDescription) => {
   return response;
 };
 
-export const getWorkerHistory = async (id: number): Promise<HistoryData[]> => {
+export const getWorkerHistory = async (id: string): Promise<HistoryData[]> => {
   const response = await API.get<HistoryData[], HistoryData[]>(
     `worker/getWorkerHistory/${id}`
   );
   return response;
 };
 
-export const getWorkerFiles = async (id: number): Promise<File_Request[]> => {
+export const getWorkerFiles = async (id: string): Promise<File_Request[]> => {
   const response = API.get<File_Request[], File_Request[]>(
     `worker/getWorkerFiles/${id}`
   );
@@ -69,12 +69,12 @@ export const deleteWorkerFile = async (
   return API.delete(`worker/deleteWorkerFile/${id}`);
 };
 
-export const updateData = async (data: UpdatePayload, workerId: number) => {
+export const updateData = async (data: UpdatePayload, workerId: string) => {
   return await API.put('/worker/singleWorkerDataPoint', { ...data, workerId });
 };
 
 export const createWorkerTask = async (
-  workerId: number,
+  workerId: string,
   data: CreateWorkerTaskPayload
 ) => {
   return await API.post(`/worker/createWorkerTask/${workerId}`, data);

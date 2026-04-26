@@ -29,7 +29,7 @@ type UpdateTaskHistoryVariables = {
 };
 
 export const workerMutations = {
-  deleteWorker: (workerId: number) => {
+  deleteWorker: (workerId: string) => {
     return mutationOptions<SuccessResponse<string>, Error, number>({
       mutationFn: (fileId: number) => deleteWorkerFile(fileId),
       onMutate: async (fileId) => {
@@ -47,7 +47,7 @@ export const workerMutations = {
     });
   },
 
-  createFile: (id: number) => {
+  createFile: (id: string) => {
     return mutationOptions<FileResponse, Error, File[]>({
       mutationFn: (files: File[]) => createWorkerFile(files, id),
       onSuccess: () => {
@@ -88,7 +88,7 @@ export const workerMutations = {
     });
   },
 
-  updateDataPoint: (workerId: number) => {
+  updateDataPoint: (workerId: string) => {
     return mutationOptions<void, unknown, UpdatePayload, { previous: unknown }>(
       {
         mutationFn: async (data) => {
@@ -106,7 +106,7 @@ export const workerMutations = {
     );
   },
 
-  createWorkerTask: (workerId: number) => {
+  createWorkerTask: (workerId: string) => {
     return mutationOptions<void, Error, CreateWorkerTaskPayload>({
       mutationFn: async (data) => {
         await createWorkerTask(workerId, data);

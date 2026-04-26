@@ -5,7 +5,7 @@ import { workerMutations } from '../query-options/mutations/worker.mutations';
 import { InsertHistoryData } from '../types/index.types';
 
 function useTaskSubmit(id: string) {
-  const [selectedTaskId, setSelectedTaskId] = useState<number | null>(null);
+  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
   const closeSidebar = () => setSelectedTaskId(null);
   const { user } = useAuth();
   const { mutateAsync: updateTaskHistory } = useMutation(

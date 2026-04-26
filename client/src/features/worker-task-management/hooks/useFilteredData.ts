@@ -1,53 +1,45 @@
 import { getUser } from '@/features/auth/api/auth.api';
 import { WorkerDetailResponse } from '@/features/worker-lifecycle/types/index.types';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
-function useFilteredData(data: WorkerDetailResponse) {
+type WorkerEngagement =
+  WorkerDetailResponse['data']['engagements'][number];
+export type WorkerIssue = NonNullable<WorkerEngagement['issues']>[number];
+
+const flattenEngagementIssues = (
+  data: WorkerDetailResponse | undefined
+): WorkerIssue[] =>
+  data?.data.engagements.flatMap((engagement) => engagement.issues ?? []) ?? [];
+
+function useFilteredData(data: WorkerDetailResponse | undefined) {
   const [descriptionSearch, setDescriptionSearch] = useState<string>('');
   const [currentUser, setCurrentUser] = useState<string | null>(null);
   const [showMyItems, setShowMyItems] = useState(false);
 
-  const getFilterAndSortedData = () => {
-    let filteredData = data?.form.fields ?? [];
+  const allIssues = useMemo(() => flattenEngagementIssues(data), [data]);
 
-    if (descriptionSearch) {
-      filteredData = filteredData.filter((field) =>
-        field.description
-          .toLowerCase()
-          .includes(descriptionSearch.toLowerCase())
+  const displayData = useMemo(() => {
+    let filtered = allIssues;
+
+    const search = descriptionSearch.trim().toLowerCase();
+    if (search) {
+      filtered = filtered.filter((issue) =>
+        issue.id.toLowerCase().includes(search)
       );
     }
 
-    if (showMyItems && currentUser) {
-      filteredData = filteredData.filter((field) => {
-        return field.owner_id === currentUser;
-      });
-    }
-
-    const sortedData = [...filteredData].sort((a, b) => {
-      if (a.status === 'erledigt' && b.status !== 'erledigt') {
-        return 1;
-      } else if (a.status !== 'erledigt' && b.status === 'erledigt') {
-        return -1;
-      } else {
-        return 0;
-      }
-    });
-
-    return sortedData;
-  };
+    return filtered;
+  }, [allIssues, descriptionSearch]);
 
   const handleMeFilter = async () => {
-    if (!showMyItems) {
-      const response = await getUser();
-      setCurrentUser(response.id);
-      setShowMyItems(true);
-    } else {
+    if (showMyItems) {
       setShowMyItems(false);
+      return;
     }
+    const response = await getUser();
+    setCurrentUser(response.id);
+    setShowMyItems(true);
   };
-
-  const displayData = getFilterAndSortedData();
 
   return {
     descriptionSearch,

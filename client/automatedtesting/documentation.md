@@ -45,4 +45,10 @@ After changing my entire template task that now is really unorganized (will poss
 
 Implementing payment system. Once this payment system way implemented i ensured that i want to test through e2e, integration and unit. This ensures maximal coverage for this importance function that my code has.
 
-Implementing the
+---
+
+Implementation of new features. This lead to not writing tests in the first place and not being able to push as it was not sure if the code also worked in production
+
+---
+
+26. Apr decided to quickly start writing most of the unit and integration tests that are also responsible for covering the most important aspects

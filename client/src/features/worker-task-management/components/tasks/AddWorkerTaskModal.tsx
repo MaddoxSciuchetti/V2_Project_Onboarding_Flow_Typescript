@@ -1,5 +1,4 @@
 import SmallWrapper from '@/components/modal/modalSizes/SmallWrapper';
-import { LifecycleType } from '@/features/task-management/types/index.types';
 import TaskForm from '@/features/template-tasks/components/shared/TaskForm';
 import { addSchema } from '@/features/template-tasks/schemas/taskForm.schema';
 import { HandleAddSubmit } from '@/features/template-tasks/types/taskForm.types';
@@ -9,19 +8,11 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { workerMutations } from '../../query-options/mutations/worker.mutations';
 
 type AddWorkerTaskModalProps = {
-  workerId: number;
-  lifecycleType: LifecycleType;
+  workerId: string;
   onClose: () => void;
 };
 
-const AddWorkerTaskModal = ({
-  workerId,
-  lifecycleType,
-  onClose,
-}: AddWorkerTaskModalProps) => {
-  const templateType =
-    lifecycleType === 'Offboarding' ? 'OFFBOARDING' : 'ONBOARDING';
-
+const AddWorkerTaskModal = ({ workerId, onClose }: AddWorkerTaskModalProps) => {
   const { mutate: createWorkerTaskMutation } = useMutation(
     workerMutations.createWorkerTask(workerId)
   );
@@ -32,9 +23,6 @@ const AddWorkerTaskModal = ({
     control,
     formState: { errors },
   } = useForm<HandleAddSubmit>({
-    defaultValues: {
-      template_type: templateType,
-    },
     resolver: zodResolver(addSchema),
     criteriaMode: 'all',
   });
@@ -50,16 +38,12 @@ const AddWorkerTaskModal = ({
   return (
     <SmallWrapper className="min-h-60 max-h-60">
       <TaskForm
-        template_header={
-          templateType === 'ONBOARDING' ? 'Onboarding' : 'Offboarding'
-        }
         templateHeaderAdjective="hinzufügen"
         buttonsaveText="New hinzufügen"
         register={register}
         submit={handleSubmit(onSubmit)}
         control={control}
         errors={errors}
-        tab={templateType}
         descriptionFormName="description"
         templateTypeName="template_type"
       />

@@ -1,13 +1,16 @@
 import ErrorAlert from '@/components/alerts/ErrorAlert';
 import LoadingAlert from '@/components/alerts/LoadingAlert';
 import ModalOverlay from '@/components/modal/ModalOverlay';
-import { Tabs, TabsContent } from '@/components/ui/tabs';
 import {
-  useCallback,
-  useState,
-  type Dispatch,
-  type SetStateAction,
-} from 'react';
+  Cell,
+  CellHolder,
+  GrowingItem,
+  ItemHeader,
+  Table,
+  TableDivider,
+} from '@/components/ui/selfmade/table/Table';
+import { Tabs, TabsContent } from '@/components/ui/tabs';
+import { useState } from 'react';
 import useFilteredData from '../../hooks/useFilteredData';
 import useTaskData from '../../hooks/useTaskData';
 import useTaskSubmit from '../../hooks/useTaskSubmit';
@@ -16,11 +19,7 @@ import WorkerFileUploads from '../files/WorkerFileUploads';
 import FilterByUser from '../header/filters/Filter.ByUser';
 import WorkerHeader from '../header/WorkerHeader';
 import AddWorkerTaskModal from './AddWorkerTaskModal';
-import SidebarHeader from './task-sidebar/SidebarHeader';
-import TaskSidebarBody from './task-sidebar/TaskSidebarBody';
-import TaskSidebarHeader from './task-sidebar/TaskSidebarHeader';
-import TemplateSidebar from './task-sidebar/TemplateSidebar';
-import TaskIndividual from './TaskIndividual';
+import { WorkerTaskRow } from './WorkerTaskRow';
 
 type TaskManagementProps = {
   workerId: string;
@@ -41,22 +40,11 @@ const TaskManagement = ({ workerId }: TaskManagementProps) => {
     displayData,
   } = useFilteredData(data);
 
-  const { handleSubmit, selectedTaskId, setSelectedTaskId } =
-    useTaskSubmit(workerId);
+  const { setSelectedTaskId } = useTaskSubmit(workerId);
 
-  const selectedTask =
-    displayData.find((field) => field.id === selectedTaskId) ?? null;
-
-  const setIsOpen = useCallback<Dispatch<SetStateAction<boolean>>>(
-    (action) => {
-      const next =
-        typeof action === 'function' ? action(selectedTask !== null) : action;
-      if (!next) {
-        setSelectedTaskId(null);
-      }
-    },
-    [selectedTask, setSelectedTaskId]
-  );
+  if (isLoading) return <LoadingAlert />;
+  if (!data)
+    return <ErrorAlert message="The tasks could not load, reload page" />;
 
   const searchValue =
     activeTab === 'files' ? fileDescriptionSearch : descriptionSearch;
@@ -65,75 +53,62 @@ const TaskManagement = ({ workerId }: TaskManagementProps) => {
   const searchPlaceholder =
     activeTab === 'files' ? 'Dateiname suchen' : 'Beschreibung suchen';
 
-  if (isLoading) return <LoadingAlert />;
-  if (!data)
-    return <ErrorAlert message="The tasks could not load, reload page" />;
-
   return (
     <div className="flex flex-col w-5xl rounded-2xl mx-auto overflow-hidden p-6 h-[calc(100dvh-8rem)] max-h-[calc(100dvh-8rem)] md:max-w-8xl">
-      <>
-        <Tabs
-          value={activeTab}
-          onValueChange={(value) => {
-            if (value === 'form' || value === 'files') {
-              setActiveTab(value);
-            }
-          }}
-        >
-          <WorkerHeader
-            searchValue={searchValue}
-            setSearchValue={setSearchValue}
-            searchPlaceholder={searchPlaceholder}
-            handleAddTask={() => setIsAddTaskModalOpen(true)}
+      <Tabs
+        value={activeTab}
+        onValueChange={(value) => {
+          if (value === 'form' || value === 'files') {
+            setActiveTab(value);
+          }
+        }}
+      >
+        <WorkerHeader
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
+          searchPlaceholder={searchPlaceholder}
+          handleAddTask={() => setIsAddTaskModalOpen(true)}
+        />
+        <TabsContent value="form">
+          <FilterByUser
+            showMyItems={showMyItems}
+            handleMeFilter={handleMeFilter}
           />
-          <TabsContent value="form">
-            <FilterByUser
-              showMyItems={showMyItems}
-              handleMeFilter={handleMeFilter}
-            />
-            <TaskIndividual
-              tasks={displayData}
-              selectedTaskId={selectedTaskId}
-              handleSelectTask={setSelectedTaskId}
-            />
-            <TemplateSidebar
-              isOpen={selectedTask !== null}
-              setIsOpen={setIsOpen}
-            >
-              {selectedTask ? (
-                <>
-                  <SidebarHeader>
-                    <TaskSidebarHeader
-                      selectedTask={selectedTask}
-                      setSelectedTaskId={setSelectedTaskId}
-                    />
-                  </SidebarHeader>
-                  <TaskSidebarBody
-                    selectedTask={selectedTask}
-                    handleSubmit={handleSubmit}
-                  />
-                </>
-              ) : null}
-            </TemplateSidebar>
-          </TabsContent>
-          <TabsContent value="files">
-            <WorkerFileUploads
-              workerId={workerId}
-              fileDescriptionSearch={fileDescriptionSearch}
-            />
-          </TabsContent>
-        </Tabs>
+          <Table>
+            <TableDivider />
+            <ItemHeader className="p-0">
+              <GrowingItem className="py-2 pl-10">
+                <p className="typo-body-sm">Titel</p>
+              </GrowingItem>
+              <CellHolder>
+                <Cell className="typo-body-sm">Beschreibung</Cell>
+              </CellHolder>
+            </ItemHeader>
+            {displayData.map((task) => (
+              <WorkerTaskRow
+                key={task.id}
+                task={task}
+                onSelect={setSelectedTaskId}
+              />
+            ))}
+          </Table>
+        </TabsContent>
+        <TabsContent value="files">
+          <WorkerFileUploads
+            workerId={workerId}
+            fileDescriptionSearch={fileDescriptionSearch}
+          />
+        </TabsContent>
+      </Tabs>
 
-        {isAddTaskModalOpen && (
-          <ModalOverlay handleToggle={() => setIsAddTaskModalOpen(false)}>
-            <AddWorkerTaskModal
-              workerId={workerId}
-              lifecycleType={lifecycleType}
-              onClose={() => setIsAddTaskModalOpen(false)}
-            />
-          </ModalOverlay>
-        )}
-      </>
+      {isAddTaskModalOpen && (
+        <ModalOverlay handleToggle={() => setIsAddTaskModalOpen(false)}>
+          <AddWorkerTaskModal
+            workerId={workerId}
+            onClose={() => setIsAddTaskModalOpen(false)}
+          />
+        </ModalOverlay>
+      )}
     </div>
   );
 };

@@ -13,13 +13,13 @@ import {
 import { File_Request, HistoryData } from '../../types/index.types';
 
 export const workerQueries = {
-  getFiles: (workerId: number) =>
+  getFiles: (workerId: string) =>
     queryOptions<File_Request[], Error, File_Request[]>({
       queryKey: [HISTORYDATA, workerId] as const,
       queryFn: () => getWorkerFiles(workerId),
     }),
 
-  getHistory: (workerId: number) =>
+  getHistory: (workerId: string) =>
     queryOptions<HistoryData[], Error>({
       queryKey: [FORMHISTORY, workerId] as const,
       queryFn: () => getWorkerHistory(workerId),
