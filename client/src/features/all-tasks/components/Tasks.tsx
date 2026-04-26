@@ -101,6 +101,9 @@ function Tasks() {
             <TaskItem
               key={task.id}
               task={task}
+              isSelected={editModeData.some(
+                (item) => item.taskNumber === task.id
+              )}
               setIsOpen={setIsOpen}
               setTaskState={setTaskState}
               setTaskEditState={setTaskEditState}

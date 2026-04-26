@@ -5,6 +5,7 @@ import {
   GrowingItem,
   Items,
 } from '@/components/ui/selfmade/table/Table';
+import { cn } from '@/lib/trycatch';
 import { Headset } from 'lucide-react';
 import type { Dispatch, SetStateAction } from 'react';
 import type { IssueResponse } from '../types/index.types';
@@ -12,9 +13,11 @@ import formatDateDe from '../utilts/date.utils';
 import { PriorityIndicator } from '../utilts/priority.utils';
 import type { TaskEditState } from './Tasks';
 import { PillBadge } from './ui/PillBadge';
+import { SquareCheckIcon, SquareDashedIcon } from './ui/SelectIcons';
 
 type TaskItemProps = {
   task: IssueResponse;
+  isSelected: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   setTaskState: Dispatch<SetStateAction<'create' | 'edit'>>;
   setTaskEditState: Dispatch<SetStateAction<TaskEditState>>;
@@ -26,6 +29,7 @@ type TaskItemProps = {
 
 export function TaskItem({
   task,
+  isSelected,
   setIsOpen,
   setTaskState,
   setTaskEditState,
@@ -46,27 +50,37 @@ export function TaskItem({
     setIsOpen(true);
   };
 
+  const toggleSelection = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setLargeEditMode(true);
+    setEditModeData((prev) =>
+      prev.some((item) => item.taskNumber === task.id)
+        ? prev.filter((item) => item.taskNumber !== task.id)
+        : [...prev, { taskNumber: task.id, taskTitle: task.title }]
+    );
+  };
+
+  const SelectionIcon = isSelected ? SquareCheckIcon : SquareDashedIcon;
+
   return (
     <Items
       state="hover"
       className="relative flex items-center"
       onClick={openInEditMode}
     >
-      <img
-        className="group absolute ml-2 h-5 w-5 opacity-0 transition-opacity group-hover:opacity-100"
-        src="assets/BoxSelect.svg"
-        onClick={(e) => {
-          e.stopPropagation();
-          e.preventDefault();
-          setLargeEditMode(true);
-          setEditModeData((prev) =>
-            prev.some((item) => item.taskNumber === task.id)
-              ? prev
-              : [...prev, { taskNumber: task.id, taskTitle: task.title }]
-          );
-        }}
-        alt=""
-      />
+      <button
+        type="button"
+        aria-pressed={isSelected}
+        aria-label={isSelected ? 'Auswahl entfernen' : 'Auswählen'}
+        onClick={toggleSelection}
+        className={cn(
+          'absolute ml-2 flex h-5 w-5 items-center justify-center text-black transition-opacity',
+          isSelected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+        )}
+      >
+        <SelectionIcon className="h-5 w-5" />
+      </button>
       <GrowingItem className="min-w-0 flex-1 py-0 pl-10">
         <div className="flex min-w-0 flex-1 items-center gap-2.5">
           <p className="typo-body-base shrink-0 whitespace-nowrap text-black">
