@@ -13,42 +13,28 @@ import { SidebarPanel } from '@/features/worker-task-management/components/tasks
 import { useQuery } from '@tanstack/react-query';
 import { X } from 'lucide-react';
 import { useMemo } from 'react';
-import { useForm } from 'react-hook-form';
 import { useFetchEngagements } from '../hooks/useFetchEngagements';
-
-type TaskSidebarForm = {
-  title: string;
-  workerEngagementId: string;
-  assigneeUserId: string;
-  statusId: string;
-};
+import { useTasks } from '../hooks/useTasks';
+import type { TaskEditState } from './Tasks';
 
 type TaskSidebarProps = {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  isEdit: boolean;
-  setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
+  taskState: 'create' | 'edit';
+  taskEditState: TaskEditState;
 };
 
 export function TaskSidebar({
   isOpen,
   setIsOpen,
-  isEdit,
-  setIsEdit,
+  taskState,
+  taskEditState,
 }: TaskSidebarProps) {
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm<TaskSidebarForm>({
-    defaultValues: {
-      title: '',
-      workerEngagementId: '',
-      assigneeUserId: '',
-      statusId: '',
-    },
-  });
+  const { register, control, errors, onSubmit } = useTasks(
+    taskEditState,
+    taskState,
+    setIsOpen
+  );
 
   const { data: employees = [] } = useQuery(employeeQueries.getEmployees());
   const { data: statuses = [] } = useQuery({
@@ -66,6 +52,7 @@ export function TaskSidebar({
       })),
     [employees]
   );
+  console.log(ownerOptions);
 
   const statusOptions = useMemo(
     () =>
@@ -90,7 +77,9 @@ export function TaskSidebar({
       <SidebarAside className="p-2" isOpen={isOpen}>
         <SidebarPanel className="w-full">
           <SidebarHeader className="flex items-center justify-between p-6">
-            <Label className="typo-body-lg font-bold">Aufgabe</Label>
+            <Label className="typo-body-lg font-bold">
+              {taskState === 'edit' ? 'Aufgabe bearbeiten' : 'Aufgabe'}
+            </Label>
             <Button
               type="button"
               aria-label="Schließen"
@@ -100,7 +89,7 @@ export function TaskSidebar({
             </Button>
           </SidebarHeader>
           <FormWrapper
-            onSubmit={handleSubmit(() => {})}
+            onSubmit={onSubmit}
             className="flex min-h-0 flex-1 flex-col"
           >
             <SidebarContent className="mt-5 flex flex-col gap-4 p-6">
@@ -141,7 +130,14 @@ export function TaskSidebar({
               />
             </SidebarContent>
             <SidebarFooter className="p-6">
-              <Button type="submit">Erstellen</Button>
+              <Button
+                type="submit"
+                onClick={() => {
+                  console.log('clicked');
+                }}
+              >
+                {taskState === 'edit' ? 'Speichern' : 'Hinzufügen'}
+              </Button>
             </SidebarFooter>
           </FormWrapper>
         </SidebarPanel>

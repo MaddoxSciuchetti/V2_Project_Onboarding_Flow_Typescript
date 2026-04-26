@@ -6,31 +6,45 @@ import {
   Items,
 } from '@/components/ui/selfmade/table/Table';
 import { Headset } from 'lucide-react';
+import type { Dispatch, SetStateAction } from 'react';
 import type { IssueResponse } from '../types/index.types';
 import formatDateDe from '../utilts/date.utils';
 import { PriorityIndicator } from '../utilts/priority.utils';
+import type { TaskEditState } from './Tasks';
 import { PillBadge } from './ui/PillBadge';
 
 type TaskItemProps = {
   task: IssueResponse;
-  setIsEdit: (isEdit: boolean) => void;
-  onEdit?: () => void;
-  onRowClick?: () => void;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  setTaskState: Dispatch<SetStateAction<'create' | 'edit'>>;
+  setTaskEditState: Dispatch<SetStateAction<TaskEditState>>;
 };
 
 export function TaskItem({
   task,
-  setIsEdit,
-  onEdit,
-  onRowClick,
+  setIsOpen,
+  setTaskState,
+  setTaskEditState,
 }: TaskItemProps) {
   const dateSource = task.dueDate ?? task.createdAt;
+
+  const openInEditMode = () => {
+    setTaskState('edit');
+    setTaskEditState({
+      taskId: task.id,
+      title: task.title,
+      workerEngagementId: task.workerEngagementId,
+      assigneeUserId: task.assigneeUserId ?? '',
+      statusId: task.statusId,
+    });
+    setIsOpen(true);
+  };
 
   return (
     <Items
       state="hover"
       className="relative flex items-center"
-      onClick={() => setIsEdit(true)}
+      onClick={openInEditMode}
     >
       <img
         className="group absolute ml-2 h-5 w-5 opacity-0 transition-opacity group-hover:opacity-100"
@@ -52,7 +66,7 @@ export function TaskItem({
             className="ds-label-sm h-8 min-h-0 shrink-0 gap-1.5 rounded-2xl border border-[var(--border-brand)] px-3 py-0"
             onClick={(e) => {
               e.stopPropagation();
-              onEdit?.();
+              openInEditMode();
             }}
           >
             Bearbeiten

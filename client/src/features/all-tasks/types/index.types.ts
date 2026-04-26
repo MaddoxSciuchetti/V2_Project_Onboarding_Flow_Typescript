@@ -24,3 +24,10 @@ export type IssueResponse = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type TaskSidebarForm = {
+  title: string;
+  workerEngagementId: string;
+  assigneeUserId: string;
+  statusId: string;
+};

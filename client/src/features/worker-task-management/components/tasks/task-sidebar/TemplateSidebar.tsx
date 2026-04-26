@@ -28,73 +28,62 @@ const EMPTY_SUBMISSION: TemplateSubmission = {
   type: '',
 };
 
-function TemplateSidebar({
+export function TemplateSidebar({
   isOpen,
   setIsOpen,
   templateEditState,
   templateState,
 }: TemplateSidebarProps) {
-  const { register, handleSubmit, onSubmit, errors } = useSubmitTemplate(
+  const { register, onSubmit, errors } = useSubmitTemplate(
     templateState,
     templateEditState.templateId,
     templateEditState
   );
   return (
-    <>
-      {isOpen ? (
-        <div
-          className="fixed inset-0 z-40 bg-black/25 dark:bg-black/40"
-          aria-hidden
-          onClick={() => setIsOpen(false)}
-        />
-      ) : null}
-      <SidebarAside className="p-2" isOpen={isOpen}>
-        <SidebarPanel className=" w-full ">
-          <SidebarHeader className="flex items-center justify-between p-6 ">
-            <Label className="typo-body-lg font-bold">
-              Erstelle dein Template
-            </Label>
-            <Button type="button" onClick={() => setIsOpen(false)}>
-              <X className="h-4 w-4" aria-hidden />
+    <SidebarAside className="p-2" isOpen={isOpen}>
+      <SidebarPanel className=" w-full ">
+        <SidebarHeader className="flex items-center justify-between p-6 ">
+          <Label className="typo-body-lg font-bold">
+            Erstelle dein Template
+          </Label>
+          <Button type="button" onClick={() => setIsOpen(false)}>
+            <X className="h-4 w-4" aria-hidden />
+          </Button>
+        </SidebarHeader>
+        <FormWrapper
+          onSubmit={onSubmit}
+          className="flex min-h-0 flex-1 flex-col  "
+        >
+          <SidebarContent className=" mt-5 p-6 flex flex-col gap-2">
+            <FormFields
+              errors={errors}
+              register={register}
+              name="templateName"
+              label="Name des Templates"
+              labelClassName="typo-body-base"
+            />
+            <FormFields
+              errors={errors}
+              register={register}
+              name="templateDescription"
+              label="Beschreibung des Templates"
+              labelClassName="typo-body-base"
+            />
+            <FormFields
+              errors={errors}
+              register={register}
+              name="type"
+              label="Label"
+              labelClassName="typo-body-base"
+            />
+          </SidebarContent>
+          <SidebarFooter className="p-6">
+            <Button type="submit">
+              <Check className="h-4 w-4" aria-hidden /> Speichern
             </Button>
-          </SidebarHeader>
-          <FormWrapper
-            onSubmit={onSubmit}
-            className="flex min-h-0 flex-1 flex-col  "
-          >
-            <SidebarContent className=" mt-5 p-6 flex flex-col gap-2">
-              <FormFields
-                errors={errors}
-                register={register}
-                name="templateName"
-                label="Name des Templates"
-                labelClassName="typo-body-base"
-              />
-              <FormFields
-                errors={errors}
-                register={register}
-                name="templateDescription"
-                label="Beschreibung des Templates"
-                labelClassName="typo-body-base"
-              />
-              <FormFields
-                errors={errors}
-                register={register}
-                name="type"
-                label="Label"
-                labelClassName="typo-body-base"
-              />
-            </SidebarContent>
-            <SidebarFooter className="p-6">
-              <Button type="submit">
-                <Check className="h-4 w-4" aria-hidden /> Speichern
-              </Button>
-            </SidebarFooter>
-          </FormWrapper>
-        </SidebarPanel>
-      </SidebarAside>
-    </>
+          </SidebarFooter>
+        </FormWrapper>
+      </SidebarPanel>
+    </SidebarAside>
   );
 }
-
-export default TemplateSidebar;

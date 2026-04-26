@@ -8,3 +8,15 @@ export const getTasks = async (): Promise<IssueResponse[]> => {
 export const createTask = async (payload: unknown): Promise<unknown> => {
   return API.post(`/tasks/`, payload);
 };
+
+export type UpdateTaskParams = {
+  taskId: string;
+  data: unknown;
+};
+
+export const updateTask = async ({
+  taskId,
+  data,
+}: UpdateTaskParams): Promise<unknown> => {
+  return API.patch(`/tasks/${taskId}`, data);
+};

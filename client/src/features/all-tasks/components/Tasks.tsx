@@ -12,19 +12,37 @@ import {
 import useAuth from '@/features/user-profile/hooks/useAuth';
 import GreetingHeader from '@/features/worker-lifecycle/components/GreetingHeader';
 import { useState } from 'react';
-import { useCreateTask } from '../hooks/useCreateTask';
 import { useFetchTasks } from '../hooks/useFetchTasks';
 import { TaskItem } from './TaskItem';
 import { TaskSidebar } from './TaskSidebar';
 import { Segment, TaskSegmentToggle } from './ui/taskHeader';
 
+export type TaskEditState = {
+  taskId: string;
+  title: string;
+  workerEngagementId: string;
+  assigneeUserId: string;
+  statusId: string;
+};
+
+const EMPTY_TASK_EDIT_STATE: TaskEditState = {
+  taskId: '',
+  title: '',
+  workerEngagementId: '',
+  assigneeUserId: '',
+  statusId: '',
+};
+
 function Tasks() {
   const { user } = useAuth();
   const { data, isLoading } = useFetchTasks();
-  const { mutate: createTask } = useCreateTask();
   const [segment, setSegment] = useState<Segment>('left');
   const [isOpen, setIsOpen] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
+  const [taskState, setTaskState] = useState<'create' | 'edit'>('create');
+  const [taskEditState, setTaskEditState] = useState<TaskEditState>(
+    EMPTY_TASK_EDIT_STATE
+  );
+  const [createOpenNonce, setCreateOpenNonce] = useState(0);
 
   const tasks = Array.isArray(data) ? data : [];
 
@@ -34,10 +52,15 @@ function Tasks() {
     <div className="mx-auto flex h-full flex-col overflow-auto rounded-2xl bg-card p-6 md:max-w-8xl">
       <div className="flex h-full w-full flex-col">
         <TaskSidebar
+          key={
+            taskState === 'edit'
+              ? `edit-${taskEditState.taskId}`
+              : `create-${createOpenNonce}`
+          }
           isOpen={isOpen}
           setIsOpen={setIsOpen}
-          isEdit={isEdit}
-          setIsEdit={setIsEdit}
+          taskState={taskState}
+          taskEditState={taskEditState}
         />
         <GreetingHeader firstname={user?.firstName ?? ''} />
         <Table>
@@ -48,9 +71,10 @@ function Tasks() {
               className="text-sm text-surface-page"
               type="button"
               onClick={() => {
+                setTaskState('create');
+                setTaskEditState(EMPTY_TASK_EDIT_STATE);
+                setCreateOpenNonce((n) => n + 1);
                 setIsOpen(true);
-                createTask({});
-                setIsEdit(false);
               }}
             >
               Hinzufügen
@@ -66,7 +90,13 @@ function Tasks() {
             </CellHolder>
           </ItemHeader>
           {tasks.map((task) => (
-            <TaskItem key={task.id} task={task} setIsEdit={setIsEdit} />
+            <TaskItem
+              key={task.id}
+              task={task}
+              setIsOpen={setIsOpen}
+              setTaskState={setTaskState}
+              setTaskEditState={setTaskEditState}
+            />
           ))}
         </Table>
       </div>

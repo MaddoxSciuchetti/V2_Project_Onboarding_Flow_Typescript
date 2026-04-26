@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { createIssue } from "@/services/worker.serviceV2";
+import { createIssue, updateIssue } from "@/services/worker.serviceV2";
 
 export const queryTasks = async (orgId: string) => {
     return prisma.issue.findMany({
@@ -12,7 +12,6 @@ export const queryTasks = async (orgId: string) => {
     });
 };
 
-/** Creates an issue for the org using the first engagement + first issue status. */
 export async function createTaskInOrg(orgId: string, userId: string) {
     const engagement = await prisma.workerEngagement.findFirst({
         where: { organizationId: orgId },
@@ -35,5 +34,38 @@ export async function createTaskInOrg(orgId: string, userId: string) {
         createdByUserId: userId,
         statusId: status.id,
         title: "Neue Aufgabe",
+    });
+}
+
+export async function updateTaskInOrg(
+    orgId: string,
+    userId: string,
+    taskId: string,
+    payload: unknown,
+) {
+    const existing = await prisma.issue.findFirst({
+        where: {
+            id: taskId,
+            workerEngagement: { organizationId: orgId },
+        },
+        select: { id: true, workerEngagementId: true },
+    });
+    if (!existing) {
+        throw new Error("Task not found for organization");
+    }
+
+    const body = (payload ?? {}) as {
+        title?: string;
+        statusId?: string;
+        assigneeUserId?: string;
+    };
+
+    return updateIssue({
+        issueId: existing.id,
+        workerEngagementId: existing.workerEngagementId,
+        actorUserId: userId,
+        title: body.title,
+        statusId: body.statusId,
+        assigneeUserId: body.assigneeUserId,
     });
 }
