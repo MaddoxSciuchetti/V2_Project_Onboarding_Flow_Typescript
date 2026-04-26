@@ -90,7 +90,6 @@ function WorkerLifeCycle() {
             />
           ))}
         </Table>
-
         <LifeCycleModal modal={modal} toggleModal={toggleModal} />
       </div>
     </div>

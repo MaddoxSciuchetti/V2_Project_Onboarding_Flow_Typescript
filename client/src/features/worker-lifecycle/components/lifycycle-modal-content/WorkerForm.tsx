@@ -8,7 +8,6 @@ interface WorkerFormProps {
   setSelectedOption: (value: AddWorker['type'] | null) => void;
   type: AddWorker['type'];
   toggleModal: () => void;
-  className?: string;
 }
 
 export const WorkerForm = ({
@@ -29,46 +28,47 @@ export const WorkerForm = ({
   const memoizedInputs = useMemoizedInputs(type);
 
   return (
-    <>
-      <form
-        onSubmit={handleSubmit(submitWorkerForm)}
-        className=" gap-4  flex flex-col"
+    <form
+      onSubmit={handleSubmit(submitWorkerForm)}
+      className="flex flex-col gap-4"
+    >
+      <Button
+        type="button"
+        variant="outline"
+        className="w-fit cursor-pointer rounded-xl"
+        onClick={() => setSelectedOption(null)}
       >
-        {isError && (
-          <div className="mb-3 text-(--destructive)">
-            {error?.message || 'An error occurred'}
-          </div>
-        )}
-        <Button
-          className="w-20 cursor-pointer rounded-xl transition-colors hover:bg-accent hover:text-accent-foreground"
-          variant={'outline'}
-          onClick={() => setSelectedOption(null)}
-          type="button"
-        >
-          Zurück{' '}
-        </Button>
-        <h1 className="text-left">Eingabe {type}</h1>
-        <div className="grid grid-cols-2 gap-3 pb-10 ">
-          {memoizedInputs.map((input) => (
-            <div key={input.name}>
-              <FormFields
-                errors={errors}
-                register={register}
-                name={input.name}
-                placeholder={input.placeholder}
-              />
-            </div>
-          ))}
-        </div>
-        <Button
-          variant={'outline'}
-          type="submit"
-          disabled={isPending}
-          className="cursor-pointer rounded-xl transition-colors hover:bg-accent hover:text-accent-foreground"
-        >
-          {isPending ? 'Wird erstellt...' : 'Hinzufügen'}
-        </Button>
-      </form>
-    </>
+        Zurück
+      </Button>
+
+      <h1 className="typo-body-lg font-semibold">Eingabe {type}</h1>
+
+      {isError && (
+        <p className="text-(--destructive)">
+          {error?.message || 'An error occurred'}
+        </p>
+      )}
+
+      <div className="flex flex-col gap-3">
+        {memoizedInputs.map((input) => (
+          <FormFields
+            key={input.name}
+            errors={errors}
+            register={register}
+            name={input.name}
+            placeholder={input.placeholder}
+          />
+        ))}
+      </div>
+
+      <Button
+        type="submit"
+        variant="outline"
+        disabled={isPending}
+        className="w-full cursor-pointer rounded-xl transition-colors hover:bg-accent hover:text-accent-foreground"
+      >
+        {isPending ? 'Wird erstellt...' : 'Hinzufügen'}
+      </Button>
+    </form>
   );
 };

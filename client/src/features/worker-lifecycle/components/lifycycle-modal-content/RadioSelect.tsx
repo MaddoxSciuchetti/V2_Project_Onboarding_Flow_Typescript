@@ -7,7 +7,9 @@ import {
 } from '@/components/ui/field';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { AddWorker } from '@/features/worker-lifecycle/schemas/zod.schemas';
+import { cn } from '@/lib/trycatch';
 import { Dispatch, SetStateAction } from 'react';
+import { OPTIONS } from '../../consts/radio.consts';
 
 type RadioSelectProps = {
   selectedOption: AddWorker['type'] | null;
@@ -19,40 +21,34 @@ const RadioSelect = ({
   selectedOption,
 }: RadioSelectProps) => {
   return (
-    <>
-      <RadioGroup
-        className="h-full flex flex-row items-center"
-        onValueChange={(value) => setSelectedOption(value as AddWorker['type'])}
-        value={selectedOption}
-      >
+    <RadioGroup
+      className="flex flex-col gap-3"
+      onValueChange={(value) => setSelectedOption(value as AddWorker['type'])}
+      value={selectedOption}
+    >
+      {OPTIONS.map((option) => (
         <FieldLabel
-          htmlFor="plus-plan"
-          className={`${selectedOption === 'Onboarding' ? 'bg-accent text-accent-foreground scale-105' : ''} cursor-pointer rounded-xl p-3 transition-colors hover:bg-accent hover:text-accent-foreground `}
+          key={option.id}
+          htmlFor={option.id}
+          className={cn(
+            'cursor-pointer rounded-xl border border-border p-4 transition-colors hover:bg-accent hover:text-accent-foreground',
+            selectedOption === option.value &&
+              'bg-accent text-accent-foreground'
+          )}
         >
-          <Field orientation="horizontal">
+          <Field
+            orientation="horizontal"
+            className="items-center justify-between gap-3"
+          >
             <FieldContent className="text-left">
-              <FieldTitle>Onboarding</FieldTitle>
-              <FieldDescription>Onboarde ein Mitarbeiter</FieldDescription>
+              <FieldTitle>{option.title}</FieldTitle>
+              <FieldDescription>{option.description}</FieldDescription>
             </FieldContent>
-            <RadioGroupItem value="Onboarding" id="plus-plan" />
+            <RadioGroupItem value={option.value} id={option.id} />
           </Field>
         </FieldLabel>
-        <FieldLabel
-          htmlFor="pro-plan"
-          className={`${selectedOption === 'Offboarding' ? 'active bg-accent text-accent-foreground scale-105' : ''} cursor-pointer rounded-xl p-3 transition-colors hover:bg-accent hover:text-accent-foreground `}
-        >
-          <Field orientation="horizontal">
-            <FieldContent className="text-left">
-              <FieldTitle>Offboarding</FieldTitle>
-              <FieldDescription className="">
-                Offboarde ein Mitarbeiter
-              </FieldDescription>
-            </FieldContent>
-            <RadioGroupItem value="Offboarding" id="pro-plan" />
-          </Field>
-        </FieldLabel>
-      </RadioGroup>
-    </>
+      ))}
+    </RadioGroup>
   );
 };
 
