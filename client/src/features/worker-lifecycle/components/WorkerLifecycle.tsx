@@ -15,6 +15,7 @@ import EditModeBar from '@/features/all-tasks/components/EditModeBar';
 import useAuth from '@/features/user-profile/hooks/useAuth';
 import LifeCycleModal from '@/features/worker-lifecycle/components/LifeCycleModal';
 import useHome from '@/features/worker-lifecycle/hooks/useHome';
+import { useWorkerFilter } from '@/features/worker-lifecycle/hooks/useWorkerFilter';
 import useWorkerMutations from '@/features/worker-lifecycle/hooks/useWorkerMutaitons';
 import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
 import { ChevronUp } from 'lucide-react';
@@ -29,8 +30,7 @@ function WorkerLifeCycle() {
     error,
     workers,
     modal,
-    search,
-    setSearch,
+
     toggleModal,
     handleNavigate,
   } = useHome();
@@ -39,6 +39,13 @@ function WorkerLifeCycle() {
   const [largeEditMode, setLargeEditMode] = useState(false);
   const [editModeData, setEditModeData] = useState<WorkerSelection[]>([]);
   const { deleteWorkersMutation, isDeletingWorkers } = useWorkerMutations();
+  const {
+    filterLabel,
+    filterOptions,
+    filteredWorkers,
+    handleSelect,
+    handleSubSelect,
+  } = useWorkerFilter(workers);
 
   useBodyScrollLock();
 
@@ -77,9 +84,10 @@ function WorkerLifeCycle() {
               size={'lg'}
               icon={ChevronUp}
               label="Select Option"
-              options={[{ label: 'maddox', value: 'maddox' }]}
-              value={search}
-              setValue={setSearch}
+              options={filterOptions}
+              value={filterLabel}
+              setValue={handleSelect}
+              onSubSelect={handleSubSelect}
             />
             <Button
               className="text-sm text-surface-page"
@@ -100,7 +108,7 @@ function WorkerLifeCycle() {
               <Cell className="typo-body-sm">Status</Cell>
             </CellHolder>
           </ItemHeader>
-          {workers?.map((worker) => (
+          {filteredWorkers.map((worker) => (
             <ProjectItem
               key={worker.id}
               worker={worker}

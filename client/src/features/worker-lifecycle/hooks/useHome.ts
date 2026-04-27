@@ -5,7 +5,6 @@ import { workerLifecycleQueries } from '../query-options/queries/worker-lifycycl
 import { WorkerListMode } from '../types/index.types';
 
 function useHome() {
-  const [search, setSearch] = useState('');
   const [modal, setModal] = useState<boolean>(false);
   const [mode, setMode] = useState<WorkerListMode>('active');
 
@@ -36,8 +35,6 @@ function useHome() {
     modal,
     mode,
     setMode,
-    setSearch,
-    search,
     error,
     toggleModal,
   };
