@@ -1,3 +1,4 @@
+import LoadingAlert from '@/components/alerts/LoadingAlert';
 import { Button } from '@/components/ui/selfmade/button';
 import { Input } from '@/components/ui/selfmade/input';
 import {
@@ -9,12 +10,20 @@ import {
   TableDivider,
   TableHeader,
 } from '@/components/ui/selfmade/table/Table';
+import EmployeeTableBody from '@/features/employee-overview/components/table/TableBody';
+import useDeleteEmployee from '@/features/employee-overview/hooks/useDeleteEmployee';
+import useGetEmployees from '@/features/employee-overview/hooks/useGetEmployees';
 import { useSendInvite } from '../hooks/useSendInvite';
 import { SettingsHeader } from './SettingsHeader';
 
 function Employees() {
   const { isPending, handleSendInvite, mitarbeiterEmail, setMitarbeiterEmail } =
     useSendInvite();
+  const { EmployeeData, isLoading } = useGetEmployees();
+  const { handleDeleteEmployee, isPending: isDeleting } = useDeleteEmployee();
+
+  if (isLoading || isDeleting) return <LoadingAlert />;
+
   return (
     <div className="mx-auto flex h-full flex-col overflow-auto rounded-2xl bg-card p-6 md:max-w-8xl">
       <div className="h-full w-full flex flex-col items-center justify-center">
@@ -46,6 +55,10 @@ function Employees() {
               <Cell className="typo-body-sm">Aktionen</Cell>
             </CellHolder>
           </ItemHeader>
+          <EmployeeTableBody
+            filteredEmployeesByFirstName={EmployeeData ?? []}
+            handleDeleteEmployee={handleDeleteEmployee}
+          />
         </Table>
       </div>
     </div>

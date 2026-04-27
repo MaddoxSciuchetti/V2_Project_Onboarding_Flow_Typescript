@@ -6,27 +6,27 @@ import {
   FieldTitle,
 } from '@/components/ui/field';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { AddWorker } from '@/features/worker-lifecycle/schemas/zod.schemas';
 import { cn } from '@/lib/trycatch';
 import { Dispatch, SetStateAction } from 'react';
-import { OPTIONS } from '../../consts/radio.consts';
 
-type RadioSelectProps = {
-  selectedOption: AddWorker['type'] | null;
-  setSelectedOption: Dispatch<SetStateAction<AddWorker['type'] | null>>;
+type RadioSelectProps<T> = {
+  selectedOption: T | null;
+  setSelectedOption: Dispatch<SetStateAction<T | null>>;
+  options: { id: string; value: T; title: string; description: string }[];
 };
 
-const RadioSelect = ({
+const RadioSelect = <T,>({
   setSelectedOption,
   selectedOption,
-}: RadioSelectProps) => {
+  options,
+}: RadioSelectProps<T>) => {
   return (
     <RadioGroup
       className="flex flex-col gap-3"
-      onValueChange={(value) => setSelectedOption(value as AddWorker['type'])}
-      value={selectedOption}
+      onValueChange={(value) => setSelectedOption(value as T)}
+      value={selectedOption as string}
     >
-      {OPTIONS.map((option) => (
+      {options.map((option) => (
         <FieldLabel
           key={option.id}
           htmlFor={option.id}
@@ -44,7 +44,7 @@ const RadioSelect = ({
               <FieldTitle>{option.title}</FieldTitle>
               <FieldDescription>{option.description}</FieldDescription>
             </FieldContent>
-            <RadioGroupItem value={option.value} id={option.id} />
+            <RadioGroupItem value={option.value as string} id={option.id} />
           </Field>
         </FieldLabel>
       ))}

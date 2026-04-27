@@ -1,5 +1,6 @@
 import { AddWorker } from '@/features/worker-lifecycle/schemas/zod.schemas';
 import { useState } from 'react';
+import { OPTIONS } from '../../consts/radio.consts';
 import RadioSelect from './RadioSelect';
 import { WorkerForm } from './WorkerForm';
 
@@ -17,6 +18,7 @@ const ModalContent = ({ toggleModal }: ModalContentProps) => {
       <RadioSelect
         selectedOption={selectedOption}
         setSelectedOption={setSelectedOption as never}
+        options={OPTIONS}
       />
     );
   }
