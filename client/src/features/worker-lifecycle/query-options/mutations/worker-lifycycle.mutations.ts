@@ -5,6 +5,7 @@ import {
   archiveWorkerById,
   CreateWorkerRequest,
   deleteWorkerById,
+  deleteWorkersByIds,
   unarchiveWorkerById,
 } from '../../api';
 import { ALL_WORKER_DATA } from '../../consts/query-key.consts';
@@ -14,6 +15,18 @@ export const workerLifecycleMutations = {
   deleteWorker: () => {
     return mutationOptions<void, Error, string>({
       mutationFn: deleteWorkerById,
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: [ALL_WORKER_DATA],
+          refetchType: 'all',
+        });
+      },
+    });
+  },
+
+  deleteWorkers: () => {
+    return mutationOptions<void, Error, string[]>({
+      mutationFn: deleteWorkersByIds,
       onSuccess: () => {
         queryClient.invalidateQueries({
           queryKey: [ALL_WORKER_DATA],
