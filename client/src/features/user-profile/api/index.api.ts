@@ -11,6 +11,6 @@ export const uploadProfileFoto = async (data: TFile) => {
 };
 
 export const getProfilePhoto = async (): Promise<string> => {
-  const response = await API.get<string, string>('/user/profile/photo');
+  const response = await API.get<string, string>('/user/v2/profile/photo');
   return response;
 };
