@@ -7,10 +7,12 @@ import SearchHeaderResuable from '@/components/layout/headers/SearchHeaderResuab
 import ModalOverlay from '@/components/modal/ModalOverlay';
 import { useState } from 'react';
 import { useEmployeeModal } from '../hooks/useEmployeeModal';
+import { EmployeeDataArray } from '../schemas/schema';
 import ModalMitarbeiter from './modals/create-employee-modal/EmployeeModal';
 import ModalEditMitarbeiter from './modals/edit-employee-modal/EmployeeModal';
 import EmployeeInfoModal from './modals/employee-info-modal/EmployeeInfoModal';
 import ViewEmployeeModal from './modals/view-employeedata-modal/ViewEmployeeModal';
+import EmployeeSidebar from './sidebar/EmployeeSidebar';
 import EmployeeTableHeader from './table/EmployeeTableHeader';
 import EmployeeTableBody from './table/TableBody';
 
@@ -19,6 +21,9 @@ function EmployeeOverview() {
   const { modalState, openCreateEmployee, closeEmployee } = useEmployeeModal();
   const { handleDeleteEmployee, isPending } = useDeleteEmployee();
   const [search, setSearch] = useState('');
+  const [selectedEmployee, setSelectedEmployee] = useState<
+    EmployeeDataArray[number] | null
+  >(null);
 
   const filteredEmployeesByFirstName = (EmployeeData ?? []).filter((employee) =>
     employee.firstName.toLowerCase().includes(search.toLowerCase())
@@ -75,9 +80,15 @@ function EmployeeOverview() {
           <EmployeeTableBody
             filteredEmployeesByFirstName={filteredEmployeesByFirstName}
             handleDeleteEmployee={handleDeleteEmployee}
+            onSelectEmployee={setSelectedEmployee}
           />
         </Table>
       </div>
+      <EmployeeSidebar
+        employee={selectedEmployee}
+        isOpen={selectedEmployee !== null}
+        onClose={() => setSelectedEmployee(null)}
+      />
       {renderModal()}
     </div>
   );

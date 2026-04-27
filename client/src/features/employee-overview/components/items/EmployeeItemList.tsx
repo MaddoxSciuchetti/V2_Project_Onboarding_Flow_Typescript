@@ -1,35 +1,35 @@
-import { TableBody } from '@/components/ui/table';
 import { User } from '@/features/user-profile/types/auth.type';
 import { UseMutateFunction } from '@tanstack/react-query';
 import useEmployeeData from '../../hooks/useEmployeeData';
 import { EmployeeDataArray } from '../../schemas/schema';
-import { EmployeeRow } from './EmployeeTableRow';
+import EmployeeItem from './EmployeeItem';
 
-type TableBodyProps = {
-  filteredEmployeesByFirstName: EmployeeDataArray;
+type EmployeeItemListProps = {
+  employees: EmployeeDataArray;
   handleDeleteEmployee: UseMutateFunction<User, Error, string, unknown>;
   onSelectEmployee: (employee: EmployeeDataArray[number]) => void;
 };
-const EmployeeTableBody = ({
-  filteredEmployeesByFirstName,
+
+const EmployeeItemList = ({
+  employees,
   handleDeleteEmployee,
   onSelectEmployee,
-}: TableBodyProps) => {
+}: EmployeeItemListProps) => {
   const { openTaskCountsByEmployee } = useEmployeeData();
 
   return (
-    <TableBody className="text-left mt-5">
-      {filteredEmployeesByFirstName?.map((employee) => (
-        <EmployeeRow
+    <>
+      {employees.map((employee) => (
+        <EmployeeItem
           key={employee.id}
           employee={employee}
+          openTaskCount={openTaskCountsByEmployee.get(employee.id) ?? 0}
           handleDeleteEmployee={handleDeleteEmployee}
-          openTaskCountsByEmployee={openTaskCountsByEmployee}
           onSelectEmployee={onSelectEmployee}
         />
       ))}
-    </TableBody>
+    </>
   );
 };
 
-export default EmployeeTableBody;
+export default EmployeeItemList;

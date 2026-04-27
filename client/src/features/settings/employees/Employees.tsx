@@ -10,9 +10,12 @@ import {
   TableDivider,
   TableHeader,
 } from '@/components/ui/selfmade/table/Table';
-import EmployeeTableBody from '@/features/employee-overview/components/table/TableBody';
+import EmployeeItemList from '@/features/employee-overview/components/items/EmployeeItemList';
+import EmployeeSidebar from '@/features/employee-overview/components/sidebar/EmployeeSidebar';
 import useDeleteEmployee from '@/features/employee-overview/hooks/useDeleteEmployee';
 import useGetEmployees from '@/features/employee-overview/hooks/useGetEmployees';
+import { EmployeeDataArray } from '@/features/employee-overview/schemas/schema';
+import { useState } from 'react';
 import { useSendInvite } from '../hooks/useSendInvite';
 import { SettingsHeader } from './SettingsHeader';
 
@@ -21,6 +24,9 @@ function Employees() {
     useSendInvite();
   const { EmployeeData, isLoading } = useGetEmployees();
   const { handleDeleteEmployee, isPending: isDeleting } = useDeleteEmployee();
+  const [selectedEmployee, setSelectedEmployee] = useState<
+    EmployeeDataArray[number] | null
+  >(null);
 
   if (isLoading || isDeleting) return <LoadingAlert />;
 
@@ -55,12 +61,18 @@ function Employees() {
               <Cell className="typo-body-sm">Aktionen</Cell>
             </CellHolder>
           </ItemHeader>
-          <EmployeeTableBody
-            filteredEmployeesByFirstName={EmployeeData ?? []}
+          <EmployeeItemList
+            employees={EmployeeData ?? []}
             handleDeleteEmployee={handleDeleteEmployee}
+            onSelectEmployee={setSelectedEmployee}
           />
         </Table>
       </div>
+      <EmployeeSidebar
+        employee={selectedEmployee}
+        isOpen={selectedEmployee !== null}
+        onClose={() => setSelectedEmployee(null)}
+      />
     </div>
   );
 }
