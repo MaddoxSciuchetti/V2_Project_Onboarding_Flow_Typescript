@@ -1,6 +1,7 @@
 import { WorkerDetailResponse } from '@/features/worker-lifecycle/types/index.types';
 import { queryOptions } from '@tanstack/react-query';
 import {
+  getTaskHistory,
   getWorkerById,
   getWorkerFiles,
   getWorkerHistory,
@@ -8,9 +9,14 @@ import {
 import {
   FORMHISTORY,
   HISTORYDATA,
+  TASKHISTORY,
   WORKERBYID,
 } from '../../consts/query-key.consts';
-import { File_Request, HistoryData } from '../../types/index.types';
+import {
+  File_Request,
+  HistoryData,
+  TaskHistoryEntry,
+} from '../../types/index.types';
 
 export const workerQueries = {
   getFiles: (workerId: string) =>
@@ -24,6 +30,13 @@ export const workerQueries = {
       queryKey: [FORMHISTORY, workerId] as const,
       queryFn: () => getWorkerHistory(workerId),
       enabled: !!workerId,
+    }),
+
+  getTaskHistory: (taskId: string) =>
+    queryOptions<TaskHistoryEntry[], Error>({
+      queryKey: [TASKHISTORY, taskId] as const,
+      queryFn: () => getTaskHistory(taskId),
+      enabled: !!taskId,
     }),
 
   taskData: (workerId: string) =>

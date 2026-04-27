@@ -10,6 +10,7 @@ import {
   File_Request,
   HistoryData,
   InsertHistoryData,
+  TaskHistoryEntry,
   UpdatePayload,
 } from '../types/index.types';
 
@@ -46,6 +47,14 @@ export const getWorkerHistory = async (id: string): Promise<HistoryData[]> => {
     `worker/getWorkerHistory/${id}`
   );
   return response;
+};
+
+export const getTaskHistory = async (
+  taskId: string
+): Promise<TaskHistoryEntry[]> => {
+  return API.get<TaskHistoryEntry[], TaskHistoryEntry[]>(
+    `/tasks/${taskId}/history`
+  );
 };
 
 export const getWorkerFiles = async (id: string): Promise<File_Request[]> => {

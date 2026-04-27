@@ -10,6 +10,7 @@ import SidebarContent from '@/features/worker-task-management/components/tasks/t
 import SidebarFooter from '@/features/worker-task-management/components/tasks/task-sidebar/SidebarFooter';
 import SidebarHeader from '@/features/worker-task-management/components/tasks/task-sidebar/SidebarHeader';
 import { SidebarPanel } from '@/features/worker-task-management/components/tasks/task-sidebar/SidebarPanel';
+import TaskHistory from '@/features/worker-task-management/components/tasks/task-sidebar/task-history/TaskHistory';
 import { useQuery } from '@tanstack/react-query';
 import { X } from 'lucide-react';
 import { useMemo } from 'react';
@@ -127,6 +128,10 @@ export function TaskSidebar({
                 label="Status"
                 labelClassName="typo-body-base"
               />
+
+              {taskState === 'edit' && taskEditState.taskId && (
+                <TaskHistory taskId={taskEditState.taskId} />
+              )}
             </SidebarContent>
             <SidebarFooter className="p-6">
               <Button

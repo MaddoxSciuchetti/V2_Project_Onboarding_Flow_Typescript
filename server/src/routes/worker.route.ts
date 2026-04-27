@@ -10,7 +10,6 @@ import {
     getCloudUrl,
     getWorkerById,
     getWorkerData,
-    getWorkerFiles,
     getWorkerHistory,
     unarchiveWorkerById,
     updateDataPoint,
@@ -43,7 +42,7 @@ worker.post("/updateWorkerHistory", updateWorkerHistory);
 // worker file Data
 
 worker.post("/createWorkerFile/:id", upload.array("files"), createWorkerFile);
-worker.get("/getWorkerFiles/:id", getWorkerFiles);
+worker.get("/getWorkerFiles/:id", workerController.getWorkerFiles);
 worker.get("/getCloudUrl", getCloudUrl);
 worker.delete("/deleteWorkerFile/:id", deleteWorkerFile);
 
@@ -99,7 +98,7 @@ worker.patch("/:workerId/data-points", workerController.updateDataPoint);
 // Files
 worker.post(
     "/:workerId/files",
-    upload.single("file"),
+    upload.array("files"),
     workerController.uploadWorkerFile,
 );
 worker.delete("/:workerId/files/:fileId", workerController.deleteWorkerFile);

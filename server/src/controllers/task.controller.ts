@@ -2,6 +2,7 @@ import { CREATED, OK } from "@/constants/http";
 import {
     createTaskInOrg,
     deleteTasksInOrg,
+    getTaskHistoryInOrg,
     queryTasks,
     updateTaskInOrg,
 } from "@/services/tasks.service";
@@ -26,6 +27,13 @@ export const updateTask = catchErrors(async (req, res) => {
     const id = String(req.params.id);
     const result = await updateTaskInOrg(orgId, userId, id, req.body);
     return res.status(OK).json(result);
+});
+
+export const fetchTaskHistory = catchErrors(async (req, res) => {
+    const orgId = req.orgId;
+    const id = String(req.params.id);
+    const history = await getTaskHistoryInOrg(orgId, id);
+    return res.status(OK).json(history);
 });
 
 export const deleteTasks = catchErrors(async (req, res) => {

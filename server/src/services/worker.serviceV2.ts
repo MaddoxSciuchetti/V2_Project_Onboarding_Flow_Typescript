@@ -15,7 +15,11 @@ import type {
     UpdateWorkerInput,
     UploadWorkerDocumentInput,
 } from "@/types/worker.types";
-import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import {
+    DeleteObjectCommand,
+    GetObjectCommand,
+    S3Client,
+} from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import {
     Prisma,
@@ -858,7 +862,43 @@ export async function deleteWorkerDocument(params: {
     const { documentId, workerId, organizationId } = params;
     await assertOwnership(workerId, organizationId);
 
+    const doc = await prisma.workerDocument.findFirst({
+        where: { id: documentId, workerId },
+    });
+    if (!doc) throw new Error("Document not found");
+
+    try {
+        await s3.send(
+            new DeleteObjectCommand({
+                Bucket: process.env.AWS_S3_BUCKET!,
+                Key: doc.fileUrl,
+            }),
+        );
+    } catch (error) {
+        console.error("S3 delete failed for key", doc.fileUrl, error);
+    }
+
     return prisma.workerDocument.delete({ where: { id: documentId } });
+}
+
+export async function listWorkerDocuments(params: {
+    workerId: string;
+    organizationId: string;
+}) {
+    const { workerId, organizationId } = params;
+    await assertOwnership(workerId, organizationId);
+
+    const docs = await prisma.workerDocument.findMany({
+        where: { workerId },
+        orderBy: { createdAt: "desc" },
+    });
+
+    return Promise.all(
+        docs.map(async (doc) => ({
+            ...doc,
+            presignedUrl: await presign(doc.fileUrl),
+        })),
+    );
 }
 
 // ─── Worker History ───────────────────────────────────────────────────────────

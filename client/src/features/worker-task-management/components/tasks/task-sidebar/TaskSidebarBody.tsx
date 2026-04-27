@@ -22,7 +22,7 @@ function TaskSidebarBody({ selectedTask, handleSubmit }: TaskSidebarBodyProps) {
         />
       </div>
       <div className="px-6 pb-5">
-        <HistoryContent id_original={selectedTask.id} />
+        <HistoryContent taskId={String(selectedTask.id)} />
       </div>
     </>
   );

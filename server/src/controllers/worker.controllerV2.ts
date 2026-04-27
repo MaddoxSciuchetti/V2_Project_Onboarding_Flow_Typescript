@@ -1,3 +1,4 @@
+import { uploadFileToS3 } from "@/config/aws";
 import { Request, Response } from "express";
 import * as workerService from "../services/worker.serviceV2";
 
@@ -380,8 +381,8 @@ export async function deleteAbsence(req: Request, res: Response) {
 }
 
 // ─── Documents (replaces WorkerFile) ────────────────────────────────────────────
-// Body: { uploadedByUserId, name, fileUrl, fileType, fileSizeBytes?, mimeType? }
-// fileUrl = S3 key or full URL set by upload middleware before reaching this handler
+// Multipart upload. Each file in `req.files` (field name "files") is pushed to
+// S3 and persisted as a `WorkerDocument` row. Supports one or many files.
 
 export async function uploadWorkerFile(req: Request, res: Response) {
     try {
@@ -389,28 +390,40 @@ export async function uploadWorkerFile(req: Request, res: Response) {
         const workerId = param(req, "workerId");
         const uploadedByUserId = req.userId;
 
-        const { name, fileUrl, fileType, fileSizeBytes, mimeType } = req.body;
-
-        if (!fileUrl) {
+        const files = (req.files as Express.Multer.File[] | undefined) ?? [];
+        if (files.length === 0) {
             return res
                 .status(400)
-                .json({ success: false, message: "fileUrl is required" });
+                .json({ success: false, message: "No files uploaded" });
         }
 
-        const result = await workerService.uploadWorkerDocument({
-            organizationId,
-            workerId,
-            uploadedByUserId,
-            name,
-            fileUrl,
-            fileType,
-            fileSizeBytes: fileSizeBytes
-                ? parseInt(fileSizeBytes, 10)
-                : undefined,
-            mimeType,
-        });
+        const stored = await Promise.all(
+            files.map(async (file) => {
+                const upload = await uploadFileToS3(
+                    file,
+                    workerId,
+                    "upload/workers",
+                );
+                if (!upload.success || !upload.key) {
+                    throw new Error(upload.error ?? "S3 upload failed");
+                }
 
-        return res.status(201).json({ success: true, data: result });
+                return workerService.uploadWorkerDocument({
+                    organizationId,
+                    workerId,
+                    uploadedByUserId,
+                    name: file.originalname,
+                    fileUrl: upload.key,
+                    fileType: "other",
+                    fileSizeBytes: file.size,
+                    mimeType: file.mimetype,
+                });
+            }),
+        );
+
+        return res
+            .status(201)
+            .json({ success: true, files: stored, count: stored.length });
     } catch (error: any) {
         console.error("uploadWorkerFile error:", error);
         return res.status(500).json({ success: false, message: error.message });
@@ -433,6 +446,25 @@ export async function deleteWorkerFile(req: Request, res: Response) {
             .json({ success: true, message: "Document deleted" });
     } catch (error: any) {
         console.error("deleteWorkerFile error:", error);
+        return res.status(500).json({ success: false, message: error.message });
+    }
+}
+
+// Lists all WorkerDocument rows for a worker. Each row is returned in its native
+// Prisma shape with an additional `presignedUrl` for direct download.
+export async function getWorkerFiles(req: Request, res: Response) {
+    try {
+        const organizationId = req.orgId;
+        const workerId = param(req, "id");
+
+        const docs = await workerService.listWorkerDocuments({
+            workerId,
+            organizationId,
+        });
+
+        return res.status(200).json(docs);
+    } catch (error: any) {
+        console.error("getWorkerFiles error:", error);
         return res.status(500).json({ success: false, message: error.message });
     }
 }

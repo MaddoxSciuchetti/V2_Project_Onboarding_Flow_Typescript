@@ -69,3 +69,32 @@ export type TemplateTaskResponse = {
   taskDescription: string;
   defaultPriority: DefaultPriority;
 };
+
+export type TaskHistoryActor = {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  avatarUrl: string | null;
+};
+
+export type TaskHistoryStatus = {
+  id: string;
+  name: string;
+  color: string | null;
+};
+
+export type TaskHistoryChange = {
+  field: string;
+  from: string | null;
+  to: string | null;
+};
+
+export type TaskHistoryEntry = {
+  id: string;
+  action: string;
+  createdAt: string;
+  actorUser: TaskHistoryActor | null;
+  status: TaskHistoryStatus | null;
+  changes: TaskHistoryChange[];
+};
