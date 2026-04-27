@@ -1,6 +1,5 @@
 import API from '@/config/apiClient';
 
-import { User } from '@/features/user-profile/types/auth.type';
 import {
   DescriptionFieldResponse,
   EmployeeInfoResponse,
@@ -8,11 +7,14 @@ import {
 import { EmployeeDataArray, employeeDataSchema } from '../schemas/schema';
 import { AbsenceData } from '../types/index.types';
 
-export const deleteEmployeeHandler = async (id: string): Promise<User> => {
-  const response = await API.delete<typeof id, User>(
-    `/employee/deleteEmplyoee/${id}`
+export type DeleteEmployeeResponse = { message: string };
+
+export const deleteEmployeeHandler = async (
+  id: string
+): Promise<DeleteEmployeeResponse> => {
+  return API.delete<typeof id, DeleteEmployeeResponse>(
+    `/employee/v2/deleteEmplyoee/${id}`
   );
-  return response;
 };
 
 export const specificEmployeeData = async (): Promise<EmployeeDataArray> => {
