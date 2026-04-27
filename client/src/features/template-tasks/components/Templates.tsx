@@ -16,7 +16,6 @@ export type TemplateEditState = {
   templateId: string;
   templateName: string;
   templateDescription: string | null;
-  templateType: string | null;
 };
 
 function Templates() {
@@ -26,7 +25,6 @@ function Templates() {
     templateId: '',
     templateName: '',
     templateDescription: null,
-    templateType: null,
   });
   const [templateState, setTemplateState] = useState<'create' | 'edit'>(
     'create'

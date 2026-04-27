@@ -9,7 +9,6 @@ export type TemplateSubmission = {
   templateId?: string;
   templateName: string;
   templateDescription: string | null;
-  type?: string;
 };
 
 export function useSubmitTemplate(
@@ -31,7 +30,6 @@ export function useSubmitTemplate(
           .string()
           .min(1, { message: 'Beschreibung ist erforderlich' })
           .nullable(),
-        type: z.string().optional(),
       })
     ),
   });

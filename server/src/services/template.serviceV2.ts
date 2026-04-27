@@ -8,7 +8,6 @@ import { DefaultIssueStatus, DefaultPriority } from "@prisma/client";
 export type InsertTemplateParams = {
     templateName: string;
     templateDescription: string;
-    type?: string;
     organizationId: string;
     createdByUserId: string;
 };
@@ -39,7 +38,6 @@ export const insertTemplate = async (data: InsertTemplateParams) => {
         data: {
             templateName: data.templateName,
             templateDescription: data.templateDescription,
-            type: data.type,
             organizationId: data.organizationId,
             createdByUserId: data.createdByUserId,
         },
@@ -47,7 +45,6 @@ export const insertTemplate = async (data: InsertTemplateParams) => {
             id: true,
             templateName: true,
             templateDescription: true,
-            type: true,
             isActive: true,
             createdAt: true,
             createdBy: {
@@ -69,7 +66,6 @@ export const queryTemplates = async (orgId: string) => {
             id: true,
             templateName: true,
             templateDescription: true,
-            type: true,
             isActive: true,
             createdAt: true,
             updatedAt: true,
@@ -98,7 +94,6 @@ export const queryTemplateById = async (id: string, orgId: string) => {
             id: true,
             templateName: true,
             templateDescription: true,
-            type: true,
             isActive: true,
             createdAt: true,
             updatedAt: true,
@@ -138,7 +133,6 @@ export const removeTemplate = async (id: string, orgId: string) => {
 type ModifyTemplateParams = {
     templateName: string;
     templateDescription: string;
-    type?: string;
 };
 
 export const modifyTemplate = async (
@@ -150,7 +144,6 @@ export const modifyTemplate = async (
         data: {
             templateName: data.templateName,
             templateDescription: data.templateDescription,
-            type: data.type,
         },
     });
 };

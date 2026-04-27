@@ -80,7 +80,6 @@ export function TemplateItem({
                   templateId: template.id,
                   templateName: template.templateName,
                   templateDescription: template.templateDescription,
-                  templateType: template.type,
                 });
               }}
             />

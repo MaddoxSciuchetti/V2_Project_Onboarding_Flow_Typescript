@@ -42,9 +42,7 @@ const HistoryContent = ({ taskId }: HistoryContentProps) => {
   const { historyData, isLoading } = useGetTaskHistory(taskId);
 
   if (isLoading) {
-    return (
-      <p className="mt-5 text-muted-foreground">Verlauf wird geladen…</p>
-    );
+    return <p className="mt-5 text-muted-foreground">Verlauf wird geladen…</p>;
   }
 
   if (!historyData || historyData.length === 0) {

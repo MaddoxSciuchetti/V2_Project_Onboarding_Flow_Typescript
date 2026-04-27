@@ -21,12 +21,11 @@ const getParam = (param: string | string[]): string =>
 export const createTemplate = catchErrors(async (req, res) => {
     const userId = req.userId;
     const orgId = req.orgId || "";
-    const { templateName, templateDescription, type } = req.body;
+    const { templateName, templateDescription } = req.body;
 
     const template = await insertTemplate({
         templateName,
         templateDescription,
-        type: type,
         organizationId: orgId,
         createdByUserId: userId,
     });
@@ -54,13 +53,12 @@ export const getTemplateById = catchErrors(async (req, res) => {
 
 export const updateTemplate = catchErrors(async (req, res) => {
     const id = getParam(req.params.id);
-    const { templateName, templateDescription, type } = req.body;
+    const { templateName, templateDescription } = req.body;
     const orgId = req.orgId;
 
     const template = await modifyTemplate(id, {
         templateName,
         templateDescription,
-        type,
     });
     return res.status(OK).json(template);
 });

@@ -4,19 +4,13 @@ import {
   getTaskHistory,
   getWorkerById,
   getWorkerFiles,
-  getWorkerHistory,
 } from '../../api/index.api';
 import {
-  FORMHISTORY,
   HISTORYDATA,
   TASKHISTORY,
   WORKERBYID,
 } from '../../consts/query-key.consts';
-import {
-  File_Request,
-  HistoryData,
-  TaskHistoryEntry,
-} from '../../types/index.types';
+import { File_Request, TaskHistoryEntry } from '../../types/index.types';
 
 export const workerQueries = {
   getFiles: (workerId: string) =>
@@ -24,14 +18,6 @@ export const workerQueries = {
       queryKey: [HISTORYDATA, workerId] as const,
       queryFn: () => getWorkerFiles(workerId),
     }),
-
-  getHistory: (workerId: string) =>
-    queryOptions<HistoryData[], Error>({
-      queryKey: [FORMHISTORY, workerId] as const,
-      queryFn: () => getWorkerHistory(workerId),
-      enabled: !!workerId,
-    }),
-
   getTaskHistory: (taskId: string) =>
     queryOptions<TaskHistoryEntry[], Error>({
       queryKey: [TASKHISTORY, taskId] as const,
