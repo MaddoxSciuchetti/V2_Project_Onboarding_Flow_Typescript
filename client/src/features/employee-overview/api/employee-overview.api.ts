@@ -30,7 +30,10 @@ export const fetchDescriptionData = async (
 export const editEmployeeAbsence = async (
   data: AbsenceData
 ): Promise<AbsenceData> => {
-  return API.put<AbsenceData, AbsenceData>('/employee/editAbsenceData', data);
+  return API.put<AbsenceData, AbsenceData>(
+    '/employee/v2/editAbsenceData',
+    data
+  );
 };
 
 export const getEmployeeById = async (

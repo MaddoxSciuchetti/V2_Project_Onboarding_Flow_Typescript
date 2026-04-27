@@ -245,7 +245,6 @@ export const removeEmployee = async (id: string, orgId: string) => {
 // ============================================================
 
 export const updateAbsenceData = async (data: UpdateAbsenceParams) => {
-    // check for overlapping absence record
     const overlapping = await prisma.absence.findFirst({
         where: {
             userId: data.userId,

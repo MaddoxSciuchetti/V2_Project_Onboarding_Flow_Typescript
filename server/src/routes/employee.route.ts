@@ -34,10 +34,6 @@ employeeRoutes.delete(
     EmployeeV2.deleteEmployee,
 );
 employeeRoutes.put("/editAbsenceData", editAbsenceData);
-employeeRoutes.put(
-    "/v2/editAbsenceData",
-
-    EmployeeV2.editAbsenceData,
-);
+employeeRoutes.put("/v2/editAbsenceData", EmployeeV2.editAbsenceData);
 
 export { employeeRoutes };

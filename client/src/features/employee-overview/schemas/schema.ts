@@ -1,6 +1,13 @@
-import { dateSchema } from '@/schemas/schema';
 import z from 'zod';
 import { VALIDATION_MESSAGES } from '../consts/validationMessages';
+
+const isoDateSchema = z
+  .string()
+  .min(1, { message: VALIDATION_MESSAGES.required('Datum') })
+  .regex(/^\d{4}-\d{2}-\d{2}$/, { message: 'Ungültiges Datum' })
+  .refine((value) => !Number.isNaN(new Date(value).getTime()), {
+    message: 'Ungültiges Datum',
+  });
 
 export const substituteUserSchema = z.object({
   id: z.coerce.string(),
@@ -71,14 +78,15 @@ export const createWorkerSchema = z
   });
 
 export const absenceSchema = z.object({
-  id: z.string(),
-  absence: z.string().optional(),
-  absencetype: z
-    .string({ message: VALIDATION_MESSAGES.required('Art der Abwesenheit') })
-    .min(1, { message: VALIDATION_MESSAGES.required('Art der Abwesenheit') }),
-  absencebegin: dateSchema,
-  absenceEnd: dateSchema,
-  substitute: z.string({ message: VALIDATION_MESSAGES.optionRequired }),
+  userId: z.string().min(1),
+  absenceType: z.enum(['SICK', 'VACATION', 'PARENTAL_LEAVE', 'UNPAID', 'OTHER'], {
+    message: VALIDATION_MESSAGES.required('Art der Abwesenheit'),
+  }),
+  startDate: isoDateSchema,
+  endDate: isoDateSchema,
+  substituteId: z
+    .string({ message: VALIDATION_MESSAGES.optionRequired })
+    .min(1, { message: VALIDATION_MESSAGES.optionRequired }),
 });
 
 export type CreateWorker = z.infer<typeof createWorkerSchema>;
