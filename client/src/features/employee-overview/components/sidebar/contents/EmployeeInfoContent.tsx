@@ -13,6 +13,7 @@ const EmployeeInfoContent = ({ employeeId }: EmployeeInfoContentProps) => {
     employeeId,
     true
   );
+  console.log(employeeInfo);
 
   if (isError) return <ErrorAlert />;
   if (isLoading || !employeeInfo) {
@@ -32,9 +33,7 @@ const EmployeeInfoContent = ({ employeeId }: EmployeeInfoContentProps) => {
             className="flex items-center justify-between gap-4 border-b border-border/50 py-3 last:border-0"
           >
             <span className="text-sm text-muted-foreground">{item.label}</span>
-            <span className="text-sm text-foreground">
-              {item.value || '—'}
-            </span>
+            <span className="text-sm text-foreground">{item.value || '—'}</span>
           </div>
         )
       )}

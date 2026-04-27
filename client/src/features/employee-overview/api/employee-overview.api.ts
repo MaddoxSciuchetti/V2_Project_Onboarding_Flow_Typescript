@@ -36,5 +36,5 @@ export const editEmployeeAbsence = async (
 export const getEmployeeById = async (
   id: string
 ): Promise<EmployeeInfoResponse> => {
-  return API.get(`/employee/getEmployeeById/${id}`);
+  return API.get(`/employee/v2/getEmployeeById/${id}`);
 };
