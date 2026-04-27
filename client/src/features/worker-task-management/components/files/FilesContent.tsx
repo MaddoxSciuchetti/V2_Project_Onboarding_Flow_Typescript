@@ -10,7 +10,7 @@ type FilesContentProps = {
   deleteFiles: UseMutateFunction<
     Pick<SuccessResponse<unknown>, 'success'>,
     Error,
-    number,
+    string,
     unknown
   >;
 };
@@ -29,7 +29,7 @@ const FilesContent = ({ fetchFiles, deleteFiles }: FilesContentProps) => {
                 <Button
                   size={'icon-sm'}
                   variant={'ghost'}
-                  aria-label={`${getFileName(file.cloud_url, file.original_filename)} löschen`}
+                  aria-label={`${getFileName(file.presignedUrl, file.name)} löschen`}
                   onClick={(e) => {
                     e.stopPropagation();
                     deleteFiles(file.id);
@@ -42,23 +42,23 @@ const FilesContent = ({ fetchFiles, deleteFiles }: FilesContentProps) => {
               <div className="flex justify-center">
                 <img
                   className="h-15 w-15 rounded-xl object-cover"
-                  src={file.cloud_url}
+                  src={file.presignedUrl}
                   alt="not showing"
                 />
               </div>
 
               <div className="text-center">
                 <div className="text-2xl mb-2">
-                  {fileIcon(file.content_type)}
+                  {fileIcon(file.mimeType ?? '')}
                 </div>
                 <p
                   className="text-sm font-medium truncate cursor-pointer"
-                  onClick={() => window.open(file.cloud_url, '_blank')}
+                  onClick={() => window.open(file.presignedUrl, '_blank')}
                 >
-                  {getFileName(file.cloud_url, file.original_filename)}
+                  {getFileName(file.presignedUrl, file.name)}
                 </p>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  {new Date(file.uploaded_at).toLocaleDateString()}
+                  {new Date(file.createdAt).toLocaleDateString()}
                 </p>
               </div>
             </div>

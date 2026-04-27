@@ -6,8 +6,8 @@ async function handleZipExport(fetchFiles: File_Request[] | undefined) {
   const zip = new JSZip();
 
   const fetchPromises = fetchFiles?.map(async (value) => {
-    const blob = await fetchCloudUrl(value.cloud_key);
-    const fileName = value.original_filename.split('/').pop() ?? 'file';
+    const blob = await fetchCloudUrl(value.fileUrl);
+    const fileName = value.name.split('/').pop() ?? 'file';
     zip.file(fileName, blob);
   });
 

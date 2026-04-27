@@ -30,8 +30,8 @@ type UpdateTaskHistoryVariables = {
 
 export const workerMutations = {
   deleteWorker: (workerId: string) => {
-    return mutationOptions<SuccessResponse<string>, Error, number>({
-      mutationFn: (fileId: number) => deleteWorkerFile(fileId),
+    return mutationOptions<SuccessResponse<string>, Error, string>({
+      mutationFn: (fileId: string) => deleteWorkerFile(workerId, fileId),
       onMutate: async (fileId) => {
         await queryClient.cancelQueries({ queryKey: [HISTORYDATA, workerId] });
 
@@ -42,7 +42,9 @@ export const workerMutations = {
       },
       onError: () => {
         queryClient.invalidateQueries({ queryKey: [HISTORYDATA, workerId] });
-        console.log('this is the invalidation number');
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries({ queryKey: [HISTORYDATA, workerId] });
       },
     });
   },

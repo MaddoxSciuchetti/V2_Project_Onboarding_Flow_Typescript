@@ -14,20 +14,20 @@ export type HistoryData = {
   auth_user: TAuth_User | null;
 };
 
+export type DocumentFileType = 'contract' | 'id' | 'certificate' | 'other';
+
+/** Mirrors the Prisma `WorkerDocument` model + a presigned download URL. */
 export type File_Request = {
-  id: number;
-  employee_form_id: number;
-  original_filename: string;
-  content_type: string;
-  cloud_url: string;
-  cloud_key: string;
-  uploaded_at: Date;
-  employee_forms: {
-    form_type: LifecycleType;
-    id: number;
-    timestamp: string;
-    user_id: number;
-  };
+  id: string;
+  workerId: string;
+  uploadedByUserId: string;
+  name: string;
+  fileUrl: string;
+  fileType: DocumentFileType;
+  fileSizeBytes: number | null;
+  mimeType: string | null;
+  createdAt: string;
+  presignedUrl: string;
 };
 
 export type UpdatePayload = Partial<
