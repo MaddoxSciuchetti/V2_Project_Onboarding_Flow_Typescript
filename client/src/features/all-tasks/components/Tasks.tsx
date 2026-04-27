@@ -43,7 +43,7 @@ function Tasks() {
         <TaskSidebar key={sidebarKey} {...sidebarProps} />
         <GreetingHeader firstname={user?.firstName ?? ''} />
         <Table>
-          <TableHeader>
+          <TableHeader className="px-6 py-3">
             <GrowingItem>Alle Aufgaben</GrowingItem>
             <TaskSegmentToggle value={segment} onChange={setSegment} />
             <Button
@@ -55,7 +55,7 @@ function Tasks() {
             </Button>
           </TableHeader>
           <TableDivider />
-          <ItemHeader className="p-0">
+          <ItemHeader className="px-4 py-0">
             <GrowingItem className="py-2 pl-10">
               <p className="typo-body-sm">Titel</p>
             </GrowingItem>

@@ -34,7 +34,7 @@ export function WorkerTaskRow({ task, onOpenEdit }: WorkerTaskRowProps) {
   return (
     <Items
       state="hover"
-      className="relative flex items-center"
+      className="relative flex min-h-12 items-center px-4 py-2.5"
       onClick={openInEditMode}
     >
       <span className="absolute ml-2 flex h-5 w-5 items-center justify-center text-black opacity-0 transition-opacity group-hover:opacity-100">
@@ -42,17 +42,17 @@ export function WorkerTaskRow({ task, onOpenEdit }: WorkerTaskRowProps) {
       </span>
       <GrowingItem className="min-w-0 flex-1 py-0 pl-10">
         <div className="flex min-w-0 flex-1 items-center gap-2.5">
-          <p className="typo-body-base shrink-0 whitespace-nowrap text-black">
+          <p className="typo-body-sm shrink-0 whitespace-nowrap text-black">
             {`--- ${task.id.slice(0, 8)}`}
           </p>
           <PriorityIndicator priority={task.priority} />
-          <p className="typo-body-base min-w-0 truncate text-black">
+          <p className="typo-body-sm min-w-0 truncate text-black">
             {task.title}
           </p>
           <Button
             type="button"
             variant="default"
-            className="ds-label-sm h-8 min-h-0 shrink-0 gap-1.5 rounded-2xl border border-[var(--border-brand)] px-3 py-0"
+            className="ds-label-sm h-7 min-h-0 shrink-0 gap-1.5 rounded-2xl border border-[var(--border-brand)] px-3 py-0 text-xs"
             onClick={(e) => {
               e.stopPropagation();
               openInEditMode();

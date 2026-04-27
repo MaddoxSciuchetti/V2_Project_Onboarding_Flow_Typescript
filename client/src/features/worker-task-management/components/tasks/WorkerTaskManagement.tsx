@@ -56,7 +56,7 @@ const TaskManagement = ({ workerId }: TaskManagementProps) => {
         <TabsContent value="form">
           <Table>
             <TableDivider />
-            <ItemHeader className="p-0">
+            <ItemHeader className="px-4 py-0">
               <GrowingItem className="py-2 pl-10">
                 <p className="typo-body-sm">Titel</p>
               </GrowingItem>

@@ -13,11 +13,14 @@ const WorkerHeader = ({ openForCreate }: WorkerHeaderProps) => {
         onChange={(e) => setSearchValue(e.target.value)}
         placeholder={searchPlaceholder}
       /> */}
-      <TabsList variant={'default'} className="bg-(--dropdown-surface)">
-        <TabsTrigger className="cursor-pointer" value="form">
+      <TabsList
+        variant={'default'}
+        className="rounded-full bg-(--dropdown-surface)"
+      >
+        <TabsTrigger className="cursor-pointer rounded-full" value="form">
           Aufgaben
         </TabsTrigger>
-        <TabsTrigger className="cursor-pointer" value="files">
+        <TabsTrigger className="cursor-pointer rounded-full" value="files">
           Dateien
         </TabsTrigger>
       </TabsList>

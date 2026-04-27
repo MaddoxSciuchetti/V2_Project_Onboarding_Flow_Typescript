@@ -9,7 +9,7 @@ export function PriorityIndicator({
   if (priority === 'urgent' || priority === 'high') {
     return (
       <AlertCircle
-        className="size-6 shrink-0 text-red-500"
+        className="size-3 shrink-0 text-red-500"
         aria-hidden
         strokeWidth={2}
       />
@@ -18,14 +18,14 @@ export function PriorityIndicator({
   if (priority === 'medium') {
     return (
       <span
-        className="inline-block size-[22px] shrink-0 rounded-full bg-amber-500"
+        className="inline-block size-2.5 shrink-0 rounded-full bg-amber-500"
         aria-hidden
       />
     );
   }
   return (
     <span
-      className="inline-block size-[22px] shrink-0 rounded-full bg-green-600"
+      className="inline-block size-2.5 shrink-0 rounded-full bg-green-600"
       aria-hidden
     />
   );
