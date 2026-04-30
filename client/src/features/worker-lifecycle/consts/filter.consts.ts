@@ -8,7 +8,6 @@ export const FILTER_OPTIONS: OptionsObjekt[] = [
     subOptions: [
       { label: 'Active', value: 'active' },
       { label: 'Inactive', value: 'inactive' },
-      { label: 'Archived', value: 'archived' },
     ],
   },
   { label: 'Verantwortlich', value: 'responsible' },

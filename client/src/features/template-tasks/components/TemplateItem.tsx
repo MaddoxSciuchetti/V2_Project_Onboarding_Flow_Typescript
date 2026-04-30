@@ -43,7 +43,7 @@ export function TemplateItem({
               to: '/settings/templates/$id',
               params: { id: template.id },
               search: {
-                templateName: template.templateName,
+                name: template.name,
               },
             })
           }
@@ -55,11 +55,11 @@ export function TemplateItem({
             )}
           >
             <p className="typo-body-sm text-text-primary">
-              {template.templateName}
+              {template.name}
             </p>
-            {template.templateDescription ? (
+            {template.description ? (
               <p className="typo-body-xs text-text-secondary line-clamp-3">
-                {template.templateDescription}
+                {template.description}
               </p>
             ) : null}
           </GrowingItem>
@@ -78,8 +78,8 @@ export function TemplateItem({
                 setTemplateState('edit');
                 setIsEditTemplate({
                   templateId: template.id,
-                  templateName: template.templateName,
-                  templateDescription: template.templateDescription,
+                  name: template.name,
+                  description: template.description,
                 });
               }}
             />

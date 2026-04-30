@@ -121,10 +121,7 @@ export type EmployeeInfoResponse = {
   createdAt: string;
   updatedAt: string;
   organizationMembers: Array<{
-    role: {
-      id: string;
-      name: string;
-    };
+    membershipRole: 'admin' | 'worker';
   }>;
   absences: EmployeeAbsenceInfo[];
   isAbsent: boolean;

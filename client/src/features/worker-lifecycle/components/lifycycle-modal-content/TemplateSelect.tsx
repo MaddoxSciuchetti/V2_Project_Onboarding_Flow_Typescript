@@ -55,7 +55,7 @@ export function TemplateSelect<T extends FieldValues>({
               )}
               {allTemplates.map((template) => (
                 <SelectItem key={template.id} value={template.id}>
-                  {template.templateName} ({template._count.items} Aufgaben)
+                  {template.name} ({template._count.items} Aufgaben)
                 </SelectItem>
               ))}
             </SelectContent>

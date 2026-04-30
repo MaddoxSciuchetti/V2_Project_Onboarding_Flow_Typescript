@@ -23,8 +23,8 @@ type TemplateSidebarProps = {
 };
 
 const EMPTY_SUBMISSION: TemplateSubmission = {
-  templateName: '',
-  templateDescription: '',
+  name: '',
+  description: null,
 };
 
 export function TemplateSidebar({
@@ -63,14 +63,14 @@ export function TemplateSidebar({
             <FormFields
               errors={errors}
               register={register}
-              name="templateName"
+              name="name"
               label="Name des Templates"
               labelClassName="typo-body-base"
             />
             <FormFields
               errors={errors}
               register={register}
-              name="templateDescription"
+              name="description"
               label="Beschreibung des Templates"
               labelClassName="typo-body-base"
             />

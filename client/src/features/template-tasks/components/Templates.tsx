@@ -14,8 +14,8 @@ import { TemplateItem } from './TemplateItem';
 
 export type TemplateEditState = {
   templateId: string;
-  templateName: string;
-  templateDescription: string | null;
+  name: string;
+  description: string | null;
 };
 
 function Templates() {
@@ -23,8 +23,8 @@ function Templates() {
   const [isOpen, setIsOpen] = useState(false);
   const [isEditTemplate, setIsEditTemplate] = useState<TemplateEditState>({
     templateId: '',
-    templateName: '',
-    templateDescription: null,
+    name: '',
+    description: null,
   });
   const [templateState, setTemplateState] = useState<'create' | 'edit'>(
     'create'

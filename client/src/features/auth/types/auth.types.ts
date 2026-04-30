@@ -55,7 +55,7 @@ export type TresetPassword = {
 
 export type CreateInviteRequest = {
   email: string;
-  roleId?: string;
+  invitedMembershipRole?: 'admin' | 'worker';
 };
 
 export type CreateInviteResponse = {

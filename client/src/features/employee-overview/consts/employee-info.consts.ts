@@ -5,7 +5,7 @@ import { getAbsenceInfo } from '../utils/getAbsenceInfo';
 
 export const employeeInfos = (e: EmployeeInfoResponse): EmployeeInfoItem[] => {
   const absence = getAbsenceInfo(e);
-  const roleName = e.organizationMembers[0]?.role.name;
+  const membershipRole = e.organizationMembers[0]?.membershipRole;
 
   return [
     { label: 'Vorname', value: e.firstName },
@@ -30,7 +30,7 @@ export const employeeInfos = (e: EmployeeInfoResponse): EmployeeInfoItem[] => {
     },
     {
       label: 'Rolle',
-      value: roleName === 'Owner' ? 'Administrator' : 'Mitarbeiter',
+      value: membershipRole === 'admin' ? 'Administrator' : 'Mitarbeiter',
     },
     { label: 'Erstellt', value: formatDate(e.createdAt) },
     { label: 'Verifiziert', value: e.isEmailVerified ? 'Ja' : 'Nein' },

@@ -5,11 +5,12 @@ type EmployeeNameProps = {
 };
 
 const EmployeeName = ({ employee }: EmployeeNameProps) => {
-  const isOwner = employee.organizationMembers[0]?.role.name === 'Owner';
+  const isAdmin =
+    employee.organizationMembers[0]?.membershipRole === 'admin';
 
   return (
     <>
-      {isOwner ? (
+      {isAdmin ? (
         <p>
           <span className="text-(--status-info-foreground)">Ich:</span> {''}
           {employee.firstName} {employee.lastName}

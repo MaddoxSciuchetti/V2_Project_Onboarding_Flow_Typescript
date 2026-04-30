@@ -1,10 +1,10 @@
-import type { DefaultPriority } from '../types/index.types';
+import type { IssuePriority } from '../types/index.types';
 
-/** Matches `DefaultPriority` in Prisma — default used when the user does not change the field. */
-export const DEFAULT_TEMPLATE_PRIORITY: DefaultPriority = 'medium';
+/** Default when the user does not change priority on a template task. */
+export const DEFAULT_TEMPLATE_PRIORITY: IssuePriority = 'medium';
 
 export const TEMPLATE_PRIORITY_OPTIONS: {
-  value: DefaultPriority;
+  value: Exclude<IssuePriority, 'no_priority'>;
   label: string;
 }[] = [
   { value: 'low', label: 'Niedrig' },

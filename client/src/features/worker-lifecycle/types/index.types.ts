@@ -10,9 +10,6 @@ export type WorkerItem = {
   id: number;
   nachname: string;
   vorname: string;
-  archivedAt: string | null;
-  archivedBy: string | null;
-  archivedByName: string | null;
 };
 
 export type WorkerListMode = 'active' | 'archived';
@@ -70,7 +67,7 @@ export type WorkerOverviewResponse = {
   };
 };
 
-export type WorkerStatus = 'active' | 'inactive' | 'archived';
+export type WorkerStatus = 'active' | 'inactive';
 
 export type EngagementType = 'onboarding' | 'offboarding' | 'transfer';
 
@@ -99,7 +96,6 @@ export type WorkerRecord = {
   email: string;
   position: string | null;
   status: WorkerStatus;
-  archivedAt: string | null;
   createdAt: string;
   updatedAt: string;
   engagements: WorkerEngagement[];

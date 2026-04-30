@@ -16,12 +16,12 @@ import { TemplateTaskItem } from '../TemplateTaskItem';
 
 type TemplateTasksProps = {
   templateId: string;
-  templateName: string;
+  name: string;
 };
 
 export function TemplateTasks({
   templateId,
-  templateName,
+  name,
 }: TemplateTasksProps) {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
@@ -58,7 +58,7 @@ export function TemplateTasks({
               <ArrowLeft className="size-5" />
             </Button>
           }
-          title={templateName}
+          title={name}
           description="Füge Aufgaben zu dieser Vorlage hinzu"
         />
         <Table className="w-200">

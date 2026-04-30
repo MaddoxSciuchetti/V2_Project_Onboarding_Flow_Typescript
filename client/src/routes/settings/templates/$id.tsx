@@ -4,13 +4,13 @@ import z from 'zod/v3';
 
 export const Route = createFileRoute('/settings/templates/$id')({
   validateSearch: z.object({
-    templateName: z.string(),
+    name: z.string(),
   }),
   component: RouteComponent,
 });
 
 function RouteComponent() {
   const { id } = Route.useParams();
-  const { templateName } = Route.useSearch();
-  return <TemplateTasks templateId={id} templateName={templateName} />;
+  const { name } = Route.useSearch();
+  return <TemplateTasks templateId={id} name={name} />;
 }
