@@ -1,12 +1,11 @@
 import API from '@/config/apiClient';
+
 import {
-  DescriptionData,
-  DescriptionResponse,
-  NewDescriptionField,
-  SuccessResponse,
-} from '@/types/api.types';
+  TemplateTaskFormValues,
+  TemplateTaskResponse,
+} from '@/features/worker-task-management/types/index.types';
+import { SuccessResponse } from '@/types/api.types';
 import { TemplateSubmission } from '../hooks/useSubmitTemplate';
-import { EditDescriptionData } from '../types/taskForm.types';
 import type { IssueTemplateListItem } from '../types/template.types';
 
 export type DeleteTaskResponse = {
@@ -18,7 +17,7 @@ export type DeleteTaskResponse = {
   owner: string;
 };
 
-export const deleteTemplateTask = async (
+export const deleteTemplate = async (
   id: string
 ): Promise<SuccessResponse<string>> => {
   const response = await API.delete<
@@ -28,15 +27,14 @@ export const deleteTemplateTask = async (
   return response;
 };
 
-export const createTemplateTask = async (data: {
-  description: string;
-  template_type: 'ONBOARDING' | 'OFFBOARDING';
-  owner: string;
-}): Promise<NewDescriptionField> => {
-  const response = await API.post<NewDescriptionField, NewDescriptionField>(
-    `/template`,
-    data
-  );
+export const createTemplateTask = async (
+  data: TemplateTaskFormValues,
+  templateId: string
+): Promise<TemplateTaskResponse[]> => {
+  const response = await API.post<
+    TemplateTaskFormValues,
+    TemplateTaskResponse[]
+  >(`/template/${templateId}/task`, data);
   return response;
 };
 
@@ -58,17 +56,49 @@ export const getTemplatesV2 = async (): Promise<IssueTemplateListItem[]> => {
   return response;
 };
 
-export const getTemplateTask = async (): Promise<DescriptionResponse[]> => {
-  const response = await API.get<DescriptionData[], DescriptionResponse[]>(
-    '/template/getTask'
+export const getTemplateTask = async (
+  templateId: string
+): Promise<TemplateTaskResponse[]> => {
+  const response = await API.get<
+    TemplateTaskResponse[],
+    TemplateTaskResponse[]
+  >(`/template/${templateId}/tasks`);
+  return response;
+};
+
+export const deleteTemplateTask = async (
+  id: string
+): Promise<SuccessResponse<string>> => {
+  const response = await API.delete<
+    SuccessResponse<string>,
+    SuccessResponse<string>
+  >(`/template/task/${id}`);
+  return response;
+};
+
+export type UpdateTemplateParams = {
+  data: TemplateSubmission;
+  templateId: string;
+};
+
+export const updateTemplate = async ({
+  data,
+  templateId,
+}: UpdateTemplateParams) => {
+  const response = await API.put<UpdateTemplateParams, TemplateSubmission>(
+    `/template/${templateId}`,
+    data
   );
   return response;
 };
 
-export const updateTemplateTask = async (data: EditDescriptionData) => {
-  const response = await API.put<EditDescriptionData, EditDescriptionData>(
-    `/template/updateTask/${data.form_field_id}`,
-    data
-  );
+export const updateTemplateTask = async (
+  data: TemplateTaskFormValues,
+  taskId: string
+) => {
+  const response = await API.put<
+    TemplateTaskFormValues,
+    TemplateTaskFormValues
+  >(`/template/task/${taskId}`, data);
   return response;
 };

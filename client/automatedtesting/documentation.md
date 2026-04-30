@@ -34,3 +34,21 @@ Integrate breking changes into the new signup flow. A user can no longer signup 
 ---
 
 automated tests did not work anymore when changing the overall sidebar layout ansd siwciehd how everything looks
+
+---
+
+15.April:
+
+After changing my entire template task that now is really unorganized (will possibly show this as a diff, the tests no longer walk. I will need to write complet new tests for the template feature which involves a complete e2e test that took much work.) My considerations for the future are to write tests that check the core functionality but that do not test this end to end as if a bug comes up this should get solves with my unit tests. The importance is not that high that it requires a e2e test.
+
+25.April:
+
+Implementing payment system. Once this payment system way implemented i ensured that i want to test through e2e, integration and unit. This ensures maximal coverage for this importance function that my code has.
+
+---
+
+Implementation of new features. This lead to not writing tests in the first place and not being able to push as it was not sure if the code also worked in production
+
+---
+
+26. Apr decided to quickly start writing most of the unit and integration tests that are also responsible for covering the most important aspects

@@ -121,7 +121,7 @@ export const queryEmployeeWorkerData = async (orgId: string) => {
 };
 
 export const queryEmployee = async (orgId: string) => {
-    return await prisma.newUser.findMany({
+    return await prisma.user.findMany({
         where: {
             organizationMembers: {
                 some: { organizationId: orgId },
@@ -141,12 +141,7 @@ export const queryEmployee = async (orgId: string) => {
             organizationMembers: {
                 where: { organizationId: orgId },
                 select: {
-                    role: {
-                        select: {
-                            id: true,
-                            name: true,
-                        },
-                    },
+                    membershipRole: true,
                 },
             },
             absences: {
@@ -175,7 +170,7 @@ export const queryEmployee = async (orgId: string) => {
 // ============================================================
 
 export const queryEmployeeById = async (id: string, orgId: string) => {
-    return await prisma.newUser.findFirst({
+    return await prisma.user.findFirst({
         where: {
             id,
             organizationMembers: {
@@ -196,12 +191,7 @@ export const queryEmployeeById = async (id: string, orgId: string) => {
             organizationMembers: {
                 where: { organizationId: orgId },
                 select: {
-                    role: {
-                        select: {
-                            id: true,
-                            name: true,
-                        },
-                    },
+                    membershipRole: true,
                 },
             },
             absences: {
@@ -245,7 +235,6 @@ export const removeEmployee = async (id: string, orgId: string) => {
 // ============================================================
 
 export const updateAbsenceData = async (data: UpdateAbsenceParams) => {
-    // check for overlapping absence record
     const overlapping = await prisma.absence.findFirst({
         where: {
             userId: data.userId,

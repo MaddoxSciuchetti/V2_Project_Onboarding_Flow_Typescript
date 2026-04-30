@@ -2,6 +2,7 @@ import { CREATED, NOT_FOUND, OK } from "@/constants/http";
 import {
     insertTemplate,
     insertTemplateTask,
+    modifyTemplate,
     modifyTemplateTask,
     queryTemplateById,
     queryTemplates,
@@ -20,12 +21,19 @@ const getParam = (param: string | string[]): string =>
 export const createTemplate = catchErrors(async (req, res) => {
     const userId = req.userId;
     const orgId = req.orgId || "";
-    const { templateName, templateDescription, type } = req.body;
+    const body = req.body as {
+        name?: string;
+        description?: string;
+        templateName?: string;
+        templateDescription?: string;
+    };
+    const name = body.name ?? body.templateName ?? "";
+    const description =
+        body.description ?? body.templateDescription ?? "";
 
     const template = await insertTemplate({
-        templateName,
-        templateDescription,
-        type: type,
+        name,
+        description,
         organizationId: orgId,
         createdByUserId: userId,
     });
@@ -51,6 +59,24 @@ export const getTemplateById = catchErrors(async (req, res) => {
     return res.status(OK).json(template);
 });
 
+export const updateTemplate = catchErrors(async (req, res) => {
+    const id = getParam(req.params.id);
+    const body = req.body as {
+        name?: string;
+        description?: string;
+        templateName?: string;
+        templateDescription?: string;
+    };
+    const orgId = req.orgId;
+
+    const template = await modifyTemplate(id, {
+        name: body.name ?? body.templateName ?? "",
+        description:
+            body.description ?? body.templateDescription ?? "",
+    });
+    return res.status(OK).json(template);
+});
+
 export const deleteTemplate = catchErrors(async (req, res) => {
     const id = getParam(req.params.id);
     const orgId = req.orgId;
@@ -65,16 +91,14 @@ export const deleteTemplate = catchErrors(async (req, res) => {
 export const createTemplateTask = catchErrors(async (req, res) => {
     const templateId = getParam(req.params.templateId);
     const orgId = req.orgId;
-    const { title, description, defaultPriority, defaultStatus, orderIndex } =
-        req.body;
-
+    const { taskName, taskDescription, defaultPriority, orderIndex } = req.body;
+    console.log(templateId);
     const task = await insertTemplateTask({
         templateId,
         organizationId: orgId,
-        title,
-        description,
+        taskName,
+        taskDescription,
         defaultPriority,
-        defaultStatus,
         orderIndex,
     });
 
@@ -85,21 +109,25 @@ export const getTemplateTasks = catchErrors(async (req, res) => {
     const templateId = getParam(req.params.templateId);
     const orgId = req.orgId;
 
-    const tasks = await queryTemplateTasks(templateId, orgId);
+    const result = await queryTemplateTasks(templateId, orgId);
+    appAssert(result, NOT_FOUND, "Template not found");
 
-    return res.status(OK).json(tasks);
+    const { tasks } = result;
+    const response = tasks.map((task) => ({
+        ...task,
+        taskName: task.title,
+        taskDescription: task.description,
+    }));
+    return res.status(OK).json(response);
 });
 
 export const updateTemplateTask = catchErrors(async (req, res) => {
     const id = getParam(req.params.id);
-    const { title, description, defaultPriority, defaultStatus, orderIndex } =
-        req.body;
-
+    const { taskName, taskDescription, defaultPriority, orderIndex } = req.body;
     const updated = await modifyTemplateTask(id, {
-        title,
-        description,
+        taskName,
+        taskDescription,
         defaultPriority,
-        defaultStatus,
         orderIndex,
     });
 
@@ -108,6 +136,7 @@ export const updateTemplateTask = catchErrors(async (req, res) => {
 
 export const deleteTemplateTask = catchErrors(async (req, res) => {
     const id = getParam(req.params.id);
+    const orgId = req.orgId;
 
     await removeTemplateTask(id);
 

@@ -8,13 +8,8 @@ export const LAYOUTITEMS = [
   },
   {
     title: 'Aufgaben',
-    to: '/template',
+    to: '/tasks',
     icon: Ticket,
-  },
-  {
-    title: 'Mitarbeiter',
-    to: '/employee-overview',
-    icon: UserRound,
   },
 ];
 

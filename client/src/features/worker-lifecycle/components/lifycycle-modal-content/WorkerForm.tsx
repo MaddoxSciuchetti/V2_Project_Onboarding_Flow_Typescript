@@ -1,24 +1,27 @@
 import FormFields from '@/components/form/FormFields';
+import { Button } from '@/components/ui/selfmade/button';
 import { AddWorker } from '@/features/worker-lifecycle/schemas/zod.schemas';
-import { Button } from '../../../../components/ui/button';
 import { useAddWorker } from '../../hooks/useAddWorker';
 import { useMemoizedInputs } from '../../hooks/useMemoizedInputs';
+import { TemplateSelect } from './TemplateSelect';
 
 interface WorkerFormProps {
   setSelectedOption: (value: AddWorker['type'] | null) => void;
   type: AddWorker['type'];
   toggleModal: () => void;
-  className?: string;
+  showInlineFormBackButton?: boolean;
 }
 
 export const WorkerForm = ({
   setSelectedOption,
   type,
   toggleModal,
+  showInlineFormBackButton = true,
 }: WorkerFormProps) => {
   const {
     register,
     handleSubmit,
+    control,
     submitWorkerForm,
     errors,
     isError,
@@ -29,46 +32,51 @@ export const WorkerForm = ({
   const memoizedInputs = useMemoizedInputs(type);
 
   return (
-    <>
-      <form
-        onSubmit={handleSubmit(submitWorkerForm)}
-        className=" gap-4  flex flex-col"
-      >
-        {isError && (
-          <div className="mb-3 text-(--destructive)">
-            {error?.message || 'An error occurred'}
-          </div>
-        )}
+    <form
+      onSubmit={handleSubmit(submitWorkerForm)}
+      className="flex min-h-0 flex-1 flex-col gap-4"
+    >
+      {showInlineFormBackButton && (
         <Button
-          className="w-20 cursor-pointer rounded-xl transition-colors hover:bg-accent hover:text-accent-foreground"
-          variant={'outline'}
-          onClick={() => setSelectedOption(null)}
           type="button"
+          className="w-fit border border-border bg-card text-foreground shadow-none hover:bg-muted/60"
+          onClick={() => setSelectedOption(null)}
         >
-          Zurück{' '}
+          Zurück
         </Button>
-        <h1 className="text-left">Eingabe {type}</h1>
-        <div className="grid grid-cols-2 gap-3 pb-10 ">
-          {memoizedInputs.map((input) => (
-            <div key={input.name}>
-              <FormFields
-                errors={errors}
-                register={register}
-                name={input.name}
-                placeholder={input.placeholder}
-              />
-            </div>
-          ))}
-        </div>
+      )}
+
+      <h1 className="typo-body-lg font-semibold">Eingabe {type}</h1>
+
+      {isError && (
+        <p className="text-(--destructive)">
+          {error?.message || 'An error occurred'}
+        </p>
+      )}
+
+      <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto">
+        {memoizedInputs.map((input) => (
+          <FormFields
+            key={input.name}
+            errors={errors}
+            register={register}
+            name={input.name}
+            placeholder={input.placeholder}
+          />
+        ))}
+
+        <TemplateSelect control={control} name="templateId" />
+      </div>
+
+      <footer className="mt-auto flex shrink-0 justify-end border-t border-border pt-4">
         <Button
-          variant={'outline'}
           type="submit"
           disabled={isPending}
-          className="cursor-pointer rounded-xl transition-colors hover:bg-accent hover:text-accent-foreground"
+          className="shrink-0 border-0 bg-interactive-primary-bg text-sm text-interactive-primary-text hover:bg-interactive-primary-hover"
         >
           {isPending ? 'Wird erstellt...' : 'Hinzufügen'}
         </Button>
-      </form>
-    </>
+      </footer>
+    </form>
   );
 };

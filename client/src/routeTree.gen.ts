@@ -10,12 +10,12 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WorkerLifycycleRouteImport } from './routes/worker-lifycycle'
+import { Route as TasksRouteImport } from './routes/tasks'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as HomeRouteImport } from './routes/home'
-import { Route as EmployeeOverviewRouteImport } from './routes/employee-overview'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UserIdRouteImport } from './routes/user/$Id'
 import { Route as SettingsProfileRouteImport } from './routes/settings/profile'
@@ -31,6 +31,11 @@ import { Route as EmailVerifyCodeRouteImport } from './routes/email/verify/$code
 const WorkerLifycycleRoute = WorkerLifycycleRouteImport.update({
   id: '/worker-lifycycle',
   path: '/worker-lifycycle',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TasksRoute = TasksRouteImport.update({
+  id: '/tasks',
+  path: '/tasks',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SignupRoute = SignupRouteImport.update({
@@ -56,11 +61,6 @@ const LoginRoute = LoginRouteImport.update({
 const HomeRoute = HomeRouteImport.update({
   id: '/home',
   path: '/home',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EmployeeOverviewRoute = EmployeeOverviewRouteImport.update({
-  id: '/employee-overview',
-  path: '/employee-overview',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -123,12 +123,12 @@ const EmailVerifyCodeRoute = EmailVerifyCodeRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/employee-overview': typeof EmployeeOverviewRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/settings': typeof SettingsRouteWithChildren
   '/signup': typeof SignupRoute
+  '/tasks': typeof TasksRoute
   '/worker-lifycycle': typeof WorkerLifycycleRoute
   '/password/forgot': typeof PasswordForgotRoute
   '/password/reset': typeof PasswordResetRoute
@@ -143,12 +143,12 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/employee-overview': typeof EmployeeOverviewRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/settings': typeof SettingsRouteWithChildren
   '/signup': typeof SignupRoute
+  '/tasks': typeof TasksRoute
   '/worker-lifycycle': typeof WorkerLifycycleRoute
   '/password/forgot': typeof PasswordForgotRoute
   '/password/reset': typeof PasswordResetRoute
@@ -164,12 +164,12 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/employee-overview': typeof EmployeeOverviewRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/settings': typeof SettingsRouteWithChildren
   '/signup': typeof SignupRoute
+  '/tasks': typeof TasksRoute
   '/worker-lifycycle': typeof WorkerLifycycleRoute
   '/password/forgot': typeof PasswordForgotRoute
   '/password/reset': typeof PasswordResetRoute
@@ -186,12 +186,12 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/employee-overview'
     | '/home'
     | '/login'
     | '/profile'
     | '/settings'
     | '/signup'
+    | '/tasks'
     | '/worker-lifycycle'
     | '/password/forgot'
     | '/password/reset'
@@ -206,12 +206,12 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/employee-overview'
     | '/home'
     | '/login'
     | '/profile'
     | '/settings'
     | '/signup'
+    | '/tasks'
     | '/worker-lifycycle'
     | '/password/forgot'
     | '/password/reset'
@@ -226,12 +226,12 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/employee-overview'
     | '/home'
     | '/login'
     | '/profile'
     | '/settings'
     | '/signup'
+    | '/tasks'
     | '/worker-lifycycle'
     | '/password/forgot'
     | '/password/reset'
@@ -247,12 +247,12 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  EmployeeOverviewRoute: typeof EmployeeOverviewRoute
   HomeRoute: typeof HomeRoute
   LoginRoute: typeof LoginRoute
   ProfileRoute: typeof ProfileRoute
   SettingsRoute: typeof SettingsRouteWithChildren
   SignupRoute: typeof SignupRoute
+  TasksRoute: typeof TasksRoute
   WorkerLifycycleRoute: typeof WorkerLifycycleRoute
   PasswordForgotRoute: typeof PasswordForgotRoute
   PasswordResetRoute: typeof PasswordResetRoute
@@ -267,6 +267,13 @@ declare module '@tanstack/react-router' {
       path: '/worker-lifycycle'
       fullPath: '/worker-lifycycle'
       preLoaderRoute: typeof WorkerLifycycleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tasks': {
+      id: '/tasks'
+      path: '/tasks'
+      fullPath: '/tasks'
+      preLoaderRoute: typeof TasksRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/signup': {
@@ -302,13 +309,6 @@ declare module '@tanstack/react-router' {
       path: '/home'
       fullPath: '/home'
       preLoaderRoute: typeof HomeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/employee-overview': {
-      id: '/employee-overview'
-      path: '/employee-overview'
-      fullPath: '/employee-overview'
-      preLoaderRoute: typeof EmployeeOverviewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -415,12 +415,12 @@ const SettingsRouteWithChildren = SettingsRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  EmployeeOverviewRoute: EmployeeOverviewRoute,
   HomeRoute: HomeRoute,
   LoginRoute: LoginRoute,
   ProfileRoute: ProfileRoute,
   SettingsRoute: SettingsRouteWithChildren,
   SignupRoute: SignupRoute,
+  TasksRoute: TasksRoute,
   WorkerLifycycleRoute: WorkerLifycycleRoute,
   PasswordForgotRoute: PasswordForgotRoute,
   PasswordResetRoute: PasswordResetRoute,

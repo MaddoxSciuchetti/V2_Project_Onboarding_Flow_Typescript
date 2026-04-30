@@ -29,6 +29,8 @@ const authenticate: RequestHandler = async (req, res, next) => {
             orderBy: { joinedAt: "asc" },
         });
 
+        appAssert(member, UNAUTHORIZED, "No org found");
+
         req.userId = payload.userId;
         req.sessionId = payload.sessionId;
         if (payload.tokenId) {

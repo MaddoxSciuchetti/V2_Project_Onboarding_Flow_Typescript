@@ -48,3 +48,8 @@ Do not use the normal button html element. Also do not use complicated state log
 ---
 
 Do not use ternary operators at your whim. Use them specifcally when they are need to express the logic that you want to express. Do not use it for simple things that can be done without the ternary operator
+
+---
+
+Requirements changed for the overall website. i needed to be able to have mutliple organizations using the same application. (This should also be tested).
+After development none of my tests worked anymore. This made me take a approach where i started to think about what i can test that will most likeley always stay the same and barely change. This included the function of adding organizations, inviting new employees to the org, and other pure functions being used. Once the ui was mostly set i created e2e tests only for the login and signup for now.

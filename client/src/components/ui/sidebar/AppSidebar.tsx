@@ -25,7 +25,7 @@ function AppSidebar({
       collapsible="icon"
       className={cn('flex flex-col justify-between', className)}
     >
-      <div className="w-full p-2">
+      <div className="w-full min-w-0 p-2">
         <ProfileDropdown
           setIsSettingOpen={setIsSettingOpen}
           collapsed={isCollapsed}
@@ -46,7 +46,7 @@ function AppSidebar({
           />
         </div>
       </div>
-      <div className="p-2 w-full flex flex-col overflow-x-hidden">
+      <div className="w-full p-2">
         <SidebarItem
           onClick={() => openModal()}
           label="Feedback"

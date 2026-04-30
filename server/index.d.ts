@@ -1,16 +1,12 @@
-import { Session, User } from "./generated/prisma/client";
-
-type DebugUser = User;
-type DebugSession = Session;
+import type { User as DbUser } from "@prisma/client";
 
 declare global {
     namespace Express {
         interface Request {
-            userId: DebugUser["id"];
+            userId: DbUser["id"];
             tokenId?: string;
             sessionId?: string;
-            /** Set when the user has an active organization membership. */
-            orgId?: string;
+            orgId: string;
         }
     }
 }

@@ -5,18 +5,20 @@ import { PencilIcon, TrashIcon } from 'lucide-react';
 import { Dispatch, SetStateAction } from 'react';
 import { useDeleteTemplate } from '../hooks/useDeleteTemplate';
 import type { IssueTemplateListItem } from '../types/template.types';
-import type { TemplateEditState } from './TemplateTask';
+import type { TemplateEditState } from './Templates';
 
 type TemplateItemProps = {
   templates: IssueTemplateListItem[];
   setIsEditTemplate: Dispatch<SetStateAction<TemplateEditState>>;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
+  setTemplateState: Dispatch<SetStateAction<'create' | 'edit'>>;
 };
 
 export function TemplateItem({
   templates,
   setIsEditTemplate,
   setIsOpen,
+  setTemplateState,
 }: TemplateItemProps) {
   const navigate = useNavigate();
 
@@ -40,6 +42,9 @@ export function TemplateItem({
             navigate({
               to: '/settings/templates/$id',
               params: { id: template.id },
+              search: {
+                templateName: template.templateName,
+              },
             })
           }
         >
@@ -68,18 +73,20 @@ export function TemplateItem({
               className="w-4 h-4"
               onClick={(e) => {
                 e.stopPropagation();
+                e.preventDefault();
                 setIsOpen(true);
+                setTemplateState('edit');
                 setIsEditTemplate({
                   templateId: template.id,
                   templateName: template.templateName,
                   templateDescription: template.templateDescription,
-                  templateType: template.type,
                 });
               }}
             />
             <TrashIcon
               className="w-4 h-4"
               onClick={(e) => {
+                e.preventDefault();
                 e.stopPropagation();
                 deleteTemplate(template.id);
               }}

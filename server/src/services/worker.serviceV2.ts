@@ -1,3 +1,7 @@
+import {
+    STATUS_ENTITY_ENGAGEMENT,
+    STATUS_ENTITY_ISSUE,
+} from "@/constants/statusEntity.consts";
 import { prisma } from "@/lib/prisma";
 import type {
     ArchiveWorkerInput,
@@ -15,15 +19,13 @@ import type {
     UpdateWorkerInput,
     UploadWorkerDocumentInput,
 } from "@/types/worker.types";
-import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import {
-    Prisma,
-    WorkerStatus,
-    type DefaultIssueStatus,
-    type DefaultPriority,
-    type IssuePriority,
-} from "@prisma/client";
+    DeleteObjectCommand,
+    GetObjectCommand,
+    S3Client,
+} from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { Prisma, WorkerStatus, type IssuePriority } from "@prisma/client";
 const s3 = new S3Client({ region: process.env.AWS_REGION });
 const PRESIGN_EXPIRES = 3600;
 
@@ -70,10 +72,12 @@ export async function createWorker(params: CreateWorkerInput) {
         responsibleUserId,
         startDate,
         endDate,
+        // Template (optional)
+        templateId,
     } = params;
 
     const { id: statusId } = await prisma.organizationStatus.findFirstOrThrow({
-        where: { organizationId, entityType: "engagement", isDefault: true },
+        where: { organizationId, entityType: STATUS_ENTITY_ENGAGEMENT, isDefault: true },
         select: { id: true },
     });
 
@@ -105,13 +109,25 @@ export async function createWorker(params: CreateWorkerInput) {
                 organizationId,
                 responsibleUserId,
                 statusId: statusId,
+                statusEntityType: STATUS_ENTITY_ENGAGEMENT,
                 type: engagementType,
                 startDate,
                 endDate,
             },
         });
 
-        return { worker, engagement };
+        let issuesCreated = 0;
+        if (templateId) {
+            const result = await applyIssueTemplateInTx(tx, {
+                organizationId,
+                workerEngagementId: engagement.id,
+                templateId,
+                actorUserId: createdByUserId,
+            });
+            issuesCreated = result.count;
+        }
+
+        return { worker, engagement, issuesCreated };
     });
 }
 
@@ -129,12 +145,12 @@ export async function getWorkerData(params: GetWorkersInput) {
 
     const where = {
         organizationId,
-        // If a specific status is requested use it, otherwise exclude archived unless flag set
+        // If a specific status is requested use it, otherwise active-only unless includeArchived
         ...(status
             ? { status }
             : includeArchived
               ? {}
-              : { status: { not: WorkerStatus.archived } }),
+              : { status: WorkerStatus.active }),
         ...(search
             ? {
                   OR: [
@@ -201,8 +217,7 @@ export async function getWorkerById(workerId: string, organizationId: string) {
             // Correct relation names from schema.prisma Worker model:
             // documents  WorkerDocument[]
             // engagements WorkerEngagement[]
-            // createdBy   NewUser
-            // archivedBy  NewUser?
+            // createdBy   User
             // organization Organization
             documents: {
                 orderBy: { createdAt: "desc" },
@@ -246,9 +261,6 @@ export async function getWorkerById(workerId: string, organizationId: string) {
                             },
                         },
                     },
-                    auditLogs: {
-                        orderBy: { createdAt: "desc" },
-                    },
                 },
             },
             createdBy: {
@@ -258,9 +270,6 @@ export async function getWorkerById(workerId: string, organizationId: string) {
                     lastName: true,
                     email: true,
                 },
-            },
-            archivedBy: {
-                select: { id: true, firstName: true, lastName: true },
             },
             organization: {
                 select: { id: true, name: true, slug: true },
@@ -301,15 +310,13 @@ export async function updateWorker(params: {
 // ─── Archive Worker ───────────────────────────────────────────────────────────
 
 export async function archiveWorker(params: ArchiveWorkerInput) {
-    const { workerId, organizationId, archivedByUserId, archiveDate } = params;
+    const { workerId, organizationId } = params;
     await assertOwnership(workerId, organizationId);
 
     return prisma.worker.update({
         where: { id: workerId },
         data: {
-            status: WorkerStatus.archived,
-            archivedAt: archiveDate ?? new Date(),
-            archivedByUserId,
+            status: WorkerStatus.inactive,
         },
     });
 }
@@ -324,8 +331,6 @@ export async function unarchiveWorker(params: UnarchiveWorkerInput) {
         where: { id: workerId },
         data: {
             status: WorkerStatus.active,
-            archivedAt: null,
-            archivedByUserId: null,
         },
     });
 }
@@ -342,7 +347,7 @@ export async function deleteWorker(params: DeleteWorkerInput) {
     return prisma.$transaction(async (tx) => {
         // WorkerDocument → delete first (Restrict on uploadedBy would block otherwise)
         await tx.workerDocument.deleteMany({ where: { workerId } });
-        // WorkerEngagement cascade-deletes Issues, AuditLogs, Notifications
+        // WorkerEngagement cascade-deletes Issues (and related child rows)
         await tx.workerEngagement.deleteMany({ where: { workerId } });
         // Finally delete the Worker
         return tx.worker.delete({ where: { id: workerId } });
@@ -414,6 +419,7 @@ export async function createEngagement(params: CreateEngagementInput) {
             organizationId,
             responsibleUserId,
             statusId,
+            statusEntityType: STATUS_ENTITY_ENGAGEMENT,
             type,
             startDate,
             endDate,
@@ -457,7 +463,7 @@ export async function deleteEngagement(params: {
     const { engagementId, workerId, organizationId } = params;
     await assertOwnership(workerId, organizationId);
 
-    // Cascade on WorkerEngagement will delete Issues, AuditLogs, Notifications
+        // Cascade on WorkerEngagement will delete Issues and related records
     return prisma.workerEngagement.delete({ where: { id: engagementId } });
 }
 
@@ -489,6 +495,7 @@ export async function createIssue(params: CreateIssueInput) {
                 workerEngagementId,
                 createdByUserId,
                 statusId,
+                statusEntityType: STATUS_ENTITY_ISSUE,
                 title,
                 assigneeUserId,
                 templateItemId,
@@ -534,7 +541,7 @@ export async function getIssueStatusesForWorker(params: {
     const { workerId, organizationId } = params;
     await assertOwnership(workerId, organizationId);
     return prisma.organizationStatus.findMany({
-        where: { organizationId, entityType: "issue" },
+        where: { organizationId, entityType: STATUS_ENTITY_ISSUE },
         orderBy: { orderIndex: "asc" },
         select: { id: true, name: true, color: true },
     });
@@ -656,18 +663,77 @@ export async function getIssueAuditLogs(params: {
 }
 
 function templatePriorityToIssuePriority(
-    p: DefaultPriority | null,
+    p: IssuePriority | null,
 ): IssuePriority {
     if (!p) return "no_priority";
-    return p as IssuePriority;
+    return p;
 }
 
-function resolveTemplateItemStatusId(
-    defaultStatus: DefaultIssueStatus,
-    defaultOpenId: string,
-    inArbeitId: string,
-): string {
-    return defaultStatus === "todo" ? inArbeitId : defaultOpenId;
+// Core template-application logic, parameterized over a Prisma transaction
+// client so it can run either inside an existing $transaction (e.g. createWorker)
+// or wrapped in its own transaction by the public API.
+async function applyIssueTemplateInTx(
+    tx: Prisma.TransactionClient,
+    params: {
+        organizationId: string;
+        workerEngagementId: string;
+        templateId: string;
+        actorUserId: string;
+    },
+) {
+    const { organizationId, workerEngagementId, templateId, actorUserId } =
+        params;
+
+    const template = await tx.issueTemplate.findFirst({
+        where: { id: templateId, organizationId },
+        include: {
+            items: { orderBy: { orderIndex: "asc" } },
+        },
+    });
+    if (!template) throw new Error("Template not found");
+
+    const statuses = await tx.organizationStatus.findMany({
+        where: { organizationId, entityType: STATUS_ENTITY_ISSUE },
+        orderBy: { orderIndex: "asc" },
+    });
+    const byName = (n: string) => statuses.find((s) => s.name === n)?.id;
+    const initialStatusId =
+        statuses.find((s) => s.isDefault)?.id ??
+        byName("Offen") ??
+        statuses[0]?.id;
+    if (!initialStatusId) throw new Error("No issue statuses configured");
+
+    const created = [] as { id: string }[];
+    for (const item of template.items) {
+        const issue = await tx.issue.create({
+            data: {
+                workerEngagementId,
+                createdByUserId: actorUserId,
+                statusId: initialStatusId,
+                statusEntityType: STATUS_ENTITY_ISSUE,
+                title: item.title,
+                description: item.description ?? undefined,
+                priority: templatePriorityToIssuePriority(item.defaultPriority),
+                templateItemId: item.id,
+            },
+            select: { id: true },
+        });
+        await tx.issueAuditLog.create({
+            data: {
+                issueId: issue.id,
+                actorUserId,
+                action: "issue.created",
+                newValue: {
+                    title: item.title,
+                    statusId: initialStatusId,
+                    templateItemId: item.id,
+                },
+            },
+        });
+        created.push(issue);
+    }
+
+    return { count: created.length, issueIds: created.map((c) => c.id) };
 }
 
 export async function applyIssueTemplate(params: {
@@ -693,51 +759,18 @@ export async function applyIssueTemplate(params: {
             workerId,
             organizationId,
         },
+        select: { id: true },
     });
     if (!engagement) throw new Error("Worker engagement not found");
 
-    const template = await prisma.issueTemplate.findFirst({
-        where: { id: templateId, organizationId },
-        include: {
-            items: { orderBy: { orderIndex: "asc" } },
-        },
-    });
-    if (!template) throw new Error("Template not found");
-    if (template.type !== engagement.type) {
-        throw new Error("Template type does not match engagement type");
-    }
-
-    const statuses = await prisma.organizationStatus.findMany({
-        where: { organizationId, entityType: "issue" },
-        orderBy: { orderIndex: "asc" },
-    });
-    const byName = (n: string) => statuses.find((s) => s.name === n)?.id;
-    const defaultOpenId =
-        statuses.find((s) => s.isDefault)?.id ??
-        byName("Offen") ??
-        statuses[0]?.id;
-    if (!defaultOpenId) throw new Error("No issue statuses configured");
-    const inArbeitId = byName("In Arbeit") ?? defaultOpenId;
-
-    const created: Awaited<ReturnType<typeof createIssue>>[] = [];
-    for (const item of template.items) {
-        const issue = await createIssue({
-            workerEngagementId,
-            createdByUserId: actorUserId,
-            statusId: resolveTemplateItemStatusId(
-                item.defaultStatus,
-                defaultOpenId,
-                inArbeitId,
-            ),
-            title: item.title,
-            description: item.description ?? undefined,
-            priority: templatePriorityToIssuePriority(item.defaultPriority),
-            templateItemId: item.id,
-        });
-        created.push(issue);
-    }
-
-    return { count: created.length, issues: created };
+    return prisma.$transaction((tx) =>
+        applyIssueTemplateInTx(tx, {
+            organizationId,
+            workerEngagementId: engagement.id,
+            templateId,
+            actorUserId,
+        }),
+    );
 }
 
 export async function deleteIssue(params: {
@@ -755,7 +788,7 @@ export async function deleteIssue(params: {
 }
 
 // ─── Absences ─────────────────────────────────────────────────────────────────
-// Absence belongs to NewUser (userId) + Organization (orgId) — NOT Worker directly
+// Absence belongs to User (userId) + Organization (orgId) — NOT Worker directly
 
 export async function createAbsence(params: CreateAbsenceInput) {
     const { userId, orgId, absenceType, startDate, endDate, substituteId } =
@@ -858,11 +891,47 @@ export async function deleteWorkerDocument(params: {
     const { documentId, workerId, organizationId } = params;
     await assertOwnership(workerId, organizationId);
 
+    const doc = await prisma.workerDocument.findFirst({
+        where: { id: documentId, workerId },
+    });
+    if (!doc) throw new Error("Document not found");
+
+    try {
+        await s3.send(
+            new DeleteObjectCommand({
+                Bucket: process.env.AWS_S3_BUCKET!,
+                Key: doc.fileUrl,
+            }),
+        );
+    } catch (error) {
+        console.error("S3 delete failed for key", doc.fileUrl, error);
+    }
+
     return prisma.workerDocument.delete({ where: { id: documentId } });
 }
 
+export async function listWorkerDocuments(params: {
+    workerId: string;
+    organizationId: string;
+}) {
+    const { workerId, organizationId } = params;
+    await assertOwnership(workerId, organizationId);
+
+    const docs = await prisma.workerDocument.findMany({
+        where: { workerId },
+        orderBy: { createdAt: "desc" },
+    });
+
+    return Promise.all(
+        docs.map(async (doc) => ({
+            ...doc,
+            presignedUrl: await presign(doc.fileUrl),
+        })),
+    );
+}
+
 // ─── Worker History ───────────────────────────────────────────────────────────
-// Returns full audit history: engagements + their issues + documents
+// Engagements with issues + standalone documents
 
 export async function getWorkerHistory(params: {
     workerId: string;
@@ -893,7 +962,6 @@ export async function getWorkerHistory(params: {
                         },
                     },
                 },
-                auditLogs: { orderBy: { createdAt: "desc" } },
             },
         }),
         prisma.workerDocument.findMany({

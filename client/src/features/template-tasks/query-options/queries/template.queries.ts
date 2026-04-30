@@ -1,4 +1,4 @@
-import { DescriptionResponse } from '@/types/api.types';
+import { TemplateTaskResponse } from '@/features/worker-task-management/types/index.types';
 import { queryOptions } from '@tanstack/react-query';
 import { getTemplatesV2, getTemplateTask } from '../../api';
 import {
@@ -8,10 +8,10 @@ import {
 import type { IssueTemplateListItem } from '../../types/template.types';
 
 export const templateQueries = {
-  getTask: () => {
-    return queryOptions<DescriptionResponse[]>({
+  getTasks: (templateId: string) => {
+    return queryOptions<TemplateTaskResponse[]>({
       queryKey: [DESCRIPTION_ROOT],
-      queryFn: getTemplateTask,
+      queryFn: () => getTemplateTask(templateId),
     });
   },
 

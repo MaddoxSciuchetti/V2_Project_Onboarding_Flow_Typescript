@@ -1,32 +1,30 @@
 import { prisma } from "@/lib/prisma";
-import { DefaultIssueStatus, DefaultPriority } from "@prisma/client";
+import type { IssuePriority } from "@prisma/client";
 
 // ============================================================
 // TYPES
 // ============================================================
 
 export type InsertTemplateParams = {
-    templateName: string;
-    templateDescription: string;
-    type?: string;
+    name: string;
+    description: string;
     organizationId: string;
     createdByUserId: string;
 };
 
 export type InsertTemplateTaskParams = {
     templateId: string;
-    title: string;
+    taskName: string;
+    taskDescription?: string;
     description?: string;
-    defaultPriority?: DefaultPriority;
-    defaultStatus?: DefaultIssueStatus;
+    defaultPriority?: IssuePriority;
     orderIndex?: number;
 };
 
 export type ModifyTemplateTaskParams = {
-    title?: string;
-    description?: string;
-    defaultPriority?: DefaultPriority;
-    defaultStatus?: DefaultIssueStatus;
+    taskName?: string;
+    taskDescription?: string;
+    defaultPriority?: IssuePriority;
     orderIndex?: number;
 };
 
@@ -37,17 +35,15 @@ export type ModifyTemplateTaskParams = {
 export const insertTemplate = async (data: InsertTemplateParams) => {
     return await prisma.issueTemplate.create({
         data: {
-            templateName: data.templateName,
-            templateDescription: data.templateDescription,
-            type: data.type,
+            name: data.name,
+            description: data.description,
             organizationId: data.organizationId,
             createdByUserId: data.createdByUserId,
         },
         select: {
             id: true,
-            templateName: true,
-            templateDescription: true,
-            type: true,
+            name: true,
+            description: true,
             isActive: true,
             createdAt: true,
             createdBy: {
@@ -67,9 +63,8 @@ export const queryTemplates = async (orgId: string) => {
         orderBy: { createdAt: "desc" },
         select: {
             id: true,
-            templateName: true,
-            templateDescription: true,
-            type: true,
+            name: true,
+            description: true,
             isActive: true,
             createdAt: true,
             updatedAt: true,
@@ -96,9 +91,8 @@ export const queryTemplateById = async (id: string, orgId: string) => {
         },
         select: {
             id: true,
-            templateName: true,
-            templateDescription: true,
-            type: true,
+            name: true,
+            description: true,
             isActive: true,
             createdAt: true,
             updatedAt: true,
@@ -117,7 +111,6 @@ export const queryTemplateById = async (id: string, orgId: string) => {
                     title: true,
                     description: true,
                     defaultPriority: true,
-                    defaultStatus: true,
                     orderIndex: true,
                     createdAt: true,
                     updatedAt: true,
@@ -132,6 +125,24 @@ export const removeTemplate = async (id: string, orgId: string) => {
         where: {
             id,
             organizationId: orgId, // scoped to org for safety
+        },
+    });
+};
+
+type ModifyTemplateParams = {
+    name: string;
+    description: string;
+};
+
+export const modifyTemplate = async (
+    id: string,
+    data: ModifyTemplateParams,
+) => {
+    return await prisma.issueTemplate.update({
+        where: { id },
+        data: {
+            name: data.name,
+            description: data.description,
         },
     });
 };
@@ -155,10 +166,9 @@ export const insertTemplateTask = async (
     return await prisma.templateItem.create({
         data: {
             issueTemplateId: data.templateId,
-            title: data.title,
-            description: data.description,
+            title: data.taskName,
+            description: data.taskDescription,
             defaultPriority: data.defaultPriority,
-            defaultStatus: data.defaultStatus ?? "backlog",
             orderIndex: data.orderIndex ?? 0,
         },
         select: {
@@ -166,7 +176,6 @@ export const insertTemplateTask = async (
             title: true,
             description: true,
             defaultPriority: true,
-            defaultStatus: true,
             orderIndex: true,
             createdAt: true,
             updatedAt: true,
@@ -175,7 +184,6 @@ export const insertTemplateTask = async (
 };
 
 export const queryTemplateTasks = async (templateId: string, orgId: string) => {
-    // verify template belongs to org before returning items
     const template = await prisma.issueTemplate.findFirst({
         where: {
             id: templateId,
@@ -186,7 +194,7 @@ export const queryTemplateTasks = async (templateId: string, orgId: string) => {
 
     if (!template) return null;
 
-    return await prisma.templateItem.findMany({
+    const tasks = await prisma.templateItem.findMany({
         where: { issueTemplateId: templateId },
         orderBy: { orderIndex: "asc" },
         select: {
@@ -194,12 +202,12 @@ export const queryTemplateTasks = async (templateId: string, orgId: string) => {
             title: true,
             description: true,
             defaultPriority: true,
-            defaultStatus: true,
             orderIndex: true,
             createdAt: true,
             updatedAt: true,
         },
     });
+    return { tasks };
 };
 
 export const modifyTemplateTask = async (
@@ -209,10 +217,9 @@ export const modifyTemplateTask = async (
     return await prisma.templateItem.update({
         where: { id },
         data: {
-            title: data.title,
-            description: data.description,
+            title: data.taskName,
+            description: data.taskDescription,
             defaultPriority: data.defaultPriority,
-            defaultStatus: data.defaultStatus,
             orderIndex: data.orderIndex,
         },
         select: {
@@ -220,7 +227,6 @@ export const modifyTemplateTask = async (
             title: true,
             description: true,
             defaultPriority: true,
-            defaultStatus: true,
             orderIndex: true,
             createdAt: true,
             updatedAt: true,

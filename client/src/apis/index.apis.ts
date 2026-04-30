@@ -6,12 +6,12 @@ export const logout = async () => API.get('/auth/logout');
 
 export const createWorkerFile = async (
   files: File[],
-  id: number
+  id: string
 ): Promise<FileResponse> => {
   const formData = new FormData();
   files.forEach((file) => formData.append('files', file));
   const response = await API.post<FileResponse, FileResponse>(
-    `/worker/createWorkerFile/${id}`,
+    `/worker/${id}/files`,
     formData
   );
   return response;

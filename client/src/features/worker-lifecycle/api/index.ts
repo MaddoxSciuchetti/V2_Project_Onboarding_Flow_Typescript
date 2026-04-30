@@ -19,6 +19,7 @@ export type CreateWorkerRequest = {
   responsibleUserId: string;
   startDate?: string;
   endDate?: string;
+  templateId?: string;
 };
 
 type CreateWorkerResponse = {
@@ -46,6 +47,12 @@ export const unarchiveWorkerById = async (workerId: string): Promise<void> => {
 
 export const deleteWorkerById = async (workerId: string): Promise<void> => {
   await API.delete(`worker/${workerId}`);
+};
+
+export const deleteWorkersByIds = async (
+  workerIds: string[]
+): Promise<void> => {
+  await Promise.all(workerIds.map((id) => deleteWorkerById(id)));
 };
 
 export const addWorker = async (

@@ -1,4 +1,5 @@
 import { SETTINGSITEMS } from '@/constants/layout.consts';
+import { useNavigate } from '@tanstack/react-router';
 import { ArrowLeftIcon } from 'lucide-react';
 import { Button } from '../ui/selfmade/button';
 import { Sidebar, useSidebar } from '../ui/sidebar/sidebar';
@@ -11,14 +12,25 @@ export function SettingsSidebar({
   className?: string;
   setIsSettingOpen: (isSettingOpen: boolean) => void;
 }) {
+  const navigate = useNavigate();
   const { state } = useSidebar();
   const isCollapsed = state === 'collapsed';
+
+  const leaveSettings = () => {
+    setIsSettingOpen(false);
+    navigate({ to: '/worker-lifycycle' });
+  };
 
   return (
     <Sidebar collapsible="icon" className={className}>
       <div className="w-full p-2">
-        <Button onClick={() => setIsSettingOpen(false)}>
-          <ArrowLeftIcon className="w-6 h-6" />
+        <Button
+          type="button"
+          size="icon"
+          className="bg-transparent text-foreground shadow-none hover:bg-muted"
+          onClick={leaveSettings}
+        >
+          <ArrowLeftIcon className="h-4 w-4" />
         </Button>
         <div className="mt-5">
           <SideBarMenu

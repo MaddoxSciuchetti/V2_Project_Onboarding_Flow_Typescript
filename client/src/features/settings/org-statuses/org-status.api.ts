@@ -1,4 +1,4 @@
-import { apiJson } from '@/config/apiClient';
+import API from '@/config/apiClient';
 import {
   ListOrgStatusesResponse,
   OrgStatus,
@@ -8,9 +8,12 @@ import {
 export async function fetchOrgStatuses(
   entityType: StatusEntityType
 ): Promise<OrgStatus[]> {
-  const res = await apiJson.get<ListOrgStatusesResponse>('/org/statuses', {
-    params: { entityType },
-  });
+  const res = await API.get<ListOrgStatusesResponse, ListOrgStatusesResponse>(
+    '/org/statuses',
+    {
+      params: { entityType },
+    }
+  );
   return res.statuses;
 }
 
@@ -18,21 +21,21 @@ export async function createOrgStatus(
   entityType: StatusEntityType,
   name: string
 ): Promise<OrgStatus> {
-  return apiJson.post<
-    OrgStatus,
-    { entityType: StatusEntityType; name: string }
-  >('/org/statuses', { entityType, name });
+  return API.post<OrgStatus, OrgStatus>('/org/statuses', { entityType, name });
 }
 
 export async function updateOrgStatus(
   id: string,
   name: string
 ): Promise<OrgStatus> {
-  return apiJson.patch<OrgStatus, { name: string }>(`/org/statuses/${id}`, {
-    name,
-  });
+  return API.patch<OrgStatus, OrgStatus, { name: string }>(
+    `/org/statuses/${id}`,
+    {
+      name,
+    }
+  );
 }
 
 export async function deleteOrgStatus(id: string): Promise<void> {
-  return apiJson.delete(`/org/statuses/${id}`);
+  return API.delete(`/org/statuses/${id}`);
 }

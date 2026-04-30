@@ -1,4 +1,5 @@
-import { LifecycleType } from '@/features/task-management/types/index.types';
+import { IssueResponse } from '@/features/all-tasks/types/index.types';
+import { LifecycleType } from '@/features/worker-task-management/types/index.types';
 
 export type EmployeeForm = {
   form_type: LifecycleType;
@@ -122,7 +123,7 @@ export type WorkerDetailResponse = {
     exitDate: string | null;
     engagements: Array<
       WorkerEngagement & {
-        issues?: Array<{ id: string }>;
+        issues?: IssueResponse[];
       }
     >;
   };

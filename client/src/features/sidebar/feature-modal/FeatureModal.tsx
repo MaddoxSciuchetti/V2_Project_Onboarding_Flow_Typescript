@@ -4,8 +4,9 @@ import SmallWrapper from '@/components/modal/modalSizes/SmallWrapper';
 import { Button } from '@/components/ui/button';
 import { CardContent } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
-import { FileDropzone } from '@/features/task-management/components/files/file_upload/Dropzone';
-import { FileList } from '@/features/task-management/components/files/file_upload/FileList';
+
+import { FileDropzone } from '@/features/worker-task-management/components/files/file_upload/Dropzone';
+import { FileList } from '@/features/worker-task-management/components/files/file_upload/FileList';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DragEvent, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';

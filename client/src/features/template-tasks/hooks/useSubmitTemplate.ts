@@ -6,27 +6,30 @@ import { z } from 'zod';
 import { templateMutations } from '../query-options/mutations/template.mutations';
 
 export type TemplateSubmission = {
+  templateId?: string;
   templateName: string;
-  templateDescription: string;
-  type?: string;
+  templateDescription: string | null;
 };
 
-export function useSubmitTemplate() {
+export function useSubmitTemplate(
+  templateState: 'create' | 'edit',
+  templateId: string,
+  initialValues: TemplateSubmission
+) {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<TemplateSubmission>({
-    defaultValues: {
-      type: '',
-    },
+    defaultValues: initialValues,
     resolver: zodResolver(
       z.object({
+        templateId: z.string().optional(),
         templateName: z.string().min(1, { message: 'Name ist erforderlich' }),
         templateDescription: z
           .string()
-          .min(1, { message: 'Beschreibung ist erforderlich' }),
-        type: z.string().optional(),
+          .min(1, { message: 'Beschreibung ist erforderlich' })
+          .nullable(),
       })
     ),
   });
@@ -35,16 +38,31 @@ export function useSubmitTemplate() {
     templateMutations.createTemplate()
   );
 
+  const { mutate: updateTemplate } = useMutation(templateMutations.update());
+
   const onSubmit = handleSubmit((data) => {
-    console.log(data);
-    createTemplate(data, {
-      onSuccess: () => {
-        toast.success('Template created successfully');
-      },
-      onError: () => {
-        toast.error('Failed to create template');
-      },
-    });
+    if (templateState === 'create') {
+      createTemplate(data, {
+        onSuccess: () => {
+          toast.success('Template created successfully');
+        },
+        onError: () => {
+          toast.error('Failed to create template');
+        },
+      });
+    } else {
+      updateTemplate(
+        { templateId, data },
+        {
+          onSuccess: () => {
+            toast.success('Template updated successfully');
+          },
+          onError: () => {
+            toast.error('Failed to update template');
+          },
+        }
+      );
+    }
   });
 
   return {

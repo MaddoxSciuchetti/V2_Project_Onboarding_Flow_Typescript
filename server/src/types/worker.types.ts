@@ -18,13 +18,11 @@ export type {
 // ─── Worker ───────────────────────────────────────────────────────────────────
 
 export interface CreateWorkerInput {
-    // Required by schema
     organizationId: string;
     createdByUserId: string; // from auth / req.user
     firstName: string;
     lastName: string;
     email: string;
-    // Optional Worker fields
     phoneNumber?: string;
     birthday?: Date;
     position?: string;
@@ -35,11 +33,11 @@ export interface CreateWorkerInput {
     country?: string;
     entryDate?: Date;
     exitDate?: Date;
-    // Initial WorkerEngagement (required)
     engagementType: EngagementType;
-    responsibleUserId: string; // required on WorkerEngagement
+    responsibleUserId: string;
     startDate?: Date;
     endDate?: Date;
+    templateId?: string;
 }
 
 export interface UpdateWorkerInput {
@@ -70,8 +68,6 @@ export interface GetWorkersInput {
 export interface ArchiveWorkerInput {
     workerId: string;
     organizationId: string;
-    archivedByUserId: string; // required — stored on Worker.archivedByUserId
-    archiveDate?: Date;
 }
 
 export interface UnarchiveWorkerInput {
@@ -138,15 +134,15 @@ export interface UpdateIssueInput {
 }
 
 // ─── Absence ─────────────────────────────────────────────────────────────────
-// Absence belongs to NewUser (userId) + Organization (orgId) — NOT Worker
+// Absence belongs to User (userId) + Organization (orgId) — NOT Worker
 
 export interface CreateAbsenceInput {
-    userId: string; // NewUser.id — not workerId
+    userId: string; // User.id — not workerId
     orgId: string; // Organization.id — not organizationId
     absenceType: AbsenceType; // Prisma enum: SICK | VACATION | PARENTAL_LEAVE | UNPAID | OTHER
     startDate: Date;
     endDate: Date;
-    substituteId?: string; // NewUser.id of substitute
+    substituteId?: string; // User.id of substitute
 }
 
 export interface UpdateAbsenceInput {
@@ -175,7 +171,9 @@ export interface UploadWorkerDocumentInput {
 // ─── Data Point ───────────────────────────────────────────────────────────────
 
 /** Worker columns + `responsibleUserId` (updates latest engagement). */
-export type WorkerDataPointField = keyof UpdateWorkerInput | "responsibleUserId";
+export type WorkerDataPointField =
+    | keyof UpdateWorkerInput
+    | "responsibleUserId";
 
 export interface UpdateDataPointInput {
     workerId: string;
