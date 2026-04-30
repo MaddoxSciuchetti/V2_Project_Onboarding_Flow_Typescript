@@ -24,7 +24,7 @@ export const absenceItemSchema = z.object({
 });
 
 export const orgMemberSchema = z.object({
-  role: z.object({ name: z.string() }),
+  membershipRole: z.enum(['admin', 'worker']),
 });
 
 export const employeeDataSchema = z.array(

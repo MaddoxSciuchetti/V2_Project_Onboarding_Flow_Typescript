@@ -53,7 +53,9 @@ export const EmployeeRow = ({
         onClick={(e) => e.stopPropagation()}
       >
         <TrashButton
-          disabled={employee.organizationMembers[0]?.role.name === 'Owner'}
+          disabled={
+            employee.organizationMembers[0]?.membershipRole === 'admin'
+          }
           description={'Löschen'}
           onClick={() => setIsDeleteModalOpen(true)}
         />

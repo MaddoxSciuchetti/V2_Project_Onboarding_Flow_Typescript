@@ -7,8 +7,8 @@ import { templateMutations } from '../query-options/mutations/template.mutations
 
 export type TemplateSubmission = {
   templateId?: string;
-  templateName: string;
-  templateDescription: string | null;
+  name: string;
+  description: string | null;
 };
 
 export function useSubmitTemplate(
@@ -25,8 +25,8 @@ export function useSubmitTemplate(
     resolver: zodResolver(
       z.object({
         templateId: z.string().optional(),
-        templateName: z.string().min(1, { message: 'Name ist erforderlich' }),
-        templateDescription: z
+        name: z.string().min(1, { message: 'Name ist erforderlich' }),
+        description: z
           .string()
           .min(1, { message: 'Beschreibung ist erforderlich' })
           .nullable(),
