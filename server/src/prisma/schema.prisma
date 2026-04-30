@@ -44,7 +44,6 @@ model User {
   organizationMembers    OrganizationMember[]
   sentInvitations        Invitation[]          @relation("InvitedBy")
   createdWorkers         Worker[]              @relation("WorkerCreatedBy")
-  archivedWorkers        Worker[]              @relation("WorkerArchivedBy")
   uploadedDocuments      WorkerDocument[]
   responsibleEngagements WorkerEngagement[]
   createdIssues          Issue[]               @relation("IssueCreatedBy")
@@ -208,7 +207,6 @@ model Worker {
   id               String             @id @default(uuid())
   organizationId   String             @map("organization_id")
   createdByUserId  String             @map("created_by_user_id")
-  archivedByUserId String?            @map("archived_by_user_id")
   firstName        String             @map("first_name")
   lastName         String             @map("last_name")
   email            String             @db.Citext
@@ -223,14 +221,12 @@ model Worker {
   entryDate        DateTime?          @map("entry_date") @db.Date
   exitDate         DateTime?          @map("exit_date") @db.Date
   status           WorkerStatus       @default(active)
-  archivedAt       DateTime?          @map("archived_at") @db.Timestamptz()
   createdAt        DateTime           @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt        DateTime           @updatedAt @map("updated_at") @db.Timestamptz()
 
   // relations
   organization     Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   createdBy        User               @relation("WorkerCreatedBy", fields: [createdByUserId], references: [id], onDelete: Restrict)
-  archivedBy       User?              @relation("WorkerArchivedBy", fields: [archivedByUserId], references: [id], onDelete: SetNull)
   documents        WorkerDocument[]
   engagements      WorkerEngagement[]
 
@@ -296,19 +292,19 @@ model WorkerEngagement {
 // ============================================================
 
 model IssueTemplate {
-  id                  String                 @id @default(uuid())
-  organizationId      String                 @map("organization_id")
-  createdByUserId     String                 @map("created_by_user_id")
-  templateName        String
-  templateDescription String?
-  isActive            Boolean                @default(true) @map("is_active")
-  createdAt           DateTime               @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt           DateTime               @updatedAt @map("updated_at") @db.Timestamptz()
+  id              String                 @id @default(uuid())
+  organizationId  String                 @map("organization_id")
+  createdByUserId String                 @map("created_by_user_id")
+  name            String                 @map("template_name")
+  description     String?                @map("template_description")
+  isActive        Boolean                @default(true) @map("is_active")
+  createdAt       DateTime               @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt       DateTime               @updatedAt @map("updated_at") @db.Timestamptz()
 
   // relations
-  organization        Organization           @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  createdBy           User                   @relation(fields: [createdByUserId], references: [id], onDelete: Restrict)
-  items               TemplateItem[]
+  organization    Organization           @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdBy       User                   @relation(fields: [createdByUserId], references: [id], onDelete: Restrict)
+  items           TemplateItem[]
 
   @@index([organizationId])
   @@map("issue_templates")
@@ -319,7 +315,7 @@ model TemplateItem {
   issueTemplateId String             @map("issue_template_id")
   title           String
   description     String?
-  defaultPriority DefaultPriority?   @map("default_priority")
+  defaultPriority IssuePriority?     @map("default_priority")
   orderIndex      Int                @default(0) @map("order_index")
   createdAt       DateTime           @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt       DateTime           @updatedAt @map("updated_at") @db.Timestamptz()
@@ -410,51 +406,31 @@ model Comment {
 // ============================================================
 
 model Subscription {
-  id                    String             @id @default(uuid())
-  organizationId        String             @unique @map("organization_id")
-  activePaymentMethodId String?            @unique @map("active_payment_method_id")
-  plan                  SubscriptionPlan   @default(free)
-  status                SubscriptionStatus @default(trialing)
-  trialEndsAt           DateTime?          @map("trial_ends_at") @db.Timestamptz()
-  currentPeriodStart    DateTime?          @map("current_period_start") @db.Timestamptz()
-  currentPeriodEnd      DateTime?          @map("current_period_end") @db.Timestamptz()
-  createdAt             DateTime           @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt             DateTime           @updatedAt @map("updated_at") @db.Timestamptz()
+  id                      String             @id @default(uuid())
+  organizationId        String               @unique @map("organization_id")
+  plan                    SubscriptionPlan   @default(free)
+  status                  SubscriptionStatus @default(trialing)
+  trialEndsAt             DateTime?          @map("trial_ends_at") @db.Timestamptz()
+  currentPeriodStart      DateTime?          @map("current_period_start") @db.Timestamptz()
+  currentPeriodEnd        DateTime?          @map("current_period_end") @db.Timestamptz()
+  provider                String?
+  providerPaymentMethodId String?          @map("provider_payment_method_id")
+  cardBrand               String?          @map("card_brand")
+  cardLast4               String?          @map("card_last4") @db.Char(4)
+  cardExpMonth            Int?             @map("card_exp_month") @db.SmallInt
+  cardExpYear             Int?             @map("card_exp_year") @db.SmallInt
+  createdAt               DateTime         @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt               DateTime         @updatedAt @map("updated_at") @db.Timestamptz()
 
   // relations
-  organization          Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  activePaymentMethod   PaymentMethod?     @relation("ActivePaymentMethod", fields: [activePaymentMethodId], references: [id], onDelete: SetNull)
-  paymentMethods        PaymentMethod[]    @relation("SubscriptionPaymentMethods")
-  invoices              Invoice[]
+  organization            Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  invoices                Invoice[]
 
   @@map("subscriptions")
 }
 
-model PaymentMethod {
-  id                      String        @id @default(uuid())
-  subscriptionId          String        @map("subscription_id")
-  provider                String        @default("stripe")
-  providerPaymentMethodId String        @map("provider_payment_method_id")
-  cardBrand               String?       @map("card_brand")
-  cardLast4               String?       @map("card_last4") @db.Char(4)
-  cardExpMonth            Int?          @map("card_exp_month") @db.SmallInt
-  cardExpYear             Int?          @map("card_exp_year") @db.SmallInt
-  isActive                Boolean       @default(false) @map("is_active")
-  createdAt               DateTime      @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt               DateTime      @updatedAt @map("updated_at") @db.Timestamptz()
-
-  // relations
-  subscription            Subscription  @relation("SubscriptionPaymentMethods", fields: [subscriptionId], references: [id], onDelete: Cascade)
-  activeForSubscription   Subscription? @relation("ActivePaymentMethod")
-  invoices                Invoice[]
-
-  @@index([subscriptionId])
-  @@map("payment_methods")
-}
-
 model Invoice {
   id                String        @id @default(uuid())
-  paymentMethodId   String        @map("payment_method_id")
   subscriptionId    String        @map("subscription_id")
   providerInvoiceId String?       @map("provider_invoice_id")
   amountCents       Int           @map("amount_cents")
@@ -466,7 +442,6 @@ model Invoice {
   createdAt         DateTime      @default(now()) @map("created_at") @db.Timestamptz()
 
   // relations
-  paymentMethod     PaymentMethod @relation(fields: [paymentMethodId], references: [id], onDelete: Restrict)
   subscription      Subscription  @relation(fields: [subscriptionId], references: [id], onDelete: Restrict)
 
   @@index([subscriptionId])
@@ -475,22 +450,23 @@ model Invoice {
 
 model Absence {
   id           String      @id @default(uuid())
-  userId       String
-  orgId        String
-  absenceType  AbsenceType
-  startDate    DateTime
-  endDate      DateTime
-  substituteId String?
+  userId       String      @map("user_id")
+  orgId        String      @map("org_id")
+  absenceType  AbsenceType @map("absence_type")
+  startDate    DateTime    @map("start_date") @db.Timestamptz()
+  endDate      DateTime    @map("end_date") @db.Timestamptz()
+  substituteId String?     @map("substitute_id")
 
   user         User         @relation("UserAbsences", fields: [userId], references: [id])
   substitute   User?        @relation("SubstituteAbsences", fields: [substituteId], references: [id])
   organization Organization @relation(fields: [orgId], references: [id])
 
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
+  createdAt    DateTime    @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt    DateTime    @updatedAt @map("updated_at") @db.Timestamptz()
 
   @@index([userId])
   @@index([orgId])
+  @@map("absences")
 }
 
 
@@ -546,7 +522,6 @@ enum InvitationStatus {
 enum WorkerStatus {
   active
   inactive
-  archived
 }
 
 enum DocumentFileType {
@@ -568,13 +543,6 @@ enum IssuePriority {
   medium
   low
   no_priority
-}
-
-enum DefaultPriority {
-  urgent
-  high
-  medium
-  low
 }
 
 enum SubscriptionPlan {

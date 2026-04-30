@@ -68,8 +68,6 @@ export interface GetWorkersInput {
 export interface ArchiveWorkerInput {
     workerId: string;
     organizationId: string;
-    archivedByUserId: string; // required — stored on Worker.archivedByUserId
-    archiveDate?: Date;
 }
 
 export interface UnarchiveWorkerInput {

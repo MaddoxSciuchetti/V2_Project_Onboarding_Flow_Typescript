@@ -31,7 +31,7 @@ export async function createWorker(req: Request, res: Response) {
 }
 
 // ─── Get Workers ───────────────────────────────────────────────────────────────
-// Query: ?status=active|inactive|archived&search=&page=&limit=&includeArchived=true
+// Query: ?status=active|inactive&search=&page=&limit=&includeArchived=true
 
 export async function getWorkerData(req: Request, res: Response) {
     try {
@@ -101,20 +101,16 @@ export async function updateWorker(req: Request, res: Response) {
 }
 
 // ─── Archive Worker ───────────────────────────────────────────────────────────
-// Body: { archivedByUserId: string, archiveDate?: string }
+// Sets worker status to inactive (no persisted archive metadata).
 
 export async function archiveWorker(req: Request, res: Response) {
     try {
         const organizationId = req.orgId;
         const workerId = param(req, "workerId");
-        const { archiveDate } = req.body;
-        const archivedByUserId = req.userId;
 
         const result = await workerService.archiveWorker({
             organizationId,
             workerId,
-            archivedByUserId,
-            archiveDate: archiveDate ? new Date(archiveDate) : undefined,
         });
 
         return res.status(200).json({ success: true, data: result });

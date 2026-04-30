@@ -25,12 +25,7 @@ import {
     S3Client,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import {
-    Prisma,
-    WorkerStatus,
-    type DefaultPriority,
-    type IssuePriority,
-} from "@prisma/client";
+import { Prisma, WorkerStatus, type IssuePriority } from "@prisma/client";
 const s3 = new S3Client({ region: process.env.AWS_REGION });
 const PRESIGN_EXPIRES = 3600;
 
@@ -150,12 +145,12 @@ export async function getWorkerData(params: GetWorkersInput) {
 
     const where = {
         organizationId,
-        // If a specific status is requested use it, otherwise exclude archived unless flag set
+        // If a specific status is requested use it, otherwise active-only unless includeArchived
         ...(status
             ? { status }
             : includeArchived
               ? {}
-              : { status: { not: WorkerStatus.archived } }),
+              : { status: WorkerStatus.active }),
         ...(search
             ? {
                   OR: [
@@ -223,7 +218,6 @@ export async function getWorkerById(workerId: string, organizationId: string) {
             // documents  WorkerDocument[]
             // engagements WorkerEngagement[]
             // createdBy   User
-            // archivedBy  User?
             // organization Organization
             documents: {
                 orderBy: { createdAt: "desc" },
@@ -277,9 +271,6 @@ export async function getWorkerById(workerId: string, organizationId: string) {
                     email: true,
                 },
             },
-            archivedBy: {
-                select: { id: true, firstName: true, lastName: true },
-            },
             organization: {
                 select: { id: true, name: true, slug: true },
             },
@@ -319,15 +310,13 @@ export async function updateWorker(params: {
 // ─── Archive Worker ───────────────────────────────────────────────────────────
 
 export async function archiveWorker(params: ArchiveWorkerInput) {
-    const { workerId, organizationId, archivedByUserId, archiveDate } = params;
+    const { workerId, organizationId } = params;
     await assertOwnership(workerId, organizationId);
 
     return prisma.worker.update({
         where: { id: workerId },
         data: {
-            status: WorkerStatus.archived,
-            archivedAt: archiveDate ?? new Date(),
-            archivedByUserId,
+            status: WorkerStatus.inactive,
         },
     });
 }
@@ -342,8 +331,6 @@ export async function unarchiveWorker(params: UnarchiveWorkerInput) {
         where: { id: workerId },
         data: {
             status: WorkerStatus.active,
-            archivedAt: null,
-            archivedByUserId: null,
         },
     });
 }
@@ -676,10 +663,10 @@ export async function getIssueAuditLogs(params: {
 }
 
 function templatePriorityToIssuePriority(
-    p: DefaultPriority | null,
+    p: IssuePriority | null,
 ): IssuePriority {
     if (!p) return "no_priority";
-    return p as IssuePriority;
+    return p;
 }
 
 // Core template-application logic, parameterized over a Prisma transaction

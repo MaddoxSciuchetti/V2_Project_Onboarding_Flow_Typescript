@@ -21,11 +21,19 @@ const getParam = (param: string | string[]): string =>
 export const createTemplate = catchErrors(async (req, res) => {
     const userId = req.userId;
     const orgId = req.orgId || "";
-    const { templateName, templateDescription } = req.body;
+    const body = req.body as {
+        name?: string;
+        description?: string;
+        templateName?: string;
+        templateDescription?: string;
+    };
+    const name = body.name ?? body.templateName ?? "";
+    const description =
+        body.description ?? body.templateDescription ?? "";
 
     const template = await insertTemplate({
-        templateName,
-        templateDescription,
+        name,
+        description,
         organizationId: orgId,
         createdByUserId: userId,
     });
@@ -53,12 +61,18 @@ export const getTemplateById = catchErrors(async (req, res) => {
 
 export const updateTemplate = catchErrors(async (req, res) => {
     const id = getParam(req.params.id);
-    const { templateName, templateDescription } = req.body;
+    const body = req.body as {
+        name?: string;
+        description?: string;
+        templateName?: string;
+        templateDescription?: string;
+    };
     const orgId = req.orgId;
 
     const template = await modifyTemplate(id, {
-        templateName,
-        templateDescription,
+        name: body.name ?? body.templateName ?? "",
+        description:
+            body.description ?? body.templateDescription ?? "",
     });
     return res.status(OK).json(template);
 });

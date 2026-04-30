@@ -1,13 +1,13 @@
 import { prisma } from "@/lib/prisma";
-import { DefaultPriority } from "@prisma/client";
+import type { IssuePriority } from "@prisma/client";
 
 // ============================================================
 // TYPES
 // ============================================================
 
 export type InsertTemplateParams = {
-    templateName: string;
-    templateDescription: string;
+    name: string;
+    description: string;
     organizationId: string;
     createdByUserId: string;
 };
@@ -17,14 +17,14 @@ export type InsertTemplateTaskParams = {
     taskName: string;
     taskDescription?: string;
     description?: string;
-    defaultPriority?: DefaultPriority;
+    defaultPriority?: IssuePriority;
     orderIndex?: number;
 };
 
 export type ModifyTemplateTaskParams = {
     taskName?: string;
     taskDescription?: string;
-    defaultPriority?: DefaultPriority;
+    defaultPriority?: IssuePriority;
     orderIndex?: number;
 };
 
@@ -35,15 +35,15 @@ export type ModifyTemplateTaskParams = {
 export const insertTemplate = async (data: InsertTemplateParams) => {
     return await prisma.issueTemplate.create({
         data: {
-            templateName: data.templateName,
-            templateDescription: data.templateDescription,
+            name: data.name,
+            description: data.description,
             organizationId: data.organizationId,
             createdByUserId: data.createdByUserId,
         },
         select: {
             id: true,
-            templateName: true,
-            templateDescription: true,
+            name: true,
+            description: true,
             isActive: true,
             createdAt: true,
             createdBy: {
@@ -63,8 +63,8 @@ export const queryTemplates = async (orgId: string) => {
         orderBy: { createdAt: "desc" },
         select: {
             id: true,
-            templateName: true,
-            templateDescription: true,
+            name: true,
+            description: true,
             isActive: true,
             createdAt: true,
             updatedAt: true,
@@ -91,8 +91,8 @@ export const queryTemplateById = async (id: string, orgId: string) => {
         },
         select: {
             id: true,
-            templateName: true,
-            templateDescription: true,
+            name: true,
+            description: true,
             isActive: true,
             createdAt: true,
             updatedAt: true,
@@ -130,8 +130,8 @@ export const removeTemplate = async (id: string, orgId: string) => {
 };
 
 type ModifyTemplateParams = {
-    templateName: string;
-    templateDescription: string;
+    name: string;
+    description: string;
 };
 
 export const modifyTemplate = async (
@@ -141,8 +141,8 @@ export const modifyTemplate = async (
     return await prisma.issueTemplate.update({
         where: { id },
         data: {
-            templateName: data.templateName,
-            templateDescription: data.templateDescription,
+            name: data.name,
+            description: data.description,
         },
     });
 };
@@ -154,8 +154,6 @@ export const modifyTemplate = async (
 export const insertTemplateTask = async (
     data: InsertTemplateTaskParams & { organizationId: string },
 ) => {
-    console.log(data.templateId);
-    console.log(data.organizationId);
     const template = await prisma.issueTemplate.findFirst({
         where: {
             id: data.templateId,
@@ -186,7 +184,6 @@ export const insertTemplateTask = async (
 };
 
 export const queryTemplateTasks = async (templateId: string, orgId: string) => {
-    // verify template belongs to org before returning items
     const template = await prisma.issueTemplate.findFirst({
         where: {
             id: templateId,
