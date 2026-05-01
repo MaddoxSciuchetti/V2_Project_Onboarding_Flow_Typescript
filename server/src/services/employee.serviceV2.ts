@@ -42,7 +42,7 @@ export const queryEmployeeWorkerData = async (orgId: string) => {
             createdAt: true,
             updatedAt: true,
             engagementStatus: {
-                select: { id: true, name: true, color: true },
+                select: { id: true, name: true },
             },
             worker: {
                 select: {
@@ -90,7 +90,7 @@ export const queryEmployeeWorkerData = async (orgId: string) => {
                     createdAt: true,
                     updatedAt: true,
                     issueStatus: {
-                        select: { id: true, name: true, color: true },
+                        select: { id: true, name: true },
                     },
                     assignee: {
                         select: {
