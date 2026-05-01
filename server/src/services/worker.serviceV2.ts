@@ -15,6 +15,7 @@ import type {
     UpdateWorkerInput,
     UploadWorkerDocumentInput,
 } from "@/types/worker.types";
+import { withTxRetry } from "@/utils/withTxRetry";
 import {
     DeleteObjectCommand,
     GetObjectCommand,
@@ -339,12 +340,9 @@ export async function deleteWorker(params: DeleteWorkerInput) {
     const { workerId, organizationId } = params;
     await assertOwnership(workerId, organizationId);
 
-    return prisma.$transaction(async (tx) => {
-        // WorkerDocument → delete first (Restrict on uploadedBy would block otherwise)
+    return withTxRetry(async (tx) => {
         await tx.workerDocument.deleteMany({ where: { workerId } });
-        // WorkerEngagement cascade-deletes Issues (and related child rows)
         await tx.workerEngagement.deleteMany({ where: { workerId } });
-        // Finally delete the Worker
         return tx.worker.delete({ where: { id: workerId } });
     });
 }
@@ -457,7 +455,7 @@ export async function deleteEngagement(params: {
     const { engagementId, workerId, organizationId } = params;
     await assertOwnership(workerId, organizationId);
 
-        // Cascade on WorkerEngagement will delete Issues and related records
+    // Cascade on WorkerEngagement will delete Issues and related records
     return prisma.workerEngagement.delete({ where: { id: engagementId } });
 }
 
