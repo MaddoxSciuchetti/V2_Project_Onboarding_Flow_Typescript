@@ -1,4 +1,11 @@
-import { FileText, Inbox, ListCheck, Ticket, UserRound } from 'lucide-react';
+import {
+  CreditCard,
+  FileText,
+  Inbox,
+  ListCheck,
+  Ticket,
+  UserRound,
+} from 'lucide-react';
 
 export const LAYOUTITEMS = [
   {
@@ -39,5 +46,10 @@ export const SETTINGSITEMS = [
     title: 'Templates',
     to: '/settings/templates/template',
     icon: FileText,
+  },
+  {
+    title: 'Zahlungen',
+    to: '/settings/payments',
+    icon: CreditCard,
   },
 ];
