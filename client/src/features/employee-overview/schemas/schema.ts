@@ -33,7 +33,7 @@ export const employeeDataSchema = z.array(
     firstName: z.string(),
     lastName: z.string(),
     email: z.string().nullable(),
-    isEmailVerified: z.boolean(),
+    isVerified: z.boolean(),
     createdAt: z.string(),
     updatedAt: z.string(),
     organizationMembers: z.array(orgMemberSchema),

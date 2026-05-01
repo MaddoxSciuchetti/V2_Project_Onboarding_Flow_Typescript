@@ -116,7 +116,7 @@ export type EmployeeInfoResponse = {
   displayName: string | null;
   email: string;
   avatarUrl: string | null;
-  isEmailVerified: boolean;
+  isVerified: boolean;
   status: string;
   createdAt: string;
   updatedAt: string;

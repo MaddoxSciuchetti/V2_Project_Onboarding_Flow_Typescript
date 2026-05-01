@@ -33,6 +33,6 @@ export const employeeInfos = (e: EmployeeInfoResponse): EmployeeInfoItem[] => {
       value: membershipRole === 'admin' ? 'Administrator' : 'Mitarbeiter',
     },
     { label: 'Erstellt', value: formatDate(e.createdAt) },
-    { label: 'Verifiziert', value: e.isEmailVerified ? 'Ja' : 'Nein' },
+    { label: 'Verifiziert', value: e.isVerified ? 'Ja' : 'Nein' },
   ];
 };

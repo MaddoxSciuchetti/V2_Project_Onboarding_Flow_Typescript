@@ -32,6 +32,7 @@ import {
 } from "@/utils/emailTemplates";
 import { sendMail } from "@/utils/sendMail";
 import { generateRawToken, hashToken } from "@/utils/v2/tokenV2";
+import { Prisma } from "@prisma/client";
 
 // ============================================================
 // TYPES
@@ -169,111 +170,117 @@ export const registerOrgAccount = async (data: RegisterOrgInput) => {
 
     const hashedPassword = await hashValue(data.password);
 
-    const result = await prisma.$transaction(async (tx) => {
-        // 1. Create user
-        const user = await tx.user.create({
-            data: {
-                email: normalizedEmail,
-                passwordHash: hashedPassword,
-                firstName: data.firstName,
-                lastName: data.lastName,
-                displayName: data.displayName,
-            },
-            omit: { passwordHash: true },
-        });
+    const result = await prisma.$transaction(
+        async (tx) => {
+            // 1. Create user
+            const user = await tx.user.create({
+                data: {
+                    email: normalizedEmail,
+                    passwordHash: hashedPassword,
+                    firstName: data.firstName,
+                    lastName: data.lastName,
+                    displayName: data.displayName,
+                },
+                omit: { passwordHash: true },
+            });
 
-        // 2. Generate unique slug from org name
-        const baseSlug = data.orgName
-            .toLowerCase()
-            .replace(/[^a-z0-9]+/g, "-")
-            .replace(/^-|-$/g, "");
-        const slug = `${baseSlug}-${Math.random().toString(36).slice(2, 8)}`;
+            // 2. Generate unique slug from org name
+            const baseSlug = data.orgName
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, "-")
+                .replace(/^-|-$/g, "");
+            const slug = `${baseSlug}-${Math.random().toString(36).slice(2, 8)}`;
 
-        // 3. Create organization
-        const organization = await tx.organization.create({
-            data: {
-                name: data.orgName,
-                slug,
-                createdByUserId: user.id,
-                description: data.orgDescription || null,
-                email: data.orgEmail || null,
-                phoneNumber: data.orgPhoneNumber || null,
-                websiteUrl: data.orgWebsiteUrl || null,
-                country: data.orgCountry || null,
-                industry: data.orgIndustry || null,
-                size: (data.orgSize as any) ?? null,
-            },
-        });
+            // 3. Create organization
+            const organization = await tx.organization.create({
+                data: {
+                    name: data.orgName,
+                    slug,
+                    createdByUserId: user.id,
+                    description: data.orgDescription || null,
+                    email: data.orgEmail || null,
+                    phoneNumber: data.orgPhoneNumber || null,
+                    websiteUrl: data.orgWebsiteUrl || null,
+                    country: data.orgCountry || null,
+                    industry: data.orgIndustry || null,
+                    size: (data.orgSize as any) ?? null,
+                },
+            });
 
-        // 4. Add user as org admin
-        await tx.organizationMember.create({
-            data: {
-                userId: user.id,
-                organizationId: organization.id,
-                membershipRole: "admin",
-            },
-        });
+            // 4. Add user as org admin
+            await tx.organizationMember.create({
+                data: {
+                    userId: user.id,
+                    organizationId: organization.id,
+                    membershipRole: "admin",
+                },
+            });
 
-        // 5. Seed default engagement + issue statuses
-        await tx.engagementStatus.createMany({
-            data: [
-                {
-                    organizationId: organization.id,
-                    name: "Ausstehend",
-                    isDefault: true,
-                    orderIndex: 0,
-                },
-                {
-                    organizationId: organization.id,
-                    name: "In Bearbeitung",
-                    isDefault: false,
-                    orderIndex: 1,
-                },
-                {
-                    organizationId: organization.id,
-                    name: "Abgeschlossen",
-                    isDefault: false,
-                    orderIndex: 2,
-                },
-                {
-                    organizationId: organization.id,
-                    name: "Abgebrochen",
-                    isDefault: false,
-                    orderIndex: 3,
-                },
-            ],
-        });
-        await tx.issueStatus.createMany({
-            data: [
-                {
-                    organizationId: organization.id,
-                    name: "Offen",
-                    isDefault: true,
-                    orderIndex: 0,
-                },
-                {
-                    organizationId: organization.id,
-                    name: "In Arbeit",
-                    isDefault: false,
-                    orderIndex: 1,
-                },
-                {
-                    organizationId: organization.id,
-                    name: "Erledigt",
-                    isDefault: false,
-                    orderIndex: 2,
-                },
-                {
-                    organizationId: organization.id,
-                    name: "Abgebrochen",
-                    isDefault: false,
-                    orderIndex: 3,
-                },
-            ],
-        });
+            // 5. Seed default engagement + issue statuses
+            await tx.engagementStatus.createMany({
+                data: [
+                    {
+                        organizationId: organization.id,
+                        name: "Ausstehend",
+                        isDefault: true,
+                        orderIndex: 0,
+                    },
+                    {
+                        organizationId: organization.id,
+                        name: "In Bearbeitung",
+                        isDefault: false,
+                        orderIndex: 1,
+                    },
+                    {
+                        organizationId: organization.id,
+                        name: "Abgeschlossen",
+                        isDefault: false,
+                        orderIndex: 2,
+                    },
+                    {
+                        organizationId: organization.id,
+                        name: "Abgebrochen",
+                        isDefault: false,
+                        orderIndex: 3,
+                    },
+                ],
+            });
+            await tx.issueStatus.createMany({
+                data: [
+                    {
+                        organizationId: organization.id,
+                        name: "Offen",
+                        isDefault: true,
+                        orderIndex: 0,
+                    },
+                    {
+                        organizationId: organization.id,
+                        name: "In Arbeit",
+                        isDefault: false,
+                        orderIndex: 1,
+                    },
+                    {
+                        organizationId: organization.id,
+                        name: "Erledigt",
+                        isDefault: false,
+                        orderIndex: 2,
+                    },
+                    {
+                        organizationId: organization.id,
+                        name: "Abgebrochen",
+                        isDefault: false,
+                        orderIndex: 3,
+                    },
+                ],
+            });
 
-        return { user, organization };
-    });
+            return { user, organization };
+        },
+        {
+            timeout: 10000,
+            isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted,
+        },
+    );
 
     const userId = result.user.id;
 

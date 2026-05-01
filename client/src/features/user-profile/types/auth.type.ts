@@ -2,7 +2,7 @@ export type User = {
   id: string;
   email: string;
   verified?: boolean;
-  isEmailVerified?: boolean;
+  isVerified?: boolean;
   user_permission?: 'CHEF' | 'MITARBEITER';
   createdAt: Date | string;
   updatedAt: Date | string;
