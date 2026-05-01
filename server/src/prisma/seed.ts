@@ -173,7 +173,6 @@ async function main() {
         update: {},
         create: {
             organizationId: organization.id,
-            plan: "free",
             status: "trialing",
         },
     });
