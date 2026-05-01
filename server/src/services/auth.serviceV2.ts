@@ -1,8 +1,4 @@
 import { FRONTENDURL } from "@/constants/env";
-import {
-    STATUS_ENTITY_ENGAGEMENT,
-    STATUS_ENTITY_ISSUE,
-} from "@/constants/statusEntity.consts";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcrypt";
 
@@ -218,63 +214,57 @@ export const registerOrgAccount = async (data: RegisterOrgInput) => {
             },
         });
 
-        // 5. Seed default statuses for engagement and issue entity types
-        await tx.organizationStatus.createMany({
+        // 5. Seed default engagement + issue statuses
+        await tx.engagementStatus.createMany({
             data: [
-                // Engagement statuses
                 {
                     organizationId: organization.id,
-                    entityType: STATUS_ENTITY_ENGAGEMENT,
                     name: "Ausstehend",
                     isDefault: true,
                     orderIndex: 0,
                 },
                 {
                     organizationId: organization.id,
-                    entityType: STATUS_ENTITY_ENGAGEMENT,
                     name: "In Bearbeitung",
                     isDefault: false,
                     orderIndex: 1,
                 },
                 {
                     organizationId: organization.id,
-                    entityType: STATUS_ENTITY_ENGAGEMENT,
                     name: "Abgeschlossen",
                     isDefault: false,
                     orderIndex: 2,
                 },
                 {
                     organizationId: organization.id,
-                    entityType: STATUS_ENTITY_ENGAGEMENT,
                     name: "Abgebrochen",
                     isDefault: false,
                     orderIndex: 3,
                 },
-                // Issue statuses
+            ],
+        });
+        await tx.issueStatus.createMany({
+            data: [
                 {
                     organizationId: organization.id,
-                    entityType: STATUS_ENTITY_ISSUE,
                     name: "Offen",
                     isDefault: true,
                     orderIndex: 0,
                 },
                 {
                     organizationId: organization.id,
-                    entityType: STATUS_ENTITY_ISSUE,
                     name: "In Arbeit",
                     isDefault: false,
                     orderIndex: 1,
                 },
                 {
                     organizationId: organization.id,
-                    entityType: STATUS_ENTITY_ISSUE,
                     name: "Erledigt",
                     isDefault: false,
                     orderIndex: 2,
                 },
                 {
                     organizationId: organization.id,
-                    entityType: STATUS_ENTITY_ISSUE,
                     name: "Abgebrochen",
                     isDefault: false,
                     orderIndex: 3,
@@ -453,7 +443,7 @@ export const validationEmailCode = async (code: string) => {
     // verify user
     const updatedUser = await prisma.user.update({
         where: { id: validCode.userId },
-        data: { isEmailVerified: true },
+        data: { isVerified: true },
         omit: { passwordHash: true },
     });
     appAssert(updatedUser, INTERNAL_SERVER_ERROR, "Failed to verify email");
