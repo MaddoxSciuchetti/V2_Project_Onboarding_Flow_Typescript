@@ -1,19 +1,38 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { Dispatch, SetStateAction } from 'react';
 import { useForm } from 'react-hook-form';
-import { TaskEditState } from './useTaskSidebar';
 import { taskFormSchema } from '../schemas/taskForm.schema';
 import { TaskSidebarForm } from '../types/index.types';
 import { useCreateTask } from './useCreateTask';
+import type { TaskEditState } from './useTaskSidebar';
 import { useUpdateTask } from './useUpdateTask';
+
+export type TaskCommentDraft = {
+  body: string;
+  commentId: string | null;
+};
+
+export type PersistTaskComment = (args: {
+  taskId: string;
+  body: string;
+  commentId: string | null;
+}) => Promise<unknown>;
+
+type UseTasksOptions = {
+  getCommentDraft?: () => TaskCommentDraft;
+  persistComment?: PersistTaskComment;
+};
 
 export function useTasks(
   taskEditState: TaskEditState,
   taskState: 'create' | 'edit',
-  setIsOpen: Dispatch<SetStateAction<boolean>>
+  setIsOpen: Dispatch<SetStateAction<boolean>>,
+  options?: UseTasksOptions
 ) {
-  const { mutate: createTask } = useCreateTask();
-  const { mutate: updateTask } = useUpdateTask();
+  const { mutateAsync: createTaskAsync, isPending: isCreatePending } =
+    useCreateTask();
+  const { mutateAsync: updateTaskAsync, isPending: isUpdatePending } =
+    useUpdateTask();
 
   const {
     register,
@@ -30,20 +49,42 @@ export function useTasks(
     resolver: zodResolver(taskFormSchema),
   });
 
-  const onSubmit = handleSubmit((data) => {
+  const onSubmit = handleSubmit(async (data) => {
     if (taskState === 'create') {
-      createTask(data, {
-        onSuccess: () => setIsOpen(false),
-      });
-    } else {
-      updateTask(
-        { taskId: taskEditState.taskId, data },
-        {
-          onSuccess: () => setIsOpen(false),
-        }
-      );
+      try {
+        await createTaskAsync(data);
+        setIsOpen(false);
+      } catch {}
+      return;
     }
+    try {
+      await updateTaskAsync({ taskId: taskEditState.taskId, data });
+    } catch {
+      return;
+    }
+
+    const draft = options?.getCommentDraft?.();
+    const trimmed = draft?.body.trim() ?? '';
+    if (trimmed.length > 0 && options?.persistComment) {
+      try {
+        await options.persistComment({
+          taskId: taskEditState.taskId,
+          body: trimmed,
+          commentId: draft?.commentId ?? null,
+        });
+      } catch {
+        return;
+      }
+    }
+
+    setIsOpen(false);
   });
 
-  return { register, control, errors, onSubmit };
+  return {
+    register,
+    control,
+    errors,
+    onSubmit,
+    isTaskSaving: isCreatePending || isUpdatePending,
+  };
 }

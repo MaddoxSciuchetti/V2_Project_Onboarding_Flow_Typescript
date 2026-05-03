@@ -4,7 +4,9 @@ import { mutationOptions } from '@tanstack/react-query';
 import {
   createTask,
   deleteTasks,
+  saveTaskComment,
   updateTask,
+  type SaveTaskCommentParams,
   type UpdateTaskParams,
 } from '../../api/tasks.api';
 import { FETCHDESCRIPTION } from '../../consts/query.consts';
@@ -34,6 +36,16 @@ export const taskMutations = {
       mutationFn: (ids: string[]) => deleteTasks(ids),
       onSuccess: () => {
         void queryClient.invalidateQueries({ queryKey: [FETCHDESCRIPTION] });
+      },
+    }),
+
+  saveTaskComment: () =>
+    mutationOptions<unknown, Error, SaveTaskCommentParams>({
+      mutationFn: (params) => saveTaskComment(params),
+      onSuccess: (_, { taskId }) => {
+        void queryClient.invalidateQueries({
+          queryKey: [TASKHISTORY, taskId],
+        });
       },
     }),
 };

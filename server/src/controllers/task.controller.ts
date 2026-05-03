@@ -5,6 +5,7 @@ import {
     getTaskHistoryInOrg,
     queryTasks,
     updateTaskInOrg,
+    upsertIssueCommentInOrg,
 } from "@/services/tasks.service";
 import catchErrors from "@/utils/catchErrors";
 
@@ -34,6 +35,24 @@ export const fetchTaskHistory = catchErrors(async (req, res) => {
     const id = String(req.params.id);
     const history = await getTaskHistoryInOrg(orgId, id);
     return res.status(OK).json(history);
+});
+
+export const upsertTaskComment = catchErrors(async (req, res) => {
+    const orgId = req.orgId;
+    const userId = req.userId;
+    const issueId = String(req.params.id);
+    const raw = req.body as { body?: unknown; commentId?: unknown };
+    const body =
+        typeof raw.body === "string" ? raw.body : String(raw.body ?? "");
+    const commentId =
+        typeof raw.commentId === "string" && raw.commentId.length > 0
+            ? raw.commentId
+            : null;
+    const result = await upsertIssueCommentInOrg(orgId, userId, issueId, {
+        body,
+        commentId,
+    });
+    return res.status(OK).json(result);
 });
 
 export const deleteTasks = catchErrors(async (req, res) => {

@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { createIssue, updateIssue } from "@/services/worker.serviceV2";
+import { createIssue, updateIssue } from "@/services/worker.service";
 
 export type TaskHistoryChange = {
     field: string;
@@ -7,17 +7,20 @@ export type TaskHistoryChange = {
     to: string | null;
 };
 
-export type TaskHistoryEntry = {
+export type TaskHistoryActorJson = {
+    id: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    avatarUrl: string | null;
+};
+
+export type TaskHistoryAuditEntry = {
+    kind: "audit";
     id: string;
     action: string;
     createdAt: Date;
-    actorUser: {
-        id: string;
-        email: string;
-        firstName: string;
-        lastName: string;
-        avatarUrl: string | null;
-    } | null;
+    actorUser: TaskHistoryActorJson | null;
     status: {
         id: string;
         name: string;
@@ -25,6 +28,17 @@ export type TaskHistoryEntry = {
     } | null;
     changes: TaskHistoryChange[];
 };
+
+export type TaskHistoryCommentEntry = {
+    kind: "comment";
+    id: string;
+    body: string;
+    createdAt: Date;
+    updatedAt: Date;
+    user: TaskHistoryActorJson;
+};
+
+export type TaskHistoryItem = TaskHistoryAuditEntry | TaskHistoryCommentEntry;
 
 export const queryTasks = async (orgId: string) => {
     return prisma.issue.findMany({
@@ -105,8 +119,6 @@ export async function updateTaskInOrg(
     });
 }
 
-// Fields that we know how to display in the task history feed.
-// Anything outside this set is still returned but with raw values.
 const HUMAN_READABLE_FIELDS = new Set([
     "title",
     "description",
@@ -139,9 +151,6 @@ function valueToString(value: unknown): string | null {
     return JSON.stringify(value);
 }
 
-// Maps a raw audit-log value to a user-facing string for a given field.
-// IDs (statusId, assigneeUserId) are resolved to readable names; enums get
-// localized labels; everything else falls back to a string representation.
 function resolveFieldValue(
     field: string,
     rawValue: unknown,
@@ -193,7 +202,6 @@ function diffAuditValues(
     return changes;
 }
 
-// Gathers every referenced ID for a given key across both old and new
 // audit-log payloads. Used to batch-fetch display names in one query.
 function collectReferencedIds(
     logs: Array<{ oldValue: unknown; newValue: unknown }>,
@@ -214,7 +222,7 @@ function collectReferencedIds(
 export async function getTaskHistoryInOrg(
     orgId: string,
     taskId: string,
-): Promise<TaskHistoryEntry[]> {
+): Promise<TaskHistoryItem[]> {
     const task = await prisma.issue.findFirst({
         where: {
             id: taskId,
@@ -246,16 +254,18 @@ export async function getTaskHistoryInOrg(
     const assigneeIds = collectReferencedIds(logs, "assigneeUserId");
 
     const statuses = statusIds.length
-        ? await prisma.issueStatus.findMany({
-              where: { id: { in: statusIds } },
-              select: { id: true, name: true },
-          }).then((rows) =>
-              rows.map((s) => ({
-                  id: s.id,
-                  name: s.name,
-                  color: null as string | null,
-              })),
-          )
+        ? await prisma.issueStatus
+              .findMany({
+                  where: { id: { in: statusIds } },
+                  select: { id: true, name: true },
+              })
+              .then((rows) =>
+                  rows.map((s) => ({
+                      id: s.id,
+                      name: s.name,
+                      color: null as string | null,
+                  })),
+              )
         : [];
     const assignees = assigneeIds.length
         ? await prisma.user.findMany({
@@ -282,7 +292,7 @@ export async function getTaskHistoryInOrg(
         },
     };
 
-    return logs.map((log) => {
+    const auditItems: TaskHistoryAuditEntry[] = logs.map((log) => {
         const newObj =
             log.newValue && typeof log.newValue === "object"
                 ? (log.newValue as Record<string, unknown>)
@@ -293,6 +303,7 @@ export async function getTaskHistoryInOrg(
                 : null;
 
         return {
+            kind: "audit" as const,
             id: log.id,
             action: log.action,
             createdAt: log.createdAt,
@@ -308,5 +319,107 @@ export async function getTaskHistoryInOrg(
             status: newStatusId ? (statusById.get(newStatusId) ?? null) : null,
             changes: diffAuditValues(log.oldValue, log.newValue, resolvers),
         };
+    });
+
+    const comments = await prisma.comment.findMany({
+        where: { issueId: taskId },
+        orderBy: { createdAt: "asc" },
+        include: {
+            user: {
+                select: {
+                    id: true,
+                    email: true,
+                    firstName: true,
+                    lastName: true,
+                    avatarUrl: true,
+                },
+            },
+        },
+    });
+
+    const commentItems: TaskHistoryCommentEntry[] = comments.map((c) => ({
+        kind: "comment" as const,
+        id: c.id,
+        body: c.body,
+        createdAt: c.createdAt,
+        updatedAt: c.updatedAt,
+        user: {
+            id: c.user.id,
+            email: c.user.email,
+            firstName: c.user.firstName,
+            lastName: c.user.lastName,
+            avatarUrl: c.user.avatarUrl,
+        },
+    }));
+
+    const merged: TaskHistoryItem[] = [...auditItems, ...commentItems];
+    merged.sort(
+        (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
+    );
+    return merged;
+}
+
+export async function upsertIssueCommentInOrg(
+    orgId: string,
+    userId: string,
+    issueId: string,
+    payload: { body: string; commentId?: string | null },
+) {
+    const body = payload.body.trim();
+    if (!body) {
+        throw new Error("Comment cannot be empty");
+    }
+
+    const issue = await prisma.issue.findFirst({
+        where: {
+            id: issueId,
+            workerEngagement: { organizationId: orgId },
+        },
+        select: { id: true },
+    });
+    if (!issue) {
+        throw new Error("Task not found for organization");
+    }
+
+    if (payload.commentId) {
+        const existing = await prisma.comment.findFirst({
+            where: { id: payload.commentId, issueId },
+        });
+        if (!existing) {
+            throw new Error("Comment not found");
+        }
+        if (existing.userId !== userId) {
+            throw new Error("You can only edit your own comments");
+        }
+        return prisma.comment.update({
+            where: { id: existing.id },
+            data: { body },
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        email: true,
+                        firstName: true,
+                        lastName: true,
+                        avatarUrl: true,
+                    },
+                },
+            },
+        });
+    }
+
+    return prisma.comment.create({
+        data: { issueId, userId, body },
+        include: {
+            user: {
+                select: {
+                    id: true,
+                    email: true,
+                    firstName: true,
+                    lastName: true,
+                    avatarUrl: true,
+                },
+            },
+        },
     });
 }
