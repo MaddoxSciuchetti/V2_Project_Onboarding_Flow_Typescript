@@ -16,6 +16,7 @@ import {
     fiveMinutesAgo,
     oneHourFromNow,
     oneYearFromNow,
+    sevenDaysFromNow,
     thirtyDaysFromNow,
 } from "@/utils/date";
 import {
@@ -216,7 +217,15 @@ export const registerOrgAccount = async (data: RegisterOrgInput) => {
                 },
             });
 
-            // 5. Seed default engagement + issue statuses
+            await tx.subscription.create({
+                data: {
+                    organizationId: organization.id,
+                    status: "trialing",
+                    trialEndsAt: sevenDaysFromNow(),
+                },
+            });
+
+            // 6. Seed default engagement + issue statuses
             await tx.engagementStatus.createMany({
                 data: [
                     {
