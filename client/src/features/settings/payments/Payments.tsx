@@ -1,19 +1,17 @@
 import { Spinner } from '@/components/ui/spinner';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import {
-  useBillingSubscription,
-  useSubscriptionTrialEnds,
-} from './billing.hooks';
+import { useBillingSubscription } from './hooks/useBillingSubscription';
+import { useCheckSubscriptionStatus } from './hooks/useCheckSubscriptionStatus';
+import { useSubscriptionTrialEnds } from './hooks/useSubscriptionTrialEnds';
 import { PaymentCheckoutDisplay } from './PaymentCheckoutDisplay';
 import {
   createBillingPortalSession,
   createCheckoutSession,
 } from './payments.api';
 import { paymentPlanLabel } from './payments.consts';
-import { hasStripeManagedSubscription } from './subscriptionAccess';
 import { usePaymentRedirect } from './usePaymentRedirect';
-import { useCheckSubscriptionStatus } from './util/hooks/useCheckSubscriptionStatus';
+import { hasStripeManagedSubscription } from './util/subscriptionAccess.util';
 
 function Payments() {
   const { status } = usePaymentRedirect();
