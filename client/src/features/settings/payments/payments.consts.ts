@@ -26,3 +26,9 @@ export const PAYMENT_PLANS: readonly PaymentPlan[] = [
     priceId: 'price_1TSekYIFABFY32sS3XsLPgIW',
   },
 ] as const;
+
+export function paymentPlanLabel(planId: string | null): string {
+  if (!planId) return 'Abo';
+  const p = PAYMENT_PLANS.find((x) => x.id === planId);
+  return p?.name ?? planId;
+}
