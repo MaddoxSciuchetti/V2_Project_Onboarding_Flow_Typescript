@@ -1,10 +1,8 @@
 import { STRIPE_SECRET_KEY } from "@/constants/env";
 import { prisma } from "@/lib/prisma";
 import { appendSubscriptionAuditLog } from "@/services/subscriptionAudit.service";
-import {
-    buildSubscriptionDbFieldsFromStripeSubscription,
-    type StripeSubscriptionResource,
-} from "@/utils/stripeSubscriptionWebhook";
+import { StripeSubscriptionResource } from "@/types/stipe.types";
+import { buildSubscriptionDbFieldsFromStripeSubscription } from "@/utils/stripeSubscriptionWebhook";
 import type { SubscriptionPlan } from "@prisma/client";
 import Stripe from "stripe";
 

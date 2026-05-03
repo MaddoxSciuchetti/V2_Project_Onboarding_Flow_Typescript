@@ -5,7 +5,6 @@ type SubscriptionAccessFields = Pick<
     "status" | "stripeSubscriptionId" | "trialEndsAt"
 >;
 
-/** Same rules as the client `hasSubscriptionAppAccess` (billing-only when false). */
 export function hasSubscriptionAppAccess(
     row: SubscriptionAccessFields | null,
 ): boolean {

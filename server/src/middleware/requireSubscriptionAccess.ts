@@ -5,11 +5,6 @@ import appAssert from "@/utils/appAssert";
 import { hasSubscriptionAppAccess } from "@/utils/subscriptionAccess";
 import type { RequestHandler } from "express";
 
-/**
- * After `authenticate`. Blocks org-scoped “app” APIs when the org has no valid
- * subscription access (expired trial, cancelled, past_due). Billing and profile
- * routes stay on paths that do not use this middleware.
- */
 export const requireSubscriptionAccess: RequestHandler = async (
     req,
     _res,
