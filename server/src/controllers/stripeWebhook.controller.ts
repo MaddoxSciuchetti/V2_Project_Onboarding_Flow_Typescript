@@ -1,10 +1,17 @@
 import { STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET } from "@/constants/env";
-import type { Request, Response } from "express";
+import { handleCheckoutSessionCompleted } from "@/services/stripe-webhook/intent-handlers/CheckoutSessionCompleted";
+import { handleCustomerSubscriptionDeleted } from "@/services/stripe-webhook/intent-handlers/CustomerSubscriptionDeleted";
+import { handleCustomerSubscriptionWrite } from "@/services/stripe-webhook/intent-handlers/CustomerSubscriptionWrite";
+import type { NextFunction, Request, Response } from "express";
 import Stripe from "stripe";
 
 const stripe = new Stripe(STRIPE_SECRET_KEY);
 
-export function stripeWebhookHandler(req: Request, res: Response): void {
+export async function stripeWebhookHandler(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+): Promise<void> {
     const signature = req.headers["stripe-signature"];
 
     if (!STRIPE_WEBHOOK_SECRET) {
@@ -34,32 +41,39 @@ export function stripeWebhookHandler(req: Request, res: Response): void {
 
     console.log("[stripe webhook]", event.type);
 
-    switch (event.type) {
-        case "payment_intent.succeeded": {
-            event.data.object as Stripe.PaymentIntent;
-            // handlePaymentIntentSucceeded(paymentIntent);
-            break;
+    try {
+        switch (event.type) {
+            case "payment_intent.succeeded": {
+                event.data.object as Stripe.PaymentIntent;
+                // handlePaymentIntentSucceeded(paymentIntent);
+                break;
+            }
+            case "payment_method.attached": {
+                event.data.object as Stripe.PaymentMethod;
+                // handlePaymentMethodAttached(paymentMethod);
+                break;
+            }
+            case "checkout.session.completed": {
+                await handleCheckoutSessionCompleted(
+                    event.data.object as Stripe.Checkout.Session,
+                );
+                break;
+            }
+            case "customer.subscription.created":
+            case "customer.subscription.updated": {
+                await handleCustomerSubscriptionWrite(event.data.object);
+                break;
+            }
+            case "customer.subscription.deleted": {
+                await handleCustomerSubscriptionDeleted(event.data.object);
+                break;
+            }
+            default:
+                console.log(`Unhandled event type ${event.type}`);
         }
-        case "payment_method.attached": {
-            event.data.object as Stripe.PaymentMethod;
-            // handlePaymentMethodAttached(paymentMethod);
-            break;
-        }
-        case "checkout.session.completed": {
-            event.data.object as Stripe.Checkout.Session;
-            // Sync org subscription + Stripe customer/subscription IDs
-            break;
-        }
-        case "customer.subscription.created":
-        case "customer.subscription.updated":
-        case "customer.subscription.deleted": {
-            event.data.object as Stripe.Subscription;
-            // Keep Subscription row in sync with Stripe status
-            break;
-        }
-        default:
-            console.log(`Unhandled event type ${event.type}`);
-    }
 
-    res.json({ received: true });
+        res.json({ received: true });
+    } catch (err) {
+        next(err);
+    }
 }
