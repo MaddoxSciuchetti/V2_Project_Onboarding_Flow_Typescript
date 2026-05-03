@@ -42,7 +42,6 @@ async function assertOwnership(workerId: string, organizationId: string) {
     return worker;
 }
 
-
 export async function createWorker(params: CreateWorkerInput) {
     const {
         organizationId,
@@ -121,7 +120,6 @@ export async function createWorker(params: CreateWorkerInput) {
     });
 }
 
-
 export async function getWorkerData(params: GetWorkersInput) {
     const {
         organizationId,
@@ -196,7 +194,6 @@ export async function getWorkerData(params: GetWorkersInput) {
     });
 }
 
-
 export async function getWorkerById(workerId: string, organizationId: string) {
     const worker = await prisma.worker.findFirst({
         where: { id: workerId, organizationId },
@@ -270,7 +267,6 @@ export async function getWorkerById(workerId: string, organizationId: string) {
     return { ...worker, documents: documentsWithUrls };
 }
 
-
 export async function updateWorker(params: {
     workerId: string;
     organizationId: string;
@@ -285,7 +281,6 @@ export async function updateWorker(params: {
     });
 }
 
-
 export async function archiveWorker(params: ArchiveWorkerInput) {
     const { workerId, organizationId } = params;
     await assertOwnership(workerId, organizationId);
@@ -297,7 +292,6 @@ export async function archiveWorker(params: ArchiveWorkerInput) {
         },
     });
 }
-
 
 export async function unarchiveWorker(params: UnarchiveWorkerInput) {
     const { workerId, organizationId } = params;
@@ -311,7 +305,6 @@ export async function unarchiveWorker(params: UnarchiveWorkerInput) {
     });
 }
 
-
 export async function deleteWorker(params: DeleteWorkerInput) {
     const { workerId, organizationId } = params;
     await assertOwnership(workerId, organizationId);
@@ -322,7 +315,6 @@ export async function deleteWorker(params: DeleteWorkerInput) {
         return tx.worker.delete({ where: { id: workerId } });
     });
 }
-
 
 const WORKER_DATE_FIELDS = new Set(["birthday", "entryDate", "exitDate"]);
 
@@ -364,7 +356,6 @@ export async function updateDataPoint(params: UpdateDataPointInput) {
         data: { [field]: coerced } as Prisma.WorkerUpdateInput,
     });
 }
-
 
 export async function createEngagement(params: CreateEngagementInput) {
     const {
@@ -430,7 +421,6 @@ export async function deleteEngagement(params: {
 
     return prisma.workerEngagement.delete({ where: { id: engagementId } });
 }
-
 
 export async function createIssue(params: CreateIssueInput) {
     const {
@@ -743,7 +733,6 @@ export async function deleteIssue(params: {
     return prisma.issue.delete({ where: { id: issueId } });
 }
 
-
 export async function createAbsence(params: CreateAbsenceInput) {
     const { userId, orgId, absenceType, startDate, endDate, substituteId } =
         params;
@@ -797,7 +786,6 @@ export async function deleteAbsence(params: { absenceId: string }) {
     const { absenceId } = params;
     return prisma.absence.delete({ where: { id: absenceId } });
 }
-
 
 export async function uploadWorkerDocument(params: UploadWorkerDocumentInput) {
     const {
@@ -879,7 +867,6 @@ export async function listWorkerDocuments(params: {
         })),
     );
 }
-
 
 export async function getWorkerHistory(params: {
     workerId: string;

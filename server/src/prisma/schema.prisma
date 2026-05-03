@@ -7,15 +7,11 @@ datasource db {
 
 }
 
-/// Org-wide membership: admin (full access) or worker (default).
 enum OrgMemberRole {
   admin
   worker
 }
 
-// ============================================================
-// AUTH & USER
-// ============================================================
 
 model User {
   id                     String               @id @default(uuid())
@@ -32,7 +28,6 @@ model User {
   createdAt              DateTime             @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt              DateTime             @updatedAt @map("updated_at") @db.Timestamptz()
 
-  // relations
   refreshTokens          RefreshToken[]
   verificationCodes      NewVerificationCode[]
   organizationMembers    OrganizationMember[]
@@ -66,7 +61,6 @@ model RefreshToken {
   lastUsedAt DateTime? @map("last_used_at") @db.Timestamptz()
   createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamptz()
 
-  // relations
   user       User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
@@ -81,16 +75,12 @@ model NewVerificationCode {
   usedAt    DateTime?            @map("used_at") @db.Timestamptz()
   createdAt DateTime             @default(now()) @map("created_at") @db.Timestamptz()
 
-  // relations
   user      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@map("new_verification_codes")
 }
 
-// ============================================================
-// ORGANIZATION
-// ============================================================
 
 model Organization {
   id              String                 @id @default(uuid())
@@ -111,7 +101,6 @@ model Organization {
   createdAt       DateTime               @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt       DateTime               @updatedAt @map("updated_at") @db.Timestamptz()
 
-  // relations
   createdBy       User?                  @relation(fields: [createdByUserId], references: [id], onDelete: SetNull)
   members         OrganizationMember[]
   workers         Worker[]
@@ -137,7 +126,6 @@ model OrganizationMember {
   createdAt      DateTime       @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt      DateTime       @updatedAt @map("updated_at") @db.Timestamptz()
 
-  // relations
   user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   organization   Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
@@ -181,9 +169,6 @@ model IssueStatus {
   @@map("issue_statuses")
 }
 
-// ============================================================
-// INVITATIONS
-// ============================================================
 
 model Invitation {
   id                     String           @id @default(uuid())
@@ -197,7 +182,6 @@ model Invitation {
   acceptedAt             DateTime?        @map("accepted_at") @db.Timestamptz()
   createdAt              DateTime         @default(now()) @map("created_at") @db.Timestamptz()
 
-  // relations
   organization           Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   invitedBy              User             @relation("InvitedBy", fields: [invitedByUserId], references: [id], onDelete: Cascade)
 
@@ -206,9 +190,6 @@ model Invitation {
   @@map("invitations")
 }
 
-// ============================================================
-// WORKER
-// ============================================================
 
 model Worker {
   id               String             @id @default(uuid())
@@ -231,7 +212,6 @@ model Worker {
   createdAt        DateTime           @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt        DateTime           @updatedAt @map("updated_at") @db.Timestamptz()
 
-  // relations
   organization     Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   createdBy        User               @relation("WorkerCreatedBy", fields: [createdByUserId], references: [id], onDelete: Restrict)
   documents        WorkerDocument[]
@@ -253,7 +233,6 @@ model WorkerDocument {
   mimeType         String?             @map("mime_type")
   createdAt        DateTime            @default(now()) @map("created_at") @db.Timestamptz()
 
-  // relations
   worker           Worker              @relation(fields: [workerId], references: [id], onDelete: Cascade)
   uploadedBy       User                @relation(fields: [uploadedByUserId], references: [id], onDelete: Restrict)
 
@@ -261,9 +240,6 @@ model WorkerDocument {
   @@map("worker_documents")
 }
 
-// ============================================================
-// WORKER ENGAGEMENT
-// ============================================================
 
 model WorkerEngagement {
   id                String             @id @default(uuid())
@@ -278,7 +254,6 @@ model WorkerEngagement {
   createdAt         DateTime           @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt         DateTime           @updatedAt @map("updated_at") @db.Timestamptz()
 
-  // relations
   worker            Worker             @relation(fields: [workerId], references: [id], onDelete: Cascade)
   organization      Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   responsibleUser   User               @relation(fields: [responsibleUserId], references: [id], onDelete: Restrict)
@@ -291,9 +266,6 @@ model WorkerEngagement {
   @@map("worker_engagements")
 }
 
-// ============================================================
-// ISSUE TEMPLATES
-// ============================================================
 
 model IssueTemplate {
   id              String                 @id @default(uuid())
@@ -305,7 +277,6 @@ model IssueTemplate {
   createdAt       DateTime               @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt       DateTime               @updatedAt @map("updated_at") @db.Timestamptz()
 
-  // relations
   organization    Organization           @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   createdBy       User                   @relation(fields: [createdByUserId], references: [id], onDelete: Restrict)
   items           TemplateItem[]
@@ -324,7 +295,6 @@ model TemplateItem {
   createdAt       DateTime           @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt       DateTime           @updatedAt @map("updated_at") @db.Timestamptz()
 
-  // relations
   issueTemplate   IssueTemplate      @relation(fields: [issueTemplateId], references: [id], onDelete: Cascade)
   issues          Issue[]
 
@@ -332,9 +302,6 @@ model TemplateItem {
   @@map("template_items")
 }
 
-// ============================================================
-// ISSUES
-// ============================================================
 
 model Issue {
   id                 String             @id @default(uuid())
@@ -350,7 +317,6 @@ model Issue {
   createdAt          DateTime           @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt          DateTime           @updatedAt @map("updated_at") @db.Timestamptz()
 
-  // relations
   workerEngagement   WorkerEngagement   @relation(fields: [workerEngagementId], references: [id], onDelete: Cascade)
   createdBy          User               @relation("IssueCreatedBy", fields: [createdByUserId], references: [id], onDelete: Restrict)
   assignee           User?              @relation("IssueAssignedTo", fields: [assigneeUserId], references: [id], onDelete: SetNull)
@@ -374,7 +340,6 @@ model IssueAuditLog {
   newValue    Json?    @map("new_value")
   createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz()
 
-  // relations
   issue       Issue    @relation(fields: [issueId], references: [id], onDelete: Cascade)
   actorUser   User     @relation(fields: [actorUserId], references: [id], onDelete: Restrict)
 
@@ -396,9 +361,6 @@ model Comment {
   @@map("comments")
 }
 
-// ============================================================
-// SUBSCRIPTION & BILLING
-// ============================================================
 
 model Subscription {
   id                      String             @id @default(uuid())
@@ -419,7 +381,6 @@ model Subscription {
   createdAt               DateTime         @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt               DateTime         @updatedAt @map("updated_at") @db.Timestamptz()
 
-  // relations
   organization            Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   invoices                Invoice[]
   auditLogs               SubscriptionAuditLog[]
@@ -457,7 +418,6 @@ model Invoice {
   dueDate           DateTime?     @map("due_date") @db.Date
   createdAt         DateTime      @default(now()) @map("created_at") @db.Timestamptz()
 
-  // relations
   subscription      Subscription  @relation(fields: [subscriptionId], references: [id], onDelete: Restrict)
 
   @@index([subscriptionId])
@@ -487,7 +447,6 @@ model Absence {
 
 
 
-// ENUMS
 
 enum AbsenceType {
     SICK

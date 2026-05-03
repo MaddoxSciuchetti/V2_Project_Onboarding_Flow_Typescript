@@ -7,7 +7,7 @@ import {
     queryEmployeeWorkerData,
     removeEmployee,
     updateAbsenceData,
-} from "@/services/employee.serviceV2";
+} from "@/services/employee.service";
 import appAssert from "@/utils/appAssert";
 import catchErrors from "@/utils/catchErrors";
 
