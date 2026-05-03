@@ -16,3 +16,12 @@ export const createCheckoutSession = catchErrors(async (req, res) => {
     });
     return res.status(OK).json({ url });
 });
+
+
+export const getBillingSubscription = catchErrors(async (req, res) => {
+    const organizationId = req.orgId;
+    appAssert(organizationId, UNAUTHORIZED, "Missing auth context");
+
+    const subscription = await getBillingSubscriptionForOrg(organizationId);
+    return res.status(OK).json(subscription);
+});
