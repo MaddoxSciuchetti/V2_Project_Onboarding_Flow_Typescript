@@ -448,7 +448,7 @@ model SubscriptionAuditLog {
 model Invoice {
   id                String        @id @default(uuid())
   subscriptionId    String        @map("subscription_id")
-  providerInvoiceId String?       @map("provider_invoice_id")
+  providerInvoiceId String        @unique @map("provider_invoice_id")
   amountCents       Int           @map("amount_cents")
   currency          String        @default("USD")
   status            InvoiceStatus @default(draft)

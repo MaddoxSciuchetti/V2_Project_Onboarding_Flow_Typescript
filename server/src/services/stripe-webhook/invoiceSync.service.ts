@@ -6,6 +6,10 @@ import type Stripe from "stripe";
 export async function upsertInvoiceFromStripe(
     invoice: Stripe.Invoice,
 ): Promise<void> {
+    if (!invoice.id) {
+        return;
+    }
+
     const stripeSubscriptionId = extractStripeSubscriptionId(invoice);
     if (!stripeSubscriptionId) {
         return;
@@ -33,7 +37,7 @@ export async function upsertInvoiceFromStripe(
     const dueTs = invoice.due_date;
     const dueDate = dueTs != null ? new Date(dueTs * 1000) : null;
 
-    const payload = {
+    const createPayload = {
         subscriptionId: subscription.id,
         providerInvoiceId: invoice.id,
         amountCents: invoice.total ?? 0,
@@ -45,16 +49,19 @@ export async function upsertInvoiceFromStripe(
         dueDate,
     };
 
-    const existing = await prisma.invoice.findFirst({
-        where: { providerInvoiceId: invoice.id },
-    });
+    const updatePayload = {
+        subscriptionId: createPayload.subscriptionId,
+        amountCents: createPayload.amountCents,
+        currency: createPayload.currency,
+        status: createPayload.status,
+        invoicePdfUrl: createPayload.invoicePdfUrl,
+        paidAt: createPayload.paidAt,
+        dueDate: createPayload.dueDate,
+    };
 
-    if (existing) {
-        await prisma.invoice.update({
-            where: { id: existing.id },
-            data: payload,
-        });
-    } else {
-        await prisma.invoice.create({ data: payload });
-    }
+    await prisma.invoice.upsert({
+        where: { providerInvoiceId: invoice.id },
+        create: createPayload,
+        update: updatePayload,
+    });
 }
