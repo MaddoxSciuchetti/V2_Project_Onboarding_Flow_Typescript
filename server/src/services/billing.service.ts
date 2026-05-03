@@ -98,3 +98,30 @@ export async function createCheckoutSessionUrl(
 
     return session.url;
 }
+
+export async function createBillingPortalSessionUrl(
+    organizationId: string,
+): Promise<string> {
+    const row = await prisma.subscription.findUnique({
+        where: { organizationId },
+        select: { stripeCustomerId: true },
+    });
+    appAssert(
+        row?.stripeCustomerId,
+        UNPROCESSABLE_CONTENT,
+        "Kein Stripe-Kunde — bitte zuerst ein Abo abschließen.",
+    );
+
+    const session = await stripe.billingPortal.sessions.create({
+        customer: row.stripeCustomerId,
+        return_url: paymentsCheckoutPath,
+    });
+
+    appAssert(
+        session.url,
+        INTERNAL_SERVER_ERROR,
+        "Kundenportal-URL konnte nicht erzeugt werden.",
+    );
+
+    return session.url;
+}

@@ -1,6 +1,10 @@
 import { OK, UNAUTHORIZED } from "@/constants/http";
 import { createCheckoutSessionSchema } from "@/schemas/billing.schemas";
-import { createCheckoutSessionUrl } from "@/services/billing.service";
+import {
+    createBillingPortalSessionUrl,
+    createCheckoutSessionUrl,
+    getBillingSubscriptionForOrg,
+} from "@/services/billing.service";
 import appAssert from "@/utils/appAssert";
 import catchErrors from "@/utils/catchErrors";
 
@@ -17,6 +21,13 @@ export const createCheckoutSession = catchErrors(async (req, res) => {
     return res.status(OK).json({ url });
 });
 
+export const createBillingPortalSession = catchErrors(async (req, res) => {
+    const organizationId = req.orgId;
+    appAssert(organizationId, UNAUTHORIZED, "Missing auth context");
+
+    const url = await createBillingPortalSessionUrl(organizationId);
+    return res.status(OK).json({ url });
+});
 
 export const getBillingSubscription = catchErrors(async (req, res) => {
     const organizationId = req.orgId;
