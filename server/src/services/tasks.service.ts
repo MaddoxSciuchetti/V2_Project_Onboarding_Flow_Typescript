@@ -7,17 +7,20 @@ export type TaskHistoryChange = {
     to: string | null;
 };
 
-export type TaskHistoryEntry = {
+export type TaskHistoryActorJson = {
+    id: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    avatarUrl: string | null;
+};
+
+export type TaskHistoryAuditEntry = {
+    kind: "audit";
     id: string;
     action: string;
     createdAt: Date;
-    actorUser: {
-        id: string;
-        email: string;
-        firstName: string;
-        lastName: string;
-        avatarUrl: string | null;
-    } | null;
+    actorUser: TaskHistoryActorJson | null;
     status: {
         id: string;
         name: string;
@@ -25,6 +28,17 @@ export type TaskHistoryEntry = {
     } | null;
     changes: TaskHistoryChange[];
 };
+
+export type TaskHistoryCommentEntry = {
+    kind: "comment";
+    id: string;
+    body: string;
+    createdAt: Date;
+    updatedAt: Date;
+    user: TaskHistoryActorJson;
+};
+
+export type TaskHistoryItem = TaskHistoryAuditEntry | TaskHistoryCommentEntry;
 
 export const queryTasks = async (orgId: string) => {
     return prisma.issue.findMany({
@@ -208,7 +222,7 @@ function collectReferencedIds(
 export async function getTaskHistoryInOrg(
     orgId: string,
     taskId: string,
-): Promise<TaskHistoryEntry[]> {
+): Promise<TaskHistoryItem[]> {
     const task = await prisma.issue.findFirst({
         where: {
             id: taskId,
@@ -278,7 +292,7 @@ export async function getTaskHistoryInOrg(
         },
     };
 
-    return logs.map((log) => {
+    const auditItems: TaskHistoryAuditEntry[] = logs.map((log) => {
         const newObj =
             log.newValue && typeof log.newValue === "object"
                 ? (log.newValue as Record<string, unknown>)
@@ -289,6 +303,7 @@ export async function getTaskHistoryInOrg(
                 : null;
 
         return {
+            kind: "audit" as const,
             id: log.id,
             action: log.action,
             createdAt: log.createdAt,
@@ -304,5 +319,107 @@ export async function getTaskHistoryInOrg(
             status: newStatusId ? (statusById.get(newStatusId) ?? null) : null,
             changes: diffAuditValues(log.oldValue, log.newValue, resolvers),
         };
+    });
+
+    const comments = await prisma.comment.findMany({
+        where: { issueId: taskId },
+        orderBy: { createdAt: "asc" },
+        include: {
+            user: {
+                select: {
+                    id: true,
+                    email: true,
+                    firstName: true,
+                    lastName: true,
+                    avatarUrl: true,
+                },
+            },
+        },
+    });
+
+    const commentItems: TaskHistoryCommentEntry[] = comments.map((c) => ({
+        kind: "comment" as const,
+        id: c.id,
+        body: c.body,
+        createdAt: c.createdAt,
+        updatedAt: c.updatedAt,
+        user: {
+            id: c.user.id,
+            email: c.user.email,
+            firstName: c.user.firstName,
+            lastName: c.user.lastName,
+            avatarUrl: c.user.avatarUrl,
+        },
+    }));
+
+    const merged: TaskHistoryItem[] = [...auditItems, ...commentItems];
+    merged.sort(
+        (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
+    );
+    return merged;
+}
+
+export async function upsertIssueCommentInOrg(
+    orgId: string,
+    userId: string,
+    issueId: string,
+    payload: { body: string; commentId?: string | null },
+) {
+    const body = payload.body.trim();
+    if (!body) {
+        throw new Error("Comment cannot be empty");
+    }
+
+    const issue = await prisma.issue.findFirst({
+        where: {
+            id: issueId,
+            workerEngagement: { organizationId: orgId },
+        },
+        select: { id: true },
+    });
+    if (!issue) {
+        throw new Error("Task not found for organization");
+    }
+
+    if (payload.commentId) {
+        const existing = await prisma.comment.findFirst({
+            where: { id: payload.commentId, issueId },
+        });
+        if (!existing) {
+            throw new Error("Comment not found");
+        }
+        if (existing.userId !== userId) {
+            throw new Error("You can only edit your own comments");
+        }
+        return prisma.comment.update({
+            where: { id: existing.id },
+            data: { body },
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        email: true,
+                        firstName: true,
+                        lastName: true,
+                        avatarUrl: true,
+                    },
+                },
+            },
+        });
+    }
+
+    return prisma.comment.create({
+        data: { issueId, userId, body },
+        include: {
+            user: {
+                select: {
+                    id: true,
+                    email: true,
+                    firstName: true,
+                    lastName: true,
+                    avatarUrl: true,
+                },
+            },
+        },
     });
 }
