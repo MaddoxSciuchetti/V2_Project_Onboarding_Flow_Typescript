@@ -1,4 +1,4 @@
-import { UNAUTHORIZED } from '@/constants/http.consts';
+import { FORBIDDEN, UNAUTHORIZED } from '@/constants/http.consts';
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import { API_URL } from './env';
 import queryClient from './query.client';
@@ -12,6 +12,9 @@ TokenRefreshClient.interceptors.response.use((response) => response.data);
 
 const isInvalidAccessToken = (status: number, data: ApiErrorResponse) =>
   status === UNAUTHORIZED && data?.errorCode === 'InvalidAccessToken';
+
+const isSubscriptionAccessDenied = (status: number, data: ApiErrorResponse) =>
+  status === FORBIDDEN && data?.errorCode === 'SubscriptionAccessDenied';
 
 const handleTokenRefresh = async (config: AxiosRequestConfig) => {
   try {
@@ -44,6 +47,12 @@ API.interceptors.response.use(
 
     if (isInvalidAccessToken(status, data)) {
       return handleTokenRefresh(config);
+    }
+
+    if (isSubscriptionAccessDenied(status, data)) {
+      if (!window.location.pathname.startsWith('/settings/payments')) {
+        window.location.assign('/settings/payments');
+      }
     }
 
     return Promise.reject({ status, ...data });
