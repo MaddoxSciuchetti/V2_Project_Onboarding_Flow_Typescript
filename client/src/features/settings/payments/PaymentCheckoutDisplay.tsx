@@ -1,14 +1,14 @@
 import { Table } from '@/components/ui/selfmade/table/Table';
+import { Link } from '@tanstack/react-router';
 import { PlanRow } from './PlanRow';
 import { SubscriptionRow } from './SubscriptionRow';
 import { PAYMENT_PLANS } from './payments.consts';
-import { trialDaysRemainingLabel } from './trialUtils';
+import { trialDaysRemainingLabel } from './util/trial.util';
 
 type PaymentCheckoutDisplayProps = {
   hasActiveSubscription: boolean;
   planName: string;
   trialEndsAt: string | null;
-  /** Stripe could not collect payment — user should fix method in portal. */
   showPastDueNotice?: boolean;
   pendingPriceId: string | null;
   isPortalLoading?: boolean;
@@ -54,13 +54,21 @@ export function PaymentCheckoutDisplay({
           </p>
         ) : null}
         {trialDaysLine ? (
-          <p className="typo-body-sm font-medium text-foreground">{trialDaysLine}</p>
+          <p className="typo-body-sm font-medium text-foreground">
+            {trialDaysLine}
+          </p>
         ) : null}
         {trialEndFormatted ? (
           <p className="typo-body-sm text-muted-foreground">
             Endet am {trialEndFormatted}
           </p>
         ) : null}
+        <Link
+          to="/settings/plans"
+          className="typo-body-sm font-medium text-interactive-primary-bg underline-offset-4 hover:underline"
+        >
+          Pläne vergleichen
+        </Link>
       </div>
       <Table className="w-200">
         {hasActiveSubscription ? (
