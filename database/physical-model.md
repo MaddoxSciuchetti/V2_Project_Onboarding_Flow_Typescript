@@ -1,3 +1,3 @@
 # Physical Data Model
 
-![Physical data model](./physicalmodel.png)
+![Physical data model](./physical-datamodel.png)

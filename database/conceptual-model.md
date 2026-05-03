@@ -1,3 +1,3 @@
 # Conceptual Data Model
 
-![Conceptual data model](./conceptualmodel.png)
+![Conceptual data model](./conceptual-datamodel.png)
