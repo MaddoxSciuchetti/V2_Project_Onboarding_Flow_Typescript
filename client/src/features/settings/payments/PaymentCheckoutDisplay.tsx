@@ -5,7 +5,7 @@ import { SubscriptionRow } from './SubscriptionRow';
 import { PAYMENT_PLANS } from './payments.consts';
 import { trialDaysRemainingLabel } from './util/trial.util';
 
-type PaymentCheckoutDisplayProps = {
+type PaymentPanDisplayProps = {
   hasActiveSubscription: boolean;
   planName: string;
   trialEndsAt: string | null;
@@ -16,7 +16,7 @@ type PaymentCheckoutDisplayProps = {
   onManageBilling: () => void;
 };
 
-export function PaymentCheckoutDisplay({
+export function PaymentPlanDisplay({
   hasActiveSubscription,
   planName,
   trialEndsAt,
@@ -25,7 +25,7 @@ export function PaymentCheckoutDisplay({
   isPortalLoading = false,
   onSubscribe,
   onManageBilling,
-}: PaymentCheckoutDisplayProps) {
+}: PaymentPanDisplayProps) {
   const showTrial = Boolean(trialEndsAt) && !hasActiveSubscription;
   const trialEndFormatted =
     showTrial && trialEndsAt
