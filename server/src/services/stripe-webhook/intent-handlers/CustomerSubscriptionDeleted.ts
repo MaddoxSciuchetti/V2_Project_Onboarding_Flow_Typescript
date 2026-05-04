@@ -1,11 +1,11 @@
 import { prisma } from "@/lib/prisma";
 import { appendSubscriptionAuditLog } from "@/services/subscriptionAudit.service";
-import { asStripeSubscription } from "@/utils/stripeSubscriptionWebhook";
+import { StripeSubscriptionResource } from "@/types/stipe.types";
 
 export async function handleCustomerSubscriptionDeleted(
     rawSubscription: unknown,
 ): Promise<void> {
-    const stripeSub = asStripeSubscription(rawSubscription);
+    const stripeSub = rawSubscription as unknown as StripeSubscriptionResource;
     const row = await prisma.subscription.findFirst({
         where: { stripeSubscriptionId: stripeSub.id },
     });
