@@ -2,7 +2,10 @@ import { STRIPE_SECRET_KEY } from "@/constants/env";
 import { prisma } from "@/lib/prisma";
 import { appendSubscriptionAuditLog } from "@/services/subscriptionAudit.service";
 import { StripeSubscriptionResource } from "@/types/stipe.types";
-import { buildSubscriptionDbFieldsFromStripeSubscription } from "@/utils/stripeSubscriptionWebhook";
+import {
+    extractCardFieldsFromStripeSubscription,
+    mapStripeSubscriptionStatus,
+} from "@/utils/stripeSubscriptionWebhook";
 import type { SubscriptionPlan } from "@prisma/client";
 import Stripe from "stripe";
 
@@ -14,8 +17,39 @@ export async function upsertSubscriptionForOrg(
     plan: SubscriptionPlan | null,
     actorUserId: string | null,
 ) {
-    const stripeFields =
-        buildSubscriptionDbFieldsFromStripeSubscription(stripeSub);
+    const mapSubscription = () => {
+        const customerRaw = stripeSub.customer;
+        const customerId =
+            typeof customerRaw === "string"
+                ? customerRaw
+                : customerRaw && typeof customerRaw === "object"
+                  ? customerRaw.id
+                  : null;
+        if (!customerId || typeof customerId !== "string") {
+            throw new Error("Stripe subscription missing customer id");
+        }
+
+        return {
+            status: mapStripeSubscriptionStatus(stripeSub.status),
+            provider: "stripe",
+            stripeSubscriptionId: stripeSub.id,
+            stripeCustomerId: customerId,
+            currentPeriodStart:
+                stripeSub.current_period_start != null
+                    ? new Date(stripeSub.current_period_start * 1000)
+                    : null,
+            currentPeriodEnd:
+                stripeSub.current_period_end != null
+                    ? new Date(stripeSub.current_period_end * 1000)
+                    : null,
+            trialEndsAt:
+                stripeSub.trial_end != null
+                    ? new Date(stripeSub.trial_end * 1000)
+                    : null,
+            ...extractCardFieldsFromStripeSubscription(stripeSub),
+        };
+    };
+    const stripeFields = mapSubscription();
 
     const existing = await prisma.subscription.findUnique({
         where: { organizationId },
@@ -26,7 +60,7 @@ export async function upsertSubscriptionForOrg(
         create: {
             organizationId,
             ...stripeFields,
-            plan: plan ?? null,
+            plan,
         },
         update: {
             ...stripeFields,
