@@ -11,10 +11,7 @@ export async function stripeWebhookHandler(
     next: NextFunction,
 ): Promise<void> {
     const signature = req.headers["stripe-signature"];
-    // stripe webhook event
-    let e: Stripe.Event;
-
-    e = stripe.webhooks.constructEvent(
+    const e = stripe.webhooks.constructEvent(
         req.body,
         signature!,
         STRIPE_WEBHOOK_SECRET,
