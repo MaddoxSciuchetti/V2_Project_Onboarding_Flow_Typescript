@@ -107,4 +107,44 @@ describe("handleCheckoutSessionCompleted", () => {
             "user_1",
         );
     });
+
+    it("passes SubscriptionPlan resolved from first line item (mapped price id, then lookup_key)", async () => {
+        const retrievedByPriceId = stripeRetrieveSubscriptionFixture({
+            items: {
+                data: [
+                    {
+                        price: {
+                            id: KNOWN_PRICE_ID_STARTER,
+                        },
+                    },
+                ],
+            },
+        });
+        mockRetrieve.mockResolvedValue(retrievedByPriceId as never);
+
+        const session = handlerCheckoutSessionFixture();
+        await handleCheckoutSessionCompleted(session);
+
+        expect(mockUpsert).toHaveBeenCalledWith(
+            "org_1",
+            retrievedByPriceId,
+            "starter",
+            "user_1",
+        );
+
+        const retrievedByLookupKey = stripeRetrieveSubscriptionFixture({
+            items: {
+                data: [{ price: { lookup_key: "pro" } }],
+            },
+        });
+        mockRetrieve.mockResolvedValue(retrievedByLookupKey as never);
+        await handleCheckoutSessionCompleted(session);
+
+        expect(mockUpsert.mock.calls.at(-1)).toEqual([
+            "org_1",
+            retrievedByLookupKey,
+            "pro",
+            "user_1",
+        ]);
+    });
 });
