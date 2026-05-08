@@ -112,12 +112,12 @@ describe("handleCheckoutSessionCompleted", () => {
         });
 
         expect(mockUpsert).toHaveBeenCalledTimes(1);
-        expect(mockUpsert).toHaveBeenCalledWith(
-            "org_1",
-            stripeRetrieveSubscriptionFixture(),
-            "starter",
-            "user_1",
-        );
+        expect(mockUpsert).toHaveBeenCalledWith({
+            organizationId: "org_1",
+            stripeSub: stripeRetrieveSubscriptionFixture(),
+            plan: "starter",
+            actorUserId: "user_1",
+        });
     });
 
     it("calls retrieve with expanded subscription object's id when subscription is not a string", async () => {
@@ -132,12 +132,12 @@ describe("handleCheckoutSessionCompleted", () => {
             expand: ["default_payment_method", "items.data.price"],
         });
 
-        expect(mockUpsert).toHaveBeenCalledWith(
-            "org_1",
-            stripeRetrieveSubscriptionFixture(),
-            "starter",
-            "user_1",
-        );
+        expect(mockUpsert).toHaveBeenCalledWith({
+            organizationId: "org_1",
+            stripeSub: stripeRetrieveSubscriptionFixture(),
+            plan: "starter",
+            actorUserId: "user_1",
+        });
     });
 
     it("passes SubscriptionPlan resolved from first line item (mapped price id, then lookup_key)", async () => {
@@ -157,12 +157,12 @@ describe("handleCheckoutSessionCompleted", () => {
         const session = handlerCheckoutSessionFixture();
         await handleCheckoutSessionCompleted(session);
 
-        expect(mockUpsert).toHaveBeenCalledWith(
-            "org_1",
-            retrievedByPriceId,
-            "starter",
-            "user_1",
-        );
+        expect(mockUpsert).toHaveBeenCalledWith({
+            organizationId: "org_1",
+            stripeSub: retrievedByPriceId,
+            plan: "starter",
+            actorUserId: "user_1",
+        });
 
         const retrievedByLookupKey = stripeRetrieveSubscriptionFixture({
             items: {
@@ -172,12 +172,12 @@ describe("handleCheckoutSessionCompleted", () => {
         mockRetrieve.mockResolvedValue(retrievedByLookupKey as never);
         await handleCheckoutSessionCompleted(session);
 
-        expect(mockUpsert.mock.calls.at(-1)).toEqual([
-            "org_1",
-            retrievedByLookupKey,
-            "pro",
-            "user_1",
-        ]);
+        expect(mockUpsert.mock.calls.at(-1)?.[0]).toEqual({
+            organizationId: "org_1",
+            stripeSub: retrievedByLookupKey,
+            plan: "pro",
+            actorUserId: "user_1",
+        });
     });
 
     it("passes null actorUserId when metadata omits user_id", async () => {
@@ -187,12 +187,12 @@ describe("handleCheckoutSessionCompleted", () => {
 
         await handleCheckoutSessionCompleted(session);
 
-        expect(mockUpsert).toHaveBeenCalledWith(
-            "org_only",
-            stripeRetrieveSubscriptionFixture(),
-            "starter",
-            null,
-        );
+        expect(mockUpsert).toHaveBeenCalledWith({
+            organizationId: "org_only",
+            stripeSub: stripeRetrieveSubscriptionFixture(),
+            plan: "starter",
+            actorUserId: null,
+        });
     });
 
     it("rejects checkout session completed without organization_id", async () => {
