@@ -1,6 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
 
-/** One `constructEvent` fn per mocked `Stripe` client (controller instantiates exactly one). */
 const mockConstructFns: jest.Mock[] = [];
 
 jest.mock("stripe", () => ({
@@ -16,27 +15,38 @@ jest.mock("stripe", () => ({
     }),
 }));
 
-jest.mock("@/services/stripe-webhook/intent-handlers/CheckoutSessionCompleted", () => ({
-    handleCheckoutSessionCompleted: jest.fn(),
-}));
+jest.mock(
+    "@/services/stripe-webhook/intent-handlers/CheckoutSessionCompleted",
+    () => ({
+        handleCheckoutSessionCompleted: jest.fn(),
+    }),
+);
 
-jest.mock("@/services/stripe-webhook/intent-handlers/CustomerSubscriptionDeleted", () => ({
-    handleCustomerSubscriptionDeleted: jest.fn(),
-}));
+jest.mock(
+    "@/services/stripe-webhook/intent-handlers/CustomerSubscriptionDeleted",
+    () => ({
+        handleCustomerSubscriptionDeleted: jest.fn(),
+    }),
+);
 
-jest.mock("@/services/stripe-webhook/intent-handlers/CustomerSubscriptionWrite", () => ({
-    handleCustomerSubscriptionWrite: jest.fn(),
-}));
+jest.mock(
+    "@/services/stripe-webhook/intent-handlers/CustomerSubscriptionWrite",
+    () => ({
+        handleCustomerSubscriptionWrite: jest.fn(),
+    }),
+);
 
 jest.mock("@/services/stripe-webhook/intent-handlers/InvoiceWrite", () => ({
     handleInvoiceWrite: jest.fn(),
 }));
 
 import { STRIPE_WEBHOOK_SECRET } from "@/constants/env";
-import { handleCheckoutSessionCompleted } from "@/services/stripe-webhook/intent-handlers/CheckoutSessionCompleted";
 import { stripeWebhookHandler } from "@/controllers/stripeWebhook.controller";
+import { handleCheckoutSessionCompleted } from "@/services/stripe-webhook/intent-handlers/CheckoutSessionCompleted";
+import { handleCustomerSubscriptionWrite } from "@/services/stripe-webhook/intent-handlers/CustomerSubscriptionWrite";
 
 const mockCheckout = jest.mocked(handleCheckoutSessionCompleted);
+const mockSubscriptionWrite = jest.mocked(handleCustomerSubscriptionWrite);
 
 if (mockConstructFns.length !== 1) {
     throw new Error(
@@ -64,12 +74,15 @@ describe("stripeWebhookHandler (integration)", () => {
         mockConstructEvent.mockReset();
         mockConstructEvent.mockImplementation(() => {
             throw new Error(
-                "mockConstructEvent: configure checkout event in each test",
+                "mockConstructEvent: set event shape in each test",
             );
         });
 
         mockCheckout.mockReset();
         mockCheckout.mockResolvedValue(undefined);
+
+        mockSubscriptionWrite.mockReset();
+        mockSubscriptionWrite.mockResolvedValue(undefined);
     });
 
     afterEach(() => {
@@ -83,12 +96,15 @@ describe("stripeWebhookHandler (integration)", () => {
             metadata: { organization_id: "org_z3" },
         };
 
-        mockConstructEvent.mockImplementationOnce(() => ({
-            id: "evt_checkout_done",
-            object: "event",
-            type: "checkout.session.completed",
-            data: { object: session },
-        }) as never);
+        mockConstructEvent.mockImplementationOnce(
+            () =>
+                ({
+                    id: "evt_checkout_done",
+                    object: "event",
+                    type: "checkout.session.completed",
+                    data: { object: session },
+                }) as never,
+        );
 
         const { req, res, next } = mockWebhookRequestResponse();
 
@@ -103,6 +119,36 @@ describe("stripeWebhookHandler (integration)", () => {
 
         expect(mockCheckout).toHaveBeenCalledTimes(1);
         expect(mockCheckout).toHaveBeenCalledWith(session);
+
+        expect(res.json).toHaveBeenCalledWith({ received: true });
+        expect(next).not.toHaveBeenCalled();
+    });
+
+    it("routes customer.subscription.updated to subscription write handler and acknowledges", async () => {
+        const subscriptionPayload = {
+            id: "sub_integration",
+            object: "subscription" as const,
+        };
+
+        mockConstructEvent.mockImplementationOnce(
+            () =>
+                ({
+                    id: "evt_sub_updated",
+                    object: "event",
+                    type: "customer.subscription.updated",
+                    data: { object: subscriptionPayload },
+                }) as never,
+        );
+
+        const { req, res, next } = mockWebhookRequestResponse();
+
+        await stripeWebhookHandler(req, res, next);
+
+        expect(mockCheckout).not.toHaveBeenCalled();
+        expect(mockSubscriptionWrite).toHaveBeenCalledTimes(1);
+        expect(mockSubscriptionWrite).toHaveBeenCalledWith(
+            subscriptionPayload,
+        );
 
         expect(res.json).toHaveBeenCalledWith({ received: true });
         expect(next).not.toHaveBeenCalled();
