@@ -27,8 +27,6 @@ export async function stripeWebhookHandler(
         return;
     }
 
-    console.log("[stripe webhook]", event.type);
-
     try {
         await dispatchStripeWebhookEvent(event);
 

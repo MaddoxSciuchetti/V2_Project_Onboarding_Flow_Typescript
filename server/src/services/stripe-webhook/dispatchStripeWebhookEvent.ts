@@ -33,6 +33,6 @@ export async function dispatchStripeWebhookEvent(
             break;
         }
         default:
-            console.log(`Unhandled event type ${e.type}`);
+            break;
     }
 }
