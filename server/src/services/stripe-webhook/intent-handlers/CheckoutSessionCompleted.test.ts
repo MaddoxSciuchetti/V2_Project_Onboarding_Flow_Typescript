@@ -87,4 +87,24 @@ describe("handleCheckoutSessionCompleted", () => {
             "user_1",
         );
     });
+
+    it("calls retrieve with expanded subscription object's id when subscription is not a string", async () => {
+        const session = handlerCheckoutSessionFixture({
+            subscription: { id: "sub_expanded" } as Stripe.Subscription,
+        });
+
+        await handleCheckoutSessionCompleted(session);
+
+        expect(mockRetrieve).toHaveBeenCalledTimes(1);
+        expect(mockRetrieve).toHaveBeenCalledWith("sub_expanded", {
+            expand: ["default_payment_method", "items.data.price"],
+        });
+
+        expect(mockUpsert).toHaveBeenCalledWith(
+            "org_1",
+            stripeRetrieveSubscriptionFixture(),
+            "starter",
+            "user_1",
+        );
+    });
 });
