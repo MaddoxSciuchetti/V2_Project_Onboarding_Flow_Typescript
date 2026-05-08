@@ -179,21 +179,16 @@ describe("handleCheckoutSessionCompleted", () => {
         );
     });
 
-    it("characterizes missing subscription: retrieve called with undefined id, upsert still runs", async () => {
+    it("rejects checkout session completed without subscription id", async () => {
         const session = handlerCheckoutSessionFixture({
             subscription: null,
         });
 
-        await handleCheckoutSessionCompleted(session);
-
-        expect(mockRetrieve).toHaveBeenCalledWith(undefined, {
-            expand: ["default_payment_method", "items.data.price"],
-        });
-        expect(mockUpsert).toHaveBeenCalledWith(
-            "org_1",
-            stripeRetrieveSubscriptionFixture(),
-            "starter",
-            "user_1",
+        await expect(handleCheckoutSessionCompleted(session)).rejects.toThrow(
+            "Subscription ID is required",
         );
+
+        expect(mockRetrieve).not.toHaveBeenCalled();
+        expect(mockUpsert).not.toHaveBeenCalled();
     });
 });
