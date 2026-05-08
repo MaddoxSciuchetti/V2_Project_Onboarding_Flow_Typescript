@@ -5,5 +5,6 @@ export function useFetchEngagements() {
   const { data, isLoading, isError } = useQuery(
     engagementQueries.fetchEngagements()
   );
+
   return { data, isLoading, isError };
 }

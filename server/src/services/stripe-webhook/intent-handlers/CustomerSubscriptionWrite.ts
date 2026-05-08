@@ -1,23 +1,18 @@
 import { prisma } from "@/lib/prisma";
-import {
-    stripe,
-    SUBSCRIPTION_EXPAND,
-    upsertSubscriptionForOrg,
-} from "@/services/stripe-webhook/service/stripeWebhook.service";
-import {
-    asStripeSubscription,
-    normalizeLineItemPrice,
-    resolvePlanFromLineItemPrice,
-} from "@/utils/stripeSubscriptionWebhook";
+import { upsertSubscriptionForOrg } from "@/services/stripe-webhook/service/stripeWebhook.service";
+import { stripe } from "@/stripeClient";
+import { StripeSubscriptionResource } from "@/types/stripe.types";
+import { resolvePlanFromLineItemPrice } from "@/utils/stripeSubscriptionWebhook";
 
 export async function handleCustomerSubscriptionWrite(
     rawSubscription: unknown,
 ): Promise<void> {
-    const stripeSubRaw = asStripeSubscription(rawSubscription);
+    const stripeSubRaw =
+        rawSubscription as unknown as StripeSubscriptionResource;
     const retrieved = await stripe.subscriptions.retrieve(stripeSubRaw.id, {
-        expand: [...SUBSCRIPTION_EXPAND],
+        expand: ["default_payment_method", "items.data.price"],
     });
-    const stripeSub = asStripeSubscription(retrieved);
+    const stripeSub = retrieved as unknown as StripeSubscriptionResource;
     const fromMeta = stripeSub.metadata?.organization_id?.trim() || null;
     const row =
         fromMeta === null
@@ -38,8 +33,13 @@ export async function handleCustomerSubscriptionWrite(
 
     const item = stripeSub.items.data[0];
     const plan = resolvePlanFromLineItemPrice(
-        normalizeLineItemPrice(item?.price),
+        item?.price as { id?: string; lookup_key?: string | null } | null,
     );
 
-    await upsertSubscriptionForOrg(organizationId, stripeSub, plan, null);
+    await upsertSubscriptionForOrg({
+        organizationId,
+        stripeSub,
+        plan,
+        actorUserId: null,
+    });
 }

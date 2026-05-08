@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 import { useBillingSubscription } from './hooks/useBillingSubscription';
 import { useCheckSubscriptionStatus } from './hooks/useCheckSubscriptionStatus';
 import { useSubscriptionTrialEnds } from './hooks/useSubscriptionTrialEnds';
-import { PaymentCheckoutDisplay } from './PaymentCheckoutDisplay';
+import { PaymentPlanDisplay } from './PaymentCheckoutDisplay';
 import {
   createBillingPortalSession,
   createCheckoutSession,
@@ -46,6 +46,7 @@ function Payments() {
 
   const hasActiveSubscription =
     hasStripeManagedSubscription(subscription) || status === 'success';
+
   const planName = paymentPlanLabel(subscription?.plan ?? null);
 
   if (isSubscriptionPending) {
@@ -61,7 +62,7 @@ function Payments() {
 
   return (
     <div className="mx-auto flex h-full flex-col overflow-auto rounded-2xl bg-card p-6 text-card-foreground md:max-w-8xl">
-      <PaymentCheckoutDisplay
+      <PaymentPlanDisplay
         hasActiveSubscription={hasActiveSubscription}
         planName={planName}
         trialEndsAt={trialEndsAt}

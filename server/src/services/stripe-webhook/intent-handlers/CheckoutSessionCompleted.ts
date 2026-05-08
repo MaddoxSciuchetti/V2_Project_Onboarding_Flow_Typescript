@@ -1,66 +1,54 @@
-import {
-    stripe,
-    SUBSCRIPTION_EXPAND,
-    upsertSubscriptionForOrg,
-} from "@/services/stripe-webhook/service/stripeWebhook.service";
-import {
-    asStripeSubscription,
-    normalizeLineItemPrice,
-    resolvePlanFromLineItemPrice,
-} from "@/utils/stripeSubscriptionWebhook";
+import { upsertSubscriptionForOrg } from "@/services/stripe-webhook/service/stripeWebhook.service";
+import { resolveCheckoutSessionSubscriptionId } from "@/services/stripe-webhook/util/checkoutSessionSubscription.util";
+import { stripe } from "@/stripeClient";
+import { resolvePlanFromLineItemPrice } from "@/utils/stripeSubscriptionWebhook";
 import Stripe from "stripe";
 
 export async function handleCheckoutSessionCompleted(
     session: Stripe.Checkout.Session,
 ): Promise<void> {
-    if (session.mode !== "subscription") {
-        return;
-    }
-    if (session.payment_status !== "paid") {
-        console.warn(
-            "[stripe webhook] checkout.session.completed skipped (not paid)",
-            session.id,
-            session.payment_status,
-        );
-        return;
-    }
-
-    const organizationId = session.metadata?.organization_id;
+    const sessionMetadata = session.metadata;
+    const organizationId = sessionMetadata?.organization_id;
+    const actorUserId = sessionMetadata?.user_id ?? null;
     if (!organizationId) {
-        console.error(
-            "[stripe webhook] checkout.session.completed missing metadata.organization_id",
-            session.id,
-        );
-        return;
+        throw new Error("Organization ID is required");
     }
-
-    const actorUserId = session.metadata?.user_id ?? null;
-    const subId =
-        typeof session.subscription === "string"
-            ? session.subscription
-            : session.subscription?.id;
-
-    if (!subId) {
-        console.error(
-            "[stripe webhook] checkout.session.completed missing subscription id",
-            session.id,
-        );
-        return;
+    const subscriptionId = resolveCheckoutSessionSubscriptionId(session);
+    if (!subscriptionId) {
+        throw new Error("Subscription ID is required");
     }
-
-    const retrieved = await stripe.subscriptions.retrieve(subId, {
-        expand: [...SUBSCRIPTION_EXPAND],
-    });
-    const stripeSub = asStripeSubscription(retrieved);
-    const item = stripeSub.items.data[0];
-    const plan = resolvePlanFromLineItemPrice(
-        normalizeLineItemPrice(item?.price),
+    const retrievedSubscription = await stripe.subscriptions.retrieve(
+        subscriptionId,
+        {
+            expand: ["default_payment_method", "items.data.price"],
+        },
     );
 
-    await upsertSubscriptionForOrg(
+    await upsertOrgSubscriptionFromCheckoutRetrieve(
         organizationId,
-        stripeSub,
+        actorUserId,
+        retrievedSubscription,
+    );
+}
+async function upsertOrgSubscriptionFromCheckoutRetrieve(
+    organizationId: string,
+    actorUserId: string | null,
+    subscription: Stripe.Subscription,
+): Promise<void> {
+    const item = subscription.items.data[0];
+    const linePrice = item?.price;
+    const plan = resolvePlanFromLineItemPrice(
+        typeof linePrice === "string"
+            ? { id: linePrice }
+            : linePrice && "deleted" in linePrice
+              ? null
+              : (linePrice ?? null),
+    );
+
+    await upsertSubscriptionForOrg({
+        organizationId,
+        stripeSub: subscription,
         plan,
         actorUserId,
-    );
+    });
 }

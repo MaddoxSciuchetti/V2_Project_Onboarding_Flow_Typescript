@@ -46,27 +46,27 @@ export function TaskSidebar({
   const commentOptions =
     taskState === 'edit'
       ? {
-            getCommentDraft: () => ({
-              body: commentText,
-              commentId: editingCommentId,
-            }),
-            persistComment: async (args: {
-              taskId: string;
-              body: string;
-              commentId: string | null;
-            }) => {
-              await saveComment.mutateAsync(args);
-              setCommentText('');
-              setEditingCommentId(null);
-            },
-          }
+          getCommentDraft: () => ({
+            body: commentText,
+            commentId: editingCommentId,
+          }),
+          persistComment: async (args: {
+            taskId: string;
+            body: string;
+            commentId: string | null;
+          }) => {
+            await saveComment.mutateAsync(args);
+            setCommentText('');
+            setEditingCommentId(null);
+          },
+        }
       : undefined;
 
   const { register, control, errors, onSubmit, isTaskSaving } = useTasks(
     taskEditState,
     taskState,
     setIsOpen,
-    commentOptions,
+    commentOptions
   );
 
   const { data: employees = [] } = useQuery(employeeQueries.getEmployees());
