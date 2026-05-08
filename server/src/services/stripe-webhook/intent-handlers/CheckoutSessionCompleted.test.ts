@@ -11,6 +11,7 @@ jest.mock("@/services/stripe-webhook/service/stripeWebhook.service", () => ({
 }));
 
 import { handleCheckoutSessionCompleted } from "@/services/stripe-webhook/intent-handlers/CheckoutSessionCompleted";
+import { resolveCheckoutSessionSubscriptionId } from "@/services/stripe-webhook/util/checkoutSessionSubscription.util";
 import {
     stripe,
     upsertSubscriptionForOrg,
@@ -57,6 +58,37 @@ function handlerCheckoutSessionFixture(
         ...overrides,
     } as unknown as Stripe.Checkout.Session;
 }
+
+describe("resolveCheckoutSessionSubscriptionId", () => {
+    it("returns subscription when session holds a string subscription id", () => {
+        const session = handlerCheckoutSessionFixture({
+            subscription: "sub_str",
+        });
+        expect(resolveCheckoutSessionSubscriptionId(session)).toBe("sub_str");
+    });
+
+    it("returns id from expanded subscription object when subscription is not a string", () => {
+        const session = handlerCheckoutSessionFixture({
+            subscription: { id: "sub_obj" } as Stripe.Subscription,
+        });
+        expect(resolveCheckoutSessionSubscriptionId(session)).toBe("sub_obj");
+    });
+
+    it("returns undefined when subscription is absent or object has no id", () => {
+        expect(
+            resolveCheckoutSessionSubscriptionId(
+                handlerCheckoutSessionFixture({ subscription: null }),
+            ),
+        ).toBeUndefined();
+        expect(
+            resolveCheckoutSessionSubscriptionId(
+                handlerCheckoutSessionFixture({
+                    subscription: {} as Stripe.Subscription,
+                }),
+            ),
+        ).toBeUndefined();
+    });
+});
 
 describe("handleCheckoutSessionCompleted", () => {
     beforeEach(() => {
