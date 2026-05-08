@@ -1,4 +1,3 @@
-import type { StripeSubscriptionResource } from "@/types/stripe.types";
 import type Stripe from "stripe";
 
 jest.mock("@/stripeClient", () => ({
@@ -28,8 +27,8 @@ const mockUpsert = upsertSubscriptionForOrg as jest.MockedFunction<
 const KNOWN_PRICE_ID_STARTER = "price_1TSLW4IFABFY32sSl8hcCUBE";
 
 function stripeRetrieveSubscriptionFixture(
-    overrides: Partial<StripeSubscriptionResource> = {},
-): StripeSubscriptionResource {
+    overrides: Partial<Stripe.Subscription> = {},
+): Stripe.Subscription {
     return {
         id: "sub_fixture",
         status: "active",
@@ -39,10 +38,14 @@ function stripeRetrieveSubscriptionFixture(
         trial_end: null,
         metadata: {},
         items: {
-            data: [{ price: { id: KNOWN_PRICE_ID_STARTER } }],
+            data: [
+                {
+                    price: { id: KNOWN_PRICE_ID_STARTER } as Stripe.Price,
+                } as Stripe.SubscriptionItem,
+            ],
         },
         ...overrides,
-    };
+    } as Stripe.Subscription;
 }
 
 function handlerCheckoutSessionFixture(
@@ -148,10 +151,10 @@ describe("handleCheckoutSessionCompleted", () => {
                     {
                         price: {
                             id: KNOWN_PRICE_ID_STARTER,
-                        },
-                    },
+                        } as Stripe.Price,
+                    } as Stripe.SubscriptionItem,
                 ],
-            },
+            } as Stripe.Subscription["items"],
         });
         mockRetrieve.mockResolvedValue(retrievedByPriceId as never);
 
@@ -167,8 +170,12 @@ describe("handleCheckoutSessionCompleted", () => {
 
         const retrievedByLookupKey = stripeRetrieveSubscriptionFixture({
             items: {
-                data: [{ price: { lookup_key: "pro" } }],
-            },
+                data: [
+                    {
+                        price: { lookup_key: "pro" } as Stripe.Price,
+                    } as Stripe.SubscriptionItem,
+                ],
+            } as Stripe.Subscription["items"],
         });
         mockRetrieve.mockResolvedValue(retrievedByLookupKey as never);
         await handleCheckoutSessionCompleted(session);
