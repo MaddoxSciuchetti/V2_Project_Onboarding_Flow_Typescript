@@ -1,9 +1,8 @@
-import { STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET } from "@/constants/env";
+import { STRIPE_WEBHOOK_SECRET } from "@/constants/env";
 import { dispatchStripeWebhookEvent } from "@/services/stripe-webhook/dispatchStripeWebhookEvent";
+import { stripe } from "@/stripeClient";
 import type { NextFunction, Request, Response } from "express";
-import Stripe from "stripe";
-
-const stripe = new Stripe(STRIPE_SECRET_KEY);
+import type Stripe from "stripe";
 
 export async function stripeWebhookHandler(
     req: Request,

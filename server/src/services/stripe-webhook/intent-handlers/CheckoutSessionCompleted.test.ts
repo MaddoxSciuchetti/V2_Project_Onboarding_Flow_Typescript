@@ -14,9 +14,9 @@ jest.mock("@/services/stripe-webhook/service/stripeWebhook.service", () => ({
 }));
 
 import { handleCheckoutSessionCompleted } from "@/services/stripe-webhook/intent-handlers/CheckoutSessionCompleted";
-import { stripe } from "@/stripeClient";
 import { upsertSubscriptionForOrg } from "@/services/stripe-webhook/service/stripeWebhook.service";
 import { resolveCheckoutSessionSubscriptionId } from "@/services/stripe-webhook/util/checkoutSessionSubscription.util";
+import { stripe } from "@/stripeClient";
 
 const mockRetrieve = stripe.subscriptions.retrieve as jest.MockedFunction<
     typeof stripe.subscriptions.retrieve
