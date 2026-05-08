@@ -187,4 +187,28 @@ describe("stripeWebhookHandler (integration)", () => {
         expect(res.json).toHaveBeenCalledWith({ received: true });
         expect(next).not.toHaveBeenCalled();
     });
+
+    it("forwards intent handler failure to next(err) without sending success JSON", async () => {
+        mockConstructEvent.mockImplementationOnce(
+            () =>
+                ({
+                    id: "evt_checkout_fail",
+                    object: "event",
+                    type: "checkout.session.completed",
+                    data: {
+                        object: { id: "cs_fail", object: "checkout.session" },
+                    },
+                }) as never,
+        );
+
+        const err = new Error("checkout handler failed");
+        mockCheckout.mockRejectedValueOnce(err);
+
+        const { req, res, next } = mockWebhookRequestResponse();
+
+        await stripeWebhookHandler(req, res, next);
+
+        expect(next).toHaveBeenCalledWith(err);
+        expect(res.json).not.toHaveBeenCalled();
+    });
 });
