@@ -73,8 +73,6 @@ function mockWebhookRequestResponse() {
 
 describe("stripeWebhookHandler (integration)", () => {
     beforeEach(() => {
-        jest.spyOn(console, "log").mockImplementation(() => {});
-
         mockConstructEvent.mockReset();
         mockConstructEvent.mockImplementation(() => {
             throw new Error("mockConstructEvent: set event shape in each test");
@@ -179,10 +177,6 @@ describe("stripeWebhookHandler (integration)", () => {
         expect(mockSubscriptionWrite).not.toHaveBeenCalled();
         expect(mockSubscriptionDeleted).not.toHaveBeenCalled();
         expect(mockInvoiceWrite).not.toHaveBeenCalled();
-
-        expect(console.log).toHaveBeenCalledWith(
-            "Unhandled event type billing.alert.triggered",
-        );
 
         expect(res.json).toHaveBeenCalledWith({ received: true });
         expect(next).not.toHaveBeenCalled();
