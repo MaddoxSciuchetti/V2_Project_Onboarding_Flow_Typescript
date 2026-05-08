@@ -9,9 +9,9 @@ import Stripe from "stripe";
 export async function handleCheckoutSessionCompleted(
     session: Stripe.Checkout.Session,
 ): Promise<void> {
-    const smetadata = session.metadata;
-    const organizationId = smetadata?.organization_id;
-    const actorUserId = smetadata?.user_id ?? null;
+    const sessionMetadata = session.metadata;
+    const organizationId = sessionMetadata?.organization_id;
+    const actorUserId = sessionMetadata?.user_id ?? null;
     const retrieved = await stripe.subscriptions.retrieve(
         typeof session.subscription === "string"
             ? session.subscription
