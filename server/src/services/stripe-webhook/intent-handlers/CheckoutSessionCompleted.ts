@@ -31,10 +31,10 @@ export async function handleCheckoutSessionCompleted(
 
     const retrievedSubscription =
         retrieved as unknown as StripeSubscriptionResource;
-
     const item = retrievedSubscription.items.data[0];
+    const linePrice = item?.price;
     const plan = resolvePlanFromLineItemPrice(
-        item?.price as { id?: string; lookup_key?: string | null } | null,
+        typeof linePrice === "string" ? { id: linePrice } : (linePrice ?? null),
     );
 
     await upsertSubscriptionForOrg(
