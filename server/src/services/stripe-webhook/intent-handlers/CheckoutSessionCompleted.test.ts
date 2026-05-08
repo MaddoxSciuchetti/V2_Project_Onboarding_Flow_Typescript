@@ -1,4 +1,4 @@
-import type { StripeSubscriptionResource } from "@/types/stipe.types";
+import type { StripeSubscriptionResource } from "@/types/stripe.types";
 import type Stripe from "stripe";
 
 jest.mock("@/stripeClient", () => ({

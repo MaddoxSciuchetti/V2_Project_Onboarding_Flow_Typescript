@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
-import { stripe } from "@/stripeClient";
 import { upsertSubscriptionForOrg } from "@/services/stripe-webhook/service/stripeWebhook.service";
-import { StripeSubscriptionResource } from "@/types/stipe.types";
+import { stripe } from "@/stripeClient";
+import { StripeSubscriptionResource } from "@/types/stripe.types";
 import { resolvePlanFromLineItemPrice } from "@/utils/stripeSubscriptionWebhook";
 
 export async function handleCustomerSubscriptionWrite(

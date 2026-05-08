@@ -1,5 +1,5 @@
 import { planFromStripePriceId } from "@/constants/stripePricePlans";
-import { StripeSubscriptionResource } from "@/types/stipe.types";
+import { StripeSubscriptionResource } from "@/types/stripe.types";
 import type { SubscriptionPlan, SubscriptionStatus } from "@prisma/client";
 
 export function mapStripeSubscriptionStatus(

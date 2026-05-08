@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { appendSubscriptionAuditLog } from "@/services/subscriptionAudit.service";
-import { StripeSubscriptionResource } from "@/types/stipe.types";
+import { StripeSubscriptionResource } from "@/types/stripe.types";
 import {
     extractCardFieldsFromStripeSubscription,
     mapStripeSubscriptionStatus,
