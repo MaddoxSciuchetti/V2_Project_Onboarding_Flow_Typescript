@@ -11,9 +11,13 @@ export async function stripeWebhookHandler(
     next: NextFunction,
 ): Promise<void> {
     const signature = req.headers["stripe-signature"];
+    if (typeof signature !== "string") {
+        throw new Error("Missing stripe-signature header");
+    }
+
     const e = stripe.webhooks.constructEvent(
         req.body,
-        signature!,
+        signature,
         STRIPE_WEBHOOK_SECRET,
     );
 
