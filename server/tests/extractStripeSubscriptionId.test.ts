@@ -30,4 +30,35 @@ describe("extractStripeSubscriptionId", () => {
 
         expect(extractStripeSubscriptionId(invoice)).toBe("sub_string_ref");
     });
+
+    it("reads subscription from parent.subscription_details when top-level subscription is absent", () => {
+        const invoice = invoiceShape({
+            subscription: null,
+            parent: {
+                type: "subscription_details",
+                subscription_details: {
+                    subscription: "sub_from_parent",
+                },
+            },
+        });
+
+        expect(extractStripeSubscriptionId(invoice)).toBe("sub_from_parent");
+    });
+
+    it("ignores parent subscription_details when parent type is not subscription_details", () => {
+        const invoice = invoiceShape({
+            parent: {
+                type: "invoice_item_details",
+                subscription_details: {
+                    subscription: "sub_ignored",
+                },
+            },
+        });
+
+        expect(extractStripeSubscriptionId(invoice)).toBeNull();
+    });
+
+    it("returns null when no subscription can be resolved", () => {
+        expect(extractStripeSubscriptionId(invoiceShape({}))).toBeNull();
+    });
 });
