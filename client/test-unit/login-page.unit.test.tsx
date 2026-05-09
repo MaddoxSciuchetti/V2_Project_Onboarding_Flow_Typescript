@@ -1,15 +1,34 @@
 import { StandardUserLogin } from '@/features/auth/components/StandardUserLogin';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import type { MouseEventHandler, ReactNode } from 'react';
 import { describe, expect, it, vi } from 'vitest';
-import { MockLink, renderWithProviders } from './test-utils';
+import { renderWithProviders } from './test-utils';
 
 vi.mock('@tanstack/react-router', async () => {
+  const React = await import('react');
   const actual = await vi.importActual<typeof import('@tanstack/react-router')>(
     '@tanstack/react-router'
   );
 
-  //  Router `Link` needs a full provider;
+  function MockLink({
+    children,
+    to,
+    className,
+    onClick,
+  }: {
+    children?: ReactNode;
+    to: string;
+    className?: string;
+    onClick?: MouseEventHandler<HTMLAnchorElement>;
+  }) {
+    return React.createElement(
+      'a',
+      { href: to, className, onClick },
+      children
+    );
+  }
+
   return {
     ...actual,
     useNavigate: () => vi.fn(),
