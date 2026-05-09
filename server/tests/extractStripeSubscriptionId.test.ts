@@ -14,4 +14,20 @@ describe("extractStripeSubscriptionId", () => {
 
         expect(extractStripeSubscriptionId(invoice)).toBe("sub_expanded");
     });
+
+    it("returns null when subscription is an expanded object without id", () => {
+        const invoice = invoiceShape({
+            subscription: {},
+        });
+
+        expect(extractStripeSubscriptionId(invoice)).toBeNull();
+    });
+
+    it("returns the string when subscription is an id reference", () => {
+        const invoice = invoiceShape({
+            subscription: "sub_string_ref",
+        });
+
+        expect(extractStripeSubscriptionId(invoice)).toBe("sub_string_ref");
+    });
 });
