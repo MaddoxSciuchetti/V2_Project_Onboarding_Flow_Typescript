@@ -16,6 +16,10 @@ import { handleCheckoutSessionCompleted } from "@/services/stripe-webhook/intent
 import { upsertSubscriptionForOrg } from "@/services/stripe-webhook/service/stripeWebhook.service";
 import { resolveCheckoutSessionSubscriptionId } from "@/services/stripe-webhook/util/checkoutSessionSubscription.util";
 import { stripe } from "@/stripeClient";
+import {
+    handlerCheckoutSessionFixture,
+    stripeRetrieveSubscriptionFixture,
+} from "./utils";
 
 const mockRetrieve = stripe.subscriptions.retrieve as jest.MockedFunction<
     typeof stripe.subscriptions.retrieve
@@ -24,44 +28,8 @@ const mockUpsert = upsertSubscriptionForOrg as jest.MockedFunction<
     typeof upsertSubscriptionForOrg
 >;
 
-const KNOWN_PRICE_ID_STARTER = "price_1TSLW4IFABFY32sSl8hcCUBE";
-
-function stripeRetrieveSubscriptionFixture(
-    overrides: Partial<Stripe.Subscription> = {},
-): Stripe.Subscription {
-    return {
-        id: "sub_fixture",
-        status: "active",
-        customer: "cus_fixture",
-        current_period_start: 1_700_000_000,
-        current_period_end: 1_700_086_400,
-        trial_end: null,
-        metadata: {},
-        items: {
-            data: [
-                {
-                    price: { id: KNOWN_PRICE_ID_STARTER } as Stripe.Price,
-                } as Stripe.SubscriptionItem,
-            ],
-        },
-        ...overrides,
-    } as Stripe.Subscription;
-}
-
-function handlerCheckoutSessionFixture(
-    overrides: Partial<Stripe.Checkout.Session> = {},
-): Stripe.Checkout.Session {
-    return {
-        id: "cs_fixture",
-        object: "checkout.session",
-        metadata: {
-            organization_id: "org_1",
-            user_id: "user_1",
-        },
-        subscription: "sub_fixture",
-        ...overrides,
-    } as unknown as Stripe.Checkout.Session;
-}
+/** Stripe starter price id; must match the starter key in STRIPE_PRICE_ID_TO_PLAN inside `/server/src/constants/stripePricePlans.ts`. */
+export const KNOWN_PRICE_ID_STARTER = "price_1TSLW4IFABFY32sSl8hcCUBE";
 
 describe("resolveCheckoutSessionSubscriptionId", () => {
     it("returns subscription when session holds a string subscription id", () => {
@@ -98,7 +66,7 @@ describe("handleCheckoutSessionCompleted", () => {
     beforeEach(() => {
         jest.clearAllMocks();
         mockRetrieve.mockResolvedValue(
-            stripeRetrieveSubscriptionFixture() as never,
+            stripeRetrieveSubscriptionFixture() as Stripe.Response<Stripe.Subscription>,
         );
         mockUpsert.mockResolvedValue(undefined);
     });
@@ -145,29 +113,16 @@ describe("handleCheckoutSessionCompleted", () => {
     });
 
     it("passes SubscriptionPlan resolved from first line item (mapped price id, then lookup_key)", async () => {
-        const retrievedByPriceId = stripeRetrieveSubscriptionFixture({
-            items: {
-                data: [
-                    {
-                        price: {
-                            id: KNOWN_PRICE_ID_STARTER,
-                        } as Stripe.Price,
-                    } as Stripe.SubscriptionItem,
-                ],
-            } as Stripe.Subscription["items"],
-        });
-        mockRetrieve.mockResolvedValue(retrievedByPriceId as never);
-
         const session = handlerCheckoutSessionFixture();
         await handleCheckoutSessionCompleted(session);
-
         expect(mockUpsert).toHaveBeenCalledWith({
             organizationId: "org_1",
-            stripeSub: retrievedByPriceId,
+            stripeSub: stripeRetrieveSubscriptionFixture(),
             plan: "starter",
             actorUserId: "user_1",
         });
 
+        // Subscription whose first price has only `lookup_key` (no known Stripe price id) so plan resolves via lookup, not id.
         const retrievedByLookupKey = stripeRetrieveSubscriptionFixture({
             items: {
                 data: [
@@ -177,9 +132,12 @@ describe("handleCheckoutSessionCompleted", () => {
                 ],
             } as Stripe.Subscription["items"],
         });
-        mockRetrieve.mockResolvedValue(retrievedByLookupKey as never);
+        mockRetrieve.mockResolvedValue(
+            retrievedByLookupKey as Stripe.Response<Stripe.Subscription>,
+        );
         await handleCheckoutSessionCompleted(session);
 
+        // First argument of the latest mockUpsert call
         expect(mockUpsert.mock.calls.at(-1)?.[0]).toEqual({
             organizationId: "org_1",
             stripeSub: retrievedByLookupKey,
