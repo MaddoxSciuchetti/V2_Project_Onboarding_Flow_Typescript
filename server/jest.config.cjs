@@ -1,7 +1,7 @@
 /** @type {import("jest").Config} */
 module.exports = {
     testEnvironment: "node",
-    roots: ["<rootDir>/src"],
+    roots: ["<rootDir>/src", "<rootDir>/tests"],
     testMatch: ["**/*.test.ts"],
     moduleNameMapper: {
         "^@/(.*)$": "<rootDir>/src/$1",

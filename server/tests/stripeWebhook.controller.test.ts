@@ -1,18 +1,11 @@
 import type { NextFunction, Request, Response } from "express";
 
-const mockConstructFns: jest.Mock[] = [];
-
-jest.mock("stripe", () => ({
-    __esModule: true,
-    default: jest.fn(() => {
-        const constructEventFn = jest.fn();
-        mockConstructFns.push(constructEventFn);
-        return {
-            webhooks: {
-                constructEvent: constructEventFn,
-            },
-        };
-    }),
+jest.mock("@/stripeClient", () => ({
+    stripe: {
+        webhooks: {
+            constructEvent: jest.fn(),
+        },
+    },
 }));
 
 jest.mock(
@@ -46,18 +39,14 @@ import { handleCheckoutSessionCompleted } from "@/services/stripe-webhook/intent
 import { handleCustomerSubscriptionDeleted } from "@/services/stripe-webhook/intent-handlers/CustomerSubscriptionDeleted";
 import { handleCustomerSubscriptionWrite } from "@/services/stripe-webhook/intent-handlers/CustomerSubscriptionWrite";
 import { handleInvoiceWrite } from "@/services/stripe-webhook/intent-handlers/InvoiceWrite";
+import { stripe } from "@/stripeClient";
 
 const mockCheckout = jest.mocked(handleCheckoutSessionCompleted);
 const mockSubscriptionWrite = jest.mocked(handleCustomerSubscriptionWrite);
 const mockSubscriptionDeleted = jest.mocked(handleCustomerSubscriptionDeleted);
 const mockInvoiceWrite = jest.mocked(handleInvoiceWrite);
 
-if (mockConstructFns.length !== 1) {
-    throw new Error(
-        `Expected one Stripe mock client (controller load order), got ${mockConstructFns.length}`,
-    );
-}
-const mockConstructEvent = mockConstructFns[0]!;
+const mockConstructEvent = jest.mocked(stripe.webhooks.constructEvent);
 
 function mockWebhookRequestResponse() {
     const req = {
@@ -130,7 +119,7 @@ describe("stripeWebhookHandler (integration)", () => {
         expect(next).not.toHaveBeenCalled();
     });
 
-    it("routes customer.subscription.updated to subscription write handler and acknowledges", async () => {
+    it("routes customer.subscription.updated to subscription write handler", async () => {
         const subscriptionPayload = {
             id: "sub_integration",
             object: "subscription" as const,
@@ -195,6 +184,7 @@ describe("stripeWebhookHandler (integration)", () => {
                 }) as never,
         );
 
+        // `handleCheckoutSessionCompleted` throws error
         const err = new Error("checkout handler failed");
         mockCheckout.mockRejectedValueOnce(err);
 
