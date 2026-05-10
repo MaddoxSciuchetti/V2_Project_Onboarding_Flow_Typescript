@@ -1,3 +1,4 @@
+import { tryCatch } from '@/lib/trycatch';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { Dispatch, SetStateAction } from 'react';
 import { useForm } from 'react-hook-form';
@@ -66,15 +67,14 @@ export function useTasks(
     const draft = options?.getCommentDraft?.();
     const trimmed = draft?.body.trim() ?? '';
     if (trimmed.length > 0 && options?.persistComment) {
-      try {
-        await options.persistComment({
+      const [, persistErr] = await tryCatch(
+        options.persistComment({
           taskId: taskEditState.taskId,
           body: trimmed,
           commentId: draft?.commentId ?? null,
-        });
-      } catch {
-        return;
-      }
+        })
+      );
+      if (persistErr) return;
     }
 
     setIsOpen(false);
