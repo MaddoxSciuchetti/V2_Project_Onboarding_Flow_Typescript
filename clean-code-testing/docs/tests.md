@@ -24,6 +24,8 @@ Run the following commands for testing either unit, integration or end to end
 
 Test coverage is being tested with jest and vite. (playwright is currently not included)
 
+// Note: Test coverage test what files are being covered by your tests. It does not imply that all lines are being tested for
+
 `/Client` (vitest & playwright)
 
 - In the `/client` directoy and run `npm run test:coverage` (Note this includes coverage only for vitest imported files)
@@ -55,4 +57,4 @@ Aikido is a tool that analyzes the entire codebase for security vulnerabilities.
 
 Below is a screenshot of the aikido manager showing the analysis of my codebase:
 
-[image](/Users/maddoxsciuchetti/fixies-branch/clean-code-testing/docs/aikido.png)
+![image](/Users/maddoxsciuchetti/fixies-branch/clean-code-testing/docs/aikido.png)
