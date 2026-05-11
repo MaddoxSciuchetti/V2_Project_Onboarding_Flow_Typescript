@@ -8,16 +8,14 @@ Onboarding / offboarding workflow tool. Express + Prisma + PostgreSQL on the bac
 >
 > When having push access to this repository,thoroughly read through the entire codebase. To get a better high-level view, start with these two folders:
 >
-> - `database/`
-> - `clean-code-testing/`
-
-
+> - `database/` [intro](/Users/maddoxsciuchetti/fixies-branch/database/Intro.md)
+> - `clean-code-testing/`[intro](/Users/maddoxsciuchetti/fixies-branch/clean-code-testing/docs/intro.md)
 
 The folder `database/` gives you the current implementation overview regarding how we store the data that we collect. It also contains detailed information on how we test performance and how we approach database maintenance when this project starts to grow.
 
 The folder `clean-code-testing/` provides you with information on how to write code in this project. This includes how this project approaches testing but also the kind of syntax we write and the folder organization this project follows. If you decide to use an Agent, please include this folder in the context.
 
-When opening a pull request please use the following checklist inside pullreqest-guidelines.md
+High level folder architecture
 
 ```
 client/    React + Vite frontend
@@ -99,7 +97,6 @@ Open `http://localhost:5173`.
 
 Backend (`server/`):
 
-
 | Command                                | Purpose                                           |
 | -------------------------------------- | ------------------------------------------------- |
 | `npm run dev`                          | Run the API with tsx in watch mode                |
@@ -110,9 +107,7 @@ Backend (`server/`):
 | `npx prisma migrate deploy`            | Apply pending migrations (CI / production)        |
 | `npm test`                             | Jest unit tests                                   |
 
-
 Frontend (`client/`):
-
 
 | Command             | Purpose                     |
 | ------------------- | --------------------------- |
@@ -121,7 +116,6 @@ Frontend (`client/`):
 | `npm run preview`   | Serve the production build  |
 | `npm run test:unit` | Vitest unit tests           |
 | `npm run test:e2e`  | Playwright end-to-end tests |
-
 
 ## Database changes
 

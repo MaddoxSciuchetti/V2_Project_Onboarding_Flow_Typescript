@@ -1,7 +1,5 @@
 # Below is the documentation of the key decisions in this project. The goal of this project is to give you a understanding of why certain software patterns are implemented.
 
----
-
 ## Repository Architecture
 
 Decision: Split the codebase into `client/` (Vite + React), `server/` (Express + Prisma + Stripe webhooks)
@@ -11,8 +9,6 @@ Reason: Two developers can work on this project independently and responsibility
 Decision: Prefer `@/` path aliases for source imports on both apps (plus server additions like `@/lib/*`).
 
 Reason: Imports are stable and no `../../../../` chains.
-
----
 
 ## Client application shape
 
@@ -36,8 +32,6 @@ Decision: `components/ui/` primitives use lowercase filenames (`sheet.tsx`) whil
 
 Reason: Distinguisches the pre built ui components from the functional components that were customly built
 
----
-
 ## Server application shape
 
 Decision: HTTP surface is `routes/*.route.ts` → controllers → services; validation uses `schemas/*.schemas.ts`.
@@ -51,8 +45,6 @@ Reason: The handlers are being called from the controller that contains the swit
 Decision: Prisma schema and migrations live under `server/src/prisma/`;
 
 Reason: Keeps migrations next to schema for easier maintanability of migration scripts
-
----
 
 ## File naming
 
@@ -68,8 +60,6 @@ Decision: Tests colocated as `*.test.ts` near the code under test.
 
 Reason: Faster to find specs and scoped coverage runs.
 
----
-
 ## TypeScript and style
 
 Decision: `PascalCase` for components and types; `camelCase` for values and functions; `SCREAMING_SNAKE_CASE` for exported fixed codes (especially HTTP statuses).
@@ -84,8 +74,6 @@ Decision: Prefer `import type` for type-only imports when it improves clarity.
 
 Reason: Avoids accidental runtime imports where only types are needed.
 
----
-
 ## Tooling and environment
 
 Decision: ESLint owns correctness/hooks rules; Prettier disables conflicting ESLint formatting via eslint-config-prettier.
@@ -99,5 +87,3 @@ Reason: One module owns `process.env` access; call sites import stable exports (
 Decision: Real secrets are never committed; configuration is env-driven.
 
 Reason: Security and environment parity (local, staging, production).
-
----
