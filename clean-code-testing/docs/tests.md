@@ -57,4 +57,4 @@ Aikido is a tool that analyzes the entire codebase for security vulnerabilities.
 
 Below is a screenshot of the aikido manager showing the analysis of my codebase:
 
-![image](/Users/maddoxsciuchetti/fixies-branch/clean-code-testing/docs/aikido.png)
+![image](./aikido.png)
