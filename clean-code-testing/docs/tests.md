@@ -14,11 +14,15 @@ After making changes run coverage test for the codebase to check that your added
 
 ## Running tests
 
-Run the following commands for testing either unit, integration or end to end
+Run the following commands in the `/client`for testing either unit, integration or end to end
 
 - `npm run test:unit`
 - `npm run test:integration`
 - `npm run test:e2e`
+
+Run the following commands in the `/server`for testing all tests
+
+- `npm test`
 
 ## Setting up test coverage
 
